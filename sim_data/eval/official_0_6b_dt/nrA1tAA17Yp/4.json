@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.8,
+  "following_step": 32,
+  "total_step": 40,
+  "collision": 1.0,
+  "instruction": "Stay behind the individual wearing a green tunic and brown leather gear."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.7627118644067796,
+  "following_step": 90,
+  "total_step": 118,
+  "collision": 0.0,
+  "instruction": "Chase the person you initially notice."
+}

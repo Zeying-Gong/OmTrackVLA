@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.918918918918919,
+  "following_step": 34,
+  "total_step": 37,
+  "collision": 1.0,
+  "instruction": "Track the woman wearing a light gray long-sleeve top and dark gray pants."
+}

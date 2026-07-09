@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.98,
+  "following_step": 294,
+  "total_step": 300,
+  "collision": 0.0,
+  "instruction": "Stay behind the woman wearing gray-colored clothing, including pants and a shirt."
+}

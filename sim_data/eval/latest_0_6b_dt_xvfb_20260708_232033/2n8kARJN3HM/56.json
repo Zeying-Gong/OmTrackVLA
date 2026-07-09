@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.993421052631579,
+  "following_step": 151,
+  "total_step": 152,
+  "collision": 0.0,
+  "instruction": "Track the man wearing a light gray three-piece suit with a blue tie."
+}

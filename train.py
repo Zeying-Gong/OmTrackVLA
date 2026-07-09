@@ -16,6 +16,9 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 import torch.distributed as dist
 
+from hf_compat import disable_deepspeed_auto_import
+
+disable_deepspeed_auto_import()
 from transformers import AutoTokenizer, AutoModel
 from cache_gridpool import VisionFeatureCacher, VisionCacheConfig, grid_pool_tokens, adapt_siglip_grid
 
@@ -667,6 +670,7 @@ class TrainConfig:
     history: int = 31
     llm_name: str = "Qwen/Qwen3-0.6B"
     epochs: int = 1
+    max_train_steps: int = 0
     batch_size: int = 12
     lr: float = 3e-4
     weight_decay: float = 0.01
@@ -678,6 +682,7 @@ class TrainConfig:
     # model
     use_angle_tvi: bool = False
     beta_nav: float = 10.0
+    freeze_llm: bool = False
     cache_root: Optional[str] = None
     distributed: bool = False
     dist_backend: str = 'nccl'
@@ -818,6 +823,7 @@ def train(cfg: TrainConfig):
     model = OpenTrackVLA(
         ModelConfig(
             llm_name=cfg.llm_name,
+            freeze_llm=cfg.freeze_llm,
             n_waypoints=cfg.n_waypoints,
             beta_nav=cfg.beta_nav,
             use_angle_tvi=cfg.use_angle_tvi,
@@ -900,6 +906,7 @@ def train(cfg: TrainConfig):
     ema_nav: Optional[float] = None
     last_log_time = time.time()
     epoch_start_time = last_log_time
+    stop_training = False
     for epoch in range(cfg.epochs):
         model.train()
         if use_ddp and sampler is not None:
@@ -1289,6 +1296,30 @@ def train(cfg: TrainConfig):
                 finally:
                     model.train()
 
+            if cfg.max_train_steps and step >= cfg.max_train_steps:
+                if rank == 0:
+                    ckpt = os.path.join(cfg.out_dir, f"model_epoch{epoch:02d}_step{step:06d}.pt")
+                    model_to_save = model.module if isinstance(
+                        model, torch.nn.parallel.DistributedDataParallel
+                    ) else model
+                    torch.save(
+                        {
+                            'epoch': epoch,
+                            'model_state': model_to_save.state_dict(),
+                            'optim_state': optim.state_dict(),
+                            'scaler_state': (scaler.state_dict() if scaler.is_enabled() else None),
+                            'config': cfg.__dict__,
+                            'step': step,
+                        },
+                        ckpt,
+                    )
+                    print(f"[TRAIN] Reached max_train_steps={cfg.max_train_steps}; saved {ckpt}", flush=True)
+                stop_training = True
+                break
+
+        if stop_training:
+            break
+
     # Optional inference after training when requested (rank 0 only)
     if rank == 0 and cfg.infer_json:
         try:
@@ -1466,6 +1497,7 @@ def parse_args() -> TrainConfig:
     ap.add_argument('--n_waypoints', type=int, default=8)
     ap.add_argument('--history', type=int, default=31)
     ap.add_argument('--epochs', type=int, default=1)
+    ap.add_argument('--max_train_steps', type=int, default=0, help='Stop after N optimizer steps for smoke tests (0 = disabled)')
     ap.add_argument('--batch_size', type=int, default=2)
     ap.add_argument('--lr', type=float, default=2e-5)
     ap.add_argument('--weight_decay', type=float, default=0.01)
@@ -1480,6 +1512,7 @@ def parse_args() -> TrainConfig:
     ap.add_argument('--use_angle_tvi', action='store_true')  # default False
     ap.add_argument('--alpha_xy', type=float, default=2.0, help='Scalar to scale only XY targets; yaw unscaled')
     ap.add_argument('--beta_nav',      type=float, default=10.0)
+    ap.add_argument('--freeze_llm', action='store_true', help='Freeze the LLM backbone and train only planner/projector layers')
     # logging / saving
     ap.add_argument('--log_every', type=int, default=10)
     ap.add_argument('--csv_logging', action='store_true')

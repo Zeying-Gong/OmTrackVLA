@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.2727272727272727,
+  "following_step": 15,
+  "total_step": 55,
+  "collision": 0.0,
+  "instruction": "Stay behind the individual wearing a white and black armored outfit."
+}

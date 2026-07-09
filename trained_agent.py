@@ -38,6 +38,13 @@ except Exception:
     snapshot_download = None  # type: ignore
 
 
+def _env_flag(name: str, default: bool = False) -> bool:
+    val = os.environ.get(name)
+    if val is None:
+        return default
+    return val.strip().lower() in {"1", "true", "yes", "on"}
+
+
 def evaluate_agent(config, dataset_split, save_path) -> None:
     # robot definition
     robot_config = GTBBoxAgent(save_path)
@@ -117,11 +124,13 @@ def evaluate_agent(config, dataset_split, save_path) -> None:
 
                 info = env.get_metrics()
                 if info['human_following'] == 1.0:
-                    print("Followed")
+                    if robot_config.verbose_steps:
+                        print("Followed")
                     followed_step += 1
                     too_far_count = 0
                 else:
-                    print("Lost")
+                    if robot_config.verbose_steps:
+                        print("Lost")
 
                 if np.linalg.norm(robot_agent.base_pos - humanoid_agent_main.base_pos) > 4.0:
                     too_far_count += 1
@@ -138,12 +147,14 @@ def evaluate_agent(config, dataset_split, save_path) -> None:
                 record_infos.append(record_info)
 
                 if info['human_collision'] == 1.0:
-                    print("Collision detected!")
+                    if robot_config.verbose_steps:
+                        print("Collision detected!")
                     status = 'Collision'
                     finished = False
                     break
                 
-                print(f"========== ID: {env.current_episode.episode_id} Step now is: {iter_step} action is: {action} dis_to_main_human: {np.linalg.norm(robot_agent.base_pos - humanoid_agent_main.base_pos)} ============")
+                if robot_config.verbose_steps:
+                    print(f"========== ID: {env.current_episode.episode_id} Step now is: {iter_step} action is: {action} dis_to_main_human: {np.linalg.norm(robot_agent.base_pos - humanoid_agent_main.base_pos)} ============")
 
             print("finished episode id: ", env.current_episode.episode_id)
             info = env.get_metrics()
@@ -180,6 +191,8 @@ class GTBBoxAgent(AgentConfig):
 
         self.result_path = result_path
         os.makedirs(self.result_path, exist_ok=True)
+        self.save_video = _env_flag("TRACKVLA_SAVE_VIDEO", _env_flag("SAVE_VIDEO", True))
+        self.verbose_steps = _env_flag("TRACKVLA_VERBOSE_STEPS", True)
         
         self.rgb_list = []
         self.rgb_box_list = []
@@ -223,13 +236,14 @@ class GTBBoxAgent(AgentConfig):
 
     def reset(self, episode: NavigationEpisode = None):
         if len(self.rgb_list) != 0:
-            scene_key = osp.splitext(osp.basename(episode.scene_id))[0].split('.')[0]
-            save_dir = os.path.join(self.result_path, scene_key)
-            os.makedirs(save_dir, exist_ok=True)
-            output_video_path = os.path.join(save_dir, "{}.mp4".format(episode.episode_id))
-            imageio.mimsave(output_video_path, self.rgb_list)
+            if self.save_video and episode is not None:
+                scene_key = osp.splitext(osp.basename(episode.scene_id))[0].split('.')[0]
+                save_dir = os.path.join(self.result_path, scene_key)
+                os.makedirs(save_dir, exist_ok=True)
+                output_video_path = os.path.join(save_dir, "{}.mp4".format(episode.episode_id))
+                imageio.mimsave(output_video_path, self.rgb_list)
 
-            print(f"Successfully save the episode video with episode id {episode.episode_id}")
+                print(f"Successfully save the episode video with episode id {episode.episode_id}")
 
             self.rgb_list = []
         
@@ -239,7 +253,8 @@ class GTBBoxAgent(AgentConfig):
         self.episode_id = episode_id
         
         rgb = observations["agent_1_articulated_agent_jaw_rgb"]
-        print (rgb.shape)
+        if self.verbose_steps:
+            print(rgb.shape)
         rgb_ = rgb[:, :, :3]
         image = np.asarray(rgb_[:, :, ::-1])
         height, width = image.shape[:2]
@@ -256,12 +271,14 @@ class GTBBoxAgent(AgentConfig):
         planner_action = self._planner_action(rgb_, instruction)
         action = planner_action
         
-        print (f"Planner action: {action}")
+        if self.verbose_steps:
+            print(f"Planner action: {action}")
 
         self.last_action = action
         # Draw predicted trajectory overlay (if available)
-        frame_out = self._render_frame_with_traj(rgb_, self._last_predicted_traj)
-        self.rgb_list.append(frame_out)
+        if self.save_video:
+            frame_out = self._render_frame_with_traj(rgb_, self._last_predicted_traj)
+            self.rgb_list.append(frame_out)
 
         return action
 
@@ -348,7 +365,12 @@ class GTBBoxAgent(AgentConfig):
         if self._hf_model_dir and OpenTrackVLAForWaypoint is not None:
             try:
                 print(f"[planner] Loading HuggingFace checkpoint: {self._hf_model_dir}")
-                model = OpenTrackVLAForWaypoint.from_pretrained(self._hf_model_dir)
+                config = OpenTrackVLAForWaypoint.config_class.from_pretrained(self._hf_model_dir)
+                llm_override = os.environ.get('OMTRACKVLA_LLM_NAME')
+                if llm_override:
+                    config.llm_name = llm_override
+                    print(f"[planner] Using LLM override: {llm_override}")
+                model = OpenTrackVLAForWaypoint.from_pretrained(self._hf_model_dir, config=config)
                 model = model.to(self.planner_device).eval()
                 self.planner_model = model
                 return
@@ -434,7 +456,8 @@ class GTBBoxAgent(AgentConfig):
                 )  # (1, Mw, D)
             # Convert first waypoint to velocities using dt
             tau_cpu = tau.detach().float().cpu().numpy()
-            print (tau_cpu)
+            if self.verbose_steps:
+                print(tau_cpu)
             self._last_predicted_traj = tau_cpu[0]            
             wp0 = tau[0, 1]
             x, y = float(wp0[0].item()), float(wp0[1].item())
@@ -443,7 +466,8 @@ class GTBBoxAgent(AgentConfig):
             vx = x / dt
             vy = y / dt
             wz = theta / dt            
-            print (f"Planner action: {vx}, {vy}, {wz}")
+            if self.verbose_steps:
+                print(f"Planner action: {vx}, {vy}, {wz}")
             return [float(vx), float(vy), float(wz)]
             
         except Exception:

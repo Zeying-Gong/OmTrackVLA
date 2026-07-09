@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.7441860465116279,
+  "following_step": 32,
+  "total_step": 43,
+  "collision": 0.0,
+  "instruction": "Walk after the woman with a red outfit and black accents."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9567901234567902,
+  "following_step": 155,
+  "total_step": 162,
+  "collision": 0.0,
+  "instruction": "Pursue the individual in a green tunic and brown leather gear."
+}

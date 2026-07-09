@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 1.0,
+  "following_step": 151,
+  "total_step": 151,
+  "collision": 0.0,
+  "instruction": "Walk after the man with a dark blue military uniform and a red belt."
+}

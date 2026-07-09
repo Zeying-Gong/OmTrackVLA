@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.6551724137931034,
+  "following_step": 38,
+  "total_step": 58,
+  "collision": 0.0,
+  "instruction": "Stay behind the man wearing a red and white sports jersey."
+}

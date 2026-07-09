@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9894736842105263,
+  "following_step": 94,
+  "total_step": 95,
+  "collision": 0.0,
+  "instruction": "Pursue the person dressed in an olive green long-sleeve shirt and brown trousers."
+}

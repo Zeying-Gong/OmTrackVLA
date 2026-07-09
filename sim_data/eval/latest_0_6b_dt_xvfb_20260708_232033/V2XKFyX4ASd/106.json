@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.8521739130434782,
+  "following_step": 98,
+  "total_step": 115,
+  "collision": 0.0,
+  "instruction": "Track the person wearing a black jacket with gold buttons and a red shirt."
+}

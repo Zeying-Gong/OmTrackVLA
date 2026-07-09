@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.36666666666666664,
+  "following_step": 33,
+  "total_step": 90,
+  "collision": 0.0,
+  "instruction": "Walk after the woman with dark gray pants and a light gray top."
+}

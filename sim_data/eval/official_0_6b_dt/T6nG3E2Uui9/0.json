@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.23255813953488372,
+  "following_step": 10,
+  "total_step": 43,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a dark gray armored suit."
+}

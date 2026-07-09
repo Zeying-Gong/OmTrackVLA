@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.05555555555555555,
+  "following_step": 3,
+  "total_step": 54,
+  "collision": 0.0,
+  "instruction": "Track the person wearing a green tunic with brown leather straps and gloves."
+}

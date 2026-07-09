@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.8368794326241135,
+  "following_step": 118,
+  "total_step": 141,
+  "collision": 1.0,
+  "instruction": "Follow the person wearing a black tactical suit and silver armor plates."
+}

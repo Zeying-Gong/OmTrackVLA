@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.8,
+  "following_step": 4,
+  "total_step": 5,
+  "collision": 0.0,
+  "instruction": "Chase the individual in a black jacket and red shirt."
+}

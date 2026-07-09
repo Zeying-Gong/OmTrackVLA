@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.8863636363636364,
+  "following_step": 78,
+  "total_step": 88,
+  "collision": 0.0,
+  "instruction": "Follow the man wearing a red and white sports jersey with the number 11 on it."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.6363636363636364,
+  "following_step": 7,
+  "total_step": 11,
+  "collision": 1.0,
+  "instruction": "Follow the person wearing a black jacket, red shirt, and gold belt."
+}

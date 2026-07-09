@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9421487603305785,
+  "following_step": 114,
+  "total_step": 121,
+  "collision": 0.0,
+  "instruction": "Track the man wearing a black armored suit with glowing white chest plates."
+}

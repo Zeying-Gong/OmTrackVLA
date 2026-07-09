@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.3609022556390977,
+  "following_step": 48,
+  "total_step": 133,
+  "collision": 0.0,
+  "instruction": "Follow the woman wearing a dark blue suit and white shirt."
+}

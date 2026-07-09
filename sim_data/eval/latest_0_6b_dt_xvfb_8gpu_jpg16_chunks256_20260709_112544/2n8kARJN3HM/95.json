@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.6752136752136753,
+  "following_step": 79,
+  "total_step": 117,
+  "collision": 0.0,
+  "instruction": "Go after the woman with a black dress and white collar."
+}

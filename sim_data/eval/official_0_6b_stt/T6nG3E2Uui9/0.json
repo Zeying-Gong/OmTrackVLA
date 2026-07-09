@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.2926829268292683,
+  "following_step": 12,
+  "total_step": 41,
+  "collision": 0.0,
+  "instruction": "Walk after the man with a black suit and white shirt."
+}

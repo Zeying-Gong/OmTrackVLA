@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.2647058823529412,
+  "following_step": 18,
+  "total_step": 68,
+  "collision": 0.0,
+  "instruction": "Track the man wearing a dark blue suit and light blue tie."
+}

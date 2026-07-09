@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.425531914893617,
+  "following_step": 20,
+  "total_step": 47,
+  "collision": 0.0,
+  "instruction": "Chase the man in a black jacket with red accents and a white shirt."
+}

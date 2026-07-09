@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -66,8 +67,14 @@ def convert_checkpoint(
     args: argparse.Namespace,
 ) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    if any(out_dir.iterdir()) and not overwrite:
-        raise FileExistsError(f"{out_dir} is not empty. Pass --overwrite to replace its contents.")
+    if any(out_dir.iterdir()):
+        if not overwrite:
+            raise FileExistsError(f"{out_dir} is not empty. Pass --overwrite to replace its contents.")
+        for child in out_dir.iterdir():
+            if child.is_dir():
+                shutil.rmtree(child)
+            else:
+                child.unlink()
 
     print(f"[convert] Loading checkpoint: {ckpt_path}")
     obj = torch.load(str(ckpt_path), map_location="cpu")
@@ -88,7 +95,11 @@ def convert_checkpoint(
         print(f"[convert][warn] Unexpected keys: {unexpected}")
 
     print(f"[convert] Saving HuggingFace checkpoint under {out_dir}")
-    hf_model.save_pretrained(str(out_dir))
+    hf_config.save_pretrained(str(out_dir))
+    torch.save(hf_model.state_dict(), out_dir / "pytorch_model.bin")
+    wrapper_dir = Path(__file__).resolve().parent / "open_trackvla_hf"
+    for name in ("__init__.py", "configuration_open_trackvla.py", "modeling_open_trackvla.py"):
+        shutil.copy2(wrapper_dir / name, out_dir / name)
 
     meta = {
         "source_checkpoint": str(ckpt_path),
@@ -125,4 +136,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

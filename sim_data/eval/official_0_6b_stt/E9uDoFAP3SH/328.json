@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.8796296296296297,
+  "following_step": 95,
+  "total_step": 108,
+  "collision": 0.0,
+  "instruction": "Chase the person in an olive green top and brown pants."
+}

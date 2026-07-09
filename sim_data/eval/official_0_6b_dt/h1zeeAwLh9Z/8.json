@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.9014084507042254,
+  "following_step": 64,
+  "total_step": 71,
+  "collision": 1.0,
+  "instruction": "Pursue the individual dressed in a black leather jacket with gold details."
+}

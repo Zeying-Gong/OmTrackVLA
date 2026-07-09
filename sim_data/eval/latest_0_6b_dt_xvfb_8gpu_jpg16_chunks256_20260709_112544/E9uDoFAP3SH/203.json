@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.17142857142857143,
+  "following_step": 12,
+  "total_step": 70,
+  "collision": 0.0,
+  "instruction": "Stay behind the individual wearing a black leather jacket and a belt."
+}

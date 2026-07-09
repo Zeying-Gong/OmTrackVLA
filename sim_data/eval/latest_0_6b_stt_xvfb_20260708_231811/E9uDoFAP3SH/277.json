@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.8648648648648649,
+  "following_step": 96,
+  "total_step": 111,
+  "collision": 0.0,
+  "instruction": "Track the man wearing a maroon and black suit with a white shirt and purple tie."
+}

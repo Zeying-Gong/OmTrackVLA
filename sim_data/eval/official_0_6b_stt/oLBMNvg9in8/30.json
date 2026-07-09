@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.6111111111111112,
+  "following_step": 44,
+  "total_step": 72,
+  "collision": 0.0,
+  "instruction": "Follow the woman wearing a dark gray armored outfit."
+}

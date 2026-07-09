@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.43023255813953487,
+  "following_step": 37,
+  "total_step": 86,
+  "collision": 0.0,
+  "instruction": "Follow the person wearing a green tunic and brown leather gloves."
+}

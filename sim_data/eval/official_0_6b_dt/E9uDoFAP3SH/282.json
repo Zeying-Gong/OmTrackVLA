@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.8874172185430463,
+  "following_step": 134,
+  "total_step": 151,
+  "collision": 0.0,
+  "instruction": "Chase the man in a red and white sports jersey."
+}

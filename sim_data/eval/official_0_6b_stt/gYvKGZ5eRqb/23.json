@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.42424242424242425,
+  "following_step": 28,
+  "total_step": 66,
+  "collision": 0.0,
+  "instruction": "Chase the woman in a dark top with a floral pattern."
+}

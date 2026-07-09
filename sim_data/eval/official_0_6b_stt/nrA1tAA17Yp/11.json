@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 1.0,
+  "following_step": 300,
+  "total_step": 300,
+  "collision": 0.0,
+  "instruction": "Pursue the man dressed in a dark blue military uniform with gold buttons and a red belt."
+}

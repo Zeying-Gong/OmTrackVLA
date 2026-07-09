@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.3333333333333333,
+  "following_step": 33,
+  "total_step": 99,
+  "collision": 0.0,
+  "instruction": "Track the man wearing a red and white sports jersey."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 1.0,
+  "following_step": 73,
+  "total_step": 73,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a gray top and dark gray trousers."
+}

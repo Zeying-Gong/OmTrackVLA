@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 1.0,
+  "following_step": 66,
+  "total_step": 66,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a red outfit with black accents."
+}

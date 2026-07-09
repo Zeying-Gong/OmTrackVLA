@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9811320754716981,
+  "following_step": 52,
+  "total_step": 53,
+  "collision": 0.0,
+  "instruction": "Chase the man in a black suit and white shirt."
+}

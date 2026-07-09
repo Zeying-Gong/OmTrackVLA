@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.3673469387755102,
+  "following_step": 36,
+  "total_step": 98,
+  "collision": 0.0,
+  "instruction": "Walk after the man with white pants and a white top."
+}

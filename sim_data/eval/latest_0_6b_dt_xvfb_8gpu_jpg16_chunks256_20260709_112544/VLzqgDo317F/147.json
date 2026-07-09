@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.15789473684210525,
+  "following_step": 6,
+  "total_step": 38,
+  "collision": 0.0,
+  "instruction": "Pursue the man dressed in a dark blue suit with gold buttons."
+}

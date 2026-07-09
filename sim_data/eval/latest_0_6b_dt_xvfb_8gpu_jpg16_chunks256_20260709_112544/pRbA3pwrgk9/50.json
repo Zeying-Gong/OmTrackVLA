@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.7894736842105263,
+  "following_step": 75,
+  "total_step": 95,
+  "collision": 0.0,
+  "instruction": "Pursue the man dressed in a white long-sleeve shirt and white trousers."
+}

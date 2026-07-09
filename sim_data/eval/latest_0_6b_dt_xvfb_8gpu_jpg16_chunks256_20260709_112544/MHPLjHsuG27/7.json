@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.42857142857142855,
+  "following_step": 21,
+  "total_step": 49,
+  "collision": 0.0,
+  "instruction": "Stay behind the individual wearing a black and silver Darth Vader outfit."
+}

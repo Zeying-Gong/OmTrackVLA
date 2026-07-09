@@ -7,13 +7,41 @@ import json
 import math
 from pathlib import Path
 
+import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
 
+from hf_compat import disable_deepspeed_auto_import
+
+disable_deepspeed_auto_import()
 from transformers import AutoImageProcessor, AutoModel
 from transformers import SiglipVisionModel, SiglipImageProcessor
 from PIL import Image
+
+
+class _DinoImageProcessorFallback:
+    """Minimal ImageNet-style processor for DINO repos without HF metadata."""
+
+    def __init__(self, image_size: int):
+        self.image_size = image_size
+        self.mean = torch.tensor([0.485, 0.456, 0.406], dtype=torch.float32).view(3, 1, 1)
+        self.std = torch.tensor([0.229, 0.224, 0.225], dtype=torch.float32).view(3, 1, 1)
+
+    def __call__(self, images: List[Image.Image], return_tensors: str = "pt", size: Optional[Dict[str, int]] = None) -> Dict[str, torch.Tensor]:
+        if return_tensors != "pt":
+            raise ValueError("Only return_tensors='pt' is supported")
+        height = int((size or {}).get("height", self.image_size))
+        width = int((size or {}).get("width", self.image_size))
+        tensors = []
+        for image in images:
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+            image = image.resize((width, height), Image.BICUBIC)
+            arr = torch.from_numpy(np.asarray(image, dtype=np.float32)).permute(2, 0, 1) / 255.0
+            tensors.append((arr - self.mean) / self.std)
+        return {"pixel_values": torch.stack(tensors, dim=0)}
+
 
 def ensure_dir(p: str) -> None:
     os.makedirs(p, exist_ok=True)
@@ -220,8 +248,11 @@ class VisionCacheConfig:
     def __post_init__(self):
         # Check environment variable for local DINOv3 model path
         if self.dino_model_name is None:
+            env_model = os.getenv("DINOV3_MODEL_NAME", "").strip() or os.getenv("DINO_MODEL", "").strip()
             env_path = os.getenv("DINOV3_MODEL_PATH", "").strip()
-            if env_path and os.path.exists(env_path):
+            if env_model:
+                self.dino_model_name = env_model
+            elif env_path and os.path.exists(env_path):
                 self.dino_model_name = env_path
             else:
                 self.dino_model_name = "facebook/dinov3-vits16-pretrain-lvd1689m"
@@ -233,7 +264,11 @@ class VisionFeatureCacher(nn.Module):
         self.cfg = cfg
         self.device = torch.device(cfg.device)
         # DINOv3
-        self.dino_proc = AutoImageProcessor.from_pretrained(cfg.dino_model_name)
+        try:
+            self.dino_proc = AutoImageProcessor.from_pretrained(cfg.dino_model_name)
+        except Exception as exc:
+            print(f"[VisionFeatureCacher] Falling back to ImageNet DINO processor for {cfg.dino_model_name}: {exc}")
+            self.dino_proc = _DinoImageProcessorFallback(cfg.image_size)
         self.dino = AutoModel.from_pretrained(cfg.dino_model_name)
         self.dino.eval().to(self.device)
         self.dino_patch = getattr(self.dino.config, 'patch_size', None)
@@ -505,4 +540,3 @@ if __name__ == "__main__":
             projector = CrossModalityProjector(in_dim=Vfine.shape[-1], out_dim=256)
             EVfine = projector(Vfine.float())  # (V, 64, 256)
             print("Projected tokens shape:", tuple(EVfine.shape))
-

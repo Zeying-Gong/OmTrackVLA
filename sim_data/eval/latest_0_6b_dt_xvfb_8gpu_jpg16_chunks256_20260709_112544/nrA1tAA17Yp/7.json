@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.7222222222222222,
+  "following_step": 39,
+  "total_step": 54,
+  "collision": 0.0,
+  "instruction": "Follow the person dressed in a green tunic and brown leather straps."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.7792207792207793,
+  "following_step": 60,
+  "total_step": 77,
+  "collision": 0.0,
+  "instruction": "Pursue the man dressed in a brown suit and a red tie."
+}

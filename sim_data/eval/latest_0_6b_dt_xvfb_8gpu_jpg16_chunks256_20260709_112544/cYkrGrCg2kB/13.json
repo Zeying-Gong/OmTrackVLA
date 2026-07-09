@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.09302325581395349,
+  "following_step": 4,
+  "total_step": 43,
+  "collision": 0.0,
+  "instruction": "Follow the woman wearing a light gray long-sleeve top and dark gray jeans."
+}

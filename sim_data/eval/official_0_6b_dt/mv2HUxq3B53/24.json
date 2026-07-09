@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.32608695652173914,
+  "following_step": 30,
+  "total_step": 92,
+  "collision": 0.0,
+  "instruction": "Chase the man in a brown suit and a red tie."
+}

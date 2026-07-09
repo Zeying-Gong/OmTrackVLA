@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.8615384615384616,
+  "following_step": 56,
+  "total_step": 65,
+  "collision": 0.0,
+  "instruction": "Stay behind the individual wearing a black jacket, red shirt, and gold belt."
+}

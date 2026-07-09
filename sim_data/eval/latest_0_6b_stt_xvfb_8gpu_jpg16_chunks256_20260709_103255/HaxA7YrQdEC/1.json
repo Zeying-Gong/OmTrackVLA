@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9739130434782609,
+  "following_step": 112,
+  "total_step": 115,
+  "collision": 0.0,
+  "instruction": "Go after the man with a dark blue suit and gold buttons."
+}

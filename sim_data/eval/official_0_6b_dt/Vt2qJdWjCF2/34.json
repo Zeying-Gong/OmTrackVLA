@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.7310924369747899,
+  "following_step": 87,
+  "total_step": 119,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a black tactical suit with silver armor plates."
+}

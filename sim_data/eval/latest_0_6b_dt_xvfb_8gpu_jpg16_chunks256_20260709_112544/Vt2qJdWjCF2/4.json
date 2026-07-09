@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.8304347826086956,
+  "following_step": 191,
+  "total_step": 230,
+  "collision": 0.0,
+  "instruction": "Follow the person dressed in a dark blue military uniform with gold buttons and a red belt."
+}

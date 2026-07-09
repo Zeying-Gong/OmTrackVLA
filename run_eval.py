@@ -41,6 +41,12 @@ def main():
         type=str,
         required=True,
     )
+    parser.add_argument(
+        "--max-episodes",
+        type=int,
+        default=None,
+        help="Optional cap on episodes after splitting; useful for visualization smoke runs.",
+    )
 
     parser.add_argument(
         "opts",
@@ -53,13 +59,15 @@ def main():
     run_exp(**vars(args))
 
 
-def run_exp(run_type: str, exp_config: str, split_id: int, split_num: int, save_path: str, opts: None) -> None:
+def run_exp(run_type: str, exp_config: str, split_id: int, split_num: int, save_path: str, max_episodes: int, opts: None) -> None:
     config = habitat.get_config(exp_config, opts)
     random.seed(config.habitat.simulator.seed)
     np.random.seed(config.habitat.simulator.seed)
 
     dataset = make_dataset(id_dataset=config.habitat.dataset.type, config=config.habitat.dataset)
-    dataset_split = dataset.get_splits(split_num)[split_id]
+    dataset_split = dataset.get_splits(split_num, allow_uneven_splits=True)[split_id]
+    if max_episodes is not None:
+        dataset_split.episodes = dataset_split.episodes[:max_episodes]
 
     if run_type == "eval":
         evaluate_agent(config, dataset_split, save_path)

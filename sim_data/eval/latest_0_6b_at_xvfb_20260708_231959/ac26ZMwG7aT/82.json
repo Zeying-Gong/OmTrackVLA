@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.7565217391304347,
+  "following_step": 174,
+  "total_step": 230,
+  "collision": 0.0,
+  "instruction": "Track the person in front of you."
+}

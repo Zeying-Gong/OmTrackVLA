@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9649122807017544,
+  "following_step": 55,
+  "total_step": 57,
+  "collision": 0.0,
+  "instruction": "Go after the person with an olive green shirt and brown trousers."
+}

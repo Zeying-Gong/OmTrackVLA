@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9029850746268657,
+  "following_step": 121,
+  "total_step": 134,
+  "collision": 0.0,
+  "instruction": "Follow the person dressed in a black armored suit with glowing white chest plates."
+}

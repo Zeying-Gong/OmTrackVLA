@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.673469387755102,
+  "following_step": 33,
+  "total_step": 49,
+  "collision": 0.0,
+  "instruction": "Follow the woman wearing a blue top and sandals."
+}

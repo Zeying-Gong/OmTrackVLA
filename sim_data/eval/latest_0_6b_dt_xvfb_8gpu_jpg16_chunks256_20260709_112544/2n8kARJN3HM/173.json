@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.6911764705882353,
+  "following_step": 94,
+  "total_step": 136,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a black dress and white collar."
+}

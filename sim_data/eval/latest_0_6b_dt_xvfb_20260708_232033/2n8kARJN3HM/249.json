@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.3026315789473684,
+  "following_step": 23,
+  "total_step": 76,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a gray top and dark gray trousers."
+}

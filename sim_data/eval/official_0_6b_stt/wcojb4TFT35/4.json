@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9652173913043478,
+  "following_step": 111,
+  "total_step": 115,
+  "collision": 0.0,
+  "instruction": "Track the woman wearing a red outfit with black accents."
+}

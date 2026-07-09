@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.4264705882352941,
+  "following_step": 58,
+  "total_step": 136,
+  "collision": 0.0,
+  "instruction": "Track the person wearing a black jacket with gold buttons and a red shirt."
+}

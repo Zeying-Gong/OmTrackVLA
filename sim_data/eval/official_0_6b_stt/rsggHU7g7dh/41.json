@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.8181818181818182,
+  "following_step": 9,
+  "total_step": 11,
+  "collision": 1.0,
+  "instruction": "Go after the man with a light-colored three-piece suit and a blue tie."
+}

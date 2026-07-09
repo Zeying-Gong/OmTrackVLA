@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.42857142857142855,
+  "following_step": 12,
+  "total_step": 28,
+  "collision": 1.0,
+  "instruction": "Pursue the man dressed in a black armored suit with glowing white chest plates."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.11428571428571428,
+  "following_step": 4,
+  "total_step": 35,
+  "collision": 0.0,
+  "instruction": "Go after the person with an olive green shirt and brown trousers."
+}

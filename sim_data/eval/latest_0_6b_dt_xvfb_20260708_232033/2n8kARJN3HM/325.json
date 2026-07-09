@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.7536231884057971,
+  "following_step": 104,
+  "total_step": 138,
+  "collision": 0.0,
+  "instruction": "Go after the man with a light-colored shirt and white trousers."
+}

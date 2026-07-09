@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9072164948453608,
+  "following_step": 176,
+  "total_step": 194,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a dark blue suit and white shirt."
+}

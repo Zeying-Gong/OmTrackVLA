@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.41,
+  "following_step": 123,
+  "total_step": 300,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a dark top with a floral pattern."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.3235294117647059,
+  "following_step": 22,
+  "total_step": 68,
+  "collision": 0.0,
+  "instruction": "Go after the man with a red and white sports jersey."
+}

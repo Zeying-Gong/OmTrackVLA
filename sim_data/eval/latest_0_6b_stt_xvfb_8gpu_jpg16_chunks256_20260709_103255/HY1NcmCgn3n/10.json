@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.7116564417177914,
+  "following_step": 116,
+  "total_step": 163,
+  "collision": 0.0,
+  "instruction": "Walk after the person with a black and silver Darth Vader suit."
+}

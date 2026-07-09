@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.6987951807228916,
+  "following_step": 58,
+  "total_step": 83,
+  "collision": 0.0,
+  "instruction": "Track the person wearing a black and silver Darth Vader costume."
+}

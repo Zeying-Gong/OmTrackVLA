@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.2903225806451613,
+  "following_step": 9,
+  "total_step": 31,
+  "collision": 1.0,
+  "instruction": "Stay behind the woman wearing a blue top and sandals."
+}

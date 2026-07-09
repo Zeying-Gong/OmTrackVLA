@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.7962962962962963,
+  "following_step": 43,
+  "total_step": 54,
+  "collision": 1.0,
+  "instruction": "Chase the woman in a black dress and white collar."
+}

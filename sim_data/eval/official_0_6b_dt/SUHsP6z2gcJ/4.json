@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.5757575757575758,
+  "following_step": 57,
+  "total_step": 99,
+  "collision": 0.0,
+  "instruction": "Follow the person dressed in a black and red leather outfit."
+}

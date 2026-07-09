@@ -4,6 +4,9 @@ from __future__ import annotations
 from typing import List, Optional
 
 import torch
+from hf_compat import disable_deepspeed_auto_import
+
+disable_deepspeed_auto_import()
 from transformers import PreTrainedModel
 
 from model import ModelConfig, OpenTrackVLA
@@ -18,6 +21,7 @@ class OpenTrackVLAForWaypoint(PreTrainedModel):
     """
 
     config_class = OpenTrackVLAConfig
+    base_model_prefix = "model"
 
     def __init__(self, config: OpenTrackVLAConfig):
         super().__init__(config)
@@ -83,4 +87,3 @@ class OpenTrackVLAForWaypoint(PreTrainedModel):
             new_key = f"{target_prefix}{key[len(prefix):]}"
             patched[new_key] = state_dict.pop(key)
         state_dict.update(patched)
-

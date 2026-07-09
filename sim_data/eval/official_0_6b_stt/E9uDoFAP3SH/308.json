@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.753968253968254,
+  "following_step": 95,
+  "total_step": 126,
+  "collision": 0.0,
+  "instruction": "Stay behind the person wearing olive green clothing, including a shirt and pants."
+}

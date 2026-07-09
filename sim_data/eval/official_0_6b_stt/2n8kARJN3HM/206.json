@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.6421052631578947,
+  "following_step": 61,
+  "total_step": 95,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a light gray three-piece suit and a blue tie."
+}

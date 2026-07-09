@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.5657894736842105,
+  "following_step": 43,
+  "total_step": 76,
+  "collision": 0.0,
+  "instruction": "Stay behind the person in a gray shirt and dark pants combination."
+}

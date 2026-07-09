@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.8862275449101796,
+  "following_step": 148,
+  "total_step": 167,
+  "collision": 0.0,
+  "instruction": "Follow the person dressed in a black leather jacket and white gloves."
+}

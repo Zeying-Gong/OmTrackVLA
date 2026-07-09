@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.18181818181818182,
+  "following_step": 10,
+  "total_step": 55,
+  "collision": 0.0,
+  "instruction": "Follow the man wearing a maroon and black suit, white shirt, and purple tie."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.696969696969697,
+  "following_step": 46,
+  "total_step": 66,
+  "collision": 0.0,
+  "instruction": "Follow the person directly in front of you."
+}

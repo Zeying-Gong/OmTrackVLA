@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9409090909090909,
+  "following_step": 207,
+  "total_step": 220,
+  "collision": 0.0,
+  "instruction": "Track the man wearing a white long-sleeve shirt and white pants."
+}

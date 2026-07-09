@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.8342857142857143,
+  "following_step": 146,
+  "total_step": 175,
+  "collision": 0.0,
+  "instruction": "Pursue the person in a red outfit with black accents."
+}

@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 0.0,
+  "following_rate": 0.7846153846153846,
+  "following_step": 51,
+  "total_step": 65,
+  "collision": 0.0,
+  "instruction": "Follow the person wearing a red sports bra and dark blue shorts."
+}

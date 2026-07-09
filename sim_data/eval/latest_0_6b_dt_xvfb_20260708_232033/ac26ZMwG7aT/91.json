@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Lost",
+  "success": 0.0,
+  "following_rate": 0.24427480916030533,
+  "following_step": 32,
+  "total_step": 131,
+  "collision": 0.0,
+  "instruction": "Chase the individual in a white and black armored outfit."
+}

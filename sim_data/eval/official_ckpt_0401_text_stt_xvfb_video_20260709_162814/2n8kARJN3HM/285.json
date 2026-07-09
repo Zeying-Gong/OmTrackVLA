@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9813664596273292,
+  "following_step": 158,
+  "total_step": 161,
+  "collision": 0.0,
+  "instruction": "Walk after the woman with a black dress and white collar."
+}

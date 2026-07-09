@@ -1,0 +1,10 @@
+{
+  "finish": false,
+  "status": "Collision",
+  "success": 0.0,
+  "following_rate": 0.8809523809523809,
+  "following_step": 37,
+  "total_step": 42,
+  "collision": 1.0,
+  "instruction": "Follow the man wearing a maroon and black suit, white shirt, and purple tie."
+}

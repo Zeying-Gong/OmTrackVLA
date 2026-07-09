@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 0.9540816326530612,
+  "following_step": 187,
+  "total_step": 196,
+  "collision": 0.0,
+  "instruction": "Go after the person with a black tactical suit and silver armor plates."
+}

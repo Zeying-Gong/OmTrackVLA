@@ -1,0 +1,10 @@
+{
+  "finish": true,
+  "status": "Normal",
+  "success": 1.0,
+  "following_rate": 1.0,
+  "following_step": 52,
+  "total_step": 52,
+  "collision": 0.0,
+  "instruction": "Chase the individual in a green tunic and brown leather gloves."
+}
