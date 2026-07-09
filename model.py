@@ -15,6 +15,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 
+from hf_compat import disable_deepspeed_auto_import
+
+disable_deepspeed_auto_import()
 from transformers import AutoTokenizer, AutoModel
 from cache_gridpool import VisionFeatureCacher, VisionCacheConfig, grid_pool_tokens, adapt_siglip_grid
 
