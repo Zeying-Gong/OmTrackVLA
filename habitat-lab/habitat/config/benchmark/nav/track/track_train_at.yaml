@@ -7,7 +7,7 @@ defaults:
   # Config agent sensors
   - /habitat/simulator/sensor_setups@habitat.simulator.agents.agent_0: following_humanoid
   - /habitat/simulator/agents@habitat.simulator.agents.agent_0: human
-  - /habitat/simulator/sensor_setups@habitat.simulator.agents.agent_1: spot_agent_simplified
+  - /habitat/simulator/sensor_setups@habitat.simulator.agents.agent_1: spot_agent_simplified_flux
   - /habitat/simulator/agents@habitat.simulator.agents.agent_1: spot
   - /habitat/simulator/sensor_setups@habitat.simulator.agents.agent_2: following_humanoid
   - /habitat/simulator/agents@habitat.simulator.agents.agent_2: human
@@ -140,6 +140,7 @@ habitat:
       - agent_1_main_humanoid_detector_sensor
       - agent_1_other_humanoid_detector_sensor
       - agent_1_articulated_agent_jaw_rgb
+      - agent_1_articulated_agent_jaw_depth
       - agent_1_articulated_agent_jaw_panoptic
       - agent_1_third_rgb
       - agent_1_localization_sensor

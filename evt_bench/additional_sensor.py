@@ -108,9 +108,8 @@ class MainHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
         return rmin, rmax, cmin, cmax
 
     def get_observation(self, observations, episode, *args, **kwargs):
-        if self._first_init:
-            self._human_id = episode.info["main_human_semantic_id"]
-            self._first_init = False
+        self._human_id = episode.info["main_human_semantic_id"]
+        self._first_init = False
         use_k = f"agent_{self.agent_id}_articulated_agent_jaw_panoptic"
         if use_k in observations:
             panoptic = observations[use_k]

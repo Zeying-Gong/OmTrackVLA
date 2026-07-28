@@ -4,7 +4,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Tuple, Optional, Dict, Any
-import os, json, math, argparse, time, csv
+import os, json, math, argparse, time, csv, hashlib, subprocess
 from pathlib import Path
 from contextlib import nullcontext
 from PIL import Image, ImageDraw
@@ -32,6 +32,79 @@ def set_seed(seed: int):
     import random
     random.seed(seed); np.random.seed(seed)
     torch.manual_seed(seed); torch.cuda.manual_seed_all(seed)
+
+
+def _sha256_file(path: Path) -> Optional[str]:
+    if not path.is_file():
+        return None
+    digest = hashlib.sha256()
+    with path.open('rb') as fh:
+        for chunk in iter(lambda: fh.read(8 * 1024 * 1024), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _write_training_manifest(cfg: Any, ds: Any, world_size: int) -> None:
+    out_dir = Path(cfg.out_dir)
+    task_samples = {'stt': 0, 'dt': 0, 'at': 0, 'unknown': 0}
+    jsonl_files = []
+    if getattr(ds, '_index', None):
+        file_counts: Dict[str, int] = {}
+        for file_path, _ in ds._index:
+            file_counts[file_path] = file_counts.get(file_path, 0) + 1
+        for file_path, count in sorted(file_counts.items()):
+            parts = {part.lower() for part in Path(file_path).parts}
+            task = next((name for name in ('stt', 'dt', 'at') if name in parts), 'unknown')
+            task_samples[task] += count
+            path = Path(file_path)
+            jsonl_files.append({'path': file_path, 'size': path.stat().st_size, 'samples': count})
+    index_digest = hashlib.sha256(
+        json.dumps(jsonl_files, sort_keys=True, separators=(',', ':')).encode('utf-8')
+    ).hexdigest()
+    model_files = []
+    model_root_values = [
+        cfg.llm_name,
+        os.environ.get('DINOV3_MODEL_PATH', ''),
+        os.environ.get('SIGLIP_MODEL_PATH', ''),
+    ]
+    for root_value in model_root_values:
+        if not root_value:
+            continue
+        root = Path(root_value)
+        if not root.exists():
+            continue
+        for name in ('config.json', 'model.safetensors', 'pytorch_model.bin'):
+            path = root / name
+            if path.is_file():
+                model_files.append({
+                    'path': str(path.resolve()),
+                    'size': path.stat().st_size,
+                    'sha256': _sha256_file(path),
+                })
+    try:
+        git_commit = subprocess.run(
+            ['git', 'rev-parse', 'HEAD'], check=True, text=True, capture_output=True
+        ).stdout.strip()
+        git_status = subprocess.run(
+            ['git', 'status', '--short'], check=True, text=True, capture_output=True
+        ).stdout.splitlines()
+    except Exception:
+        git_commit, git_status = None, []
+    manifest = {
+        'created_unix': time.time(),
+        'config': dict(cfg.__dict__),
+        'world_size': world_size,
+        'dataset': {
+            'total_samples': len(ds),
+            'task_samples': task_samples,
+            'jsonl_files': len(jsonl_files),
+            'index_sha256': index_digest,
+        },
+        'models': model_files,
+        'git_commit': git_commit,
+        'git_status': git_status,
+    }
+    (out_dir / 'training_manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
 
 
 def load_tokens_file(path: str) -> torch.Tensor:
@@ -327,30 +400,50 @@ class OpenTrackVLA(nn.Module):
         Returns: (B, N + (1 or 2)*F, D_llm)
         """
         B, N, D = tokens.shape
+        # Keep grouping metadata on CPU. Calling .item() on CUDA indices inside
+        # this loop forces a device synchronization for nearly every visual
+        # token and dominates batch-1 training time.
+        t_idx_cpu = t_idx.detach().cpu() if t_idx.is_cuda else t_idx
         out_list = []
         for b in range(B):
-            tb = t_idx[b]
+            tb = t_idx_cpu[b]
             xb = tokens[b]
-            items = []
-            i = 0
-            fcount = 0
-            while i < N:
-                tcur = int(tb[i].item())
-                j = i + 1
-                while j < N and int(tb[j].item()) == tcur:
-                    j += 1
-                time_tok = self.tvi.make_time_token(tcur, kind_id, device=xb.device).unsqueeze(0)
-                items.append(time_tok)
-                if use_angle:
-                    theta = 0.0
-                    if yaw_per_frame is not None and fcount < yaw_per_frame.size(1):
-                        theta = float(yaw_per_frame[b, fcount].item())
-                    angle_tok = self.tvi.make_angle_token(theta, kind_id, device=xb.device).unsqueeze(0)
-                    items.append(angle_tok)
-                items.append(xb[i:j])
-                i = j
-                fcount += 1
-            out_list.append(torch.cat(items, dim=0))
+            group_times, counts = torch.unique_consecutive(tb, return_counts=True)
+            group_count = group_times.numel()
+            prefix = counts.cumsum(0) - counts
+            inserted_per_group = 2 if use_angle else 1
+            time_pos = prefix + torch.arange(group_count) * inserted_per_group
+            out_len = N + inserted_per_group * group_count
+            out = xb.new_empty((out_len, D))
+
+            time_ids = group_times.to(device=xb.device, dtype=torch.long)
+            time_tokens = (
+                self.tvi.time_emb(time_ids)
+                + self.tvi.view_emb.weight[0]
+                + self.tvi.kind_emb.weight[kind_id]
+            ).to(dtype=xb.dtype)
+            out[time_pos.to(xb.device)] = time_tokens
+
+            reserved = torch.zeros(out_len, dtype=torch.bool, device=xb.device)
+            reserved[time_pos.to(xb.device)] = True
+            if use_angle:
+                if yaw_per_frame is None:
+                    theta = torch.zeros(group_count, device=xb.device, dtype=self.tvi.angle_proj.weight.dtype)
+                else:
+                    theta = yaw_per_frame[b, :group_count].to(
+                        device=xb.device, dtype=self.tvi.angle_proj.weight.dtype
+                    )
+                sincos = torch.stack((torch.sin(theta), torch.cos(theta)), dim=-1)
+                angle_tokens = (
+                    self.tvi.angle_proj(sincos)
+                    + self.tvi.view_emb.weight[0]
+                    + self.tvi.kind_emb.weight[kind_id]
+                ).to(dtype=xb.dtype)
+                angle_pos = time_pos.to(xb.device) + 1
+                out[angle_pos] = angle_tokens
+                reserved[angle_pos] = True
+            out[~reserved] = xb
+            out_list.append(out)
         return torch.stack(out_list, dim=0)
 
     def forward(self,
@@ -366,11 +459,11 @@ class OpenTrackVLA(nn.Module):
         vis_f = self.proj(fine_tokens.to(device))     # (B, Nf, D)
         # insert TVI tokens per frame
         vis_c = self._interleave_tvi(
-            vis_c, coarse_tidx.to(device), kind_id=0,
+            vis_c, coarse_tidx, kind_id=0,
             yaw_per_frame=yaw_hist, use_angle=self.cfg.use_angle_tvi
         )
         vis_f = self._interleave_tvi(
-            vis_f, fine_tidx.to(device), kind_id=1,
+            vis_f, fine_tidx, kind_id=1,
             yaw_per_frame=yaw_curr, use_angle=self.cfg.use_angle_tvi
         )
         txt_emb, txt_mask = self._embed_text(instructions, device)  # (B, Ltxt, D), (B, Ltxt)
@@ -506,6 +599,17 @@ class JsonTrackingDataset(Dataset):
         assert self.examples is not None
         return self.examples[idx]
 
+    def _infer_task(self, idx: int, ex: Dict[str, Any]) -> str:
+        sources = [str(ex.get('current', ''))]
+        if self._lazy and self._index is not None:
+            sources.append(self._index[idx][0])
+        for source in sources:
+            parts = {part.lower() for part in Path(source).parts}
+            for task in ('stt', 'dt', 'at'):
+                if task in parts:
+                    return task
+        return 'unknown'
+
     def __getitem__(self, idx: int) -> Dict[str, Any]:
         ex = self.get_example(idx)
         H = self.coarse_frames
@@ -630,6 +734,7 @@ class JsonTrackingDataset(Dataset):
             'valid_mask':    vm,           # (M,)
             'instruction':   ex.get('instruction', 'follow the person'),
             'current_path':  str(abs_curr_img),
+            'task':          self._infer_task(idx, ex),
         }
         return item
 
@@ -673,6 +778,10 @@ class TrainConfig:
     max_train_steps: int = 0
     batch_size: int = 12
     lr: float = 3e-4
+    llm_lr: Optional[float] = None
+    lr_scheduler: str = 'constant'
+    warmup_ratio: float = 0.0
+    min_lr_ratio: float = 0.1
     weight_decay: float = 0.01
     grad_clip: float = 1.0
     mixed_precision: bool = True
@@ -690,6 +799,7 @@ class TrainConfig:
     # logging
     log_every: int = 10
     csv_logging: bool = True
+    vis_every: int = 100
     # trajectory saving
     save_trajectories: bool = False
     traj_subdir: str = 'trajectories'
@@ -707,6 +817,8 @@ class TrainConfig:
     no_tanh_actions: bool = True
     # checkpoint retention
     max_ckpts: int = 2
+    save_every: int = 5000
+    fused_optimizer: bool = True
     # resume
     resume: bool = False
     resume_ckpt: Optional[str] = None
@@ -731,7 +843,8 @@ def collate_batch(batch: List[Dict[str, Any]]) -> Dict[str, Any]:
         'waypoints':     torch.stack([b['waypoints']     for b in batch], dim=0),
         'valid_mask':    torch.stack([b['valid_mask']    for b in batch], dim=0),
         'instruction':   instr,
-        'current_path':  [b['current_path'] for b in batch]
+        'current_path':  [b['current_path'] for b in batch],
+        'task':          [b.get('task', 'unknown') for b in batch],
     }
 
 
@@ -817,8 +930,17 @@ def train(cfg: TrainConfig):
         cfg.vision_feat_dim = int(vision_feat_dim_tensor.item())
 
     sampler = torch.utils.data.distributed.DistributedSampler(ds, num_replicas=world_size, rank=rank, shuffle=True) if use_ddp else None
-    dl = DataLoader(ds, batch_size=cfg.batch_size, shuffle=(sampler is None), num_workers=cfg.num_workers,
-                    pin_memory=True, collate_fn=collate_batch, sampler=sampler)
+    dl_kwargs = dict(
+        batch_size=cfg.batch_size,
+        shuffle=(sampler is None),
+        num_workers=cfg.num_workers,
+        pin_memory=True,
+        collate_fn=collate_batch,
+        sampler=sampler,
+    )
+    if cfg.num_workers > 0:
+        dl_kwargs.update(persistent_workers=True, prefetch_factor=4)
+    dl = DataLoader(ds, **dl_kwargs)
 
     model = OpenTrackVLA(
         ModelConfig(
@@ -833,7 +955,14 @@ def train(cfg: TrainConfig):
         vision_feat_dim=cfg.vision_feat_dim,
     ).to(device)
     if use_ddp:
-        model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[local_rank], output_device=local_rank, find_unused_parameters=False)
+        model = torch.nn.parallel.DistributedDataParallel(
+            model,
+            device_ids=[local_rank],
+            output_device=local_rank,
+            find_unused_parameters=False,
+            gradient_as_bucket_view=True,
+            static_graph=True,
+        )
 
     # Log trainable vs frozen parameters (rank 0 only)
     if rank == 0:
@@ -858,8 +987,42 @@ def train(cfg: TrainConfig):
         except Exception as _e:
             print(f"[PARAMS] logging skipped due to error: {_e}")
 
-    optim = torch.optim.AdamW(filter(lambda p: p.requires_grad, model.parameters()),
-                              lr=cfg.lr, weight_decay=cfg.weight_decay)
+    model_inspect = model.module if isinstance(model, torch.nn.parallel.DistributedDataParallel) else model
+    llm_params = [p for p in model_inspect.llm.parameters() if p.requires_grad]
+    llm_param_ids = {id(p) for p in llm_params}
+    other_params = [p for p in model_inspect.parameters() if p.requires_grad and id(p) not in llm_param_ids]
+    llm_lr = cfg.lr if cfg.llm_lr is None else cfg.llm_lr
+    param_groups = []
+    if llm_params:
+        param_groups.append({'params': llm_params, 'lr': llm_lr, 'name': 'llm'})
+    if other_params:
+        param_groups.append({'params': other_params, 'lr': cfg.lr, 'name': 'other'})
+    optim = torch.optim.AdamW(
+        param_groups,
+        weight_decay=cfg.weight_decay,
+        fused=bool(cfg.fused_optimizer and is_cuda),
+    )
+    total_train_steps = cfg.max_train_steps if cfg.max_train_steps > 0 else cfg.epochs * len(dl)
+    warmup_steps = int(total_train_steps * cfg.warmup_ratio)
+
+    def lr_lambda(current_step: int) -> float:
+        if warmup_steps > 0 and current_step < warmup_steps:
+            return max(1e-8, float(current_step + 1) / float(warmup_steps))
+        if cfg.lr_scheduler == 'constant':
+            return 1.0
+        decay_steps = max(1, total_train_steps - warmup_steps)
+        progress = min(1.0, max(0.0, (current_step - warmup_steps) / decay_steps))
+        cosine = 0.5 * (1.0 + math.cos(math.pi * progress))
+        return cfg.min_lr_ratio + (1.0 - cfg.min_lr_ratio) * cosine
+
+    scheduler = torch.optim.lr_scheduler.LambdaLR(optim, lr_lambda=lr_lambda)
+    if rank == 0:
+        print(
+            f"[OPTIM] scheduler={cfg.lr_scheduler} total_steps={total_train_steps} "
+            f"warmup_steps={warmup_steps} min_lr_ratio={cfg.min_lr_ratio} "
+            f"llm_lr={llm_lr:.2e} other_lr={cfg.lr:.2e}",
+            flush=True,
+        )
     # Mixed precision configuration
     amp_enabled = cfg.mixed_precision and is_cuda
     amp_dtype = torch.bfloat16  # switch to torch.float16 if you want fp16
@@ -875,51 +1038,68 @@ def train(cfg: TrainConfig):
             if ckpt_path is None:
                 pts = sorted(_glob.glob(os.path.join(cfg.out_dir, 'model_epoch*.pt')), key=lambda p: os.path.getmtime(p))
                 ckpt_path = pts[-1] if pts else None
-            if ckpt_path and os.path.exists(ckpt_path):
-                obj = torch.load(ckpt_path, map_location=device)
-                msd = obj.get('model_state', None)
-                if msd:
-                    msd = _cleanup_state_dict_keys(msd)
-                    model_to_load = model.module if isinstance(
-                        model, torch.nn.parallel.DistributedDataParallel
-                    ) else model
-                    model_to_load.load_state_dict(msd, strict=False)
-                osd = obj.get('optim_state', None)
-                if osd:
-                    optim.load_state_dict(osd)
-                ssd = obj.get('scaler_state', None)
-                if ssd and scaler.is_enabled():
-                    scaler.load_state_dict(ssd)
-                start_epoch = int(obj.get('epoch', 0))
-                step = int(obj.get('step', 0))
-                if rank == 0:
-                    print(f"[RESUME] Loaded {ckpt_path} | epoch={start_epoch} step={step}")
-        except Exception as _e:
+            if not ckpt_path or not os.path.exists(ckpt_path):
+                raise FileNotFoundError(f"No resume checkpoint found: {ckpt_path}")
+            obj = torch.load(ckpt_path, map_location=device)
+            msd = obj.get('model_state', None)
+            if not msd:
+                raise KeyError(f"Resume checkpoint has no model_state: {ckpt_path}")
+            msd = _cleanup_state_dict_keys(msd)
+            model_to_load = model.module if isinstance(
+                model, torch.nn.parallel.DistributedDataParallel
+            ) else model
+            model_to_load.load_state_dict(msd, strict=True)
+            osd = obj.get('optim_state', None)
+            if not osd:
+                raise KeyError(f"Resume checkpoint has no optim_state: {ckpt_path}")
+            optim.load_state_dict(osd)
+            sched_state = obj.get('scheduler_state', None)
+            if not sched_state:
+                raise KeyError(f"Resume checkpoint has no scheduler_state: {ckpt_path}")
+            scheduler.load_state_dict(sched_state)
+            ssd = obj.get('scaler_state', None)
+            if ssd and scaler.is_enabled():
+                scaler.load_state_dict(ssd)
+            start_epoch = int(obj.get('epoch', 0))
+            step = int(obj.get('step', 0))
             if rank == 0:
-                print(f"[RESUME] Skipped due to error: {_e}")
+                print(f"[RESUME] Loaded {ckpt_path} | epoch={start_epoch} step={step}")
+        except Exception as _e:
+            raise RuntimeError(f"Resume failed: {_e}") from _e
 
     if rank == 0:
         Path(cfg.out_dir).mkdir(parents=True, exist_ok=True)
+        _write_training_manifest(cfg, ds, world_size)
+        print(f"[MANIFEST] wrote {Path(cfg.out_dir) / 'training_manifest.json'}", flush=True)
+    if use_ddp:
+        dist.barrier()
 
     # continue step counter if resumed
     ema_loss: Optional[float] = None
     ema_nav: Optional[float] = None
+    task_names = ('stt', 'dt', 'at')
+    task_to_idx = {name: idx for idx, name in enumerate(task_names)}
+    # Columns: normalized loss sum, absolute XY magnitude sum, absolute yaw magnitude sum, samples.
+    task_interval = torch.zeros((len(task_names), 4), dtype=torch.float64, device=device)
     last_log_time = time.time()
+    last_log_step = step
     epoch_start_time = last_log_time
     stop_training = False
-    for epoch in range(cfg.epochs):
+    epoch_offset = (start_epoch + 1) if cfg.resume and step > 0 else 0
+    for epoch_index in range(cfg.epochs):
+        epoch = epoch_offset + epoch_index
         model.train()
         if use_ddp and sampler is not None:
             sampler.set_epoch(epoch)
         for batch in dl:
-            coarse_tokens = batch['coarse_tokens'].to(device)
-            coarse_tidx   = batch['coarse_tidx'].to(device)
-            fine_tokens   = batch['fine_tokens'].to(device)
-            fine_tidx     = batch['fine_tidx'].to(device)
-            yaw_hist      = batch['yaw_hist'].to(device)   # (B,H)
-            yaw_curr      = batch['yaw_curr'].to(device)   # (B,1)
-            gt_wp         = batch['waypoints'].to(device)
-            valid_mask    = batch['valid_mask'].to(device)
+            coarse_tokens = batch['coarse_tokens'].to(device, non_blocking=True)
+            coarse_tidx   = batch['coarse_tidx']
+            fine_tokens   = batch['fine_tokens'].to(device, non_blocking=True)
+            fine_tidx     = batch['fine_tidx']
+            yaw_hist      = batch['yaw_hist'].to(device, non_blocking=True)   # (B,H)
+            yaw_curr      = batch['yaw_curr'].to(device, non_blocking=True)   # (B,1)
+            gt_wp         = batch['waypoints'].to(device, non_blocking=True)
+            valid_mask    = batch['valid_mask'].to(device, non_blocking=True)
             instr         = batch['instruction']
 
             optim.zero_grad(set_to_none=True)
@@ -978,34 +1158,56 @@ def train(cfg: TrainConfig):
                 except Exception:
                     pass
             scaler.scale(loss).backward()
-            grad_norm_before = 0.0
+            grad_norm_before = loss.new_tensor(0.0)
             if cfg.grad_clip is not None:
                 scaler.unscale_(optim)
-                grad_norm_before = _compute_total_grad_norm([p for p in model.parameters() if getattr(p, 'grad', None) is not None])
-                nn.utils.clip_grad_norm_(model.parameters(), cfg.grad_clip)
+                grad_norm_before = nn.utils.clip_grad_norm_(model.parameters(), cfg.grad_clip)
             scaler.step(optim); scaler.update()
+            scheduler.step()
 
             step += 1
-            if rank == 0 and (step % cfg.log_every == 0):
+            with torch.no_grad():
+                sample_mask = valid_mask.view(valid_mask.size(0), valid_mask.size(1), 1).expand_as(pred_norm)
+                sample_se = (pred_norm - gt_norm).pow(2) * sample_mask
+                sample_denom = sample_mask.sum(dim=(1, 2)).clamp_min(1)
+                sample_loss = sample_se.sum(dim=(1, 2)) / sample_denom
+                sample_xy = torch.linalg.vector_norm(tau_pred[..., :2].float(), dim=-1).mean(dim=1)
+                sample_yaw = tau_pred[..., 2].float().abs().mean(dim=1)
+                for bi, task_name in enumerate(batch.get('task', [])):
+                    task_idx = task_to_idx.get(task_name)
+                    if task_idx is None:
+                        continue
+                    task_interval[task_idx, 0] += sample_loss[bi].double()
+                    task_interval[task_idx, 1] += sample_xy[bi].double()
+                    task_interval[task_idx, 2] += sample_yaw[bi].double()
+                    task_interval[task_idx, 3] += 1.0
+
+            should_log = step % cfg.log_every == 0
+            reduced_task_stats = None
+            if should_log:
+                reduced_task_stats = task_interval.clone()
+                if use_ddp:
+                    dist.all_reduce(reduced_task_stats, op=dist.ReduceOp.SUM)
+                task_interval.zero_()
+
+            if rank == 0 and should_log:
                 now = time.time()
                 dt = now - last_log_time
                 last_log_time = now
+                steps_in_interval = max(1, step - last_log_step)
+                last_log_step = step
+                sec_per_step = dt / steps_in_interval
                 B = coarse_tokens.size(0)
-                lr = optim.param_groups[0]['lr']
+                global_samples_per_sec = B * world_size * steps_in_interval / dt
+                group_lrs = {group.get('name', f'group{idx}'): group['lr'] for idx, group in enumerate(optim.param_groups)}
+                lr_llm = group_lrs.get('llm', 0.0)
+                lr_other = group_lrs.get('other', group_lrs.get('group0', 0.0))
                 with torch.no_grad():
                     tp = tau_pred.detach().float()
                     gwp = gt_wp.detach().float()
                     vm = valid_mask.detach().float()
-                    # Scale predictions to absolute units for logging if alpha is available
+                    # Model forward already returns absolute units.
                     tp_abs = tp
-                    try:
-                        model_inspect = model.module if isinstance(model, torch.nn.parallel.DistributedDataParallel) else model
-                        alpha_vec = getattr(model_inspect, 'alpha_task', None)
-                        if alpha_vec is not None and alpha_vec.size(-1) >= tp.size(-1):
-                            av = alpha_vec.to(tp.device, tp.dtype)
-                            tp_abs = tp * av
-                    except Exception:
-                        pass
                     pred_mean = tp_abs.mean().item()
                     pred_std = tp_abs.std().item()
                     pred_absmax = tp_abs.abs().max().item()
@@ -1032,11 +1234,24 @@ def train(cfg: TrainConfig):
                     mem_peak_mb = torch.cuda.max_memory_allocated(device) / (1024**2)
 
                 msg_lines = [
-                    f"epoch {epoch} step {step} | lr={lr:.2e} | loss={loss_val:.4f} (ema {ema_loss:.4f}) | L_nav={nav_val:.4f} (ema {ema_nav:.4f})",
-                    f"  mask_cov={mask_cov:.3f} | grad_norm_preclip={grad_norm_before:.3f} | step_time={dt:.3f}s | throughput={B/dt:.2f} it/s",
+                    f"epoch {epoch} step {step} | lr_llm={lr_llm:.2e} lr_other={lr_other:.2e} | loss={loss_val:.4f} (ema {ema_loss:.4f}) | L_nav={nav_val:.4f} (ema {ema_nav:.4f})",
+                    f"  mask_cov={mask_cov:.3f} | grad_norm_preclip={float(grad_norm_before.detach().item()):.3f} | sec_per_step={sec_per_step:.3f} | global_samples/s={global_samples_per_sec:.2f}",
                     f"  pred(mean={pred_mean:.3f}, std={pred_std:.3f}, absmax={pred_absmax:.3f}) | gt(mean={gt_mean:.3f}, std={gt_std:.3f})",
                     f"  mse_total={mse_total:.5f} | per_dim_mse={per_dim_mse} | mem_alloc={mem_alloc_mb:.1f}MB peak={mem_peak_mb:.1f}MB"
                 ]
+                task_log_values = {}
+                if reduced_task_stats is not None:
+                    task_parts = []
+                    for task_idx, task_name in enumerate(task_names):
+                        count = float(reduced_task_stats[task_idx, 3].item())
+                        if count > 0:
+                            values = [float(reduced_task_stats[task_idx, col].item()) / count for col in range(3)]
+                            task_log_values[task_name] = values
+                            task_parts.append(
+                                f"{task_name}:n={int(count)} loss={values[0]:.5f} xy={values[1]:.3f} yaw={values[2]:.3f}"
+                            )
+                    if task_parts:
+                        msg_lines.append("  task_stats | " + " | ".join(task_parts))
                 print("\n".join(msg_lines), flush=True)
 
                 # Debug preview: print GT and Pred waypoints (absolute), and normalized XY if alpha is set
@@ -1061,10 +1276,12 @@ def train(cfg: TrainConfig):
                 if cfg.csv_logging:
                     csv_path = os.path.join(cfg.out_dir, 'train_log.csv')
                     header = [
-                        'epoch','step','lr','loss','loss_ema','L_nav','L_nav_ema','mask_cov',
-                        'grad_norm_preclip','step_time','throughput_it_per_s','pred_mean','pred_std','pred_absmax',
+                        'epoch','step','lr_llm','lr_other','loss','loss_ema','L_nav','L_nav_ema','mask_cov',
+                        'grad_norm_preclip','sec_per_step','global_samples_per_s','pred_mean','pred_std','pred_absmax',
                         'gt_mean','gt_std','mse_total','mem_alloc_mb','mem_peak_mb'
-                    ] + [f'mse_dim_{i}' for i in range(len(per_dim_mse))]
+                    ] + [f'mse_dim_{i}' for i in range(len(per_dim_mse))] + [
+                        f'{task}_{metric}' for task in task_names for metric in ('loss', 'xy_mag', 'yaw_abs')
+                    ]
                     write_header = not os.path.exists(csv_path)
                     try:
                         with open(csv_path, 'a', newline='') as f:
@@ -1072,16 +1289,19 @@ def train(cfg: TrainConfig):
                             if write_header:
                                 w.writerow(header)
                             row = [
-                                epoch, step, lr, loss_val, ema_loss, nav_val, ema_nav, mask_cov,
-                                grad_norm_before, dt, (B/dt), pred_mean, pred_std, pred_absmax,
+                                epoch, step, lr_llm, lr_other, loss_val, ema_loss, nav_val, ema_nav, mask_cov,
+                                float(grad_norm_before.detach().item()), sec_per_step, global_samples_per_sec, pred_mean, pred_std, pred_absmax,
                                 gt_mean, gt_std, mse_total, mem_alloc_mb, mem_peak_mb
-                            ] + per_dim_mse
+                            ] + per_dim_mse + [
+                                task_log_values.get(task, [float('nan')] * 3)[metric_idx]
+                                for task in task_names for metric_idx in range(3)
+                            ]
                             w.writerow(row)
                     except Exception:
                         pass
 
                 # Visualize GT vs Pred on current images 
-                if rank == 0 and step % 100 == 0:
+                if rank == 0 and cfg.vis_every > 0 and step % cfg.vis_every == 0:
                     try:
                         vis_dir = os.path.join(cfg.out_dir, 'vis')
                         os.makedirs(vis_dir, exist_ok=True)
@@ -1141,7 +1361,7 @@ def train(cfg: TrainConfig):
                     except Exception:
                         pass
 
-            if step % 100 == 0 and rank == 0:
+            if cfg.save_every > 0 and step % cfg.save_every == 0 and rank == 0:
                 ckpt = os.path.join(cfg.out_dir, f"model_epoch{epoch:02d}_step{step:06d}.pt")
                 # Always save the *underlying* model (so no 'module.' prefix)
                 model_to_save = model.module if isinstance(
@@ -1153,6 +1373,7 @@ def train(cfg: TrainConfig):
                     'epoch': epoch,
                     'model_state': model_to_save.state_dict(),
                     'optim_state': optim.state_dict(),
+                    'scheduler_state': scheduler.state_dict(),
                     'scaler_state': (scaler.state_dict() if scaler.is_enabled() else None),
                     'config': cfg.__dict__,
                     'step': step,
@@ -1307,6 +1528,7 @@ def train(cfg: TrainConfig):
                             'epoch': epoch,
                             'model_state': model_to_save.state_dict(),
                             'optim_state': optim.state_dict(),
+                            'scheduler_state': scheduler.state_dict(),
                             'scaler_state': (scaler.state_dict() if scaler.is_enabled() else None),
                             'config': cfg.__dict__,
                             'step': step,
@@ -1332,6 +1554,27 @@ def train(cfg: TrainConfig):
         dist.destroy_process_group()
 
     if rank == 0:
+        # Always persist the actual terminal state when the last step is not
+        # already covered by periodic checkpointing.
+        if step > 0 and (cfg.save_every <= 0 or step % cfg.save_every != 0):
+            final_epoch = max(0, cfg.epochs - 1)
+            ckpt = os.path.join(cfg.out_dir, f"model_epoch{final_epoch:02d}_step{step:06d}.pt")
+            model_to_save = model.module if isinstance(
+                model, torch.nn.parallel.DistributedDataParallel
+            ) else model
+            torch.save(
+                {
+                    'epoch': final_epoch,
+                    'model_state': model_to_save.state_dict(),
+                    'optim_state': optim.state_dict(),
+                    'scheduler_state': scheduler.state_dict(),
+                    'scaler_state': (scaler.state_dict() if scaler.is_enabled() else None),
+                    'config': cfg.__dict__,
+                    'step': step,
+                },
+                ckpt,
+            )
+            print(f"[TRAIN] Saved terminal checkpoint: {ckpt}", flush=True)
         print(f"[TRAIN] Finished all epochs. last_step={step}")
 
 
@@ -1500,6 +1743,10 @@ def parse_args() -> TrainConfig:
     ap.add_argument('--max_train_steps', type=int, default=0, help='Stop after N optimizer steps for smoke tests (0 = disabled)')
     ap.add_argument('--batch_size', type=int, default=2)
     ap.add_argument('--lr', type=float, default=2e-5)
+    ap.add_argument('--llm_lr', type=float, default=None, help='LLM parameter-group LR; defaults to --lr')
+    ap.add_argument('--lr_scheduler', choices=['constant', 'cosine'], default='constant')
+    ap.add_argument('--warmup_ratio', type=float, default=0.0)
+    ap.add_argument('--min_lr_ratio', type=float, default=0.1)
     ap.add_argument('--weight_decay', type=float, default=0.01)
     ap.add_argument('--grad_clip', type=float, default=1.0)
     ap.add_argument('--mixed_precision', action='store_true')
@@ -1516,6 +1763,7 @@ def parse_args() -> TrainConfig:
     # logging / saving
     ap.add_argument('--log_every', type=int, default=10)
     ap.add_argument('--csv_logging', action='store_true')
+    ap.add_argument('--vis_every', type=int, default=100, help='Save GT/pred waypoint overlays every N steps (0 = disabled)')
     ap.add_argument('--save_trajectories', action='store_true')
     ap.add_argument('--traj_subdir', type=str, default='trajectories')
     # evaluation
@@ -1526,6 +1774,8 @@ def parse_args() -> TrainConfig:
     ap.add_argument('--no_tanh_actions', action=argparse.BooleanOptionalAction, default=True, help='Remove tanh cap in action head (unbounded outputs)')
     # checkpoint retention
     ap.add_argument('--max_ckpts', type=int, default=3, help='Keep at most this many checkpoints')
+    ap.add_argument('--save_every', type=int, default=5000, help='Save a checkpoint every N steps (0 = only terminal smoke/final checkpoints)')
+    ap.add_argument('--fused_optimizer', action=argparse.BooleanOptionalAction, default=True)
     # resume
     ap.add_argument('--resume', action='store_true', help='Resume from the latest checkpoint in out_dir (or --resume_ckpt)')
     ap.add_argument('--resume_ckpt', type=str, default=None, help='Path to a specific checkpoint to resume from')

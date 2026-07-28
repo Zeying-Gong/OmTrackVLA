@@ -37,6 +37,11 @@ try:
 except Exception:
     snapshot_download = None  # type: ignore
 
+try:
+    from flux_agent import FluxHTTPAgent
+except Exception:
+    FluxHTTPAgent = None  # type: ignore
+
 
 def _env_flag(name: str, default: bool = False) -> bool:
     val = os.environ.get(name)
@@ -47,7 +52,19 @@ def _env_flag(name: str, default: bool = False) -> bool:
 
 def evaluate_agent(config, dataset_split, save_path) -> None:
     # robot definition
-    robot_config = GTBBoxAgent(save_path)
+    agent_name = os.environ.get("TRACKVLA_AGENT", "omtrackvla").strip().lower()
+    if agent_name == "flux":
+        if FluxHTTPAgent is None:
+            raise RuntimeError("TRACKVLA_AGENT=flux was requested, but flux_agent.py could not be imported.")
+        robot_config = FluxHTTPAgent(save_path)
+    else:
+        robot_config = GTBBoxAgent(save_path)
+    try:
+        live_frame_interval = max(
+            0, int(os.environ.get("TRACKVLA_LIVE_FRAME_INTERVAL", "0"))
+        )
+    except ValueError:
+        live_frame_interval = 0
     with habitat.TrackEnv(
         config=config,
         dataset=dataset_split
@@ -109,8 +126,35 @@ def evaluate_agent(config, dataset_split, save_path) -> None:
                 
                 obs = sim.get_sensor_observations()
 
+                if live_frame_interval and iter_step % live_frame_interval == 0:
+                    scene_key = osp.splitext(
+                        osp.basename(env.current_episode.scene_id)
+                    )[0].split(".")[0]
+                    live_dir = osp.join(
+                        save_path,
+                        "_live",
+                        scene_key,
+                        str(env.current_episode.episode_id),
+                    )
+                    os.makedirs(live_dir, exist_ok=True)
+                    live_rgb = obs["agent_1_articulated_agent_jaw_rgb"][:, :, :3]
+                    imageio.imwrite(
+                        osp.join(live_dir, f"step_{iter_step:04d}.jpg"),
+                        live_rgb,
+                    )
+
                 detector = env.task._get_observations(env.current_episode)
-                action = robot_config.act(obs, detector, env.current_episode.episode_id, instruction)
+                if agent_name == "flux":
+                    action = robot_config.act(
+                        obs,
+                        detector,
+                        env.current_episode.episode_id,
+                        instruction,
+                        robot_agent=robot_agent,
+                        humanoid_agent=humanoid_agent_main,
+                    )
+                else:
+                    action = robot_config.act(obs, detector, env.current_episode.episode_id, instruction)
 
                 action_dict = {
                     "action": ("agent_0_humanoid_navigate_action", "agent_1_base_velocity", "agent_2_oracle_nav_randcoord_action_obstacle", "agent_3_oracle_nav_randcoord_action_obstacle", "agent_4_oracle_nav_randcoord_action_obstacle", "agent_5_oracle_nav_randcoord_action_obstacle"),
@@ -246,7 +290,13 @@ class GTBBoxAgent(AgentConfig):
                 print(f"Successfully save the episode video with episode id {episode.episode_id}")
 
             self.rgb_list = []
-        
+
+        # Temporal features must never cross episode boundaries. Keeping these
+        # deques made the first 31 frames of each later episode include images
+        # and vision tokens from the previous episode in the worker.
+        self.frame_buffer.clear()
+        self._coarse_hist_tokens.clear()
+        self._last_predicted_traj = None
         self.first_inside = True
 
     def act(self, observations, detector, episode_id, instruction: Optional[str] = None):
@@ -270,6 +320,12 @@ class GTBBoxAgent(AgentConfig):
         # Prefer planner action (train_planner) if available, then TrackVLA, else PID
         planner_action = self._planner_action(rgb_, instruction)
         action = planner_action
+        if action is None:
+            raise RuntimeError(
+                "Planner returned no action. Check the preceding vision/planner "
+                "error; in offline mode, verify HF_HOME contains the DINO and "
+                "SigLIP model caches."
+            )
         
         if self.verbose_steps:
             print(f"Planner action: {action}")
@@ -290,7 +346,8 @@ class GTBBoxAgent(AgentConfig):
                 cfg = VisionCacheConfig(image_size=384, batch_size=1, device=('cuda' if torch.cuda.is_available() else 'cpu'))
                 self._vision_cache = VisionFeatureCacher(cfg)
                 self._vision_cache.eval()
-            except Exception:
+            except Exception as exc:
+                print(f"[planner] Failed to initialize vision encoder: {exc}")
                 self._vision_cache = None
         return self._vision_cache
 
@@ -408,7 +465,8 @@ class GTBBoxAgent(AgentConfig):
             Vfine = grid_pool_tokens(Vt_cat, Hp, Wp, out_tokens=64)[0].float()   # (64, C)
             Vcoarse = grid_pool_tokens(Vt_cat, Hp, Wp, out_tokens=4)[0].float()  # (4, C)
             return Vcoarse, Vfine
-        except Exception:
+        except Exception as exc:
+            print(f"[planner] Failed to encode frame tokens: {exc}")
             return None, None
 
     def _planner_action(self, rgb_frame_np: np.ndarray, instruction: Optional[str]) -> Optional[List[float]]:
@@ -470,7 +528,8 @@ class GTBBoxAgent(AgentConfig):
                 print(f"Planner action: {vx}, {vy}, {wz}")
             return [float(vx), float(vy), float(wz)]
             
-        except Exception:
+        except Exception as exc:
+            print(f"[planner] Failed to predict action: {exc}")
             self._last_predicted_traj = None
             return None
 

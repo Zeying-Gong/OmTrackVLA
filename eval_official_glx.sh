@@ -29,10 +29,14 @@ LOG_DIR_WAS_SET=0
 SCENE_DATASET="${SCENE_DATASET:-data/scene_datasets/hm3d/hm3d_annotated_basis.scene_dataset_config.json}"
 EXP_CONFIG="${EXP_CONFIG:-habitat-lab/habitat/config/benchmark/nav/track/track_infer_${TASK}.yaml}"
 MAX_EPISODES="${MAX_EPISODES:-}"
+EPISODE_ID="${EPISODE_ID:-}"
+EPISODE_SCENE="${EPISODE_SCENE:-}"
 MAX_STEPS="${MAX_STEPS:-}"
 CONFIG_OVERRIDES="${CONFIG_OVERRIDES:-}"
 EXPECTED_EPISODES="${EXPECTED_EPISODES:-1405}"
-PROGRESS_INTERVAL="${PROGRESS_INTERVAL:-60}"
+# Polling is silent. A progress line is emitted only when a new result JSON
+# appears, plus forced startup/final/error reports.
+PROGRESS_INTERVAL="${PROGRESS_INTERVAL:-2}"
 GPU_BURN_DUTY="${GPU_BURN_DUTY:-0}"
 GPU_BURN_PERIOD="${GPU_BURN_PERIOD:-10}"
 GPU_BURN_SIZE="${GPU_BURN_SIZE:-4096}"
@@ -40,6 +44,7 @@ GPU_BURN_DTYPE="${GPU_BURN_DTYPE:-fp16}"
 RUN_WRAPPER="${RUN_WRAPPER:-./run_glx.sh}"
 XVFB_DISPLAY_BASE="${XVFB_DISPLAY_BASE:-99}"
 WORKER_CPU_THREADS="${WORKER_CPU_THREADS:-1}"
+FAIL_FAST="${FAIL_FAST:-0}"
 
 latest_run_id() {
   local candidate id mtime latest_id="" latest_mtime=-1
@@ -177,10 +182,15 @@ print_active_chunk_progress() {
   log_msg "[progress:${TASK}] active_chunks=${parts[*]}"
 }
 print_progress() {
-  local now elapsed results eval_episodes progress_episodes progress_source done_chunks pct eta eta_text rate
+  local force="${1:-0}"
+  local now elapsed results eval_episodes progress_episodes progress_source done_chunks pct eta eta_text rate live_metrics
   now="$(date +%s)"
   elapsed=$((now - START_TIME))
   results="$(count_result_jsons | tr -d ' ')"
+  if [ "$force" != "1" ] && [ "$results" -eq "$LAST_REPORTED_RESULTS" ]; then
+    return 0
+  fi
+  LAST_REPORTED_RESULTS="$results"
   eval_episodes="$(count_eval_episodes_from_logs | tr -d ' ')"
   progress_episodes="$eval_episodes"
   progress_source="chunk_logs"
@@ -197,10 +207,29 @@ print_progress() {
     eta_text="--:--:--"
   fi
   rate="$(awk -v n="$progress_episodes" -v e="$elapsed" 'BEGIN { if (e > 0) printf "%.3f", n/e; else printf "0.000" }')"
-  log_msg "[progress:${TASK}] progress_episodes=${progress_episodes}/${EXPECTED_EPISODES} (${pct}%) source=${progress_source} eval_log_episodes=${eval_episodes} result_jsons=${results} chunks_done=${done_chunks}/${CHUNKS} elapsed=$(format_duration "$elapsed") eta=${eta_text} rate=${rate} eps/s"
-  print_active_chunk_progress
+  live_metrics="$("$PYTHON_BIN" live_eval_metrics.py "$SAVE_PATH" --expected "$EXPECTED_EPISODES")"
+  log_msg "[progress:${TASK}] episodes=${progress_episodes}/${EXPECTED_EPISODES} (${pct}%) ${live_metrics} chunks=${done_chunks}/${CHUNKS} elapsed=$(format_duration "$elapsed") eta=${eta_text} rate=${rate}eps/s source=${progress_source}"
 }
 IFS=',' read -ra GPUS <<< "$GPU_LIST"
+REQUESTED_GPU_COUNT="${#GPUS[@]}"
+if ! VISIBLE_GPU_COUNT="$(
+  CUDA_VISIBLE_DEVICES="$GPU_LIST" "$PYTHON_BIN" -c \
+    'import torch; print(torch.cuda.device_count())'
+)"; then
+  echo "Failed to query CUDA devices with evaluation Python: $PYTHON_BIN" >&2
+  exit 2
+fi
+VISIBLE_GPU_COUNT="$(printf '%s' "$VISIBLE_GPU_COUNT" | tr -d '[:space:]')"
+if [[ ! "$VISIBLE_GPU_COUNT" =~ ^[0-9]+$ ]]; then
+  echo "Invalid CUDA device count from $PYTHON_BIN: $VISIBLE_GPU_COUNT" >&2
+  exit 2
+fi
+if [ "$VISIBLE_GPU_COUNT" -lt "$REQUESTED_GPU_COUNT" ]; then
+  echo "Requested ${REQUESTED_GPU_COUNT} GPUs via GPU_LIST=${GPU_LIST}, but the container exposes only ${VISIBLE_GPU_COUNT}." >&2
+  echo "Fix the cluster resource request; CUDA_VISIBLE_DEVICES cannot expose GPUs that were not mounted into the container." >&2
+  exit 2
+fi
+log_msg "[eval:${TASK}] cuda_preflight requested=${REQUESTED_GPU_COUNT} visible=${VISIBLE_GPU_COUNT} gpu_list=${GPU_LIST} python=${PYTHON_BIN}"
 SLOTS=()
 for ((j = 0; j < JOBS_PER_GPU; j++)); do
   for gpu in "${GPUS[@]}"; do
@@ -223,6 +252,13 @@ if [ -n "$MAX_EPISODES" ]; then
   else
     EXPECTED_EPISODES="$MAX_EPISODES"
   fi
+fi
+if [ -n "$EPISODE_ID" ]; then
+  EXTRA_ARGS+=(--episode-id "$EPISODE_ID")
+  EXPECTED_EPISODES=1
+fi
+if [ -n "$EPISODE_SCENE" ]; then
+  EXTRA_ARGS+=(--episode-scene "$EPISODE_SCENE")
 fi
 if [ -n "$MAX_STEPS" ]; then
   CONFIG_OVERRIDE_ARGS+=(habitat.environment.max_episode_steps="$MAX_STEPS")
@@ -293,8 +329,7 @@ if [ "$GPU_BURN_DUTY" != "0" ] && [ "$GPU_BURN_DUTY" != "0.0" ]; then
 fi
 
 START_TIME="$(date +%s)"
-log_msg "[eval:${TASK}] start chunks=${CHUNKS} num_parallel=${NUM_PARALLEL} jobs_per_gpu=${JOBS_PER_GPU} gpus=${GPU_LIST} save=${SAVE_PATH} log=${LOG_DIR} resume=${RESUME} scheduler=dynamic wrapper=${RUN_WRAPPER} gpu_burn_duty=${GPU_BURN_DUTY} gpu_burn_period=${GPU_BURN_PERIOD}s worker_cpu_threads=${WORKER_CPU_THREADS} max_episodes=${MAX_EPISODES:-none} max_steps=${MAX_STEPS:-none}"
-print_progress
+log_msg "[eval:${TASK}] start chunks=${CHUNKS} num_parallel=${NUM_PARALLEL} jobs_per_gpu=${JOBS_PER_GPU} gpus=${GPU_LIST} save=${SAVE_PATH} log=${LOG_DIR} resume=${RESUME} scheduler=dynamic wrapper=${RUN_WRAPPER} gpu_burn_duty=${GPU_BURN_DUTY} gpu_burn_period=${GPU_BURN_PERIOD}s worker_cpu_threads=${WORKER_CPU_THREADS} max_episodes=${MAX_EPISODES:-none} episode_id=${EPISODE_ID:-none} episode_scene=${EPISODE_SCENE:-none} max_steps=${MAX_STEPS:-none}"
 
 NEXT_CHUNK=0
 FAILED=0
@@ -416,12 +451,12 @@ reap_finished_slots() {
 }
 
 launch_available_slots
-print_progress
+LAST_REPORTED_RESULTS="$(count_result_jsons | tr -d ' ')"
 while [ "$(active_count)" -gt 0 ] || [ "$NEXT_CHUNK" -lt "$CHUNKS" ]; do
   sleep "$PROGRESS_INTERVAL"
   reap_finished_slots
-  if [ "$FAILED" -ne 0 ]; then
-    print_progress
+  if [ "$FAILED" -ne 0 ] && [ "$FAIL_FAST" = "1" ]; then
+    print_progress 1
     exit "$FAILED"
   fi
   launch_available_slots
@@ -432,3 +467,7 @@ ACTIVE_CHUNKS=()
 print_progress
 
 "$PYTHON_BIN" summarize_eval.py "$SAVE_PATH" | tee "$LOG_DIR/summary.txt"
+if [ "$FAILED" -ne 0 ]; then
+  log_msg "[eval:${TASK}] completed healthy chunks, but one or more chunks failed; see *.fail markers"
+  exit 1
+fi

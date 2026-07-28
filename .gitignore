@@ -19,3 +19,17 @@ ckpt*/
 
 *.npy
 *.npz
+
+# Local datasets, model caches, and experiment artifacts
+data/official_0420
+hf_exports/
+models/
+oracle_modular_dataset_eval
+oracle_v5_summary.csv
+perf_data/
+sim_data/at_seed1000
+sim_data/dt_seed1000
+sim_data/eval/
+sim_data/eval_smoke/
+sim_data/sim_data0420
+sim_data/stt_seed1000

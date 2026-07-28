@@ -8,6 +8,14 @@ USE_GLX=${USE_GLX:-1}
 PYTHON_BIN=${PYTHON_BIN:-python}
 CONFIG_OVERRIDES=${CONFIG_OVERRIDES:-}
 export DINO_MODEL=${DINO_MODEL:-facebook/dinov3-vits16-pretrain-lvd1689m}
+export TRACKVLA_AGENT=${TRACKVLA_AGENT:-omtrackvla}
+
+if [ "$TRACKVLA_AGENT" = "flux" ]; then
+    export FLUX_HOST=${FLUX_HOST:-127.0.0.1}
+    export FLUX_PORT=${FLUX_PORT:-8892}
+    CONFIG_OVERRIDES="${CONFIG_OVERRIDES} /habitat/simulator/sensor_setups@habitat.simulator.agents.agent_1=spot_agent_simplified_flux"
+    echo "[eval] Using FLUX HTTP agent at ${FLUX_HOST}:${FLUX_PORT}"
+fi
 
 if [ -n "${HF_MODEL_DIR:-}" ]; then
     export HF_MODEL_DIR

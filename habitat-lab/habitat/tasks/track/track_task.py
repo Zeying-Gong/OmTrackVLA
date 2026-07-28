@@ -33,6 +33,7 @@ from habitat.tasks.rearrange.utils import (
 from habitat.articulated_agents.humanoids.kinematic_humanoid import (
     KinematicHumanoid,
 )
+from habitat.articulated_agent_controllers import HumanoidRearrangeController
 from habitat.articulated_agents.robots import SpotRobot
 from habitat.tasks.rearrange.rearrange_grasp_manager import (
     RearrangeGraspManager,
@@ -306,56 +307,66 @@ class MultiHumanTrackingTask(NavigationTask):
             articulated_agent.base_rot = 0.0
 
 
+    def _semantic_id_for_humanoid(self, humanoid_name: str) -> int:
+        for semantic_info in self.semantic_file:
+            if semantic_info["name"] == humanoid_name:
+                return int(semantic_info["semantic_id"])
+        raise KeyError(f"No semantic ID configured for humanoid {humanoid_name!r}")
+
+    def _replace_humanoid(self, sim, agent_idx: int, humanoid_name: str) -> None:
+        agent_data: ArticulatedAgentData = sim.agents_mgr[agent_idx]
+        old_humanoid = agent_data.articulated_agent
+        if old_humanoid.sim_obj is not None and old_humanoid.sim_obj.is_alive:
+            sim.get_articulated_object_manager().remove_object_by_handle(
+                old_humanoid.sim_obj.handle
+            )
+
+        humanoid_dir = "data/humanoids/humanoid_data/" + humanoid_name
+        motion_data_path = humanoid_dir + "/" + humanoid_name + "_motion_data_smplx.pkl"
+        config = DictConfig(
+            {
+                "articulated_agent_urdf": humanoid_dir + "/" + humanoid_name + ".urdf",
+                "motion_data_path": motion_data_path,
+            }
+        )
+        humanoid = KinematicHumanoid(config, sim=sim)
+        humanoid.reconfigure()
+
+        semantic_id = self._semantic_id_for_humanoid(humanoid_name)
+        for visual_node in humanoid.sim_obj.visual_scene_nodes:
+            visual_node.semantic_id = semantic_id
+        agent_data.articulated_agent = humanoid
+
+        # Action controllers are initialized from the avatar in the YAML. They
+        # must be replaced together with the articulated object and skeleton.
+        for action in self.actions.values():
+            if (
+                getattr(action, "_agent_index", None) == agent_idx
+                and hasattr(action, "humanoid_controller")
+            ):
+                controller = HumanoidRearrangeController(motion_data_path)
+                action_config = action._config
+                controller.set_framerate_for_linspeed(
+                    action_config["lin_speed"],
+                    action_config["ang_speed"],
+                    sim.ctrl_freq,
+                )
+                action.humanoid_controller = controller
+                agent_name = sim.habitat_config.agents_order[agent_idx]
+                setattr(self, f"{agent_name}_humanoid_controller", controller)
+
+        rearrange_logger.info(
+            f"Switched agent {agent_idx} to {humanoid_name} (semantic_id={semantic_id})"
+        )
+
     def _switch_avatar(self, sim, episode: Episode) -> None:
         main_name_attr = "main_humanoid_name"
         main_humanoid_name = episode.info[main_name_attr]
         extra_name_attr = "extra_humanoid_names"
         extra_humanoid_names = episode.info[extra_name_attr]
-        humanoid_agent_data: ArticulatedAgentData = sim.agents_mgr[0]
-        old_humanoid = humanoid_agent_data.articulated_agent
-        sim.get_articulated_object_manager().remove_object_by_handle(
-            old_humanoid.sim_obj.handle
-        )
-        
-        for i in range(len(extra_humanoid_names)):
-            humanoid_agent_data: ArticulatedAgentData = sim.agents_mgr[i+2]
-            old_humanoid = humanoid_agent_data.articulated_agent
-            sim.get_articulated_object_manager().remove_object_by_handle(
-                old_humanoid.sim_obj.handle
-            )
-
-        # Main human avatar switch
-        urdf_path = "data/humanoids/humanoid_data/" + main_humanoid_name + "/" + main_humanoid_name + ".urdf"
-        humanoid_motion_data_path = "data/humanoids/humanoid_data/" + main_humanoid_name + "/" + main_humanoid_name + "_motion_data_smplx.pkl"
-        humanoid_agent_data: ArticulatedAgentData = sim.agents_mgr[0]
-        agent_config = DictConfig(
-            {
-                "articulated_agent_urdf": urdf_path,
-                "motion_data_path": humanoid_motion_data_path,
-            }
-        )
-        humanoid = KinematicHumanoid(agent_config, sim=sim)
-        humanoid.reconfigure()
-        humanoid_agent_data.articulated_agent = humanoid
-        
-        for sem in self.semantic_file:
-            if sem["name"] == main_humanoid_name:
-                main_human_semantic_id = sem["semantic_id"]
-
-        # other human avatar switch
+        self._replace_humanoid(sim, 0, main_humanoid_name)
         for i, extra_human_name in enumerate(extra_humanoid_names):
-            urdf_path = "data/humanoids/humanoid_data/" + extra_human_name + "/" + extra_human_name + ".urdf"
-            humanoid_motion_data_path = "data/humanoids/humanoid_data/" + extra_human_name + "/" + extra_human_name + "_motion_data_smplx.pkl"
-            humanoid_agent_data: ArticulatedAgentData = sim.agents_mgr[i+2]
-            agent_config = DictConfig(
-                {
-                    "articulated_agent_urdf": urdf_path,
-                    "motion_data_path": humanoid_motion_data_path,
-                }
-            )
-            humanoid = KinematicHumanoid(agent_config, sim=sim)
-            humanoid.reconfigure()
-            humanoid_agent_data.articulated_agent = humanoid
+            self._replace_humanoid(sim, i + 2, extra_human_name)
 
     def _generate_pointnav_goal(self,n=1):
         if self._use_episode_start_goal: ## remain to improve
@@ -425,10 +436,11 @@ class MultiHumanTrackingTask(NavigationTask):
         self._ignore_collisions = []
 
         if self._sim_reset:
-            if self._first_init:
-                self._switch_avatar(self._sim, episode)
-                self._first_init = False
             self._sim.reset()
+            # Avatar identity is episode-specific. Reusing the first episode's
+            # humanoids makes every later episode in the same worker incorrect.
+            self._switch_avatar(self._sim, episode)
+            self._first_init = False
 
             for action_instance in self.actions.values():
                 action_instance.reset(episode=episode, task=self)

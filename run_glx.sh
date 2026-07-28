@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DISPLAY_NUM="${OMTRACKVLA_GLX_DISPLAY_NUM:-109}"
+DISPLAY_NUM="${OMTRACKVLA_GLX_DISPLAY_NUM:-${OMTRACKVLA_XVFB_DISPLAY_NUM:-109}}"
 HAB_SIM_GLX_ROOT="${OMTRACKVLA_HAB_SIM_GLX_ROOT:-/robot/robot-research-exp-0/user/gzy/habitat-sim-src}"
 GLX_LIB_DIRS="${OMTRACKVLA_GLX_LIB_DIRS:-/usr/lib/x86_64-linux-gnu:/usr/lib64:/usr/local/nvidia/lib64}"
 

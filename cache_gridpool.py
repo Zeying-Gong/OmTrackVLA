@@ -256,6 +256,12 @@ class VisionCacheConfig:
                 self.dino_model_name = env_path
             else:
                 self.dino_model_name = "facebook/dinov3-vits16-pretrain-lvd1689m"
+        siglip_path = os.getenv("SIGLIP_MODEL_PATH", "").strip()
+        siglip_name = os.getenv("SIGLIP_MODEL_NAME", "").strip()
+        if siglip_name:
+            self.siglip_model_name = siglip_name
+        elif siglip_path and os.path.exists(siglip_path):
+            self.siglip_model_name = siglip_path
 
 
 class VisionFeatureCacher(nn.Module):

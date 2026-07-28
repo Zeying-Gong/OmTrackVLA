@@ -16,6 +16,7 @@ from typing import List, Optional, Tuple
 class EpisodePaths:
     seed_dir: Path
     run_dir: Path
+    rel_dir: Path
     stem: str  # without suffixes, e.g., "2" for 2.mp4 / 2_info.json
     mp4: Optional[Path]
     info_json: Path
@@ -182,26 +183,29 @@ def collect_episode_pairs(input_root: Path) -> List[EpisodePaths]:
     """Find (<k>.mp4, <k>_info.json) pairs under input_root."""
     episodes: List[EpisodePaths] = []
 
-    for seed_dir in sorted(input_root.glob("seed_*")):
-        if not seed_dir.is_dir():
-            continue
-        for run_dir in sorted(seed_dir.iterdir()):
-            if not run_dir.is_dir():
-                continue
-
-            # Find all *_info.json files inside run_dir
-            for info_json in sorted(run_dir.glob("*_info.json")):
-                stem = info_json.name[:-10]  # remove _info.json
-                mp4 = (run_dir / f"{stem}.mp4")
-                episodes.append(
-                    EpisodePaths(
-                        seed_dir=seed_dir,
-                        run_dir=run_dir,
-                        stem=stem,
-                        mp4=mp4 if mp4.exists() else None,
-                        info_json=info_json,
-                    )
-                )
+    # The public sample uses seed/scene/<id>_info.json, while the released
+    # sim_data0420 archive uses task/seed/pass/scene/id/<id>_info.json.
+    # Recursive discovery supports both without flattening task or scene names.
+    for info_json in sorted(input_root.rglob("*_info.json")):
+        stem = info_json.name[:-10]  # remove _info.json
+        run_dir = info_json.parent
+        mp4 = run_dir / f"{stem}.mp4"
+        seed_dir = next(
+            (parent for parent in (run_dir, *run_dir.parents) if parent.name.startswith("seed_")),
+            input_root,
+        )
+        rel_parent = run_dir.relative_to(input_root)
+        rel_dir = rel_parent if run_dir.name == stem else (rel_parent / stem)
+        episodes.append(
+            EpisodePaths(
+                seed_dir=seed_dir,
+                run_dir=run_dir,
+                rel_dir=rel_dir,
+                stem=stem,
+                mp4=mp4 if mp4.exists() else None,
+                info_json=info_json,
+            )
+        )
     return episodes
 
 
@@ -212,11 +216,8 @@ def should_keep_episode(run_dir: Path, stem: str, only_success: bool) -> bool:
     status = load_episode_status(status_path)
     if not status:
         return False
-    # keep if success flag indicates success
     success_val = status.get("success")
-    finish = status.get("finish")
-    status_str = str(status.get("status", "")).lower()
-    return bool(finish) or (isinstance(success_val, (int, float)) and success_val > 0) or ("success" in status_str)
+    return isinstance(success_val, (bool, int, float)) and success_val > 0
 
 
 def main():
@@ -236,14 +237,27 @@ def main():
     )
     parser.add_argument("--history", type=int, default=31, help="Number of previous frames for each sample window")
     parser.add_argument(
+        "--namespace",
+        type=str,
+        default="",
+        help="Optional path prefix (for example stt/dt/at) when multiple jobs share one output root.",
+    )
+    parser.add_argument(
         "--out_file",
         type=str,
         default=None,
-        help="Path to aggregated dataset JSON (default: <output_root>/dataset.json)",
+        help="Optional aggregated dataset JSON. Omit for large datasets to write JSONL only.",
     )
     parser.add_argument("--horizon", type=int, default=8, help="Future action horizon to integrate for trajectory")
     parser.add_argument("--dt", type=float, default=0.1, help="Time step per action for integration")
+    parser.add_argument("--num_shards", type=int, default=1)
+    parser.add_argument("--shard_id", type=int, default=0)
     args = parser.parse_args()
+    if args.num_shards < 1 or not 0 <= args.shard_id < args.num_shards:
+        raise ValueError("Require num_shards >= 1 and 0 <= shard_id < num_shards")
+    namespace = Path(args.namespace.strip()) if args.namespace.strip() else None
+    if namespace is not None and (namespace.is_absolute() or ".." in namespace.parts):
+        raise ValueError("--namespace must be a safe relative path")
 
     input_root = Path(args.input_root).resolve()
     output_root = Path(args.output_root).resolve()
@@ -251,15 +265,18 @@ def main():
     ensure_dir(frames_root)
     jsonl_root = output_root / "jsonl"
     ensure_dir(jsonl_root)
-    # Aggregated dataset will be written at the end
-    out_file = Path(args.out_file).resolve() if args.out_file else (output_root / "dataset.json")
-    ensure_dir(out_file.parent)
+    # Aggregating millions of sliding windows in memory is prohibitively large.
+    out_file = Path(args.out_file).resolve() if args.out_file else None
+    if out_file is not None:
+        ensure_dir(out_file.parent)
 
     ffmpeg_path = find_ffmpeg_executable()
     if ffmpeg_path is None:
         raise RuntimeError("ffmpeg not found in PATH. Please install ffmpeg or add it to PATH.")
 
-    episodes = collect_episode_pairs(input_root)
+    all_episodes = collect_episode_pairs(input_root)
+    total_discovered = len(all_episodes)
+    episodes = all_episodes[args.shard_id::args.num_shards]
     total = len(episodes)
     kept = 0
     num_samples = 0
@@ -297,8 +314,14 @@ def main():
             instruction_text = "Follow the target person without collision."
 
         # Paths for frames extraction
-        rel_frames_dir = Path(ep.seed_dir.name) / ep.run_dir.name / ep.stem
+        rel_frames_dir = (namespace / ep.rel_dir) if namespace is not None else ep.rel_dir
         abs_frames_dir = frames_root / rel_frames_dir
+        rel_jsonl_dir = rel_frames_dir.parent
+        jsonl_path = jsonl_root / rel_jsonl_dir / f"{ep.stem}.jsonl"
+        # A JSONL is written only after all frames and samples are complete, so
+        # it is a safe resume marker for interrupted large preprocessing runs.
+        if jsonl_path.is_file() and any(abs_frames_dir.glob("*.jpg")):
+            continue
         try:
             frame_paths = extract_frames_ffmpeg(ffmpeg_path, ep.mp4, abs_frames_dir)
         except subprocess.CalledProcessError as e:
@@ -365,7 +388,6 @@ def main():
         # Write per-episode JSONL and update aggregates
         if episode_samples:
             # Mirror input structure under jsonl root: <seed>/<run>/<stem>.jsonl
-            rel_jsonl_dir = Path(ep.seed_dir.name) / ep.run_dir.name
             abs_jsonl_dir = jsonl_root / rel_jsonl_dir
             ensure_dir(abs_jsonl_dir)
             jsonl_path = abs_jsonl_dir / f"{ep.stem}.jsonl"
@@ -373,28 +395,31 @@ def main():
                 for s in episode_samples:
                     f.write(json.dumps(s) + "\n")
             jsonl_files_written += 1
-            all_samples.extend(episode_samples)
+            if out_file is not None:
+                all_samples.extend(episode_samples)
             num_samples += len(episode_samples)
         else:
             episodes_no_samples += 1
 
     # Write aggregated dataset JSON (if any samples)
-    if all_samples:
+    if out_file is not None and all_samples:
         with open(out_file, "w") as f:
             json.dump(all_samples, f)
 
-    print(f"Found episodes: {total}")
+    print(
+        f"Found episodes: {total_discovered}; "
+        f"assigned to shard {args.shard_id}/{args.num_shards}: {total}"
+    )
     print(f"Written samples: {num_samples}")
     print(f"Per-episode JSONL files written: {jsonl_files_written}")
     if episodes_no_samples:
         print(f"Episodes with no samples: {episodes_no_samples}")
     print(f"Skipped (no video): {skipped_no_video}")
     print(f"Skipped (no frames): {skipped_no_frames}")
-    if all_samples:
+    if out_file is not None and all_samples:
         print(f"Aggregated dataset file: {out_file}")
     print(f"Output dataset root: {output_root}")
 
 
 if __name__ == "__main__":
     main()
-

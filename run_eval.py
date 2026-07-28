@@ -47,6 +47,18 @@ def main():
         default=None,
         help="Optional cap on episodes after splitting; useful for visualization smoke runs.",
     )
+    parser.add_argument(
+        "--episode-id",
+        type=str,
+        default=None,
+        help="Evaluate exactly one dataset episode ID before splitting.",
+    )
+    parser.add_argument(
+        "--episode-scene",
+        type=str,
+        default=None,
+        help="Optional scene substring used together with --episode-id.",
+    )
 
     parser.add_argument(
         "opts",
@@ -59,12 +71,23 @@ def main():
     run_exp(**vars(args))
 
 
-def run_exp(run_type: str, exp_config: str, split_id: int, split_num: int, save_path: str, max_episodes: int, opts: None) -> None:
+def run_exp(run_type: str, exp_config: str, split_id: int, split_num: int, save_path: str, max_episodes: int, episode_id: str, episode_scene: str, opts: None) -> None:
     config = habitat.get_config(exp_config, opts)
     random.seed(config.habitat.simulator.seed)
     np.random.seed(config.habitat.simulator.seed)
 
     dataset = make_dataset(id_dataset=config.habitat.dataset.type, config=config.habitat.dataset)
+    if episode_id is not None:
+        matches = [
+            ep for ep in dataset.episodes
+            if str(ep.episode_id) == episode_id
+            and (episode_scene is None or episode_scene in ep.scene_id)
+        ]
+        if not matches:
+            raise ValueError(
+                f"Episode ID {episode_id!r} with scene {episode_scene!r} was not found"
+            )
+        dataset.episodes = matches
     dataset_split = dataset.get_splits(split_num, allow_uneven_splits=True)[split_id]
     if max_episodes is not None:
         dataset_split.episodes = dataset_split.episodes[:max_episodes]
