@@ -361,6 +361,14 @@ def main():
         f"track_{config_kind}_{args.task}.yaml"
     )
     config = configure(habitat.get_config(config_path), args.scene_dataset)
+    if args.perception == "rgb-person":
+        from habitat.config import read_write
+
+        with read_write(config):
+            obs_keys = config.habitat.gym.obs_keys
+            for key in (RGB_KEY, DEPTH_KEY, PANOPTIC_KEY):
+                if key not in obs_keys:
+                    obs_keys.append(key)
     dataset = make_dataset(config.habitat.dataset.type, config=config.habitat.dataset)
     total_dataset_episodes = len(dataset.episodes)
     invalid_exclusions = [
