@@ -1,0 +1,3 @@
+sim_data/eval/subset128_at_v2_step480000_v2_480k_0723 [partial 126/1405]
+SR / TR / CR = 47.62 / 69.77 / 6.35
+Videos = 0/126 mp4 files (SAVE_VIDEO/TRACKVLA_SAVE_VIDEO not detected)

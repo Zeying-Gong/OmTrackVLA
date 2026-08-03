@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "task": "stt",
+  "split": "val",
+  "dataset_index": 0,
+  "episode_key": "000000_bzCsHPLDztK_ep_1_610fde814f",
+  "episode_id": "1",
+  "scene_id": "data/scene_datasets/hm3d/val/00892-bzCsHPLDztK/bzCsHPLDztK.basis.glb",
+  "robot_start_position": [
+    1.822935700416565,
+    2.5822854042053223,
+    4.706313133239746
+  ],
+  "target_name": "male_46",
+  "target_semantic_id": 1074,
+  "instruction": "Track the man wearing a black jacket with red accents and a white shirt.",
+  "summary": {
+    "finish": true,
+    "status": "Normal",
+    "success": 1.0,
+    "following_rate": 0.8524590163934426,
+    "following_step": 52.0,
+    "total_step": 61,
+    "collision": 0.0,
+    "visible_rate": 0.9016393442622951,
+    "coordinate_takeover_rate": 0.09836065573770492,
+    "distance_start_m": 1.593246340751648,
+    "distance_min_m": 1.1041446924209595,
+    "distance_mean_m": 1.4445194611783887,
+    "distance_max_m": 1.7530640363693237,
+    "distance_end_m": 1.472634196281433
+  }
+}

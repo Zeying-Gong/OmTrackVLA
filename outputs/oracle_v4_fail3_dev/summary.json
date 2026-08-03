@@ -1,0 +1,12 @@
+{
+  "stt/train": {
+    "completed": 3,
+    "expected": 7257,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 0.6666666666666666,
+    "tracking_rate": 0.4458188153310105,
+    "collision_rate": 0.3333333333333333,
+    "finish_rate": 0.6666666666666666
+  }
+}

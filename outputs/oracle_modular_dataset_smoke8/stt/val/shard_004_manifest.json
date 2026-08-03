@@ -1,0 +1,9 @@
+{
+  "task": "stt",
+  "split": "val",
+  "shard_id": 4,
+  "num_shards": 8,
+  "dataset_episodes": 1405,
+  "assigned_episodes": 1,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_infer_stt.yaml"
+}

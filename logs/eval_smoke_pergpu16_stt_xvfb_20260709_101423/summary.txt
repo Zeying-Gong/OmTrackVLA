@@ -1,0 +1,2 @@
+sim_data/eval_smoke/pergpu16_stt_xvfb_20260709_101423 [partial 16/1405]
+SR / TR / CR = 0.00 / 90.00 / 0.00

@@ -1,0 +1,2 @@
+sim_data/eval/official_0_6b_stt [partial 1376/1405]
+SR / TR / CR = 64.24 / 80.34 / 5.81

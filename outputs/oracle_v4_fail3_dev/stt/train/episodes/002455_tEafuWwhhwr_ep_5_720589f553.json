@@ -1,0 +1,1103 @@
+{
+  "schema_version": 1,
+  "controller_version": 4,
+  "task": "stt",
+  "split": "train",
+  "dataset_index": 2455,
+  "episode_key": "002455_tEafuWwhhwr_ep_5_720589f553",
+  "episode_id": "5",
+  "scene_id": "data/scene_datasets/hm3d/train/00364-tEafuWwhhwr/tEafuWwhhwr.basis.glb",
+  "robot_start_position": [
+    -5.008285999298096,
+    0.19156241416931152,
+    5.707939147949219
+  ],
+  "target_name": "male_30",
+  "target_semantic_id": 1051,
+  "instruction": "Pursue the man dressed in a bronze and green armored outfit.",
+  "video": "/robot/robot-research-exp-0/user/gzy/OmTrackVLA/outputs/oracle_v4_fail3_dev/stt/train/videos/002455_tEafuWwhhwr_ep_5_720589f553.mp4",
+  "summary": {
+    "finish": false,
+    "status": "Collision",
+    "success": 0.0,
+    "following_rate": 0.573170731707317,
+    "following_step": 47.0,
+    "total_step": 82,
+    "collision": 1.0,
+    "visible_rate": 1.0,
+    "coordinate_takeover_rate": 0.0,
+    "distance_start_m": 2.094994306564331,
+    "distance_min_m": 0.33179232478141785,
+    "distance_mean_m": 1.334618709072834,
+    "distance_max_m": 2.152168035507202,
+    "distance_end_m": 0.33179232478141785
+  },
+  "steps": [
+    {
+      "step": 1,
+      "distance_m": 2.094994306564331,
+      "visible": true,
+      "mode": "approach_visibility",
+      "action": [
+        0.9927665421121213,
+        -0.12006078819806905,
+        -0.144421335934619
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 2,
+      "distance_m": 1.7214107513427734,
+      "visible": true,
+      "mode": "approach_visibility",
+      "action": [
+        0.9945146875915692,
+        -0.1045970179529194,
+        -0.12574642520767662
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 3,
+      "distance_m": 1.4607971906661987,
+      "visible": true,
+      "mode": "approach_visibility",
+      "action": [
+        0.692235635606952,
+        -0.09246803334024539,
+        -0.11112037811180227
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 4,
+      "distance_m": 1.329742670059204,
+      "visible": true,
+      "mode": "approach",
+      "action": [
+        0.3467301793021627,
+        -0.07575667373162143,
+        -0.09099518844112472
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 5,
+      "distance_m": 1.264357328414917,
+      "visible": true,
+      "mode": "approach",
+      "action": [
+        0.17273095928536938,
+        -0.05472151387593993,
+        -0.06569863299306794
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 6,
+      "distance_m": 1.2265995740890503,
+      "visible": true,
+      "mode": "approach",
+      "action": [
+        0.09993363642049619,
+        -0.036425693920743935,
+        -0.043720504630133696
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 7,
+      "distance_m": 1.2265995740890503,
+      "visible": true,
+      "mode": "hold",
+      "action": [
+        0.0,
+        0.0,
+        -0.027916008651966067
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 8,
+      "distance_m": 1.2265995740890503,
+      "visible": true,
+      "mode": "hold",
+      "action": [
+        0.0,
+        0.0,
+        -0.022656541722576026
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 9,
+      "distance_m": 1.2265995740890503,
+      "visible": true,
+      "mode": "hold",
+      "action": [
+        0.0,
+        0.0,
+        -0.018387980141194714
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 10,
+      "distance_m": 1.2265995740890503,
+      "visible": true,
+      "mode": "hold",
+      "action": [
+        0.0,
+        0.0,
+        -0.014923704722135792
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 11,
+      "distance_m": 1.2265995740890503,
+      "visible": true,
+      "mode": "hold",
+      "action": [
+        0.0,
+        0.0,
+        -0.012112136140254897
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 12,
+      "distance_m": 0.9967467188835144,
+      "visible": true,
+      "mode": "hold",
+      "action": [
+        0.0,
+        0.0,
+        -0.00983030297016804
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 13,
+      "distance_m": 0.9832424521446228,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4999433969770806,
+        -0.015046570242708324,
+        0.01805692488577622
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 14,
+      "distance_m": 1.0732769966125488,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4996595500159741,
+        -0.03689629129515682,
+        0.044286108527544665
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 15,
+      "distance_m": 1.091310977935791,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49949535081382285,
+        -0.04491745831527212,
+        0.05391920477551384
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 16,
+      "distance_m": 1.1799627542495728,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49899572137581216,
+        -0.0633488768213879,
+        0.07606937445115401
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 17,
+      "distance_m": 1.1016954183578491,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4987654572983771,
+        -0.07022872933325035,
+        0.08434387841915698
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 18,
+      "distance_m": 1.0132614374160767,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4969495544813827,
+        -0.11029306960557779,
+        0.1326212534981442
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 19,
+      "distance_m": 1.1065016984939575,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49292903785925796,
+        -0.1675823813549174,
+        0.20205241675104366
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 20,
+      "distance_m": 1.0522230863571167,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4922519366355808,
+        -0.17536283390182897,
+        0.21152924975742662
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 21,
+      "distance_m": 1.0672428607940674,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4953660026383044,
+        -0.13583112206188142,
+        0.295285062585031
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 22,
+      "distance_m": 0.998894453048706,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.48441941451908965,
+        0.24769199290233357,
+        0.3279623139993384
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 23,
+      "distance_m": 0.9523290991783142,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4556552054305243,
+        0.4117199716509595,
+        0.3025348624161535
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 24,
+      "distance_m": 0.7967603206634521,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.28538900608127293,
+        0.8211044153040298,
+        0.22583736437997687
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 25,
+      "distance_m": 0.7500295639038086,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.3882851565093759,
+        0.6917001549637024,
+        0.013589037842582793
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 26,
+      "distance_m": 0.8152101635932922,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4520336849981011,
+        0.6575176859723344,
+        -0.232704758779165
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 27,
+      "distance_m": 0.8116236329078674,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4863568778097984,
+        0.3183720469806261,
+        -0.3888135900185151
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 28,
+      "distance_m": 0.7767300009727478,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.5002942124247398,
+        0.25806950284455776,
+        -0.28980151170626917
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 29,
+      "distance_m": 0.8449757695198059,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.5478525802952593,
+        0.24009179032815747,
+        -0.2909524662708586
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 30,
+      "distance_m": 0.8836453557014465,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.48113061059513273,
+        0.27212743741383194,
+        -0.24326219551604064
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 31,
+      "distance_m": 0.8206827044487,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49050268486695253,
+        0.19398057777325076,
+        -0.23426189848466683
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 32,
+      "distance_m": 0.6980629563331604,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49593928725890146,
+        -0.19607322977597788,
+        -0.18448229991201495
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 33,
+      "distance_m": 0.6783722639083862,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.6691581219298902,
+        0.01653208233566771,
+        -0.019839549299973152
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 34,
+      "distance_m": 0.7936054468154907,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.6904374807232239,
+        0.12048061929669869,
+        0.033662246158366854
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 35,
+      "distance_m": 0.9393585324287415,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.533941405039019,
+        0.17032790850626306,
+        0.002305707357753675
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 36,
+      "distance_m": 1.1166343688964844,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4970633442557201,
+        0.10822258169752791,
+        -0.07972626052889514
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 37,
+      "distance_m": 1.1362775564193726,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.499860435868975,
+        0.023625803933694428,
+        -0.09569440292163277
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 38,
+      "distance_m": 1.1955002546310425,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4995290819661072,
+        0.04339107143633038,
+        -0.052086089268912644
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 39,
+      "distance_m": 1.2514865398406982,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49983781144088213,
+        0.025468588809683636,
+        -0.03056549123986375
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 40,
+      "distance_m": 1.3354634046554565,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.43071111560658387,
+        0.507889495433532,
+        -0.010960742983807748
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 41,
+      "distance_m": 1.3411434888839722,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4876528787715421,
+        0.2208589579421914,
+        -0.11175504061171641
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 42,
+      "distance_m": 1.3429913520812988,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49469658241438985,
+        0.14526240184607692,
+        -0.1374114230153173
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 43,
+      "distance_m": 1.3193081617355347,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4964878359209896,
+        0.11831870152249824,
+        -0.14231583504234901
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 44,
+      "distance_m": 1.3035774230957031,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4972648479836246,
+        0.10445421886784173,
+        -0.12557423898140352
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 45,
+      "distance_m": 1.3773857355117798,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.451948522544832,
+        -0.42775008109663054,
+        -0.11277004992734306
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 46,
+      "distance_m": 1.252458930015564,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.36021024779168115,
+        -0.6935375329017333,
+        -0.014861473650806752
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 47,
+      "distance_m": 1.0761066675186157,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.31550295821536967,
+        -0.7757780181401138,
+        0.10786825101484115
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 48,
+      "distance_m": 1.0746182203292847,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.474367044557341,
+        -0.31607535201551934,
+        0.46540791419887517
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 49,
+      "distance_m": 1.1020985841751099,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4994862078375882,
+        -0.045322320330083356,
+        0.5372934792991305
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 50,
+      "distance_m": 0.9105381369590759,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        0.08396918054011442,
+        -0.985797497905978,
+        0.4707262441096731
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 51,
+      "distance_m": 1.125594973564148,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.16576455247486857,
+        -0.9434449918099233,
+        0.851128346059238
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 52,
+      "distance_m": 1.3088507652282715,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.20947677636407203,
+        -0.9080076655273711,
+        0.7378860284578654
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 53,
+      "distance_m": 1.5281072854995728,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.3815268647770034,
+        -0.6463350569276902,
+        0.8433259448309279
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 54,
+      "distance_m": 1.631120204925537,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.3813743356174238,
+        -0.6466950320896817,
+        0.6261873294563333
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 55,
+      "distance_m": 1.6763983964920044,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.42157167638921605,
+        -0.5376888381448367,
+        0.6812323638796198
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 56,
+      "distance_m": 1.8910160064697266,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.43271124231524793,
+        -0.5010428355899116,
+        0.6297640113413779
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 57,
+      "distance_m": 2.0907063484191895,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.449243934962428,
+        -0.438998345780363,
+        0.5453802022752309
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 58,
+      "distance_m": 1.8534657955169678,
+      "visible": true,
+      "mode": "yield_incoming",
+      "action": [
+        0.0,
+        0.0,
+        0.456781041182459
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 59,
+      "distance_m": 1.906487226486206,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.47695075513139373,
+        -0.30011982393433,
+        0.36578190616505796
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 60,
+      "distance_m": 2.0064990520477295,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4839440164791094,
+        -0.25138169316056025,
+        0.3049290332003817
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 61,
+      "distance_m": 1.991044044494629,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.48875708309592325,
+        -0.21086975813107742,
+        0.2549575617367893
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 62,
+      "distance_m": 2.055870294570923,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49223249146059,
+        -0.1755810280241029,
+        0.21179511057623313
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 63,
+      "distance_m": 2.147519111633301,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49458323847569385,
+        -0.14679809561291887,
+        0.17679663617787003
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 64,
+      "distance_m": 2.152168035507202,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4962217029103096,
+        -0.12270324463179365,
+        0.14761593089868844
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 65,
+      "distance_m": 2.024240732192993,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4973919358093873,
+        -0.10200514088594508,
+        0.12261942538816094
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 66,
+      "distance_m": 2.0480031967163086,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49822637552132437,
+        -0.08415411421634206,
+        0.10110451854349996
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 67,
+      "distance_m": 2.095677614212036,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49877146831624686,
+        -0.07005775884668722,
+        0.08413823167982372
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 68,
+      "distance_m": 2.0197839736938477,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4984012930749457,
+        0.07990371859236868,
+        0.07010203862030216
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 69,
+      "distance_m": 1.958452820777893,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4984812193755215,
+        0.07788386045627829,
+        0.0374708192645788
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 70,
+      "distance_m": 2.0123612880706787,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4999775009253719,
+        -0.009486531172086848,
+        0.01138402129102929
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 71,
+      "distance_m": 1.9813437461853027,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4992306443239409,
+        0.055453179093821144,
+        0.006478786217273017
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 72,
+      "distance_m": 2.108563184738159,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4967967609963207,
+        0.11301288888555379,
+        -0.009223088131324124
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 73,
+      "distance_m": 1.9549992084503174,
+      "visible": true,
+      "mode": "yield_incoming",
+      "action": [
+        0.0,
+        0.0,
+        -0.03130287520721823
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 74,
+      "distance_m": 1.8470975160598755,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49990458700182533,
+        0.019534983443500218,
+        -0.023274234090634068
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 75,
+      "distance_m": 1.711495280265808,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4999966615488567,
+        -0.003654279681727177,
+        -0.02325032193476824
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 76,
+      "distance_m": 1.546536922454834,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49999666839515056,
+        -0.003650530783242837,
+        -0.020232492545963626
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 77,
+      "distance_m": 1.2989736795425415,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49999747690652435,
+        -0.00317684567433952,
+        -0.018554582292535152
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 78,
+      "distance_m": 1.166031002998352,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4999978776071897,
+        -0.002913683789089834,
+        -0.019810485367993146
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 79,
+      "distance_m": 0.9552606344223022,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.49999758164547325,
+        -0.003110208146273291,
+        -0.01915250350289312
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 80,
+      "distance_m": 0.8326495885848999,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4999977396918916,
+        -0.0030068608211211646,
+        -0.02264722879533532
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 81,
+      "distance_m": 0.5883907079696655,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.4999968392659522,
+        -0.0035556850578137766,
+        -0.02373615054740876
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 82,
+      "distance_m": 0.33179232478141785,
+      "visible": true,
+      "mode": "retreat_incoming",
+      "action": [
+        -0.19851608275021737,
+        0.9699172353101728,
+        -0.03783610473826413
+      ],
+      "human_following": 0.0,
+      "human_collision": 1.0
+    }
+  ]
+}

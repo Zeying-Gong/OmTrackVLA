@@ -1,0 +1,2095 @@
+{
+  "schema_version": 1,
+  "controller_version": 5,
+  "task": "dt",
+  "split": "val",
+  "dataset_index": 12,
+  "episode_key": "000012_rJhMRvNn4DS_ep_5_d8e5ba3f41",
+  "episode_id": "5",
+  "scene_id": "data/scene_datasets/hm3d/val/00818-rJhMRvNn4DS/rJhMRvNn4DS.basis.glb",
+  "robot_start_position": [
+    -8.889487266540527,
+    0.03332853317260742,
+    -2.5544888973236084
+  ],
+  "target_name": "male_49",
+  "target_semantic_id": 1080,
+  "instruction": "Follow the person dressed in a light gray three-piece suit and a blue tie.",
+  "video": "/robot/robot-research-exp-0/user/gzy/OmTrackVLA/outputs/rgb_person_v5_baseline_val20_20260730/dt/val/videos/000012_rJhMRvNn4DS_ep_5_d8e5ba3f41.mp4",
+  "success_attempt": 1,
+  "perception": "rgb-person-mobilenet-osnet-v6-worker",
+  "person_score_threshold": 0.3,
+  "target_initialization": "goal-crop",
+  "lost_target_policy": "coordinate",
+  "lost_brake_steps": 2,
+  "lost_search_yaw": 0.35,
+  "lost_search_period_steps": 8,
+  "lost_coast_steps": 3,
+  "lost_coast_min_range": 2.0,
+  "lost_coast_max_translation": 0.35,
+  "lost_retreat_steps": 3,
+  "summary": {
+    "finish": false,
+    "status": "Collision",
+    "success": 0.0,
+    "following_rate": 0.8775510204081632,
+    "following_step": 43.0,
+    "total_step": 49,
+    "collision": 1.0,
+    "visible_rate": 0.9591836734693877,
+    "coordinate_takeover_rate": 0.14285714285714285,
+    "perception_detection_rate": 0.8571428571428571,
+    "perception_target_precision": 1.0,
+    "perception_target_recall": 0.8936170212765957,
+    "perception_mean_target_iou": 0.882859528097049,
+    "distance_start_m": 1.9550271034240723,
+    "distance_min_m": 0.4363267719745636,
+    "distance_mean_m": 1.8630011635167258,
+    "distance_max_m": 2.5372490882873535,
+    "distance_end_m": 0.4363267719745636,
+    "final_metrics": {
+      "human_following": 1.0,
+      "human_following_success": 0.0,
+      "human_collision": 1.0,
+      "distance_to_leader": 0.4363267719745636
+    },
+    "evasion_side": -1.0
+  },
+  "steps": [
+    {
+      "step": 1,
+      "distance_m": 1.9550271034240723,
+      "visible": true,
+      "mask_area": 4917,
+      "rgb_mean": 136.76010696976275,
+      "perception_confidence": 0.9984879493713379,
+      "perception_range_m": 1.8312151600881197,
+      "perception_bearing_rad": 0.05507805712347456,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.9828748498825007,
+      "perception_goal_similarity": 0.9859960079193115,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            155.37457275390625,
+            100.86029052734375,
+            206.45404052734375,
+            275.8819885253906
+          ],
+          "detector_score": 0.9984879493713379,
+          "goal_reid": 0.9859960079193115,
+          "goal_histogram": 0.9641442470092443,
+          "selected": true,
+          "target_iou": 0.877098323933324,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8896244957070446,
+      "target_selection_correct": true,
+      "mode": "hold_startup",
+      "action": [
+        0.0,
+        0.0,
+        0.06609366854816946
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 2,
+      "distance_m": 2.0476086139678955,
+      "visible": true,
+      "mask_area": 9767,
+      "rgb_mean": 140.71113642939815,
+      "perception_confidence": 0.9994595646858215,
+      "perception_range_m": 1.62881242014978,
+      "perception_bearing_rad": 0.1859947865223297,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8231125396450925,
+      "perception_goal_similarity": 0.9334495067596436,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            111.18692779541016,
+            82.2824935913086,
+            199.55592346191406,
+            283.24310302734375
+          ],
+          "detector_score": 0.9994595646858215,
+          "goal_reid": 0.9334495067596436,
+          "goal_histogram": 0.8112443141217227,
+          "selected": true,
+          "target_iou": 0.8865783046809871,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            219.10159301757812,
+            20.569610595703125,
+            296.2971496582031,
+            306.5392761230469
+          ],
+          "detector_score": 0.992938220500946,
+          "goal_reid": 0.7332900762557983,
+          "goal_histogram": 0.4049850397350383,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.8821842077813706,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.25,
+        -0.25,
+        0.22319374382679563
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 3,
+      "distance_m": 2.2366580963134766,
+      "visible": true,
+      "mask_area": 9852,
+      "rgb_mean": 145.98662425853587,
+      "perception_confidence": 0.9989701509475708,
+      "perception_range_m": 1.7225468776943733,
+      "perception_bearing_rad": 0.1896801427353655,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8580120885977526,
+      "perception_goal_similarity": 0.8934893906116486,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            108.7387466430664,
+            84.14614868164062,
+            200.5377960205078,
+            279.2821350097656
+          ],
+          "detector_score": 0.9989701509475708,
+          "goal_reid": 0.8934893906116486,
+          "goal_histogram": 0.7828621882290463,
+          "selected": true,
+          "target_iou": 0.8482841645325425,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            210.50064086914062,
+            34.225830078125,
+            270.56988525390625,
+            305.3205871582031
+          ],
+          "detector_score": 0.9785646200180054,
+          "goal_reid": 0.7231759876012802,
+          "goal_histogram": 0.4430842362125986,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.8424953675108091,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.5,
+        -0.5,
+        0.22761617128243858
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 4,
+      "distance_m": 2.339050769805908,
+      "visible": true,
+      "mask_area": 10522,
+      "rgb_mean": 147.78195981626158,
+      "perception_confidence": 0.9932398796081543,
+      "perception_range_m": 2.017850167965895,
+      "perception_bearing_rad": 0.20637981678964856,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8644536865579459,
+      "perception_goal_similarity": 0.8580628633499146,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            100.5338363647461,
+            92.293701171875,
+            202.0716552734375,
+            280.7076416015625
+          ],
+          "detector_score": 0.9932398796081543,
+          "goal_reid": 0.8580628633499146,
+          "goal_histogram": 0.7489762094082835,
+          "selected": true,
+          "target_iou": 0.7776465950888309,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            188.28419494628906,
+            65.34972381591797,
+            228.3716278076172,
+            295.145263671875
+          ],
+          "detector_score": 0.8955587148666382,
+          "goal_reid": 0.784339964389801,
+          "goal_histogram": 0.5085087328989175,
+          "selected": false,
+          "target_iou": 0.004976334438762109,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.772047946952308,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.25,
+        -0.25,
+        0.24765578014757827
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 5,
+      "distance_m": 2.339050769805908,
+      "visible": true,
+      "mask_area": 0,
+      "rgb_mean": 147.70036259403935,
+      "perception_confidence": 0.0,
+      "perception_range_m": 2.017850167965895,
+      "perception_bearing_rad": 0.20637981678964856,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.0,
+      "perception_goal_similarity": 0.0,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            106.89221954345703,
+            99.29036712646484,
+            196.3508758544922,
+            279.419921875
+          ],
+          "detector_score": 0.9948379397392273,
+          "goal_reid": 0.8670984506607056,
+          "goal_histogram": 0.7460361515004479,
+          "selected": false,
+          "target_iou": 0.8265012839049768,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.0,
+      "target_selection_correct": false,
+      "mode": "approach_coordinate",
+      "action": [
+        0.0,
+        0.0,
+        0.321965761940225
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 6,
+      "distance_m": 2.239773750305176,
+      "visible": true,
+      "mask_area": 0,
+      "rgb_mean": 146.09346064814815,
+      "perception_confidence": 0.0,
+      "perception_range_m": 2.017850167965895,
+      "perception_bearing_rad": 0.20637981678964856,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.0,
+      "perception_goal_similarity": 0.0,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            123.21341705322266,
+            101.97245788574219,
+            199.57005310058594,
+            274.0198669433594
+          ],
+          "detector_score": 0.9981147050857544,
+          "goal_reid": 0.8835898041725159,
+          "goal_histogram": 0.7609195223994902,
+          "selected": false,
+          "target_iou": 0.8782392061631594,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.0,
+      "target_selection_correct": false,
+      "mode": "approach_coordinate",
+      "action": [
+        0.25,
+        0.21603915023467907,
+        0.26130718604264175
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 7,
+      "distance_m": 2.0506629943847656,
+      "visible": true,
+      "mask_area": 6823,
+      "rgb_mean": 142.10165066189236,
+      "perception_confidence": 0.9995028972625732,
+      "perception_range_m": 1.880807213775375,
+      "perception_bearing_rad": 0.085870572558797,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8542372934136993,
+      "perception_goal_similarity": 0.8981574475765228,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            139.99005126953125,
+            101.27042388916016,
+            209.95436096191406,
+            278.5982666015625
+          ],
+          "detector_score": 0.9995028972625732,
+          "goal_reid": 0.8981574475765228,
+          "goal_histogram": 0.7578507980942959,
+          "selected": true,
+          "target_iou": 0.8477960423216974,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            208.02545166015625,
+            79.3916244506836,
+            264.6090393066406,
+            299.8904724121094
+          ],
+          "detector_score": 0.5538038611412048,
+          "goal_reid": 0.6969739496707916,
+          "goal_histogram": 0.4754843576083658,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.8466061327776124,
+      "target_selection_correct": true,
+      "mode": "approach_visibility",
+      "action": [
+        0.5,
+        0.13259377226715108,
+        0.1595824834579859
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 8,
+      "distance_m": 1.9476171731948853,
+      "visible": true,
+      "mask_area": 8540,
+      "rgb_mean": 138.0818074544271,
+      "perception_confidence": 0.9986182451248169,
+      "perception_range_m": 1.7059854802321002,
+      "perception_bearing_rad": 0.05819418212661967,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8209050785092046,
+      "perception_goal_similarity": 0.8900486826896667,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            142.8574676513672,
+            87.64717864990234,
+            217.7707061767578,
+            294.9407958984375
+          ],
+          "detector_score": 0.9986182451248169,
+          "goal_reid": 0.8900486826896667,
+          "goal_histogram": 0.7461443760112161,
+          "selected": true,
+          "target_iou": 0.9151772495849594,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9143567659367987,
+      "target_selection_correct": true,
+      "mode": "approach_visibility",
+      "action": [
+        0.27344862783184376,
+        0.09332637991765923,
+        0.11215486747488072
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 9,
+      "distance_m": 1.7790374755859375,
+      "visible": true,
+      "mask_area": 10512,
+      "rgb_mean": 132.44358091001158,
+      "perception_confidence": 0.9970802664756775,
+      "perception_range_m": 1.62917794704913,
+      "perception_bearing_rad": 0.03478240307227054,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8536971281253961,
+      "perception_goal_similarity": 0.870970606803894,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            141.93389892578125,
+            78.28804016113281,
+            227.7042694091797,
+            301.1248779296875
+          ],
+          "detector_score": 0.9970802664756775,
+          "goal_reid": 0.870970606803894,
+          "goal_histogram": 0.7605034298976534,
+          "selected": true,
+          "target_iou": 0.937353639852755,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            220.68846130371094,
+            2.3114137649536133,
+            341.422607421875,
+            368.2620544433594
+          ],
+          "detector_score": 0.9798370003700256,
+          "goal_reid": 0.720816969871521,
+          "goal_histogram": 0.5288008293118764,
+          "selected": false,
+          "target_iou": 0.02932420391550925,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.93916425650743,
+      "target_selection_correct": true,
+      "mode": "approach",
+      "action": [
+        0.17205984763769883,
+        0.04537690359661162,
+        0.05447098843605692
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 10,
+      "distance_m": 1.5111570358276367,
+      "visible": true,
+      "mask_area": 12767,
+      "rgb_mean": 133.13226092303242,
+      "perception_confidence": 0.9989032745361328,
+      "perception_range_m": 1.463319078931344,
+      "perception_bearing_rad": 0.016992363831484524,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8741873435606737,
+      "perception_goal_similarity": 0.8573112785816193,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            140.33567810058594,
+            67.28340911865234,
+            236.1386260986328,
+            309.5987548828125
+          ],
+          "detector_score": 0.9989032745361328,
+          "goal_reid": 0.8573112785816193,
+          "goal_histogram": 0.7856392337962461,
+          "selected": true,
+          "target_iou": 0.9481651869069316,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            243.86422729492188,
+            1.8238037824630737,
+            370.6449890136719,
+            380.8111572265625
+          ],
+          "detector_score": 0.9941231608390808,
+          "goal_reid": 0.6801944822072983,
+          "goal_histogram": 0.48928047283698106,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.9461911271281223,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.07794015236230117,
+        -0.20462309640338838,
+        0.020390836597781428
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 11,
+      "distance_m": 1.5282652378082275,
+      "visible": true,
+      "mask_area": 16870,
+      "rgb_mean": 136.16448296440973,
+      "perception_confidence": 0.999218225479126,
+      "perception_range_m": 1.1715814689905022,
+      "perception_bearing_rad": 0.007099588636010027,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.870955734900001,
+      "perception_goal_similarity": 0.8715941309928894,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            137.37298583984375,
+            35.830116271972656,
+            242.90072631835938,
+            326.4949951171875
+          ],
+          "detector_score": 0.999218225479126,
+          "goal_reid": 0.8715941309928894,
+          "goal_histogram": 0.7760029288110672,
+          "selected": true,
+          "target_iou": 0.8669204196106509,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            215.31515502929688,
+            7.995282173156738,
+            343.5672607421875,
+            373.6795349121094
+          ],
+          "detector_score": 0.9402658343315125,
+          "goal_reid": 0.7111792415380478,
+          "goal_histogram": 0.5359895185247296,
+          "selected": false,
+          "target_iou": 0.13570654934646323,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.8714569791944914,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.6779401523623012,
+        -0.8046230964033884,
+        0.008519506363212033
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 12,
+      "distance_m": 1.6912106275558472,
+      "visible": true,
+      "mask_area": 16122,
+      "rgb_mean": 138.8953111436632,
+      "perception_confidence": 0.9963546991348267,
+      "perception_range_m": 1.1907656549935208,
+      "perception_bearing_rad": 0.20553107686422675,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.778536726049617,
+      "perception_goal_similarity": 0.8714042901992798,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            104.71560668945312,
+            40.5714111328125,
+            198.2300262451172,
+            354.0356750488281
+          ],
+          "detector_score": 0.9963546991348267,
+          "goal_reid": 0.8714042901992798,
+          "goal_histogram": 0.6983661992671841,
+          "selected": true,
+          "target_iou": 0.8578769844974085,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            175.1806182861328,
+            31.300947189331055,
+            233.831787109375,
+            320.4673156738281
+          ],
+          "detector_score": 0.9224293828010559,
+          "goal_reid": 0.8203998804092407,
+          "goal_histogram": 0.5015425906240125,
+          "selected": false,
+          "target_iou": 0.1302101440041298,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.8558148013124316,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -1.0,
+        -1.0,
+        0.2466372922370721
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 13,
+      "distance_m": 1.9406847953796387,
+      "visible": true,
+      "mask_area": 14254,
+      "rgb_mean": 139.13498716001158,
+      "perception_confidence": 0.9989296793937683,
+      "perception_range_m": 1.3848118475197877,
+      "perception_bearing_rad": 0.36213603686461654,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8284169363976445,
+      "perception_goal_similarity": 0.8829766511917114,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            70.72017669677734,
+            48.60861587524414,
+            166.80392456054688,
+            318.3450622558594
+          ],
+          "detector_score": 0.9989296793937683,
+          "goal_reid": 0.8829766511917114,
+          "goal_histogram": 0.7202077890833607,
+          "selected": true,
+          "target_iou": 0.891341741462791,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8982394900591896,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -1.0,
+        -1.0,
+        0.43456324423753984
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 14,
+      "distance_m": 2.184673547744751,
+      "visible": true,
+      "mask_area": 11647,
+      "rgb_mean": 148.0985966435185,
+      "perception_confidence": 0.998916745185852,
+      "perception_range_m": 1.7236627340240707,
+      "perception_bearing_rad": 0.4196234081202564,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8399449090583632,
+      "perception_goal_similarity": 0.8747269511222839,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            57.96040725708008,
+            72.3663330078125,
+            153.72915649414062,
+            293.48956298828125
+          ],
+          "detector_score": 0.998916745185852,
+          "goal_reid": 0.8747269511222839,
+          "goal_histogram": 0.705940752170136,
+          "selected": true,
+          "target_iou": 0.9371333061287279,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9438682123245882,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.75,
+        -1.0,
+        0.5035480897443076
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 15,
+      "distance_m": 2.3930437564849854,
+      "visible": true,
+      "mask_area": 8580,
+      "rgb_mean": 154.89716254340277,
+      "perception_confidence": 0.9987586736679077,
+      "perception_range_m": 1.925117112028902,
+      "perception_bearing_rad": 0.3964026705061478,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8163005622853826,
+      "perception_goal_similarity": 0.8723658621311188,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            71.36984252929688,
+            86.37309265136719,
+            150.9033966064453,
+            282.5353698730469
+          ],
+          "detector_score": 0.9987586736679077,
+          "goal_reid": 0.8723658621311188,
+          "goal_histogram": 0.6913392697751988,
+          "selected": true,
+          "target_iou": 0.8480544107391462,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8517215950989846,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.5,
+        -1.0,
+        0.47568320460737734
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 16,
+      "distance_m": 2.5372490882873535,
+      "visible": true,
+      "mask_area": 6226,
+      "rgb_mean": 153.35237178096065,
+      "perception_confidence": 0.9992983341217041,
+      "perception_range_m": 2.0811834718636595,
+      "perception_bearing_rad": 0.38687124947822926,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.862696068208155,
+      "perception_goal_similarity": 0.8871580958366394,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            81.48660278320312,
+            97.43727111816406,
+            145.07095336914062,
+            275.47003173828125
+          ],
+          "detector_score": 0.9992983341217041,
+          "goal_reid": 0.8871580958366394,
+          "goal_histogram": 0.7004657732031774,
+          "selected": true,
+          "target_iou": 0.8106925101256859,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8177237700059277,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.25,
+        -0.75,
+        0.4642454993738751
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 17,
+      "distance_m": 2.419435501098633,
+      "visible": true,
+      "mask_area": 5037,
+      "rgb_mean": 153.86921974464698,
+      "perception_confidence": 0.9983574748039246,
+      "perception_range_m": 2.2306957909555423,
+      "perception_bearing_rad": 0.34676212925220035,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8483772818919002,
+      "perception_goal_similarity": 0.8913097083568573,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            94.0414047241211,
+            106.318603515625,
+            150.19500732421875,
+            269.4120178222656
+          ],
+          "detector_score": 0.9983574748039246,
+          "goal_reid": 0.8913097083568573,
+          "goal_histogram": 0.7065554975270061,
+          "selected": true,
+          "target_iou": 0.8409809709520826,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8382001836547291,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        0.0,
+        -0.5,
+        0.4161145551026404
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 18,
+      "distance_m": 2.2510459423065186,
+      "visible": true,
+      "mask_area": 5190,
+      "rgb_mean": 154.99472384982639,
+      "perception_confidence": 0.9992343187332153,
+      "perception_range_m": 2.066346123696929,
+      "perception_bearing_rad": 0.27767710831186837,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8359349937890183,
+      "perception_goal_similarity": 0.896211564540863,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            109.00768280029297,
+            103.46094512939453,
+            164.53656005859375,
+            273.416015625
+          ],
+          "detector_score": 0.9992343187332153,
+          "goal_reid": 0.896211564540863,
+          "goal_histogram": 0.7210716200133902,
+          "selected": true,
+          "target_iou": 0.7994431091386542,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8099965765148922,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        0.07547187809290418,
+        -0.25,
+        0.33321252997424206
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 19,
+      "distance_m": 2.1898975372314453,
+      "visible": true,
+      "mask_area": 5815,
+      "rgb_mean": 153.7067758065683,
+      "perception_confidence": 0.9994743466377258,
+      "perception_range_m": 1.9116206439442882,
+      "perception_bearing_rad": 0.2282195737578785,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8681543563894861,
+      "perception_goal_similarity": 0.880421370267868,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            116.783447265625,
+            94.74315643310547,
+            177.0263671875,
+            270.26287841796875
+          ],
+          "detector_score": 0.9994743466377258,
+          "goal_reid": 0.880421370267868,
+          "goal_histogram": 0.7647367197860149,
+          "selected": true,
+          "target_iou": 0.8510497408807469,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.847457627118644,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.17452812190709582,
+        -0.5,
+        0.2738634885094542
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 20,
+      "distance_m": 2.1907589435577393,
+      "visible": true,
+      "mask_area": 7036,
+      "rgb_mean": 151.70982530381946,
+      "perception_confidence": 0.99910968542099,
+      "perception_range_m": 1.8558539895758712,
+      "perception_bearing_rad": 0.15493372788680207,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8640955807651445,
+      "perception_goal_similarity": 0.8688232898712158,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            127.88684844970703,
+            90.49890899658203,
+            195.137939453125,
+            280.72705078125
+          ],
+          "detector_score": 0.99910968542099,
+          "goal_reid": 0.8688232898712158,
+          "goal_histogram": 0.749120608677913,
+          "selected": true,
+          "target_iou": 0.9236912776937114,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9203866302663617,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.2975583686382311,
+        -0.5467188784054348,
+        0.1859204734641625
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 21,
+      "distance_m": 2.215219259262085,
+      "visible": true,
+      "mask_area": 6653,
+      "rgb_mean": 148.86190004701967,
+      "perception_confidence": 0.999096155166626,
+      "perception_range_m": 1.8533775932275964,
+      "perception_bearing_rad": 0.1196363039657611,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8750634798331908,
+      "perception_goal_similarity": 0.877623975276947,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            137.1905517578125,
+            93.38375854492188,
+            199.64866638183594,
+            287.080810546875
+          ],
+          "detector_score": 0.999096155166626,
+          "goal_reid": 0.877623975276947,
+          "goal_histogram": 0.7429496402546647,
+          "selected": true,
+          "target_iou": 0.8656413937158102,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8751272727272728,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.2982168171202155,
+        -0.6364786199160986,
+        0.1435635647589133
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 22,
+      "distance_m": 2.2769296169281006,
+      "visible": true,
+      "mask_area": 6418,
+      "rgb_mean": 146.82746265552663,
+      "perception_confidence": 0.99951171875,
+      "perception_range_m": 1.8777792910571234,
+      "perception_bearing_rad": 0.09527475812067594,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8755306129374069,
+      "perception_goal_similarity": 0.8752336502075195,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            141.4158172607422,
+            96.87274169921875,
+            204.8875732421875,
+            280.73223876953125
+          ],
+          "detector_score": 0.99951171875,
+          "goal_reid": 0.8752336502075195,
+          "goal_histogram": 0.7415675607189769,
+          "selected": true,
+          "target_iou": 0.8820774854813405,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8900982615268329,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.24754759501029344,
+        -0.6519231625965664,
+        0.11432970974481113
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 23,
+      "distance_m": 2.319969654083252,
+      "visible": true,
+      "mask_area": 6018,
+      "rgb_mean": 145.68381980613427,
+      "perception_confidence": 0.9977643489837646,
+      "perception_range_m": 1.9384212843562163,
+      "perception_bearing_rad": 0.0806430243390733,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8889506176945854,
+      "perception_goal_similarity": 0.8855690062046051,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            145.12335205078125,
+            101.1972885131836,
+            206.84242248535156,
+            278.50311279296875
+          ],
+          "detector_score": 0.9977643489837646,
+          "goal_reid": 0.8855690062046051,
+          "goal_histogram": 0.7338760130878654,
+          "selected": true,
+          "target_iou": 0.8714087161318368,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8788023570632266,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.12503575597220126,
+        -0.40192316259656635,
+        0.09677162920688796
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 24,
+      "distance_m": 2.035459041595459,
+      "visible": true,
+      "mask_area": 5674,
+      "rgb_mean": 143.88278537326389,
+      "perception_confidence": 0.9965848922729492,
+      "perception_range_m": 1.9807607749246,
+      "perception_bearing_rad": 0.07761748525803916,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8908824316513769,
+      "perception_goal_similarity": 0.8868702054023743,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            146.36068725585938,
+            103.52127838134766,
+            206.77420043945312,
+            274.2977600097656
+          ],
+          "detector_score": 0.9965848922729492,
+          "goal_reid": 0.8868702054023743,
+          "goal_histogram": 0.7330195429021842,
+          "selected": true,
+          "target_iou": 0.8015182006910669,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.7971541757619857,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.03960718830656533,
+        -0.15192316259656635,
+        0.09314098230964699
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 25,
+      "distance_m": 1.9438376426696777,
+      "visible": true,
+      "mask_area": 7686,
+      "rgb_mean": 141.77854636863427,
+      "perception_confidence": 0.9985125660896301,
+      "perception_range_m": 1.700835026250188,
+      "perception_bearing_rad": 0.08524112835415878,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.841181746846548,
+      "perception_goal_similarity": 0.860580325126648,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            138.61029052734375,
+            84.89613342285156,
+            211.57760620117188,
+            276.4377746582031
+          ],
+          "detector_score": 0.9985125660896301,
+          "goal_reid": 0.860580325126648,
+          "goal_histogram": 0.7115583892373252,
+          "selected": true,
+          "target_iou": 0.8913443495346322,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8892219387755103,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.28960718830656534,
+        -0.01887279540293281,
+        0.10228935402499054
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 26,
+      "distance_m": 1.9798024892807007,
+      "visible": true,
+      "mask_area": 9299,
+      "rgb_mean": 140.02584951895255,
+      "perception_confidence": 0.9988538026809692,
+      "perception_range_m": 1.626872233961142,
+      "perception_bearing_rad": 0.07398262323072455,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8598406976040103,
+      "perception_goal_similarity": 0.8488903641700745,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            136.99876403808594,
+            82.85420227050781,
+            217.5399627685547,
+            292.7950439453125
+          ],
+          "detector_score": 0.9988538026809692,
+          "goal_reid": 0.8488903641700745,
+          "goal_histogram": 0.6667996185642551,
+          "selected": true,
+          "target_iou": 0.8814057053259132,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8866763969974979,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.5396071883065654,
+        -0.021537017204570665,
+        0.08877914787686945
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 27,
+      "distance_m": 2.093441963195801,
+      "visible": true,
+      "mask_area": 8333,
+      "rgb_mean": 136.3388626663773,
+      "perception_confidence": 0.9970768690109253,
+      "perception_range_m": 1.6412516352353392,
+      "perception_bearing_rad": 0.01587857457915584,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8399960544494731,
+      "perception_goal_similarity": 0.8579584658145905,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            150.4138946533203,
+            83.59378051757812,
+            226.48822021484375,
+            282.7720031738281
+          ],
+          "detector_score": 0.9970768690109253,
+          "goal_reid": 0.8579584658145905,
+          "goal_histogram": 0.6774496056241333,
+          "selected": true,
+          "target_iou": 0.8252913374246822,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8237472766884532,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.7175865562547178,
+        -3.9905210962417476e-05,
+        0.01905428949498701
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 28,
+      "distance_m": 2.155684232711792,
+      "visible": true,
+      "mask_area": 7570,
+      "rgb_mean": 138.1041576244213,
+      "perception_confidence": 0.9966642260551453,
+      "perception_range_m": 1.7546385745595818,
+      "perception_bearing_rad": -0.01922922714519413,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8825597039093973,
+      "perception_goal_similarity": 0.8701839447021484,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            158.68505859375,
+            87.37248229980469,
+            231.6998748779297,
+            275.897216796875
+          ],
+          "detector_score": 0.9966642260551453,
+          "goal_reid": 0.8701839447021484,
+          "goal_histogram": 0.6829595839153626,
+          "selected": true,
+          "target_iou": 0.8647734062870215,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8598167284070969,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.4906934350564263,
+        0.006247812954540531,
+        -0.023075072574232955
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 29,
+      "distance_m": 2.02250337600708,
+      "visible": true,
+      "mask_area": 6268,
+      "rgb_mean": 131.04618326822916,
+      "perception_confidence": 0.9983555674552917,
+      "perception_range_m": 1.8153441709182117,
+      "perception_bearing_rad": -0.03210339286298592,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8759777925783736,
+      "perception_goal_similarity": 0.8741231858730316,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            165.4869384765625,
+            91.72196197509766,
+            229.84500122070312,
+            268.80023193359375
+          ],
+          "detector_score": 0.9983555674552917,
+          "goal_reid": 0.8741231858730316,
+          "goal_histogram": 0.6802060787231312,
+          "selected": true,
+          "target_iou": 0.8577761861066359,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            286.3829650878906,
+            88.90603637695312,
+            328.5334777832031,
+            216.68777465820312
+          ],
+          "detector_score": 0.796394944190979,
+          "goal_reid": 0.7365969270467758,
+          "goal_histogram": 0.323886558340746,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.8659491193737769,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.3694084826735663,
+        0.0029136029261020054,
+        -0.038524071435583104
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 30,
+      "distance_m": 1.9912402629852295,
+      "visible": true,
+      "mask_area": 9971,
+      "rgb_mean": 127.70013879846644,
+      "perception_confidence": 0.9984764456748962,
+      "perception_range_m": 1.700605685693058,
+      "perception_bearing_rad": -0.025726005882871182,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8071810846031455,
+      "perception_goal_similarity": 0.8590264916419983,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            153.3631134033203,
+            86.5499038696289,
+            239.51785278320312,
+            296.9843444824219
+          ],
+          "detector_score": 0.9984764456748962,
+          "goal_reid": 0.8590264916419983,
+          "goal_histogram": 0.6635056165978312,
+          "selected": true,
+          "target_iou": 0.9215209572335207,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            270.1479797363281,
+            106.9826889038086,
+            295.03656005859375,
+            215.44137573242188
+          ],
+          "detector_score": 0.41334307193756104,
+          "goal_reid": 0.7266208678483963,
+          "goal_histogram": 0.27668997844011756,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.9211492763015771,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.5989290695506988,
+        0.0022447452822905393,
+        -0.03087120705944542
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 31,
+      "distance_m": 2.14516019821167,
+      "visible": true,
+      "mask_area": 8776,
+      "rgb_mean": 127.86116762514467,
+      "perception_confidence": 0.9987310767173767,
+      "perception_range_m": 1.654834828996076,
+      "perception_bearing_rad": 0.007635762901550305,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8427187315005606,
+      "perception_goal_similarity": 0.859794408082962,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            151.4720916748047,
+            83.38461303710938,
+            228.59571838378906,
+            290.2869567871094
+          ],
+          "detector_score": 0.9987310767173767,
+          "goal_reid": 0.859794408082962,
+          "goal_histogram": 0.6585949938889826,
+          "selected": true,
+          "target_iou": 0.9391526523187931,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9416317126484315,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        -0.690323039754138,
+        -0.003591916368586174,
+        0.009162915481860365
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 32,
+      "distance_m": 2.13478946685791,
+      "visible": true,
+      "mask_area": 7275,
+      "rgb_mean": 127.52584951895254,
+      "perception_confidence": 0.9980719089508057,
+      "perception_range_m": 1.8024370263168725,
+      "perception_bearing_rad": 0.0077975600086547,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8610755332517597,
+      "perception_goal_similarity": 0.8575568497180939,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            154.2537078857422,
+            91.4097671508789,
+            225.75196838378906,
+            276.42449951171875
+          ],
+          "detector_score": 0.9980719089508057,
+          "goal_reid": 0.8575568497180939,
+          "goal_histogram": 0.6741387644142378,
+          "selected": true,
+          "target_iou": 0.9567598052248084,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.967741935483871,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.440323039754138,
+        -0.2535919163685862,
+        0.00935707201038564
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 33,
+      "distance_m": 2.099344253540039,
+      "visible": true,
+      "mask_area": 7586,
+      "rgb_mean": 127.694256817853,
+      "perception_confidence": 0.9984278678894043,
+      "perception_range_m": 1.8063884881254173,
+      "perception_bearing_rad": 0.025178435143465107,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.87311740042249,
+      "perception_goal_similarity": 0.8550880551338196,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            149.28939819335938,
+            92.17024993896484,
+            224.0400390625,
+            276.7091064453125
+          ],
+          "detector_score": 0.9984278678894043,
+          "goal_reid": 0.8550880551338196,
+          "goal_histogram": 0.6920268694011611,
+          "selected": true,
+          "target_iou": 0.9225186125683728,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9288913013977473,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.3873562294218901,
+        -0.2308465327535357,
+        0.030214122172158128
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 34,
+      "distance_m": 2.0993988513946533,
+      "visible": true,
+      "mask_area": 7457,
+      "rgb_mean": 128.83406123408565,
+      "perception_confidence": 0.9984675049781799,
+      "perception_range_m": 1.7620770368765448,
+      "perception_bearing_rad": 0.02605122917172003,
+      "perception_candidate_count": 2,
+      "perception_association_score": 0.8749763896360345,
+      "perception_goal_similarity": 0.8451729118824005,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            150.55322265625,
+            90.88218688964844,
+            222.4408416748047,
+            279.48748779296875
+          ],
+          "detector_score": 0.9984675049781799,
+          "goal_reid": 0.8451729118824005,
+          "goal_histogram": 0.6754421370569617,
+          "selected": true,
+          "target_iou": 0.8559587131450606,
+          "target_match": true
+        },
+        {
+          "bbox_xyxy": [
+            281.377197265625,
+            288.0406494140625,
+            342.751220703125,
+            381.0621337890625
+          ],
+          "detector_score": 0.3965050280094147,
+          "goal_reid": 0.7284383326768875,
+          "goal_histogram": 0.07485815783729777,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.8426767676767677,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.47602263118356825,
+        -0.17732797988823484,
+        0.031261475006064035
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 35,
+      "distance_m": 2.0397770404815674,
+      "visible": true,
+      "mask_area": 7381,
+      "rgb_mean": 129.18622956452546,
+      "perception_confidence": 0.9962906837463379,
+      "perception_range_m": 1.7630473598105216,
+      "perception_bearing_rad": 0.01902048857396976,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8822760959895758,
+      "perception_goal_similarity": 0.8591741919517517,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            152.4024200439453,
+            91.71752166748047,
+            223.29283142089844,
+            281.0418701171875
+          ],
+          "detector_score": 0.9962906837463379,
+          "goal_reid": 0.8591741919517517,
+          "goal_histogram": 0.6682297034203657,
+          "selected": true,
+          "target_iou": 0.8938582048134098,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8937062937062937,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.47404883459566505,
+        -0.42732797988823484,
+        0.02282458628876371
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 36,
+      "distance_m": 2.1798601150512695,
+      "visible": true,
+      "mask_area": 8178,
+      "rgb_mean": 143.17913366247106,
+      "perception_confidence": 0.9984191656112671,
+      "perception_range_m": 1.7007153098985806,
+      "perception_bearing_rad": 0.018840705936604737,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.873334063721576,
+      "perception_goal_similarity": 0.8536235988140106,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            151.17617797851562,
+            85.32130432128906,
+            224.588134765625,
+            287.8880920410156
+          ],
+          "detector_score": 0.9984191656112671,
+          "goal_reid": 0.8536235988140106,
+          "goal_histogram": 0.6612729547414347,
+          "selected": true,
+          "target_iou": 0.9082759366911677,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9122105930859499,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.5987659107502863,
+        -0.6188175082206726,
+        0.022608847123925684
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 37,
+      "distance_m": 1.919554352760315,
+      "visible": true,
+      "mask_area": 7114,
+      "rgb_mean": 158.66032805266204,
+      "perception_confidence": 0.9993500113487244,
+      "perception_range_m": 1.8446863835444751,
+      "perception_bearing_rad": 0.08320097764256251,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8300360799819727,
+      "perception_goal_similarity": 0.8520680665969849,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            141.4603271484375,
+            95.90966796875,
+            209.51657104492188,
+            285.9837341308594
+          ],
+          "detector_score": 0.9993500113487244,
+          "goal_reid": 0.8520680665969849,
+          "goal_histogram": 0.6591138722506003,
+          "selected": true,
+          "target_iou": 0.8504869834689923,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.85108803868582,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.3487659107502863,
+        -0.8688175082206726,
+        0.099841173171075
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 38,
+      "distance_m": 1.8462958335876465,
+      "visible": false,
+      "mask_area": 9913,
+      "rgb_mean": 150.23242413556133,
+      "perception_confidence": 0.9981732368469238,
+      "perception_range_m": 1.5878011026410976,
+      "perception_bearing_rad": 0.21449671265176676,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.790100307280101,
+      "perception_goal_similarity": 0.8526909947395325,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            111.32809448242188,
+            72.01110076904297,
+            188.01828002929688,
+            307.0403747558594
+          ],
+          "detector_score": 0.9981732368469238,
+          "goal_reid": 0.8526909947395325,
+          "goal_histogram": 0.6097241972383927,
+          "selected": true,
+          "target_iou": 0.9020530587865143,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8985355070461454,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.5987659107502863,
+        -0.8515291554587229,
+        0.2573960551821201
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 39,
+      "distance_m": 1.6945111751556396,
+      "visible": false,
+      "mask_area": 0,
+      "rgb_mean": 148.52512161820025,
+      "perception_confidence": 0.0,
+      "perception_range_m": 1.5878011026410976,
+      "perception_bearing_rad": 0.21449671265176676,
+      "perception_candidate_count": 0,
+      "perception_association_score": 0.0,
+      "perception_goal_similarity": 0.0,
+      "perception_candidates": [],
+      "target_bbox_iou": 0.0,
+      "target_selection_correct": false,
+      "mode": "approach_coordinate",
+      "action": [
+        -0.3487659107502863,
+        -0.6015291554587229,
+        1.0
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 40,
+      "distance_m": 1.5691325664520264,
+      "visible": true,
+      "mask_area": 0,
+      "rgb_mean": 148.81587275752315,
+      "perception_confidence": 0.0,
+      "perception_range_m": 1.5878011026410976,
+      "perception_bearing_rad": 0.21449671265176676,
+      "perception_candidate_count": 0,
+      "perception_association_score": 0.0,
+      "perception_goal_similarity": 0.0,
+      "perception_candidates": [],
+      "target_bbox_iou": 0.0,
+      "target_selection_correct": false,
+      "mode": "approach_coordinate",
+      "action": [
+        -0.09876591075028629,
+        -0.3515291554587229,
+        1.0
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 41,
+      "distance_m": 1.6006942987442017,
+      "visible": true,
+      "mask_area": 0,
+      "rgb_mean": 142.46309181495948,
+      "perception_confidence": 0.0,
+      "perception_range_m": 1.5878011026410976,
+      "perception_bearing_rad": 0.21449671265176676,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.0,
+      "perception_goal_similarity": 0.0,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            290.2083435058594,
+            4.174841403961182,
+            384.0,
+            373.2672119140625
+          ],
+          "detector_score": 0.7286911010742188,
+          "goal_reid": 0.7320249080657959,
+          "goal_histogram": 0.28732404824040714,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.0,
+      "target_selection_correct": false,
+      "mode": "approach_coordinate",
+      "action": [
+        0.0,
+        -0.10152915545872288,
+        1.0
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 42,
+      "distance_m": 1.3123798370361328,
+      "visible": true,
+      "mask_area": 14868,
+      "rgb_mean": 144.20654296875,
+      "perception_confidence": 0.9987371563911438,
+      "perception_range_m": 2.231620770672036,
+      "perception_bearing_rad": -0.03270667316542952,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.7907063999556575,
+      "perception_goal_similarity": 0.8504658937454224,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            152.2195587158203,
+            45.9832878112793,
+            243.3442840576172,
+            342.642822265625
+          ],
+          "detector_score": 0.9987371563911438,
+          "goal_reid": 0.8504658937454224,
+          "goal_histogram": 0.5524934190616477,
+          "selected": true,
+          "target_iou": 0.8783848347787493,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.8784860557768924,
+      "target_selection_correct": true,
+      "mode": "track_incoming",
+      "action": [
+        0.25,
+        0.1413284278158655,
+        -0.03924800779851543
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 43,
+      "distance_m": 1.1869239807128906,
+      "visible": true,
+      "mask_area": 25668,
+      "rgb_mean": 144.1641529224537,
+      "perception_confidence": 0.9989522695541382,
+      "perception_range_m": 0.9698370880627232,
+      "perception_bearing_rad": -0.09745243025987121,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.7785127241977496,
+      "perception_goal_similarity": 0.8553211688995361,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            145.11599731445312,
+            3.8815248012542725,
+            275.4246520996094,
+            362.0340881347656
+          ],
+          "detector_score": 0.9989522695541382,
+          "goal_reid": 0.8553211688995361,
+          "goal_histogram": 0.5330485660670092,
+          "selected": true,
+          "target_iou": 0.9444690875461822,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.946288855994925,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.35,
+        -0.32387852668762207,
+        -0.11694291631184545
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 44,
+      "distance_m": 1.1826523542404175,
+      "visible": true,
+      "mask_area": 24701,
+      "rgb_mean": 144.79159206814236,
+      "perception_confidence": 0.9986377358436584,
+      "perception_range_m": 0.8328202138530528,
+      "perception_bearing_rad": -0.016476848588225384,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.7857399450351336,
+      "perception_goal_similarity": 0.8746300637722015,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            128.5726776123047,
+            0.0,
+            260.7550048828125,
+            339.76678466796875
+          ],
+          "detector_score": 0.9986377358436584,
+          "goal_reid": 0.8746300637722015,
+          "goal_histogram": 0.5687205965732574,
+          "selected": true,
+          "target_iou": 0.9075409286608039,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9093170792387113,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -0.95,
+        -0.34010616796357296,
+        -0.01977221830587046
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 45,
+      "distance_m": 1.0074567794799805,
+      "visible": true,
+      "mask_area": 23784,
+      "rgb_mean": 136.13774730541087,
+      "perception_confidence": 0.9988439083099365,
+      "perception_range_m": 0.8360658693016741,
+      "perception_bearing_rad": 0.009146117439974562,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8489803268429872,
+      "perception_goal_similarity": 0.8698994517326355,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            125.69964599609375,
+            0.19315797090530396,
+            253.78814697265625,
+            337.80572509765625
+          ],
+          "detector_score": 0.9988439083099365,
+          "goal_reid": 0.8698994517326355,
+          "goal_histogram": 0.5676201614915044,
+          "selected": true,
+          "target_iou": 0.9018833234749694,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9034727568214866,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -1.0,
+        -0.3308827536446708,
+        0.010975340927969474
+      ],
+      "human_following": 1.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 46,
+      "distance_m": 0.763755202293396,
+      "visible": true,
+      "mask_area": 32094,
+      "rgb_mean": 117.20422137225115,
+      "perception_confidence": 0.9973817467689514,
+      "perception_range_m": 0.6571283455942759,
+      "perception_bearing_rad": 0.04166983068311264,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.8311332978290172,
+      "perception_goal_similarity": 0.8638044893741608,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            105.68800354003906,
+            0.6143738031387329,
+            261.301513671875,
+            375.6038818359375
+          ],
+          "detector_score": 0.9973817467689514,
+          "goal_reid": 0.8638044893741608,
+          "goal_histogram": 0.6294525458870339,
+          "selected": true,
+          "target_iou": 0.9090285256382106,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9107602539900463,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -1.0,
+        -0.34711058650697985,
+        0.050003796819735165
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 47,
+      "distance_m": 0.705267608165741,
+      "visible": true,
+      "mask_area": 50357,
+      "rgb_mean": 107.41972972728588,
+      "perception_confidence": 0.9896935820579529,
+      "perception_range_m": 0.414318170362735,
+      "perception_bearing_rad": 0.3201728160335708,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.7735438407887223,
+      "perception_goal_similarity": 0.8626269996166229,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            2.265939474105835,
+            9.376355171203613,
+            253.40687561035156,
+            373.94708251953125
+          ],
+          "detector_score": 0.9896935820579529,
+          "goal_reid": 0.8626269996166229,
+          "goal_histogram": 0.5384944613906555,
+          "selected": true,
+          "target_iou": 0.9194480192220427,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.9200140590480016,
+      "target_selection_correct": true,
+      "mode": "evade_incoming",
+      "action": [
+        -1.0,
+        -0.35096583621842525,
+        0.3842073792402849
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 48,
+      "distance_m": 0.5577800273895264,
+      "visible": true,
+      "mask_area": 0,
+      "rgb_mean": 130.0987232349537,
+      "perception_confidence": 0.0,
+      "perception_range_m": 0.414318170362735,
+      "perception_bearing_rad": 0.3201728160335708,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.0,
+      "perception_goal_similarity": 0.0,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            3.0492372512817383,
+            12.53525447845459,
+            250.05572509765625,
+            375.64642333984375
+          ],
+          "detector_score": 0.8966816067695618,
+          "goal_reid": 0.8304756283760071,
+          "goal_histogram": 0.48189385485420644,
+          "selected": false,
+          "target_iou": 0.8938155434022639,
+          "target_match": true
+        }
+      ],
+      "target_bbox_iou": 0.0,
+      "target_selection_correct": false,
+      "mode": "approach_coordinate",
+      "action": [
+        -0.4,
+        0.24903416378157472,
+        0.8022802617692285
+      ],
+      "human_following": 0.0,
+      "human_collision": 0.0
+    },
+    {
+      "step": 49,
+      "distance_m": 0.4363267719745636,
+      "visible": true,
+      "mask_area": 0,
+      "rgb_mean": 116.77879729094329,
+      "perception_confidence": 0.0,
+      "perception_range_m": 0.414318170362735,
+      "perception_bearing_rad": 0.3201728160335708,
+      "perception_candidate_count": 1,
+      "perception_association_score": 0.0,
+      "perception_goal_similarity": 0.0,
+      "perception_candidates": [
+        {
+          "bbox_xyxy": [
+            255.87498474121094,
+            128.22299194335938,
+            297.1100158691406,
+            243.03848266601562
+          ],
+          "detector_score": 0.9864169359207153,
+          "goal_reid": 0.7791352868080139,
+          "goal_histogram": 0.49258461991121294,
+          "selected": false,
+          "target_iou": 0.0,
+          "target_match": false
+        }
+      ],
+      "target_bbox_iou": 0.0,
+      "target_selection_correct": false,
+      "mode": "approach_coordinate",
+      "action": [
+        0.08598779365834165,
+        0.510499690672821,
+        0.6429189698947875
+      ],
+      "human_following": 1.0,
+      "human_collision": 1.0
+    }
+  ]
+}

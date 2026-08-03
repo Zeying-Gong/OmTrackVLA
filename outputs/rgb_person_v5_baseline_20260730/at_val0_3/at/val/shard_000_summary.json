@@ -1,0 +1,22 @@
+{
+  "task": "at",
+  "split": "val",
+  "shard_id": 0,
+  "num_shards": 1,
+  "dataset_episodes": 1405,
+  "assigned_episodes": 1,
+  "excluded_dataset_indices": [],
+  "excluded_episodes": 0,
+  "pending_before": 1,
+  "selected_episodes": 1,
+  "remaining_episodes": 0,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_infer_at.yaml",
+  "perception": "rgb-person-mobilenet-osnet-v6-worker",
+  "target_initialization": "first-visible",
+  "lost_target_policy": "coordinate",
+  "completed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "unsuccessful": 0,
+  "exhausted": 0
+}

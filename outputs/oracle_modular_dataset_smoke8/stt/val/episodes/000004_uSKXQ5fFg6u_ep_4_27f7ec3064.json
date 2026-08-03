@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "task": "stt",
+  "split": "val",
+  "dataset_index": 4,
+  "episode_key": "000004_uSKXQ5fFg6u_ep_4_27f7ec3064",
+  "episode_id": "4",
+  "scene_id": "data/scene_datasets/hm3d/val/00874-uSKXQ5fFg6u/uSKXQ5fFg6u.basis.glb",
+  "robot_start_position": [
+    -3.08150577545166,
+    0.007733181118965149,
+    2.824435234069824
+  ],
+  "target_name": "male_48",
+  "target_semantic_id": 1078,
+  "instruction": "Stay behind the individual wearing a black leather jacket and black trousers.",
+  "summary": {
+    "finish": true,
+    "status": "Normal",
+    "success": 1.0,
+    "following_rate": 0.4444444444444444,
+    "following_step": 28.0,
+    "total_step": 63,
+    "collision": 0.0,
+    "visible_rate": 0.4444444444444444,
+    "coordinate_takeover_rate": 0.5555555555555556,
+    "distance_start_m": 1.7300450801849365,
+    "distance_min_m": 0.7672037482261658,
+    "distance_mean_m": 1.2356089495477223,
+    "distance_max_m": 1.7300450801849365,
+    "distance_end_m": 1.3864383697509766
+  }
+}

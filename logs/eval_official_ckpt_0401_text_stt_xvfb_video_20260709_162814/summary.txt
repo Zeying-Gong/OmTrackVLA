@@ -1,0 +1,2 @@
+sim_data/eval/official_ckpt_0401_text_stt_xvfb_video_20260709_162814 [complete]
+SR / TR / CR = 74.09 / 79.47 / 7.76

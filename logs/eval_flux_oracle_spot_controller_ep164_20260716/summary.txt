@@ -1,0 +1,3 @@
+sim_data/eval/flux_oracle_spot_controller_ep164_20260716 [partial 1/1405]
+SR / TR / CR = 0.00 / 40.16 / 0.00
+Videos = 1/1 mp4 files (SAVE_VIDEO/TRACKVLA_SAVE_VIDEO enabled or used previously)

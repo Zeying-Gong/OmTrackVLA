@@ -1,0 +1,32 @@
+{
+  "at/val": {
+    "completed": 20,
+    "expected": 1405,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 0.3,
+    "tracking_rate": 0.6531306860543499,
+    "collision_rate": 0.45,
+    "finish_rate": 0.55
+  },
+  "dt/val": {
+    "completed": 20,
+    "expected": 1405,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 0.45,
+    "tracking_rate": 0.6367803014998001,
+    "collision_rate": 0.3,
+    "finish_rate": 0.7
+  },
+  "stt/val": {
+    "completed": 20,
+    "expected": 1405,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 0.45,
+    "tracking_rate": 0.6869380333741055,
+    "collision_rate": 0.35,
+    "finish_rate": 0.65
+  }
+}

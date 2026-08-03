@@ -8,8 +8,11 @@ __pycache__/
 __pycache__
 trackvla_vis/
 
-outputs/
-logs/
+# Keep experiment outputs reproducible in Git. Raw logs remain ignored, while
+# their compact summaries are tracked below.
+logs/**
+!logs/**/
+!logs/**/summary.txt
 ckpt*/
 
 *.pt
@@ -25,7 +28,6 @@ data/official_0420
 hf_exports/
 models/
 oracle_modular_dataset_eval
-oracle_v5_summary.csv
 perf_data/
 sim_data/at_seed1000
 sim_data/dt_seed1000

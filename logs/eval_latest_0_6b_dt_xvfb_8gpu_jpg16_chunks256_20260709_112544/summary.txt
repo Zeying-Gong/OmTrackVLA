@@ -1,0 +1,2 @@
+sim_data/eval/latest_0_6b_dt_xvfb_8gpu_jpg16_chunks256_20260709_112544 [complete]
+SR / TR / CR = 33.88 / 61.07 / 8.75

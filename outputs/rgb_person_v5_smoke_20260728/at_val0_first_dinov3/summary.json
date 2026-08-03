@@ -1,0 +1,12 @@
+{
+  "at/val": {
+    "completed": 1,
+    "expected": 1405,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 1.0,
+    "tracking_rate": 0.9508196721311475,
+    "collision_rate": 0.0,
+    "finish_rate": 1.0
+  }
+}

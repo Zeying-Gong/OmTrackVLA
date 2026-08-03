@@ -1,0 +1,12 @@
+{
+  "dt/val": {
+    "completed": 4,
+    "expected": 1405,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 0.5,
+    "tracking_rate": 0.714345238095238,
+    "collision_rate": 0.25,
+    "finish_rate": 0.75
+  }
+}

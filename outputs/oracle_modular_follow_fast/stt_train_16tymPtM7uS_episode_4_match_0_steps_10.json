@@ -1,0 +1,557 @@
+{
+  "schema_version": 1,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_train_stt.yaml",
+  "task": "stt",
+  "split": "train",
+  "scene_id": "data/scene_datasets/hm3d/train/00083-16tymPtM7uS/16tymPtM7uS.basis.glb",
+  "episode_id": "4",
+  "episode_match_index": 0,
+  "episode_match_count": 2,
+  "robot_start_position": [
+    -0.5498493313789368,
+    0.11174289882183075,
+    6.169544696807861
+  ],
+  "instruction": "Track the woman wearing a light gray long-sleeve top and white pants.",
+  "target_semantic_id": 1035,
+  "tracking_limits": {
+    "official_following_max_distance_m": 3.0,
+    "official_success_distance_m": [
+      1.0,
+      3.0
+    ],
+    "official_facing_min_pixels": 10000,
+    "official_facing_max_fraction": 0.3,
+    "human_collision_distance_m": 0.5,
+    "controller_distance_band_m": [
+      1.2,
+      1.5
+    ],
+    "controller_max_forward": 0.25,
+    "controller_max_yaw": 0.35
+  },
+  "requested_steps": 10,
+  "executed_actions": 10,
+  "steps": [
+    {
+      "step": 0,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          164,
+          104,
+          199,
+          262
+        ],
+        "footpoint_uv": [
+          181.5,
+          262.0
+        ],
+        "relative_xy": [
+          2.272099018096924,
+          0.12040513753890991
+        ],
+        "range_m": 2.2752870907168545,
+        "bearing_rad": 0.05294338711892825,
+        "mask_area": 3518,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24964970655429172,
+          "lateral": 0.0,
+          "yaw": 0.0635320645427139
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.05294338711892825,
+        "waypoint_world": [
+          0.4032208323478699,
+          0.1127009242773056,
+          4.103488445281982
+        ],
+        "habitat_action": [
+          0.24964970655429172,
+          0.0,
+          0.0635320645427139
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/000.jpg"
+    },
+    {
+      "step": 1,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          131,
+          97,
+          210,
+          266
+        ],
+        "footpoint_uv": [
+          170.5,
+          266.0
+        ],
+        "relative_xy": [
+          2.1205697059631348,
+          0.10785079002380371
+        ],
+        "range_m": 2.123310545058667,
+        "bearing_rad": 0.050815562533456524,
+        "mask_area": 4321,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24967729177652428,
+          "lateral": 0.0,
+          "yaw": 0.060978675040147826
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.050815562533456524,
+        "waypoint_world": [
+          0.4032208323478699,
+          0.1127009242773056,
+          4.103488445281982
+        ],
+        "habitat_action": [
+          0.24967729177652428,
+          0.0,
+          0.060978675040147826
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/001.jpg"
+    },
+    {
+      "step": 2,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          130,
+          93,
+          216,
+          268
+        ],
+        "footpoint_uv": [
+          173.0,
+          268.0
+        ],
+        "relative_xy": [
+          2.0278801918029785,
+          0.08844113349914551
+        ],
+        "range_m": 2.0298078496255494,
+        "bearing_rad": 0.04358498314681407,
+        "mask_area": 4590,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24976258124347497,
+          "lateral": 0.0,
+          "yaw": 0.05230197977617688
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.04358498314681407,
+        "waypoint_world": [
+          0.4032208323478699,
+          0.1127009242773056,
+          4.103488445281982
+        ],
+        "habitat_action": [
+          0.24976258124347497,
+          0.0,
+          0.05230197977617688
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/002.jpg"
+    },
+    {
+      "step": 3,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          133,
+          88,
+          221,
+          270
+        ],
+        "footpoint_uv": [
+          177.0,
+          270.0
+        ],
+        "relative_xy": [
+          1.9348804950714111,
+          0.07255572080612183
+        ],
+        "range_m": 1.9362403938637072,
+        "bearing_rad": 0.03748125081352698,
+        "mask_area": 5121,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24982441503691818,
+          "lateral": 0.0,
+          "yaw": 0.044977500976232376
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.03748125081352698,
+        "waypoint_world": [
+          0.4032208323478699,
+          0.1127009242773056,
+          4.103488445281982
+        ],
+        "habitat_action": [
+          0.24982441503691818,
+          0.0,
+          0.044977500976232376
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/003.jpg"
+    },
+    {
+      "step": 4,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          133,
+          90,
+          199,
+          267
+        ],
+        "footpoint_uv": [
+          166.0,
+          267.0
+        ],
+        "relative_xy": [
+          2.0261130332946777,
+          0.2684517502784729
+        ],
+        "range_m": 2.043820042448487,
+        "bearing_rad": 0.13172867553978324,
+        "mask_area": 5322,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.2478340792259043,
+          "lateral": 0.0,
+          "yaw": 0.1580744106477399
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.13172867553978324,
+        "waypoint_world": [
+          0.2954332232475281,
+          0.14103049039840698,
+          3.8465006351470947
+        ],
+        "habitat_action": [
+          0.2478340792259043,
+          0.0,
+          0.1580744106477399
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/004.jpg"
+    },
+    {
+      "step": 5,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          120,
+          89,
+          178,
+          267
+        ],
+        "footpoint_uv": [
+          149.0,
+          267.0
+        ],
+        "relative_xy": [
+          2.0409388542175293,
+          0.32996949553489685
+        ],
+        "range_m": 2.0674407548073335,
+        "bearing_rad": 0.16028836164584037,
+        "mask_area": 5393,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24679532526770354,
+          "lateral": 0.0,
+          "yaw": 0.19234603397500843
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.16028836164584037,
+        "waypoint_world": [
+          0.2376115918159485,
+          0.15622760355472565,
+          3.70864200592041
+        ],
+        "habitat_action": [
+          0.24679532526770354,
+          0.0,
+          0.19234603397500843
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/005.jpg"
+    },
+    {
+      "step": 6,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          112,
+          89,
+          177,
+          268
+        ],
+        "footpoint_uv": [
+          144.5,
+          268.0
+        ],
+        "relative_xy": [
+          2.037663459777832,
+          0.3523283302783966
+        ],
+        "range_m": 2.067899327247467,
+        "bearing_rad": 0.17121511967488678,
+        "mask_area": 5232,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24634461563587318,
+          "lateral": 0.0,
+          "yaw": 0.20545814360986414
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.17121511967488678,
+        "waypoint_world": [
+          0.19343078136444092,
+          0.16045254468917847,
+          3.6033058166503906
+        ],
+        "habitat_action": [
+          0.24634461563587318,
+          0.0,
+          0.20545814360986414
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/006.jpg"
+    },
+    {
+      "step": 7,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          105,
+          94,
+          174,
+          269
+        ],
+        "footpoint_uv": [
+          139.5,
+          269.0
+        ],
+        "relative_xy": [
+          2.0723719596862793,
+          0.40040433406829834
+        ],
+        "range_m": 2.1106987397624106,
+        "bearing_rad": 0.19085889744305334,
+        "mask_area": 5151,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24546041562515392,
+          "lateral": 0.0,
+          "yaw": 0.229030676931664
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.19085889744305334,
+        "waypoint_world": [
+          0.13112634420394897,
+          0.16045254468917847,
+          3.454759120941162
+        ],
+        "habitat_action": [
+          0.24546041562515392,
+          0.0,
+          0.229030676931664
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/007.jpg"
+    },
+    {
+      "step": 8,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          108,
+          93,
+          177,
+          271
+        ],
+        "footpoint_uv": [
+          142.5,
+          271.0
+        ],
+        "relative_xy": [
+          2.061063766479492,
+          0.38877400755882263
+        ],
+        "range_m": 2.0974100882869755,
+        "bearing_rad": 0.1864372635866054,
+        "mask_area": 5145,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.2456677139570297,
+          "lateral": 0.0,
+          "yaw": 0.22372471630392646
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.1864372635866054,
+        "waypoint_world": [
+          0.09620468318462372,
+          0.16045254468917847,
+          3.3714988231658936
+        ],
+        "habitat_action": [
+          0.2456677139570297,
+          0.0,
+          0.22372471630392646
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/008.jpg"
+    },
+    {
+      "step": 9,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          114,
+          94,
+          175,
+          268
+        ],
+        "footpoint_uv": [
+          144.5,
+          268.0
+        ],
+        "relative_xy": [
+          2.092554807662964,
+          0.41098374128341675
+        ],
+        "range_m": 2.1325321237141304,
+        "bearing_rad": 0.19393438739058114,
+        "mask_area": 5136,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24531339814221184,
+          "lateral": 0.0,
+          "yaw": 0.23272126486869735
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.19393438739058114,
+        "waypoint_world": [
+          0.040489062666893005,
+          0.16045254468917847,
+          3.238661289215088
+        ],
+        "habitat_action": [
+          0.24531339814221184,
+          0.0,
+          0.23272126486869735
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/009.jpg"
+    },
+    {
+      "step": 10,
+      "perception": {
+        "visible": true,
+        "bbox_xyxy": [
+          117,
+          99,
+          168,
+          258
+        ],
+        "footpoint_uv": [
+          142.5,
+          258.0
+        ],
+        "relative_xy": [
+          2.2117013931274414,
+          0.488546758890152
+        ],
+        "range_m": 2.2650167743272758,
+        "bearing_rad": 0.21740079976201676,
+        "mask_area": 4705,
+        "confidence": 1.0
+      },
+      "control": {
+        "action": {
+          "forward": 0.24411534366940071,
+          "lateral": 0.0,
+          "yaw": 0.2608809597144201
+        },
+        "mode": "approach",
+        "guidance_bearing_rad": 0.21740079976201676,
+        "waypoint_world": [
+          -0.05563787370920181,
+          0.16045254468917847,
+          3.009474992752075
+        ],
+        "habitat_action": [
+          0.24411534366940071,
+          0.0,
+          0.2608809597144201
+        ],
+        "normalized": true
+      },
+      "official_human_following": 0.0,
+      "human_collision": 0.0,
+      "frame": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frames/010.jpg"
+    }
+  ],
+  "rgb": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frame_000_rgb.jpg",
+  "visualization": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/frame_000_oracle.jpg",
+  "video": "outputs/oracle_modular_follow_fast/stt_train_16tymPtM7uS_episode_4_match_0_steps_10/oracle_follow.mp4"
+}

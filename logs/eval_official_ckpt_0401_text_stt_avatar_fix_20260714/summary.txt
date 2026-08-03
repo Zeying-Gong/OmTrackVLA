@@ -1,0 +1,3 @@
+sim_data/eval/official_ckpt_0401_text_stt_avatar_fix_20260714 [complete]
+SR / TR / CR = 15.80 / 17.02 / 8.61
+Videos = 1405/1405 mp4 files (SAVE_VIDEO/TRACKVLA_SAVE_VIDEO enabled or used previously)

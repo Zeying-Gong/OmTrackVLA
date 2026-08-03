@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_train_stt.yaml",
+  "task": "stt",
+  "split": "train",
+  "scene_id": "data/scene_datasets/hm3d/train/00083-16tymPtM7uS/16tymPtM7uS.basis.glb",
+  "episode_id": "4",
+  "episode_match_index": 0,
+  "episode_match_count": 2,
+  "robot_start_position": [
+    -0.5498493313789368,
+    0.11174289882183075,
+    6.169544696807861
+  ],
+  "instruction": "Track the woman wearing a light gray long-sleeve top and white pants.",
+  "target_semantic_id": 1035,
+  "perception": {
+    "visible": true,
+    "bbox_xyxy": [
+      164,
+      104,
+      199,
+      262
+    ],
+    "footpoint_uv": [
+      187.5,
+      262.0
+    ],
+    "relative_xy": [
+      2.272099018096924,
+      0.12040513753890991
+    ],
+    "range_m": 2.2752870907168545,
+    "bearing_rad": 0.05294338711892825,
+    "mask_area": 3518,
+    "confidence": 1.0
+  },
+  "control": {
+    "forward": 0.24964970655429172,
+    "lateral": 0.0,
+    "yaw": 0.0635320645427139,
+    "habitat_action": [
+      0.24964970655429172,
+      0.0,
+      0.0635320645427139
+    ],
+    "normalized": true,
+    "desired_distance_m": 1.5
+  },
+  "rgb": "outputs/oracle_modular_follow/stt_train_16tymPtM7uS_episode_4_frame_0_rgb.jpg",
+  "visualization": "outputs/oracle_modular_follow/stt_train_16tymPtM7uS_episode_4_frame_0_oracle.jpg"
+}
