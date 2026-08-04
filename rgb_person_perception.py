@@ -43,10 +43,17 @@ def metric_depth(raw: np.ndarray, max_depth_m: float = 10.0) -> np.ndarray:
 
 def bbox_depth_to_relative(
     bbox: Sequence[float],
-    raw_depth: np.ndarray,
+    raw_depth: Optional[np.ndarray],
+    image_width: int = 640,
     hfov_deg: float = 90.0,
     max_depth_m: float = 10.0,
 ) -> Optional[Tuple[float, float]]:
+    if raw_depth is None:
+        x1, y1, x2, y2 = map(float, bbox)
+        center_x = 0.5 * (x1 + x2)
+        focal = image_width / (2.0 * math.tan(math.radians(hfov_deg) / 2.0))
+        left = -((center_x - (image_width - 1.0) / 2.0) * max_depth_m / focal)
+        return max_depth_m, float(left)
     depth = metric_depth(raw_depth, max_depth_m=max_depth_m)
     if depth.ndim != 2 or not depth.size:
         return None
@@ -210,23 +217,14 @@ class RGBPersonPerception:
             )
 
         box, detector_score, hist, association = selected
+        image_width = int(np.asarray(rgb).shape[1])
         relative = bbox_depth_to_relative(
-            box, depth, hfov_deg=self.hfov_deg, max_depth_m=self.max_depth_m
+            box, depth, image_width=image_width, hfov_deg=self.hfov_deg, max_depth_m=self.max_depth_m
         )
         if relative is None:
             relative = self._last_relative
         if relative is None:
-            self.last_association_score = 0.0
-            return TargetObservation(
-                visible=False,
-                bbox_xyxy=None,
-                footpoint_uv=None,
-                relative_xy=(self.max_depth_m, 0.0),
-                range_m=self.max_depth_m,
-                bearing_rad=0.0,
-                mask_area=0,
-                confidence=0.0,
-            )
+            relative = (self.max_depth_m, 0.0)
 
         self._bbox = box.copy()
         self._last_relative = relative
