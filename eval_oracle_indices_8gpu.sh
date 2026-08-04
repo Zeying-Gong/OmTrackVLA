@@ -14,10 +14,26 @@ RUN_ID="${RUN_ID:-$(date +%Y%m%d_%H%M%S)}"
 LOG_ROOT="${LOG_ROOT:-$ROOT/logs/oracle_indices_$RUN_ID}"
 DISPLAY_BASE="${DISPLAY_BASE:-300}"
 SAVE_STEPS="${SAVE_STEPS:-1}"
-RENDER_BACKEND="${RENDER_BACKEND:-egl}"
+RENDER_BACKEND="${RENDER_BACKEND:-}"
 PERCEPTION="${PERCEPTION:-oracle}"
 PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth}"
-PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.55}"
+PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
+PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
+TARGET_INITIALIZATION="${TARGET_INITIALIZATION:-auto}"
+LOST_TARGET_POLICY="${LOST_TARGET_POLICY:-auto}"
+LOST_BRAKE_STEPS="${LOST_BRAKE_STEPS:-2}"
+LOST_SEARCH_YAW="${LOST_SEARCH_YAW:-0.35}"
+LOST_SEARCH_PERIOD_STEPS="${LOST_SEARCH_PERIOD_STEPS:-8}"
+LOST_COAST_STEPS="${LOST_COAST_STEPS:-3}"
+LOST_COAST_MIN_RANGE="${LOST_COAST_MIN_RANGE:-2.0}"
+LOST_COAST_MAX_TRANSLATION="${LOST_COAST_MAX_TRANSLATION:-0.35}"
+
+if [[ -z "$RENDER_BACKEND" ]]; then
+  RENDER_BACKEND="egl"
+  if [[ "$PERCEPTION" == "rgb-person" ]]; then
+    RENDER_BACKEND="xvfb"
+  fi
+fi
 
 case "$RENDER_BACKEND" in
   egl)
@@ -70,7 +86,16 @@ echo "[oracle-indices] start index=$index gpu=$gpu display=$display"
         --save-video --video-fps 8 --no-resume \
         --perception "$PERCEPTION" \
         --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \
+        --person-reid-weights "$PERSON_REID_WEIGHTS" \
         --person-score-threshold "$PERSON_SCORE_THRESHOLD" \
+        --target-initialization "$TARGET_INITIALIZATION" \
+        --lost-target-policy "$LOST_TARGET_POLICY" \
+        --lost-brake-steps "$LOST_BRAKE_STEPS" \
+        --lost-search-yaw "$LOST_SEARCH_YAW" \
+        --lost-search-period-steps "$LOST_SEARCH_PERIOD_STEPS" \
+        --lost-coast-steps "$LOST_COAST_STEPS" \
+        --lost-coast-min-range "$LOST_COAST_MIN_RANGE" \
+        --lost-coast-max-translation "$LOST_COAST_MAX_TRANSLATION" \
         "${step_args[@]}" >"$log" 2>&1 &
     pids+=("$!")
     labels+=("$index")

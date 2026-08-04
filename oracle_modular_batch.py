@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -27,6 +28,7 @@ from oracle_modular_follow import (
 )
 from rgb_person_perception import (
     DEFAULT_WEIGHTS,
+    DEFAULT_REID_WEIGHTS,
     RGBPersonPerception,
     RGBPersonPerceptionWorker,
     bbox_iou,
@@ -69,6 +71,15 @@ def episode_key(index, episode):
         json.dumps(identity, sort_keys=True).encode("utf-8")
     ).hexdigest()[:10]
     return f"{index:06d}_{identity['scene']}_ep_{identity['episode_id']}_{digest}"
+
+
+def target_goal_crop(observations, target_semantic_id):
+    mask = np.asarray(observations[PANOPTIC_KEY]).squeeze() == int(target_semantic_id)
+    bbox = target_mask_to_bbox(mask)
+    if bbox is None:
+        return None
+    x1, y1, x2, y2 = bbox
+    return np.asarray(observations[RGB_KEY])[y1:y2 + 1, x1:x2 + 1, :3].copy()
 
 
 def atomic_json(path: Path, value) -> None:
@@ -199,6 +210,18 @@ def evaluate_episode(
             perception_detected_steps += int(target.visible)
             target_selection_correct = bool(target.visible and target_iou >= 0.3)
             perception_correct_steps += int(target_selection_correct)
+            candidate_records = []
+            for candidate in (
+                getattr(perception, "last_candidate_diagnostics", None) or []
+            ):
+                candidate_record = dict(candidate)
+                candidate_iou = (
+                    bbox_iou(candidate_record["bbox_xyxy"], current_gt_bbox)
+                    if current_gt_bbox is not None else 0.0
+                )
+                candidate_record["target_iou"] = candidate_iou
+                candidate_record["target_match"] = candidate_iou >= 0.3
+                candidate_records.append(candidate_record)
             decision = controller(env.sim, robot, target_agent, target)
             if not target.visible:
                 coordinate_steps += 1
@@ -236,12 +259,18 @@ def evaluate_episode(
                     "mask_area": target.mask_area,
                     "rgb_mean": float(np.asarray(observations[RGB_KEY])[..., :3].mean()),
                     "perception_confidence": target.confidence,
+                    "perception_range_m": target.range_m,
+                    "perception_bearing_rad": target.bearing_rad,
                     "perception_candidate_count": getattr(
                         perception, "last_candidate_count", None
                     ),
                     "perception_association_score": getattr(
                         perception, "last_association_score", None
                     ),
+                    "perception_goal_similarity": getattr(
+                        perception, "last_goal_similarity", None
+                    ),
+                    "perception_candidates": candidate_records,
                     "target_bbox_iou": target_iou,
                     "target_selection_correct": target_selection_correct,
                     "mode": decision.mode,
@@ -345,8 +374,25 @@ def main():
         "--perception", choices=("oracle", "rgb-person"), default="oracle"
     )
     parser.add_argument("--person-detector-weights", default=str(DEFAULT_WEIGHTS))
-    parser.add_argument("--person-score-threshold", type=float, default=0.55)
+    parser.add_argument("--person-reid-weights", default=str(DEFAULT_REID_WEIGHTS))
+    parser.add_argument("--person-score-threshold", type=float, default=0.30)
     parser.add_argument("--perception-device", default="cuda")
+    parser.add_argument(
+        "--target-initialization",
+        choices=("auto", "first-visible", "goal-crop"),
+        default="auto",
+    )
+    parser.add_argument(
+        "--lost-target-policy",
+        choices=("auto", "coordinate", "stop-search"),
+        default="auto",
+    )
+    parser.add_argument("--lost-brake-steps", type=int, default=2)
+    parser.add_argument("--lost-search-yaw", type=float, default=0.35)
+    parser.add_argument("--lost-search-period-steps", type=int, default=8)
+    parser.add_argument("--lost-coast-steps", type=int, default=3)
+    parser.add_argument("--lost-coast-min-range", type=float, default=2.0)
+    parser.add_argument("--lost-coast-max-translation", type=float, default=0.35)
     args = parser.parse_args()
     if not 0 <= args.shard_id < args.num_shards:
         parser.error("shard-id must be in [0, num-shards)")
@@ -354,6 +400,20 @@ def main():
         parser.error("max-scenes-per-process must be positive")
     if args.max_success_attempts <= 0:
         parser.error("max-success-attempts must be positive")
+    if args.lost_brake_steps < 0:
+        parser.error("lost-brake-steps must be non-negative")
+    if args.lost_search_period_steps <= 0:
+        parser.error("lost-search-period-steps must be positive")
+    if args.lost_coast_steps < 0:
+        parser.error("lost-coast-steps must be non-negative")
+    if args.lost_coast_max_translation < 0.0:
+        parser.error("lost-coast-max-translation must be non-negative")
+    target_initialization = args.target_initialization
+    if target_initialization == "auto":
+        target_initialization = "goal-crop" if args.task == "dt" else "first-visible"
+    lost_target_policy = args.lost_target_policy
+    if lost_target_policy == "auto":
+        lost_target_policy = "coordinate"
 
     config_kind = "train" if args.split == "train" else "infer"
     config_path = (
@@ -364,7 +424,20 @@ def main():
     if args.perception == "rgb-person":
         from habitat.config import read_write
 
+        agent_sensors = config.habitat.simulator.agents.agent_1.sim_sensors
+        if "jaw_depth_sensor" not in agent_sensors:
+            depth_template_path = (
+                "habitat-lab/habitat/config/benchmark/nav/track/"
+                f"track_{config_kind}_stt.yaml"
+            )
+            depth_template = habitat.get_config(depth_template_path)
+            depth_sensor = copy.deepcopy(
+                depth_template.habitat.simulator.agents.agent_1
+                .sim_sensors.jaw_depth_sensor
+            )
         with read_write(config):
+            if "jaw_depth_sensor" not in agent_sensors:
+                agent_sensors.jaw_depth_sensor = depth_sensor
             obs_keys = config.habitat.gym.obs_keys
             for key in (RGB_KEY, DEPTH_KEY, PANOPTIC_KEY):
                 if key not in obs_keys:
@@ -457,6 +530,13 @@ def main():
         max_forward=args.max_forward,
         max_lateral=args.max_lateral,
         max_yaw=args.max_yaw,
+        lost_target_policy=lost_target_policy,
+        lost_brake_steps=args.lost_brake_steps,
+        lost_search_yaw=args.lost_search_yaw,
+        lost_search_period_steps=args.lost_search_period_steps,
+        lost_coast_steps=args.lost_coast_steps,
+        lost_coast_min_range_m=args.lost_coast_min_range,
+        lost_coast_max_translation=args.lost_coast_max_translation,
         **controller_kwargs,
     )
     if args.perception == "oracle":
@@ -485,6 +565,16 @@ def main():
         "remaining_episodes": remaining_episodes,
         "config": config_path,
         "perception": perception_name,
+        "person_score_threshold": args.person_score_threshold,
+        "target_initialization": target_initialization,
+        "lost_target_policy": lost_target_policy,
+        "lost_brake_steps": args.lost_brake_steps,
+        "lost_search_yaw": args.lost_search_yaw,
+        "lost_search_period_steps": args.lost_search_period_steps,
+        "lost_coast_steps": args.lost_coast_steps,
+        "lost_coast_min_range": args.lost_coast_min_range,
+        "lost_coast_max_translation": args.lost_coast_max_translation,
+        "lost_retreat_steps": controller.lost_retreat_steps,
     }
     atomic_json(output_root / f"shard_{args.shard_id:03d}_manifest.json", manifest)
 
@@ -501,7 +591,8 @@ def main():
                 # Force Habitat's first RGB render before the detector worker
                 # establishes a CUDA context on the same physical GPU.
                 perception = RGBPersonPerceptionWorker(
-                    weights_path=args.person_detector_weights,
+                weights_path=args.person_detector_weights,
+                reid_weights_path=args.person_reid_weights,
                     score_threshold=args.person_score_threshold,
                     device=args.perception_device,
                 )
@@ -527,6 +618,16 @@ def main():
                 "video": str(video_path) if video_path is not None else None,
                 "success_attempt": success_attempt,
                 "perception": perception_name,
+                "person_score_threshold": args.person_score_threshold,
+                "target_initialization": target_initialization,
+                "lost_target_policy": lost_target_policy,
+                "lost_brake_steps": args.lost_brake_steps,
+                "lost_search_yaw": args.lost_search_yaw,
+                "lost_search_period_steps": args.lost_search_period_steps,
+                "lost_coast_steps": args.lost_coast_steps,
+                "lost_coast_min_range": args.lost_coast_min_range,
+                "lost_coast_max_translation": args.lost_coast_max_translation,
+                "lost_retreat_steps": controller.lost_retreat_steps,
             }
             try:
                 evasion_side = args.evasion_side
@@ -536,7 +637,21 @@ def main():
                         evasion_side = -previous_side
                 controller.reset(evasion_side=evasion_side)
                 if hasattr(perception, "reset"):
-                    perception.reset()
+                    reference_rgb = None
+                    if (
+                        args.perception == "rgb-person"
+                        and target_initialization == "goal-crop"
+                    ):
+                        reference_rgb = target_goal_crop(
+                            observations,
+                            episode.info["main_human_semantic_id"],
+                        )
+                        if reference_rgb is None:
+                            raise RuntimeError(
+                                "Target is not visible at reset; dataset must provide "
+                                "a goal RGB crop for goal-crop initialization"
+                            )
+                    perception.reset(reference_rgb=reference_rgb)
                 summary, records = evaluate_episode(
                     env, observations, controller,
                     max_steps=config.habitat.environment.max_episode_steps,

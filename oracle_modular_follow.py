@@ -206,9 +206,29 @@ class OracleNavmeshFollower:
         tracking_mask_max_pixels: int = 0,
         visibility_reframe_after_steps: int = 0,
         coordinate_approach_min_scale: float = 0.1,
+        lost_target_policy: str = "coordinate",
+        lost_brake_steps: int = 2,
+        lost_search_yaw: float = 0.35,
+        lost_search_period_steps: int = 8,
+        lost_coast_steps: int = 3,
+        lost_coast_min_range_m: float = 2.0,
+        lost_coast_max_translation: float = 0.35,
+        lost_retreat_steps: int = 3,
     ) -> None:
         if min_distance_m >= max_distance_m:
             raise ValueError("min_distance_m must be smaller than max_distance_m")
+        if lost_target_policy not in ("coordinate", "stop-search"):
+            raise ValueError(f"Unsupported lost target policy: {lost_target_policy}")
+        if lost_brake_steps < 0:
+            raise ValueError("lost_brake_steps must be non-negative")
+        if lost_search_period_steps <= 0:
+            raise ValueError("lost_search_period_steps must be positive")
+        if lost_coast_steps < 0:
+            raise ValueError("lost_coast_steps must be non-negative")
+        if lost_coast_max_translation < 0.0:
+            raise ValueError("lost_coast_max_translation must be non-negative")
+        if lost_retreat_steps < 0:
+            raise ValueError("lost_retreat_steps must be non-negative")
         self.min_distance_m = min_distance_m
         self.max_distance_m = max_distance_m
         self.max_forward = max_forward
@@ -243,6 +263,14 @@ class OracleNavmeshFollower:
         self.tracking_mask_max_pixels = tracking_mask_max_pixels
         self.visibility_reframe_after_steps = visibility_reframe_after_steps
         self.coordinate_approach_min_scale = coordinate_approach_min_scale
+        self.lost_target_policy = lost_target_policy
+        self.lost_brake_steps = int(lost_brake_steps)
+        self.lost_search_yaw = float(lost_search_yaw)
+        self.lost_search_period_steps = int(lost_search_period_steps)
+        self.lost_coast_steps = int(lost_coast_steps)
+        self.lost_coast_min_range_m = float(lost_coast_min_range_m)
+        self.lost_coast_max_translation = float(lost_coast_max_translation)
+        self.lost_retreat_steps = int(lost_retreat_steps)
         self.reset()
 
     def reset(self, evasion_side: Optional[float] = None) -> None:
@@ -258,6 +286,87 @@ class OracleNavmeshFollower:
         self._pass_yield_active = False
         self._evasion_side = evasion_side
         self._low_mask_steps = 0
+        self._lost_steps = 0
+        self._last_seen_bearing = 0.0
+        self._search_direction = 1.0
+
+    def _lost_target_decision(self, target: TargetObservation) -> ControlDecision:
+        self._lost_steps += 1
+        if self._lost_steps == 1:
+            if abs(self._last_seen_bearing) > 1e-3:
+                self._search_direction = math.copysign(1.0, self._last_seen_bearing)
+            elif self._evasion_side is not None:
+                self._search_direction = float(self._evasion_side)
+
+        retreat = bool(
+            self._lost_steps <= self.lost_retreat_steps
+            and target.range_m < self.min_distance_m
+        )
+        coast = bool(
+            not retreat
+            and
+            self._lost_steps <= self.lost_coast_steps
+            and target.range_m > self.lost_coast_min_range_m
+        )
+        if retreat:
+            target_forward = math.cos(self._last_seen_bearing)
+            target_left = math.sin(self._last_seen_bearing)
+            forward = self._previous_forward
+            lateral = self._previous_lateral
+            if forward * target_forward + lateral * target_left >= -0.05:
+                forward = -self.max_forward * target_forward
+                lateral = -self.max_lateral * target_left
+            forward, lateral = self._limit_translation(
+                forward, lateral, emergency=True
+            )
+            mode = "lost_retreat"
+            yaw = 0.0
+        elif coast:
+            forward, lateral = self._limit_translation(
+                float(np.clip(
+                    max(0.0, self._previous_forward),
+                    0.0,
+                    self.lost_coast_max_translation,
+                )),
+                float(np.clip(
+                    self._previous_lateral,
+                    -self.lost_coast_max_translation,
+                    self.lost_coast_max_translation,
+                )),
+                emergency=True,
+            )
+            mode = "lost_coast"
+            yaw = float(np.clip(
+                self.heading_gain * self._last_seen_bearing,
+                -self.max_yaw,
+                self.max_yaw,
+            ))
+        else:
+            forward, lateral = self._limit_translation(
+                0.0, 0.0, emergency=True
+            )
+        if not retreat and not coast and (
+            self._lost_steps <= self.lost_coast_steps + self.lost_brake_steps
+        ):
+            mode = "lost_brake"
+            yaw = 0.0
+        elif not retreat and not coast:
+            search_step = (
+                self._lost_steps - self.lost_coast_steps
+                - self.lost_brake_steps - 1
+            )
+            phase = search_step // self.lost_search_period_steps
+            direction = self._search_direction * (-1.0 if phase % 2 else 1.0)
+            mode = "lost_search"
+            yaw = float(np.clip(
+                direction * self.lost_search_yaw, -self.max_yaw, self.max_yaw
+            ))
+        return ControlDecision(
+            action=ContinuousAction(forward, lateral, yaw),
+            mode=mode,
+            guidance_bearing_rad=self._last_seen_bearing,
+            waypoint_world=None,
+        )
 
     def _update_incoming(self, robot_pos, target_pos) -> Tuple[bool, float]:
         target_toward_robot = 0.0
@@ -457,6 +566,22 @@ class OracleNavmeshFollower:
         return self._path_waypoint(sim, robot, goal)
 
     def __call__(self, sim, robot, target_agent, target: TargetObservation) -> ControlDecision:
+        if not target.visible and self.lost_target_policy == "stop-search":
+            return self._lost_target_decision(target)
+
+        if target.visible:
+            self._last_seen_bearing = target.bearing_rad
+            if self._lost_steps:
+                # Do not interpret the displacement accumulated while visual
+                # tracking was lost as one frame of target motion.
+                self._previous_target_position = None
+                self._filtered_target_motion.fill(0.0)
+                self._incoming_steps_remaining = 0
+                self._incoming_duration = 0
+                self._pass_yield_steps_remaining = 0
+                self._pass_yield_active = False
+                self._lost_steps = 0
+
         target_pos = np.asarray(target_agent.base_pos, dtype=np.float32)
         robot_pos = np.asarray(robot.base_pos, dtype=np.float32)
         incoming, target_toward_robot = self._update_incoming(robot_pos, target_pos)

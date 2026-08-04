@@ -21,7 +21,7 @@ EXCLUDE_DATASET_INDICES="${EXCLUDE_DATASET_INDICES:-}"
 CONTINUE_ON_ERROR="${CONTINUE_ON_ERROR:-1}"
 SAVE_VIDEO="${SAVE_VIDEO:-1}"
 VIDEO_FPS="${VIDEO_FPS:-8}"
-RENDER_BACKEND="${RENDER_BACKEND:-egl}"
+RENDER_BACKEND="${RENDER_BACKEND:-}"
 REQUIRE_100_SUCCESS="${REQUIRE_100_SUCCESS:-0}"
 MAX_SUCCESS_ATTEMPTS="${MAX_SUCCESS_ATTEMPTS:-5}"
 GPU_BURN_DUTY="${GPU_BURN_DUTY:-0.30}"
@@ -33,7 +33,23 @@ MAX_CONSECUTIVE_NATIVE_RESTARTS="${MAX_CONSECUTIVE_NATIVE_RESTARTS:-3}"
 RESTART_DELAY="${RESTART_DELAY:-1}"
 PERCEPTION="${PERCEPTION:-oracle}"
 PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth}"
-PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.55}"
+PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
+PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
+TARGET_INITIALIZATION="${TARGET_INITIALIZATION:-auto}"
+LOST_TARGET_POLICY="${LOST_TARGET_POLICY:-auto}"
+LOST_BRAKE_STEPS="${LOST_BRAKE_STEPS:-2}"
+LOST_SEARCH_YAW="${LOST_SEARCH_YAW:-0.35}"
+LOST_SEARCH_PERIOD_STEPS="${LOST_SEARCH_PERIOD_STEPS:-8}"
+LOST_COAST_STEPS="${LOST_COAST_STEPS:-3}"
+LOST_COAST_MIN_RANGE="${LOST_COAST_MIN_RANGE:-2.0}"
+LOST_COAST_MAX_TRANSLATION="${LOST_COAST_MAX_TRANSLATION:-0.35}"
+
+if [[ -z "$RENDER_BACKEND" ]]; then
+  RENDER_BACKEND="egl"
+  if [[ "$PERCEPTION" == "rgb-person" ]]; then
+    RENDER_BACKEND="xvfb"
+  fi
+fi
 
 case "$RENDER_BACKEND" in
   egl)
@@ -156,7 +172,16 @@ run_shard() {
         --max-scenes-per-process "$SCENES_PER_PROCESS" \
         --perception "$PERCEPTION" \
         --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \
+        --person-reid-weights "$PERSON_REID_WEIGHTS" \
         --person-score-threshold "$PERSON_SCORE_THRESHOLD" \
+        --target-initialization "$TARGET_INITIALIZATION" \
+        --lost-target-policy "$LOST_TARGET_POLICY" \
+        --lost-brake-steps "$LOST_BRAKE_STEPS" \
+        --lost-search-yaw "$LOST_SEARCH_YAW" \
+        --lost-search-period-steps "$LOST_SEARCH_PERIOD_STEPS" \
+        --lost-coast-steps "$LOST_COAST_STEPS" \
+        --lost-coast-min-range "$LOST_COAST_MIN_RANGE" \
+        --lost-coast-max-translation "$LOST_COAST_MAX_TRANSLATION" \
         "${extra_args[@]}"; then
       return 0
     else

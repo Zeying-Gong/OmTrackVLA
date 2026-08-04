@@ -12,7 +12,13 @@ from oracle_modular_follow import (
     target_mask_to_bbox,
 )
 from oracle_modular_follow_v6 import OracleNavmeshFollowerV6
-from rgb_person_perception import bbox_depth_to_relative, bbox_iou, metric_depth
+from rgb_person_perception import (
+    RGBPersonPerception,
+    bbox_depth_to_relative,
+    bbox_iou,
+    color_histogram,
+    metric_depth,
+)
 
 
 def make_target(forward, left, visible=True):
@@ -43,6 +49,233 @@ class OracleModularFollowTest(unittest.TestCase):
     def test_bbox_iou_handles_overlap_and_disjoint_boxes(self):
         self.assertAlmostEqual(bbox_iou((0, 0, 10, 10), (5, 0, 15, 10)), 1.0 / 3.0)
         self.assertEqual(bbox_iou((0, 0, 2, 2), (3, 3, 4, 4)), 0.0)
+
+    def test_goal_crop_appearance_selects_matching_person(self):
+        image = np.zeros((40, 80, 3), dtype=np.uint8)
+        image[:, :40] = (220, 20, 20)
+        image[:, 40:] = (20, 20, 220)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = None
+        perception._bbox = None
+        perception._goal_embedding = None
+        perception._track_embedding = None
+        perception._bbox_velocity = np.zeros(4, dtype=np.float32)
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        perception._reference_hist = color_histogram(
+            image[:, 40:], (0, 0, 40, 40)
+        )
+        selected = perception._select(
+            image,
+            [
+                (np.array((0, 0, 40, 40), dtype=np.float32), 0.99),
+                (np.array((40, 0, 80, 40), dtype=np.float32), 0.90),
+            ],
+        )
+        np.testing.assert_array_equal(selected[0], (40, 0, 80, 40))
+
+    def test_tracker_rejects_abrupt_large_occluder(self):
+        image = np.zeros((100, 100, 3), dtype=np.uint8)
+        image[10:35, 45:55] = (20, 20, 220)
+        image[5:95, 5:80] = (220, 20, 20)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = None
+        perception._bbox = np.array((45, 10, 55, 35), dtype=np.float32)
+        perception._bbox_velocity = np.zeros(4, dtype=np.float32)
+        perception._goal_embedding = None
+        perception._track_embedding = None
+        perception._reference_hist = color_histogram(
+            np.full((25, 10, 3), (20, 20, 220), dtype=np.uint8),
+            (0, 0, 10, 25),
+        )
+        perception._track_hist = perception._reference_hist.copy()
+        perception._missed_steps = 0
+        perception.association_threshold = 0.20
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        selected = perception._select(
+            image,
+            [(np.array((35, 5, 65, 95), dtype=np.float32), 0.99)],
+        )
+        self.assertIsNone(selected)
+
+    def test_reacquisition_rejects_weak_goal_reid_match(self):
+        image = np.zeros((40, 40, 3), dtype=np.uint8)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = object()
+        perception._embed_crops = lambda crops: [
+            np.array((0.6, 0.8), dtype=np.float32) for _ in crops
+        ]
+        perception._bbox = np.array((10, 5, 30, 35), dtype=np.float32)
+        perception._bbox_velocity = np.zeros(4, dtype=np.float32)
+        perception._goal_embedding = np.array((1.0, 0.0), dtype=np.float32)
+        perception._track_embedding = perception._goal_embedding.copy()
+        perception._reference_hist = None
+        perception._track_hist = None
+        perception._missed_steps = 1
+        perception.association_threshold = 0.20
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        selected = perception._select(
+            image,
+            [(np.array((10, 5, 30, 35), dtype=np.float32), 0.99)],
+        )
+        self.assertIsNone(selected)
+
+    def test_global_reacquisition_keeps_goal_reid_threshold(self):
+        image = np.zeros((40, 40, 3), dtype=np.uint8)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = object()
+        perception._embed_crops = lambda crops: [
+            np.array((0.6, 0.8), dtype=np.float32) for _ in crops
+        ]
+        perception._bbox = None
+        perception._goal_embedding = np.array((1.0, 0.0), dtype=np.float32)
+        perception._track_embedding = perception._goal_embedding.copy()
+        perception._reference_hist = None
+        perception._track_hist = None
+        perception._missed_steps = 8
+        perception.global_identity_threshold = 0.45
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        selected = perception._select(
+            image,
+            [(np.array((10, 5, 30, 35), dtype=np.float32), 0.99)],
+        )
+        self.assertIsNone(selected)
+
+    def test_global_reacquisition_ranks_identity_above_detector_score(self):
+        image = np.zeros((40, 80, 3), dtype=np.uint8)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = object()
+        perception._embed_crops = lambda crops: [
+            np.array((0.63, 0.776595), dtype=np.float32),
+            np.array((0.702, 0.712176), dtype=np.float32),
+        ]
+        perception._bbox = None
+        perception._goal_embedding = np.array((1.0, 0.0), dtype=np.float32)
+        perception._track_embedding = perception._goal_embedding.copy()
+        perception._reference_hist = None
+        perception._track_hist = None
+        perception._missed_steps = 8
+        perception.global_identity_threshold = 0.45
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        selected = perception._select(
+            image,
+            [
+                (np.array((0, 5, 30, 35), dtype=np.float32), 0.99),
+                (np.array((45, 5, 75, 35), dtype=np.float32), 0.55),
+            ],
+        )
+        np.testing.assert_array_equal(selected[0], (45, 5, 75, 35))
+
+    def test_confirmed_track_accepts_continuous_single_candidate_view_change(self):
+        image = np.zeros((40, 40, 3), dtype=np.uint8)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = object()
+        perception._embed_crops = lambda crops: [
+            np.array((0.616, 0.787746), dtype=np.float32) for _ in crops
+        ]
+        perception._bbox = np.array((10, 5, 30, 35), dtype=np.float32)
+        perception._bbox_velocity = np.zeros(4, dtype=np.float32)
+        perception._goal_embedding = np.array((1.0, 0.0), dtype=np.float32)
+        perception._track_embedding = perception._goal_embedding.copy()
+        perception._reference_hist = None
+        perception._track_hist = None
+        perception._missed_steps = 0
+        perception._recent_goal_similarities = [0.851, 0.867]
+        perception._confirmed_track_steps = 2
+        perception.association_threshold = 0.20
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        selected = perception._select(
+            image,
+            [(np.array((10, 5, 30, 35), dtype=np.float32), 0.99)],
+        )
+        self.assertIsNotNone(selected)
+        np.testing.assert_array_equal(selected[0], (10, 5, 30, 35))
+
+    def test_new_track_accepts_second_frame_view_change(self):
+        image = np.zeros((40, 40, 3), dtype=np.uint8)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = object()
+        perception._embed_crops = lambda crops: [
+            np.array((0.664, 0.747733), dtype=np.float32) for _ in crops
+        ]
+        perception._bbox = np.array((10, 5, 30, 35), dtype=np.float32)
+        perception._bbox_velocity = np.zeros(4, dtype=np.float32)
+        perception._goal_embedding = np.array((1.0, 0.0), dtype=np.float32)
+        perception._track_embedding = perception._goal_embedding.copy()
+        perception._reference_hist = None
+        perception._track_hist = None
+        perception._missed_steps = 0
+        perception._recent_goal_similarities = [0.876]
+        perception._confirmed_track_steps = 1
+        perception.association_threshold = 0.20
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        selected = perception._select(
+            image,
+            [(np.array((10, 5, 30, 35), dtype=np.float32), 0.99)],
+        )
+        self.assertIsNotNone(selected)
+        np.testing.assert_array_equal(selected[0], (10, 5, 30, 35))
+
+    def test_tracker_accepts_identity_consistent_rapid_scale_growth(self):
+        image = np.zeros((100, 100, 3), dtype=np.uint8)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = object()
+        perception._embed_crops = lambda crops: [
+            np.array((0.76, 0.649923), dtype=np.float32) for _ in crops
+        ]
+        perception._bbox = np.array((40, 30, 60, 70), dtype=np.float32)
+        perception._bbox_velocity = np.zeros(4, dtype=np.float32)
+        perception._goal_embedding = np.array((1.0, 0.0), dtype=np.float32)
+        perception._track_embedding = perception._goal_embedding.copy()
+        perception._reference_hist = None
+        perception._track_hist = None
+        perception._missed_steps = 0
+        perception._recent_goal_similarities = [1.0]
+        perception._confirmed_track_steps = 1
+        perception.association_threshold = 0.20
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        selected = perception._select(
+            image,
+            [(np.array((25, 5, 75, 95), dtype=np.float32), 0.99)],
+        )
+        self.assertIsNotNone(selected)
+        np.testing.assert_array_equal(selected[0], (25, 5, 75, 95))
+
+    def test_confirmed_track_allows_motion_to_disambiguate_multiple_candidates(self):
+        image = np.zeros((40, 80, 3), dtype=np.uint8)
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception.reid_model = object()
+        perception._embed_crops = lambda crops: [
+            np.array((0.658, 0.753018), dtype=np.float32),
+            np.array((0.5, 0.866025), dtype=np.float32),
+        ]
+        perception._bbox = np.array((5, 5, 30, 35), dtype=np.float32)
+        perception._bbox_velocity = np.zeros(4, dtype=np.float32)
+        perception._goal_embedding = np.array((1.0, 0.0), dtype=np.float32)
+        perception._track_embedding = perception._goal_embedding.copy()
+        perception._reference_hist = None
+        perception._track_hist = None
+        perception._missed_steps = 0
+        perception._recent_goal_similarities = [0.881, 0.904]
+        perception._confirmed_track_steps = 4
+        perception.association_threshold = 0.20
+        perception.reid_threshold = 0.55
+        perception.ambiguity_margin = 0.04
+        selected = perception._select(
+            image,
+            [
+                (np.array((5, 5, 30, 35), dtype=np.float32), 0.95),
+                (np.array((50, 5, 75, 35), dtype=np.float32), 0.99),
+            ],
+        )
+        np.testing.assert_array_equal(selected[0], (5, 5, 30, 35))
 
     def test_mask_geometry_uses_xyxy_and_bottom_contact(self):
         mask = np.zeros((20, 30), dtype=bool)
@@ -78,6 +311,64 @@ class OracleModularFollowTest(unittest.TestCase):
         controller = OracleNavmeshFollower()
         controller.reset(evasion_side=-1.0)
         self.assertEqual(controller._evasion_side, -1.0)
+
+    def test_stop_search_policy_brakes_then_rotates_without_gt_pose(self):
+        controller = OracleNavmeshFollower(
+            lost_target_policy="stop-search",
+            lost_brake_steps=2,
+            lost_search_yaw=0.3,
+            lost_search_period_steps=1,
+            lost_coast_steps=0,
+        )
+        controller._previous_forward = 1.0
+        controller._previous_lateral = -0.8
+        controller._last_seen_bearing = -0.2
+        lost = make_target(2.0, 0.0, visible=False)
+
+        first = controller(None, None, None, lost)
+        second = controller(None, None, None, lost)
+        third = controller(None, None, None, lost)
+        fourth = controller(None, None, None, lost)
+
+        self.assertEqual(first.mode, "lost_brake")
+        self.assertAlmostEqual(first.action.forward, 0.4)
+        self.assertAlmostEqual(first.action.lateral, -0.2)
+        self.assertEqual(second.action.as_habitat(), [0.0, 0.0, 0.0])
+        self.assertEqual(third.mode, "lost_search")
+        self.assertAlmostEqual(third.action.yaw, -0.3)
+        self.assertAlmostEqual(fourth.action.yaw, 0.3)
+
+    def test_stop_search_policy_coasts_only_for_distant_lost_target(self):
+        controller = OracleNavmeshFollower(
+            lost_target_policy="stop-search",
+            lost_coast_steps=2,
+            lost_coast_min_range_m=2.0,
+            lost_coast_max_translation=0.35,
+        )
+        controller._previous_forward = 0.7
+        controller._previous_lateral = -0.2
+        controller._last_seen_bearing = 0.1
+
+        decision = controller(None, None, None, make_target(3.0, 0.0, False))
+
+        self.assertEqual(decision.mode, "lost_coast")
+        self.assertAlmostEqual(decision.action.forward, 0.35)
+        self.assertAlmostEqual(decision.action.lateral, -0.2)
+        self.assertAlmostEqual(decision.action.yaw, 0.12)
+
+    def test_stop_search_policy_preserves_close_range_retreat(self):
+        controller = OracleNavmeshFollower(
+            lost_target_policy="stop-search", lost_retreat_steps=3
+        )
+        controller._previous_forward = -1.0
+        controller._previous_lateral = 0.6
+        controller._last_seen_bearing = 0.0
+
+        decision = controller(None, None, None, make_target(0.5, 0.0, False))
+
+        self.assertEqual(decision.mode, "lost_retreat")
+        self.assertAlmostEqual(decision.action.forward, -1.0)
+        self.assertAlmostEqual(decision.action.lateral, 0.6)
 
     def test_incoming_motion_persists_across_stationary_animation_frames(self):
         controller = OracleNavmeshFollower(incoming_memory_steps=3)
@@ -300,6 +591,7 @@ class OracleModularFollowTest(unittest.TestCase):
         self.assertEqual(controller.tracking_mask_max_pixels, 0)
         self.assertEqual(controller.visibility_reframe_after_steps, 0)
         self.assertEqual(controller.coordinate_approach_min_scale, 0.1)
+        self.assertEqual(controller.lost_target_policy, "coordinate")
 
     def test_v6_prioritizes_low_mask_visibility_over_distance_tracking(self):
         controller = OracleNavmeshFollowerV6(
