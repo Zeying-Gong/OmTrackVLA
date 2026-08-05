@@ -52,6 +52,7 @@ GPU_BURN_DTYPE="${GPU_BURN_DTYPE:-fp16}"
 SCENES_PER_PROCESS="${SCENES_PER_PROCESS:-1}"
 MAX_CONSECUTIVE_NATIVE_RESTARTS="${MAX_CONSECUTIVE_NATIVE_RESTARTS:-3}"
 RESTART_DELAY="${RESTART_DELAY:-1}"
+PROGRESS_INTERVAL="${PROGRESS_INTERVAL:-15}"
 PERCEPTION="${PERCEPTION:-oracle}"
 PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth}"
 PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
@@ -111,17 +112,17 @@ fi
 mkdir -p "$OUTPUT_ROOT" "$LOG_ROOT"
 export PYTHONPATH="$ROOT/habitat-lab:$ROOT"
 
-BURN_PIDS=()
-cleanup_burn() {
+BACKGROUND_PIDS=()
+cleanup_background() {
   local pid
-  for pid in "${BURN_PIDS[@]:-}"; do
+  for pid in "${BACKGROUND_PIDS[@]:-}"; do
     kill "$pid" 2>/dev/null || true
   done
-  for pid in "${BURN_PIDS[@]:-}"; do
+  for pid in "${BACKGROUND_PIDS[@]:-}"; do
     wait "$pid" 2>/dev/null || true
   done
 }
-trap cleanup_burn EXIT
+trap cleanup_background EXIT
 trap 'exit 130' INT TERM HUP
 
 if [[ "$GPU_BURN_DUTY" != "0" && "$GPU_BURN_DUTY" != "0.0" ]]; then
@@ -133,11 +134,11 @@ if [[ "$GPU_BURN_DUTY" != "0" && "$GPU_BURN_DUTY" != "0.0" ]]; then
       --size "$GPU_BURN_SIZE" \
       --dtype "$GPU_BURN_DTYPE" \
       >"$LOG_ROOT/gpu_burn_${gpu}.log" 2>&1 &
-    BURN_PIDS+=("$!")
+    BACKGROUND_PIDS+=("$!")
   done
   sleep 2
-  for i in "${!BURN_PIDS[@]}"; do
-    if ! kill -0 "${BURN_PIDS[$i]}" 2>/dev/null; then
+  for i in "${!BACKGROUND_PIDS[@]}"; do
+    if ! kill -0 "${BACKGROUND_PIDS[$i]}" 2>/dev/null; then
       echo "[oracle-8gpu] ERROR: gpu burn failed for gpu=${GPUS[$i]}; log=$LOG_ROOT/gpu_burn_${GPUS[$i]}.log" >&2
       exit 1
     fi
@@ -167,6 +168,7 @@ echo "[oracle-8gpu] tasks=$TASKS splits=$SPLITS shards=$NUM_SHARDS gpus=$GPU_LIS
 echo "[oracle-8gpu] controller_version=${ORACLE_CONTROLLER_VERSION:-5}"
 echo "[oracle-8gpu] perception=$PERCEPTION"
 echo "[oracle-8gpu] output=$OUTPUT_ROOT logs=$LOG_ROOT"
+echo "[oracle-8gpu] progress_interval=${PROGRESS_INTERVAL}s resume=enabled"
 if [[ -n "$EXCLUDE_DATASET_INDICES" ]]; then
   echo "[oracle-8gpu] excluded_dataset_indices=$EXCLUDE_DATASET_INDICES"
 fi
@@ -231,9 +233,44 @@ run_shard() {
   done
 }
 
+progress_args() {
+  PROGRESS_ARGS=(
+    --output-root "$OUTPUT_ROOT"
+    --repo-root "$ROOT"
+    --task "$1"
+    --split "$2"
+    --num-shards "$NUM_SHARDS"
+    --interval "$PROGRESS_INTERVAL"
+  )
+  if [[ -n "$EXCLUDE_DATASET_INDICES" ]]; then
+    PROGRESS_ARGS+=(--exclude-dataset-indices "$EXCLUDE_DATASET_INDICES")
+  fi
+  if [[ -n "$MAX_EPISODES_PER_SHARD" ]]; then
+    PROGRESS_ARGS+=(--max-episodes-per-shard "$MAX_EPISODES_PER_SHARD")
+  fi
+  if [[ "$SAVE_VIDEO" == "1" ]]; then
+    PROGRESS_ARGS+=(--save-video)
+  fi
+  if [[ "$REQUIRE_100_SUCCESS" == "1" ]]; then
+    PROGRESS_ARGS+=(--require-success)
+  fi
+}
+
 combo=0
 for task in "${TASK_ARRAY[@]}"; do
   for split in "${SPLIT_ARRAY[@]}"; do
+    progress_args "$task" "$split"
+    progress_started_at="$(date +%s)"
+    progress_baseline="$(
+      "$PYTHON_BIN" monitor_oracle_progress.py "${PROGRESS_ARGS[@]}" --count-only
+    )"
+    "$PYTHON_BIN" -u monitor_oracle_progress.py \
+      "${PROGRESS_ARGS[@]}" \
+      --baseline "$progress_baseline" \
+      --started-at "$progress_started_at" \
+      --watch-pid "$$" &
+    progress_pid=$!
+    BACKGROUND_PIDS+=("$progress_pid")
     for ((wave=0; wave<NUM_SHARDS; wave+=${#GPUS[@]})); do
       pids=()
       labels=()
@@ -261,6 +298,13 @@ for task in "${TASK_ARRAY[@]}"; do
         exit 1
       fi
     done
+    kill "$progress_pid" 2>/dev/null || true
+    wait "$progress_pid" 2>/dev/null || true
+    "$PYTHON_BIN" monitor_oracle_progress.py \
+      "${PROGRESS_ARGS[@]}" \
+      --baseline "$progress_baseline" \
+      --started-at "$progress_started_at" \
+      --once
     combo=$((combo + 1))
     "$PYTHON_BIN" summarize_oracle_modular.py "$OUTPUT_ROOT"
   done
