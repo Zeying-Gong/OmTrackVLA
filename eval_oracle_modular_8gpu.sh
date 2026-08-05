@@ -4,8 +4,29 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
-PYTHON_BIN="${PYTHON_BIN:-/robot/robot-research-raw-data-0/user/gzy/temp/miniconda3/envs/tracevln_V2/bin/python}"
-GPU_LIST="${GPU_LIST:-0,1,2,3,4,5,6,7}"
+detect_gpu_list() {
+  if [[ -n "${CUDA_VISIBLE_DEVICES:-}" && "$CUDA_VISIBLE_DEVICES" != "-1" ]]; then
+    echo "$CUDA_VISIBLE_DEVICES"
+    return
+  fi
+  if command -v nvidia-smi >/dev/null 2>&1; then
+    local detected
+    detected="$(
+      nvidia-smi --query-gpu=index --format=csv,noheader,nounits 2>/dev/null \
+        | sed 's/[[:space:]]//g' \
+        | sed '/^$/d' \
+        | paste -sd, -
+    )"
+    if [[ -n "$detected" ]]; then
+      echo "$detected"
+      return
+    fi
+  fi
+  echo "0"
+}
+
+PYTHON_BIN="${PYTHON_BIN:-$(command -v python)}"
+GPU_LIST="${GPU_LIST:-$(detect_gpu_list)}"
 TASKS="${TASKS:-stt,dt,at}"
 SPLITS="${SPLITS:-train,val}"
 IFS=',' read -r -a GPUS <<< "$GPU_LIST"
@@ -65,18 +86,21 @@ case "$RENDER_BACKEND" in
 esac
 
 if [[ "${SKIP_GPU_PREFLIGHT:-0}" != "1" ]] && command -v nvidia-smi >/dev/null 2>&1; then
-  mapfile -t AVAILABLE_GPU_IDS < <(
-    nvidia-smi --query-gpu=index --format=csv,noheader,nounits 2>/dev/null \
-      | sed 's/[[:space:]]//g'
+  mapfile -t AVAILABLE_GPUS < <(
+    nvidia-smi --query-gpu=index,uuid --format=csv,noheader,nounits 2>/dev/null
   )
-  if (( ${#AVAILABLE_GPU_IDS[@]} > 0 )); then
+  if (( ${#AVAILABLE_GPUS[@]} > 0 )); then
     declare -A AVAILABLE_GPU_SET=()
-    for gpu_id in "${AVAILABLE_GPU_IDS[@]}"; do
-      AVAILABLE_GPU_SET["$gpu_id"]=1
+    for gpu_record in "${AVAILABLE_GPUS[@]}"; do
+      IFS=',' read -r gpu_index gpu_uuid <<< "$gpu_record"
+      gpu_index="${gpu_index//[[:space:]]/}"
+      gpu_uuid="${gpu_uuid//[[:space:]]/}"
+      AVAILABLE_GPU_SET["$gpu_index"]=1
+      AVAILABLE_GPU_SET["$gpu_uuid"]=1
     done
     for gpu_id in "${GPUS[@]}"; do
       if [[ -z "${AVAILABLE_GPU_SET[$gpu_id]:-}" ]]; then
-        echo "[oracle-8gpu] ERROR: requested GPU $gpu_id is not visible; visible GPU IDs: ${AVAILABLE_GPU_IDS[*]}" >&2
+        echo "[oracle-8gpu] ERROR: requested GPU $gpu_id is not visible; nvidia-smi records: ${AVAILABLE_GPUS[*]}" >&2
         echo "[oracle-8gpu] Allocate/mount the requested GPUs, or reduce GPU_LIST and NUM_SHARDS." >&2
         exit 2
       fi

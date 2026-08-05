@@ -12,7 +12,9 @@ import traceback
 from pathlib import Path
 
 import imageio.v2 as imageio
+import cv2
 import numpy as np
+from PIL import Image, ImageDraw
 
 from oracle_modular_follow import (
     ACTION_NAMES,
@@ -32,6 +34,7 @@ from rgb_person_perception import (
     RGBPersonPerception,
     RGBPersonPerceptionWorker,
     bbox_iou,
+    metric_depth,
 )
 
 CONTROLLER_VERSION = int(os.environ.get("ORACLE_CONTROLLER_VERSION", "5"))
@@ -80,6 +83,38 @@ def target_goal_crop(observations, target_semantic_id):
         return None
     x1, y1, x2, y2 = bbox
     return np.asarray(observations[RGB_KEY])[y1:y2 + 1, x1:x2 + 1, :3].copy()
+
+
+def compose_rgbd_video_frame(
+    rgb_frame: np.ndarray, raw_depth: np.ndarray, max_depth_m: float = 10.0,
+) -> np.ndarray:
+    rgb = np.asarray(rgb_frame)[..., :3].astype(np.uint8)
+    depth = metric_depth(raw_depth, max_depth_m=max_depth_m)
+    if depth.ndim != 2 or not depth.size:
+        raise ValueError(f"Expected a non-empty depth image, got shape {depth.shape}")
+
+    valid = depth > 0.0
+    proximity = np.zeros(depth.shape, dtype=np.uint8)
+    proximity[valid] = np.clip(
+        255.0 * (1.0 - depth[valid] / max_depth_m), 0.0, 255.0
+    ).astype(np.uint8)
+    depth_rgb = cv2.applyColorMap(proximity, cv2.COLORMAP_TURBO)[..., ::-1]
+    depth_rgb[~valid] = 0
+    if depth_rgb.shape[:2] != rgb.shape[:2]:
+        height, width = rgb.shape[:2]
+        depth_rgb = np.asarray(
+            Image.fromarray(depth_rgb).resize((width, height), Image.Resampling.NEAREST)
+        )
+
+    depth_image = Image.fromarray(depth_rgb)
+    draw = ImageDraw.Draw(depth_image)
+    label = f"DEPTH | near=warm far=cool | valid 0.1-{max_depth_m:.1f}m"
+    box = draw.textbbox((8, 8), label)
+    draw.rectangle(
+        (box[0] - 2, box[1] - 2, box[2] + 2, box[3] + 2), fill=(0, 0, 0)
+    )
+    draw.text((8, 8), label, fill=(255, 255, 255))
+    return np.concatenate((rgb, np.asarray(depth_image)), axis=1)
 
 
 def atomic_json(path: Path, value) -> None:
@@ -232,7 +267,12 @@ def evaluate_episode(
                     f"{episode.info.get('_oracle_batch_index')} | {scene_key(episode.scene_id)} | ep {episode.episode_id} | step {steps}",
                     current_following,
                 )
-                writer.append_data(np.asarray(frame))
+                frame = np.asarray(frame)
+                if not isinstance(perception, OraclePerception):
+                    frame = compose_rgbd_video_frame(
+                        frame, observations[DEPTH_KEY]
+                    )
+                writer.append_data(frame)
 
             observations = env.step({
                 "action": ACTION_NAMES,
