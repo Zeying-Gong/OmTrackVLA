@@ -2,6 +2,7 @@
 """Aggregate sharded modular-oracle evaluation results."""
 
 import argparse
+import csv
 import gzip
 import json
 import os
@@ -28,14 +29,34 @@ def main():
     groups = defaultdict(list)
     errors = defaultdict(int)
     stale = defaultdict(int)
-    for path in root.glob("*/*/episodes/*.json"):
+    episodes = []
+    for path in sorted(root.glob("*/*/episodes/*.json")):
         value = json.loads(path.read_text())
-        key = (value["task"], value["split"])
+        task = value["task"]
+        split = value["split"]
+        key = (task, split)
         if value.get("controller_version") != EXPECTED_CONTROLLER_VERSION:
             stale[key] += 1
             continue
         if "summary" in value:
             groups[key].append(value["summary"])
+            s = value["summary"]
+            episodes.append({
+                "task": task,
+                "split": split,
+                "dataset_index": value.get("dataset_index", ""),
+                "episode_key": value.get("episode_key", path.stem),
+                "scene_id": value.get("scene_id", ""),
+                "episode_id": value.get("episode_id", ""),
+                "target_name": value.get("target_name", ""),
+                "success": s.get("success", ""),
+                "following_rate": s.get("following_rate", ""),
+                "collision": s.get("collision", ""),
+                "finish": s.get("finish", ""),
+                "total_step": s.get("total_step", ""),
+                "perception": value.get("perception", ""),
+                "result_path": str(path),
+            })
         else:
             errors[key] += 1
 
@@ -69,6 +90,20 @@ def main():
         if count + err != expected or err or old or row["success_rate"] < 1.0:
             failed_requirement = True
     (root / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
+
+    if episodes:
+        csv_path = root / "episodes.csv"
+        fieldnames = [
+            "task", "split", "dataset_index", "episode_key", "scene_id",
+            "episode_id", "target_name", "success", "following_rate",
+            "collision", "finish", "total_step", "perception", "result_path",
+        ]
+        with open(csv_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(episodes)
+        print(f"\nWrote {len(episodes)} episode rows to {csv_path}")
+
     if args.require_100_success and failed_requirement:
         raise SystemExit(2)
 

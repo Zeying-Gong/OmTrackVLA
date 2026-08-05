@@ -617,6 +617,18 @@ def main():
         "lost_retreat_steps": controller.lost_retreat_steps,
     }
     atomic_json(output_root / f"shard_{args.shard_id:03d}_manifest.json", manifest)
+    import time as _time
+    _wall_start = _time.monotonic()
+    _total_to_run = len(indexed)
+    _skipped_resume = assigned_episodes - excluded_episodes - pending_before
+    print(
+        f"[shard {args.shard_id}] Starting: {_total_to_run} episodes to run "
+        f"({assigned_episodes} assigned, "
+        f"{_skipped_resume} already completed (resume), "
+        f"{excluded_episodes} excluded, "
+        f"{pending_before} pending)",
+        flush=True,
+    )
 
     if not indexed:
         worker_summary = {**manifest, **counts}
@@ -625,7 +637,7 @@ def main():
         return
 
     with habitat.TrackEnv(config=config, dataset=dataset) as env:
-        for _ in range(len(indexed)):
+        for _ep_idx in range(_total_to_run):
             observations = env.reset()
             if perception is None:
                 # Force Habitat's first RGB render before the detector worker
@@ -706,6 +718,19 @@ def main():
                     result["steps"] = records
                 atomic_json(result_path, result)
                 counts["completed"] += 1
+                elapsed = _time.monotonic() - _wall_start
+                done = counts["completed"]
+                rate = done / elapsed if elapsed > 0 else 0
+                remaining = _total_to_run - done
+                eta = remaining / rate if rate > 0 else float("inf")
+                print(
+                    f"[shard {args.shard_id}] "
+                    f"{done}/{_total_to_run} episodes | "
+                    f"{elapsed/60:.1f} min elapsed | "
+                    f"{rate:.1f} ep/min | "
+                    f"ETA {eta/60:.1f} min",
+                    flush=True,
+                )
                 if args.require_success and not summary["success"]:
                     counts["unsuccessful"] += 1
                     if success_attempt >= args.max_success_attempts:
@@ -734,6 +759,15 @@ def main():
                 }), flush=True)
             except Exception as exc:
                 counts["errors"] += 1
+                elapsed = _time.monotonic() - _wall_start
+                done = counts["completed"] + counts["errors"]
+                print(
+                    f"[shard {args.shard_id}] "
+                    f"ERROR ({counts['errors']} total): {exc} | "
+                    f"{done}/{_total_to_run} done | "
+                    f"{elapsed/60:.1f} min elapsed",
+                    flush=True,
+                )
                 error = {
                     **metadata,
                     "error": type(exc).__name__,
@@ -757,9 +791,17 @@ def main():
         if hasattr(perception, "close"):
             perception.close()
 
-    worker_summary = {**manifest, **counts}
+    _wall_total = _time.monotonic() - _wall_start
+    worker_summary = {**manifest, **counts, "wall_time_seconds": round(_wall_total, 1)}
     atomic_json(output_root / f"shard_{args.shard_id:03d}_summary.json", worker_summary)
     print(json.dumps({"event": "oracle_batch_complete", **worker_summary}, indent=2))
+    print(
+        f"[shard {args.shard_id}] Done: {counts['completed']}/{_total_to_run} completed, "
+        f"{counts['errors']} errors, {counts['unsuccessful']} unsuccessful, "
+        f"{counts['exhausted']} exhausted | "
+        f"Total time: {_wall_total/60:.1f} min",
+        flush=True,
+    )
     if counts["errors"]:
         raise SystemExit(2)
     if counts["exhausted"]:
