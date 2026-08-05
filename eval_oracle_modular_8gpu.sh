@@ -27,11 +27,26 @@ detect_gpu_list() {
 
 PYTHON_BIN="${PYTHON_BIN:-$(command -v python)}"
 GPU_LIST="${GPU_LIST:-$(detect_gpu_list)}"
+NUM_WORKERS="${NUM_WORKERS:-1}"
 TASKS="${TASKS:-stt,dt,at}"
 SPLITS="${SPLITS:-train,val}"
-IFS=',' read -r -a GPUS <<< "$GPU_LIST"
+IFS=',' read -r -a PHYSICAL_GPUS <<< "$GPU_LIST"
 IFS=',' read -r -a TASK_ARRAY <<< "$TASKS"
 IFS=',' read -r -a SPLIT_ARRAY <<< "$SPLITS"
+
+if [[ ! "$NUM_WORKERS" =~ ^[1-9][0-9]*$ ]]; then
+  echo "[oracle-8gpu] ERROR: NUM_WORKERS must be a positive integer, got: $NUM_WORKERS" >&2
+  exit 2
+fi
+
+# Expand each physical GPU into NUM_WORKERS independent worker slots. Each
+# worker receives a unique shard while CUDA_VISIBLE_DEVICES pins it to its GPU.
+GPUS=()
+for gpu_id in "${PHYSICAL_GPUS[@]}"; do
+  for ((worker_id=0; worker_id<NUM_WORKERS; worker_id++)); do
+    GPUS+=("$gpu_id")
+  done
+done
 NUM_SHARDS="${NUM_SHARDS:-${#GPUS[@]}}"
 RUN_ID="${RUN_ID:-$(date +%Y%m%d_%H%M%S)}"
 OUTPUT_ROOT="${OUTPUT_ROOT:-/robot/robot-research-raw-data-0/user/gzy/omtrackvla_oracle_modular_dataset_eval}"
@@ -99,7 +114,7 @@ if [[ "${SKIP_GPU_PREFLIGHT:-0}" != "1" ]] && command -v nvidia-smi >/dev/null 2
       AVAILABLE_GPU_SET["$gpu_index"]=1
       AVAILABLE_GPU_SET["$gpu_uuid"]=1
     done
-    for gpu_id in "${GPUS[@]}"; do
+    for gpu_id in "${PHYSICAL_GPUS[@]}"; do
       if [[ -z "${AVAILABLE_GPU_SET[$gpu_id]:-}" ]]; then
         echo "[oracle-8gpu] ERROR: requested GPU $gpu_id is not visible; nvidia-smi records: ${AVAILABLE_GPUS[*]}" >&2
         echo "[oracle-8gpu] Allocate/mount the requested GPUs, or reduce GPU_LIST and NUM_SHARDS." >&2
@@ -126,7 +141,7 @@ trap cleanup_background EXIT
 trap 'exit 130' INT TERM HUP
 
 if [[ "$GPU_BURN_DUTY" != "0" && "$GPU_BURN_DUTY" != "0.0" ]]; then
-  for gpu in "${GPUS[@]}"; do
+  for gpu in "${PHYSICAL_GPUS[@]}"; do
     echo "[oracle-8gpu] burn gpu=$gpu duty=$GPU_BURN_DUTY period=${GPU_BURN_PERIOD}s"
     CUDA_VISIBLE_DEVICES="$gpu" "$PYTHON_BIN" -u gpu_burn_duty.py \
       --duty "$GPU_BURN_DUTY" \
@@ -139,7 +154,7 @@ if [[ "$GPU_BURN_DUTY" != "0" && "$GPU_BURN_DUTY" != "0.0" ]]; then
   sleep 2
   for i in "${!BACKGROUND_PIDS[@]}"; do
     if ! kill -0 "${BACKGROUND_PIDS[$i]}" 2>/dev/null; then
-      echo "[oracle-8gpu] ERROR: gpu burn failed for gpu=${GPUS[$i]}; log=$LOG_ROOT/gpu_burn_${GPUS[$i]}.log" >&2
+      echo "[oracle-8gpu] ERROR: gpu burn failed for gpu=${PHYSICAL_GPUS[$i]}; log=$LOG_ROOT/gpu_burn_${PHYSICAL_GPUS[$i]}.log" >&2
       exit 1
     fi
   done
@@ -164,7 +179,7 @@ if [[ "$REQUIRE_100_SUCCESS" == "1" ]]; then
   extra_args+=(--require-success --max-success-attempts "$MAX_SUCCESS_ATTEMPTS")
 fi
 
-echo "[oracle-8gpu] tasks=$TASKS splits=$SPLITS shards=$NUM_SHARDS gpus=$GPU_LIST backend=$RENDER_BACKEND"
+echo "[oracle-8gpu] tasks=$TASKS splits=$SPLITS shards=$NUM_SHARDS gpus=$GPU_LIST workers_per_gpu=$NUM_WORKERS worker_slots=${#GPUS[@]} backend=$RENDER_BACKEND"
 echo "[oracle-8gpu] controller_version=${ORACLE_CONTROLLER_VERSION:-5}"
 echo "[oracle-8gpu] perception=$PERCEPTION"
 echo "[oracle-8gpu] output=$OUTPUT_ROOT logs=$LOG_ROOT"
