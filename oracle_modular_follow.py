@@ -584,6 +584,21 @@ class OracleNavmeshFollower:
 
         target_pos = np.asarray(target_agent.base_pos, dtype=np.float32)
         robot_pos = np.asarray(robot.base_pos, dtype=np.float32)
+        coordinate_takeover = not target.visible
+        control_target = target
+        if coordinate_takeover:
+            forward, left = self._local_xy(robot, target_pos)
+            control_target = TargetObservation(
+                visible=False,
+                bbox_xyxy=None,
+                footpoint_uv=None,
+                relative_xy=(forward, left),
+                range_m=math.hypot(forward, left),
+                bearing_rad=math.atan2(left, forward),
+                mask_area=0,
+                confidence=0.0,
+            )
+        target_available = target.visible or coordinate_takeover
         incoming, target_toward_robot = self._update_incoming(robot_pos, target_pos)
 
         mask_too_small = bool(
@@ -599,16 +614,16 @@ class OracleNavmeshFollower:
 
         safe_retreat = bool(
             sim is not None
-            and target.visible
+            and target_available
             and (
                 (
                     self.incoming_safe_retreat_distance_m > 0.0
                     and incoming
-                    and target.range_m < self.incoming_safe_retreat_distance_m
+                    and control_target.range_m < self.incoming_safe_retreat_distance_m
                 )
                 or (
                     self.emergency_safe_retreat_distance_m > 0.0
-                    and target.range_m < self.emergency_safe_retreat_distance_m
+                    and control_target.range_m < self.emergency_safe_retreat_distance_m
                 )
             )
         )
@@ -650,14 +665,14 @@ class OracleNavmeshFollower:
             waypoint = None
         elif (
             incoming
-            and target.visible
-            and target.range_m <= self.incoming_hold_distance_m
+            and target_available
+            and control_target.range_m <= self.incoming_hold_distance_m
         ):
             mode = "track_incoming"
             waypoint = None
         elif (
-            target.visible
-            and target.range_m < self.max_distance_m - self.hold_tolerance_m
+            target_available
+            and control_target.range_m < self.max_distance_m - self.hold_tolerance_m
             and self._target_has_moved
             and (
                 not self.prioritize_visibility
@@ -668,8 +683,8 @@ class OracleNavmeshFollower:
             waypoint = None
         elif (
             not self._target_has_moved
-            and target.visible
-            and target.range_m <= self.incoming_retreat_distance_m
+            and target_available
+            and control_target.range_m <= self.incoming_retreat_distance_m
         ):
             # Do not consume the clearance before a stationary leader starts
             # moving. Several episodes begin inside 2 m and then send the
@@ -677,8 +692,7 @@ class OracleNavmeshFollower:
             mode = "hold_startup"
             waypoint = None
         elif (
-            target.range_m > self.max_distance_m + self.hold_tolerance_m
-            or not target.visible
+            control_target.range_m > self.max_distance_m + self.hold_tolerance_m
             or mask_too_small
         ):
             mode = (
@@ -690,16 +704,14 @@ class OracleNavmeshFollower:
         else:
             mode = "hold"
             waypoint = None
-        if not target.visible:
-            mode += "_coordinate"
 
         if mode.startswith("track_"):
-            guidance_bearing = target.bearing_rad
+            guidance_bearing = control_target.bearing_rad
             target_motion_local = self._local_xy(
                 robot, robot_pos + self._filtered_target_motion
             )
             forward, lateral = self._motion_tracking_translation(
-                target,
+                control_target,
                 target_motion_local,
                 desired_distance_m=(
                     self.incoming_retreat_distance_m
@@ -709,7 +721,7 @@ class OracleNavmeshFollower:
             if (
                 mode == "track_incoming"
                 and sim is not None
-                and target.range_m <= self.evasion_start_distance_m
+                and control_target.range_m <= self.evasion_start_distance_m
             ):
                 evasion_waypoint = self._evasion_waypoint(
                     sim, robot, target_pos
@@ -724,7 +736,7 @@ class OracleNavmeshFollower:
                         ))
                         mode = "evade_incoming"
         elif waypoint is None:
-            guidance_bearing = target.bearing_rad
+            guidance_bearing = control_target.bearing_rad
             forward = 0.0
             lateral = 0.0
         elif mode == "retreat_safety":
@@ -740,17 +752,17 @@ class OracleNavmeshFollower:
             else:
                 forward = 0.0
                 lateral = 0.0
-            guidance_bearing = target.bearing_rad
+            guidance_bearing = control_target.bearing_rad
         else:
             local_forward, local_left = self._local_xy(robot, waypoint)
             guidance_bearing = math.atan2(local_left, local_forward)
             abs_bearing = abs(guidance_bearing)
             distance_scale = float(np.clip(
-                (target.range_m - self.max_distance_m)
+                (control_target.range_m - self.max_distance_m)
                 / self.approach_slowdown_distance_m,
                 (
                     self.coordinate_approach_min_scale
-                    if mode.endswith("_coordinate") else 0.1
+                    if coordinate_takeover else 0.1
                 ),
                 1.0,
             ))
@@ -770,11 +782,11 @@ class OracleNavmeshFollower:
         forward, lateral = self._limit_translation(
             float(forward),
             float(lateral),
-            emergency=target.range_m < self.min_distance_m,
+            emergency=control_target.range_m < self.min_distance_m,
         )
 
         yaw_bearing = (
-            target.bearing_rad
+            control_target.bearing_rad
             if mode.startswith("track_")
             or mode in ("yield_pass", "retreat_safety", "reframe_visibility")
             else guidance_bearing
@@ -786,6 +798,8 @@ class OracleNavmeshFollower:
             None if waypoint is None
             else tuple(float(value) for value in np.asarray(waypoint))
         )
+        if coordinate_takeover:
+            mode += "_coordinate"
         return ControlDecision(
             ContinuousAction(float(forward), lateral, yaw),
             mode,

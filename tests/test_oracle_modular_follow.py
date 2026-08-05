@@ -401,9 +401,13 @@ class OracleModularFollowTest(unittest.TestCase):
         self.assertFalse(incoming)
         self.assertLess(motion, 0.0)
 
-    def test_invisible_target_inside_old_hold_band_uses_coordinates(self):
+    def test_invisible_target_inside_hold_band_stops_with_coordinates(self):
         controller = OracleNavmeshFollower(min_distance_m=1.2, max_distance_m=1.5)
         controller._path_waypoint = lambda *args: None
+        controller._local_xy = lambda robot, point: (
+            float(point[0] - robot.base_pos[0]),
+            float(-(point[2] - robot.base_pos[2])),
+        )
         robot = SimpleNamespace(base_pos=np.zeros(3, dtype=np.float32))
         target_agent = SimpleNamespace(
             base_pos=np.array([1.4, 0.0, 0.0], dtype=np.float32)
@@ -411,7 +415,49 @@ class OracleModularFollowTest(unittest.TestCase):
         decision = controller(
             None, robot, target_agent, make_target(1.4, 0.0, visible=False)
         )
+        self.assertEqual(decision.mode, "hold_startup_coordinate")
+        self.assertEqual(decision.action.forward, 0.0)
+
+    def test_coordinate_takeover_reverses_from_stale_far_visual_range(self):
+        controller = OracleNavmeshFollower(min_distance_m=1.2, max_distance_m=1.5)
+        controller._target_has_moved = True
+        controller._update_incoming = lambda *args: (False, 0.0)
+        controller._local_xy = lambda robot, point: (
+            float(point[0] - robot.base_pos[0]),
+            float(-(point[2] - robot.base_pos[2])),
+        )
+        robot = SimpleNamespace(base_pos=np.zeros(3, dtype=np.float32))
+        target_agent = SimpleNamespace(
+            base_pos=np.array([1.0, 0.0, 0.0], dtype=np.float32)
+        )
+
+        decision = controller(
+            None, robot, target_agent, make_target(3.0, 0.0, visible=False)
+        )
+
+        self.assertEqual(decision.mode, "track_distance_coordinate")
+        self.assertLess(decision.action.forward, 0.0)
+
+    def test_coordinate_takeover_approaches_using_current_far_range(self):
+        controller = OracleNavmeshFollower(min_distance_m=1.2, max_distance_m=1.5)
+        controller._path_waypoint = lambda *args: np.array(
+            [3.0, 0.0, 0.0], dtype=np.float32
+        )
+        controller._local_xy = lambda robot, point: (
+            float(point[0] - robot.base_pos[0]),
+            float(-(point[2] - robot.base_pos[2])),
+        )
+        robot = SimpleNamespace(base_pos=np.zeros(3, dtype=np.float32))
+        target_agent = SimpleNamespace(
+            base_pos=np.array([3.0, 0.0, 0.0], dtype=np.float32)
+        )
+
+        decision = controller(
+            None, robot, target_agent, make_target(0.8, 0.0, visible=False)
+        )
+
         self.assertEqual(decision.mode, "approach_coordinate")
+        self.assertGreater(decision.action.forward, 0.0)
 
     def test_incoming_motion_uses_radial_tracking_inside_three_metres(self):
         controller = OracleNavmeshFollower()
@@ -661,12 +707,19 @@ class OracleModularFollowTest(unittest.TestCase):
         self.assertEqual(decision.mode, "track_visibility_clearance")
         self.assertLess(decision.action.forward, 0.0)
 
-    def test_v6_stops_retreating_after_close_target_becomes_invisible(self):
+    def test_v6_retreats_from_close_invisible_target_using_coordinates(self):
         controller = OracleNavmeshFollowerV6(
             min_distance_m=1.2, max_distance_m=1.5
         )
         controller._update_incoming = lambda *args: (True, 0.1)
-        controller._path_waypoint = lambda *args: None
+        controller._retreat_goal = lambda *args: np.array(
+            [-1.0, 0.0, 0.0], dtype=np.float32
+        )
+        controller._path_waypoint = lambda sim, robot, goal: goal
+        controller._local_xy = lambda robot, point: (
+            float(point[0] - robot.base_pos[0]),
+            float(-(point[2] - robot.base_pos[2])),
+        )
         robot = SimpleNamespace(base_pos=np.zeros(3, dtype=np.float32))
         target_agent = SimpleNamespace(
             base_pos=np.array([0.8, 0.0, 0.0], dtype=np.float32)
@@ -676,7 +729,8 @@ class OracleModularFollowTest(unittest.TestCase):
             object(), robot, target_agent, make_target(0.8, 0.0, visible=False)
         )
 
-        self.assertNotEqual(decision.mode, "retreat_safety")
+        self.assertEqual(decision.mode, "retreat_safety_coordinate")
+        self.assertLess(decision.action.forward, 0.0)
 
 
 if __name__ == "__main__":
