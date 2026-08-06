@@ -25,6 +25,7 @@ from oracle_modular_follow import (
     OraclePerception,
     TargetObservation,
     ModularReactiveFollower,
+    MapReactiveFollower,
     annotate,
     configure,
     local_target,
@@ -241,8 +242,10 @@ def evaluate_episode(
 
     try:
         while not env.episode_over and steps < max_steps:
-            if isinstance(perception, OraclePerception):
+            if isinstance(perception, OraclePerception) and not isinstance(controller, MapReactiveFollower):
                 required = (RGB_KEY, PANOPTIC_KEY)
+            elif isinstance(perception, OraclePerception):
+                required = (RGB_KEY, DEPTH_KEY, PANOPTIC_KEY)
             elif not goal_crop_initialized:
                 required = (RGB_KEY, DEPTH_KEY, PANOPTIC_KEY)
             else:
@@ -297,6 +300,16 @@ def evaluate_episode(
                 candidate_record["target_iou"] = candidate_iou
                 candidate_record["target_match"] = candidate_iou >= 0.3
                 candidate_records.append(candidate_record)
+            if hasattr(controller, "update_observation"):
+                controller.update_observation(
+                    observations,
+                    target,
+                    dynamic_mask=(
+                        current_target_mask
+                        if isinstance(perception, OraclePerception)
+                        else None
+                    ),
+                )
             decision = controller(env.sim, robot, target_agent, target)
             if (
                 not target.visible
@@ -311,10 +324,21 @@ def evaluate_episode(
                     current_following,
                 )
                 frame = np.asarray(frame)
-                if not isinstance(perception, OraclePerception):
+                if DEPTH_KEY in observations and (
+                    not isinstance(perception, OraclePerception)
+                    or isinstance(controller, MapReactiveFollower)
+                ):
                     frame = compose_rgbd_video_frame(
                         frame, observations[DEPTH_KEY]
                     )
+                map_frame = getattr(controller, "last_map_visualization", None)
+                if map_frame is not None:
+                    map_frame = cv2.resize(
+                        map_frame,
+                        (frame.shape[0], frame.shape[0]),
+                        interpolation=cv2.INTER_NEAREST,
+                    )
+                    frame = np.concatenate((frame, map_frame), axis=1)
                 writer.append_data(frame)
 
             observations = env.step({
@@ -357,6 +381,9 @@ def evaluate_episode(
                     "target_bbox_iou": target_iou,
                     "target_selection_correct": target_selection_correct,
                     "mode": decision.mode,
+                    "map_mode": getattr(controller, "last_map_mode", None),
+                    "map_clearance": getattr(controller, "last_map_clearance", None),
+                    "target_dynamic_points": getattr(getattr(controller, "obstacle_map", None), "last_target_dynamic_points", None),
                     "action": decision.action.as_habitat(),
                     "human_following": float(metrics.get("human_following", 0.0) or 0.0),
                     "human_collision": float(metrics.get("human_collision", 0.0) or 0.0),
@@ -461,7 +488,7 @@ def main():
     )
     parser.add_argument(
         "--controller",
-        choices=("oracle-navmesh", "reactive"),
+        choices=("oracle-navmesh", "reactive", "map-reactive"),
         default="oracle-navmesh",
     )
     parser.add_argument("--person-detector-weights", default=str(DEFAULT_WEIGHTS))
@@ -512,7 +539,7 @@ def main():
         f"track_{config_kind}_{args.task}.yaml"
     )
     config = configure(habitat.get_config(config_path), args.scene_dataset)
-    if args.perception == "rgb-person":
+    if args.perception == "rgb-person" or args.controller == "map-reactive":
         from habitat.config import read_write
 
         agent_sensors = config.habitat.simulator.agents.agent_1.sim_sensors
@@ -633,6 +660,16 @@ def main():
     )
     if args.controller == "reactive":
         controller = ModularReactiveFollower(
+            min_distance_m=args.min_distance,
+            max_distance_m=args.max_distance,
+            max_forward=args.max_forward,
+            max_lateral=args.max_lateral,
+            max_yaw=args.max_yaw,
+            lost_search_yaw=args.lost_search_yaw,
+            use_invisible_pointgoal=args.perception == "oracle",
+        )
+    elif args.controller == "map-reactive":
+        controller = MapReactiveFollower(
             min_distance_m=args.min_distance,
             max_distance_m=args.max_distance,
             max_forward=args.max_forward,

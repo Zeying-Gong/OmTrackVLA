@@ -21,6 +21,8 @@ import imageio.v3 as iio
 import numpy as np
 from PIL import Image, ImageDraw
 
+from modular_obstacle_map import LocalObstacleMap
+
 
 RGB_KEY = "agent_1_articulated_agent_jaw_rgb"
 DEPTH_KEY = "agent_1_articulated_agent_jaw_depth"
@@ -892,6 +894,98 @@ class ModularReactiveFollower:
             ContinuousAction(forward, lateral, yaw),
             mode,
             float(target.bearing_rad),
+            None,
+        )
+
+
+class MapReactiveFollower(ModularReactiveFollower):
+    """Reactive follower augmented with an Ascent-style local obstacle map."""
+
+    def __init__(self, *args, hfov_deg: float = 90.0, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.obstacle_map = LocalObstacleMap(hfov_deg=hfov_deg)
+        self.last_map_mode = "map_uninitialized"
+        self.last_map_clearance = dict(self.obstacle_map.last_clearance)
+        self.last_map_visualization = self.obstacle_map.visualize()
+
+    def reset(self, evasion_side: Optional[float] = None) -> None:
+        super().reset(evasion_side=evasion_side)
+        if hasattr(self, "obstacle_map"):
+            self.last_map_mode = "map_reset"
+
+    def update_observation(
+        self, observations, target: TargetObservation, dynamic_mask=None
+    ) -> None:
+        depth = observations.get(DEPTH_KEY)
+        if depth is None:
+            self.last_map_mode = "map_missing_depth"
+            return
+        if dynamic_mask is not None:
+            dynamic_mask = np.asarray(dynamic_mask, dtype=bool)
+        elif target.bbox_xyxy is not None:
+            dynamic_mask = np.zeros(np.asarray(depth).squeeze().shape, dtype=bool)
+            x1, y1, x2, y2 = target.bbox_xyxy
+            dynamic_mask[
+                max(0, int(y1)):min(dynamic_mask.shape[0], int(y2) + 1),
+                max(0, int(x1)):min(dynamic_mask.shape[1], int(x2) + 1),
+            ] = True
+        self.obstacle_map.update(
+            depth,
+            target_bbox=target.bbox_xyxy,
+            dynamic_mask=dynamic_mask,
+        )
+        self.last_map_clearance = dict(self.obstacle_map.last_clearance)
+        self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
+
+    def __call__(self, sim, robot, target_agent, target: TargetObservation) -> ControlDecision:
+        if not target.visible and not self.use_invisible_pointgoal:
+            return super().__call__(sim, robot, target_agent, target)
+        if target.range_m < self.min_distance_m:
+            # The map goal is defined in front of the person; when already too
+            # close, retreat using the original person-relative point goal.
+            return super().__call__(sim, robot, target_agent, target)
+        if target.range_m <= self.max_distance_m:
+            yaw = float(np.clip(
+                self.heading_gain * target.bearing_rad,
+                -self.max_yaw,
+                self.max_yaw,
+            ))
+            return ControlDecision(
+                ContinuousAction(0.0, 0.0, yaw),
+                "map_follow_band_hold",
+                float(target.bearing_rad),
+                None,
+            )
+        waypoint_forward, waypoint_left, map_mode = self.obstacle_map.choose_waypoint(
+            target.relative_xy,
+            desired_distance_m=self.max_distance_m,
+        )
+        self.last_map_mode = map_mode
+        if map_mode == "map_blocked":
+            clear_left = self.last_map_clearance.get("left", 0.0)
+            clear_right = self.last_map_clearance.get("right", 0.0)
+            direction = 1.0 if clear_left >= clear_right else -1.0
+            return ControlDecision(
+                ContinuousAction(0.0, 0.25 * direction, 0.25 * direction),
+                "map_blocked_evade",
+                float(target.bearing_rad),
+                None,
+            )
+        waypoint_bearing = math.atan2(waypoint_left, waypoint_forward)
+        forward = self.distance_gain * waypoint_forward
+        if abs(waypoint_bearing) > math.radians(55.0):
+            forward = 0.0
+        lateral = self.lateral_gain * waypoint_left
+        yaw = self.heading_gain * waypoint_bearing
+        action = ContinuousAction(
+            float(np.clip(forward, -self.max_forward, self.max_forward)),
+            float(np.clip(lateral, -self.max_lateral, self.max_lateral)),
+            float(np.clip(yaw, -self.max_yaw, self.max_yaw)),
+        )
+        return ControlDecision(
+            action,
+            f"{map_mode}_waypoint",
+            float(waypoint_bearing),
             None,
         )
 
