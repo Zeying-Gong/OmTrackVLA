@@ -88,6 +88,27 @@ def target_goal_crop(observations, target_semantic_id):
     return np.asarray(observations[RGB_KEY])[y1:y2 + 1, x1:x2 + 1, :3].copy()
 
 
+def assign_unique_humanoid_semantic_ids(env):
+    """Give distractor humanoids episode-unique panoptic instance IDs.
+
+    EVT episodes may instantiate two copies of the same avatar, which otherwise
+    share one semantic ID and are indistinguishable in the panoptic image. The
+    main target keeps the benchmark-provided ID; distractors receive IDs above
+    2000 so target metrics remain unchanged.
+    """
+    target_id = int(env.current_episode.info["main_human_semantic_id"])
+    assigned = {0: target_id}
+    for agent_index in range(len(env.sim.agents_mgr)):
+        if agent_index == 1:
+            continue
+        semantic_id = target_id if agent_index == 0 else 2000 + agent_index
+        articulated_agent = env.sim.agents_mgr[agent_index].articulated_agent
+        for node in articulated_agent.sim_obj.visual_scene_nodes:
+            node.semantic_id = semantic_id
+        assigned[agent_index] = semantic_id
+    return assigned
+
+
 def invisible_target(relative_xy):
     forward, left = (float(value) for value in relative_xy)
     return TargetObservation(
@@ -213,6 +234,17 @@ def evaluate_episode(
     robot = env.sim.agents_mgr[1].articulated_agent
     target_agent = env.sim.agents_mgr[0].articulated_agent
     target_semantic_id = int(episode.info["main_human_semantic_id"])
+    human_semantic_ids = set()
+    for agent_index in range(len(env.sim.agents_mgr)):
+        if agent_index == 1:  # Spot robot
+            continue
+        articulated_agent = env.sim.agents_mgr[agent_index].articulated_agent
+        for node in articulated_agent.sim_obj.visual_scene_nodes:
+            semantic_id = int(node.semantic_id)
+            if semantic_id > 0:
+                human_semantic_ids.add(semantic_id)
+    human_semantic_ids.add(target_semantic_id)
+    human_semantic_ids_array = np.asarray(sorted(human_semantic_ids))
     if perception is None:
         perception = OraclePerception()
 
@@ -302,12 +334,11 @@ def evaluate_episode(
                 candidate_records.append(candidate_record)
             person_dynamic_mask = None
             if isinstance(perception, OraclePerception):
-                # Habitat's humanoid instances use the 1000--1100 semantic-id
-                # range. Keep every visible person in the dynamic layer; only
+                # Keep every visible humanoid agent in the dynamic layer; only
                 # the target semantic id is used for tracking metrics/control.
                 panoptic_frame = np.asarray(observations[PANOPTIC_KEY]).squeeze()
                 person_dynamic_mask = np.isin(
-                    panoptic_frame, np.arange(1000, 1101, dtype=panoptic_frame.dtype)
+                    panoptic_frame, human_semantic_ids_array
                 )
             elif candidate_records:
                 # Learned perception has no privileged person IDs. Union all
@@ -381,12 +412,19 @@ def evaluate_episode(
             )
             current_mask = np.asarray(observations[PANOPTIC_KEY]).squeeze()
             visible = bool(np.any(current_mask == target_semantic_id))
+            visible_human_ids = np.unique(
+                current_mask[np.isin(
+                    current_mask, human_semantic_ids_array
+                )]
+            )
             visible_steps += int(visible)
             if save_steps:
                 records.append({
                     "step": steps,
                     "distance_m": current_distance,
                     "visible": visible,
+                    "visible_human_count": int(visible_human_ids.size),
+                    "visible_human_ids": [int(v) for v in visible_human_ids.tolist()],
                     "mask_area": target.mask_area,
                     "rgb_mean": float(np.asarray(observations[RGB_KEY])[..., :3].mean()),
                     "perception_confidence": target.confidence,
@@ -494,6 +532,10 @@ def main():
     parser.add_argument("--max-lateral", type=float, default=1.0)
     parser.add_argument("--max-yaw", type=float, default=1.0)
     parser.add_argument("--max-episodes", type=int)
+    parser.add_argument(
+        "--max-steps", type=int, default=None,
+        help="debug limit for rollout steps; does not affect full evaluation defaults",
+    )
     parser.add_argument("--max-scenes-per-process", type=int)
     parser.add_argument("--dataset-index", type=int)
     parser.add_argument(
@@ -545,6 +587,8 @@ def main():
         parser.error("max-scenes-per-process must be positive")
     if args.max_success_attempts <= 0:
         parser.error("max-success-attempts must be positive")
+    if args.max_steps is not None and args.max_steps <= 0:
+        parser.error("max-steps must be positive")
     if args.lost_brake_steps < 0:
         parser.error("lost-brake-steps must be non-negative")
     if args.lost_search_period_steps <= 0:
@@ -771,6 +815,8 @@ def main():
     with habitat.TrackEnv(config=config, dataset=dataset) as env:
         for _ep_idx in range(_total_to_run):
             observations = env.reset()
+            assigned_human_ids = assign_unique_humanoid_semantic_ids(env)
+            observations = env.sim.get_sensor_observations()
             if perception is None:
                 # Force Habitat's first RGB render before the detector worker
                 # establishes a CUDA context on the same physical GPU.
@@ -804,6 +850,7 @@ def main():
                 "robot_start_position": episode.info.get("robot_position"),
                 "target_name": episode.info.get("main_humanoid_name"),
                 "target_semantic_id": episode.info.get("main_human_semantic_id"),
+                "human_agent_semantic_ids": assigned_human_ids,
                 "instruction": episode.info.get("instruction"),
                 "video": str(video_path) if video_path is not None else None,
                 "success_attempt": success_attempt,
@@ -853,7 +900,11 @@ def main():
                     perception.reset(reference_rgb=reference_rgb)
                 summary, records = evaluate_episode(
                     env, observations, controller,
-                    max_steps=config.habitat.environment.max_episode_steps,
+                    max_steps=(
+                        args.max_steps
+                        if args.max_steps is not None
+                        else config.habitat.environment.max_episode_steps
+                    ),
                     save_steps=args.save_steps,
                     video_path=video_path,
                     video_fps=args.video_fps,

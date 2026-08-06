@@ -19,6 +19,7 @@ PERCEPTION="${PERCEPTION:-oracle}"
 PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth}"
 PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
 PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
+CONTROLLER="${CONTROLLER:-oracle-navmesh}"
 TARGET_INITIALIZATION="${TARGET_INITIALIZATION:-auto}"
 LOST_TARGET_POLICY="${LOST_TARGET_POLICY:-auto}"
 LOST_BRAKE_STEPS="${LOST_BRAKE_STEPS:-2}"
@@ -85,6 +86,7 @@ echo "[oracle-indices] start index=$index gpu=$gpu display=$display"
         --max-forward 1.0 --max-lateral 1.0 --max-yaw 1.0 \
         --save-video --video-fps 8 --no-resume \
         --perception "$PERCEPTION" \
+        --controller "$CONTROLLER" \
         --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \
         --person-reid-weights "$PERSON_REID_WEIGHTS" \
         --person-score-threshold "$PERSON_SCORE_THRESHOLD" \
