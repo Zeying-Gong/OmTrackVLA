@@ -127,6 +127,10 @@ fi
 mkdir -p "$OUTPUT_ROOT" "$LOG_ROOT"
 export PYTHONPATH="$ROOT/habitat-lab:$ROOT"
 
+# Invalid or truncated results are incomplete. Remove them before workers build
+# their resume sets so the owning shard automatically reruns those episodes.
+"$PYTHON_BIN" summarize_oracle_modular.py "$OUTPUT_ROOT" --clean-invalid-only
+
 BACKGROUND_PIDS=()
 cleanup_background() {
   local pid

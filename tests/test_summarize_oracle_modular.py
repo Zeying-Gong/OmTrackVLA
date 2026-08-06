@@ -33,6 +33,7 @@ def write_result(root, task, split, index):
             "total_step": 10,
         },
     }))
+    return path
 
 
 def read_csv(path):
@@ -66,3 +67,18 @@ def test_writes_aggregate_and_task_split_summaries(tmp_path):
     assert [row["task"] for row in dt_rows] == ["dt"]
     assert at_summary["completed"] == 1
     assert dt_summary["completed"] == 1
+
+
+def test_removes_invalid_json_and_keeps_valid_results(tmp_path):
+    output = tmp_path / "output"
+    valid_path = write_result(output, "stt", "val", 0)
+    invalid_path = output / "stt" / "val" / "episodes" / "truncated.json"
+    invalid_path.write_text("")
+
+    subprocess.run(
+        [sys.executable, str(SCRIPT), str(output), "--clean-invalid-only"],
+        check=True,
+    )
+
+    assert valid_path.exists()
+    assert not invalid_path.exists()

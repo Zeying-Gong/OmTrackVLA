@@ -15,6 +15,9 @@ CSV_FIELDNAMES = [
     "episode_id", "target_name", "success", "following_rate",
     "collision", "finish", "total_step", "perception", "result_path",
 ]
+REQUIRED_SUMMARY_FIELDS = {
+    "success", "following_rate", "collision", "finish", "total_step",
+}
 
 
 def expected_count(repo, task, split):
@@ -31,21 +34,77 @@ def write_episode_csv(path, rows):
         writer.writerows(rows)
 
 
+def load_result(path):
+    try:
+        value = json.loads(path.read_text())
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        reason = f"invalid JSON: {exc}"
+    except OSError as exc:
+        print(f"WARNING: cannot read result {path}: {exc}")
+        return None, False
+    else:
+        task = path.parent.parent.parent.name
+        split = path.parent.parent.name
+        if not isinstance(value, dict):
+            reason = "top-level JSON value is not an object"
+        elif value.get("task") != task or value.get("split") != split:
+            reason = (
+                f"task/split does not match path: "
+                f"{value.get('task')}/{value.get('split')} != {task}/{split}"
+            )
+        elif "summary" in value and (
+            not isinstance(value["summary"], dict)
+            or not REQUIRED_SUMMARY_FIELDS.issubset(value["summary"])
+        ):
+            reason = "summary is malformed or missing required fields"
+        elif "summary" not in value and "error" not in value:
+            reason = "result has neither summary nor error"
+        else:
+            return value, False
+
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        pass
+    except OSError as exc:
+        print(f"WARNING: cannot remove invalid result {path}: {exc}")
+        return None, False
+    print(f"Removed invalid result {path} ({reason}); its episode will be rerun")
+    return None, True
+
+
+def clean_invalid_results(root):
+    removed = 0
+    scanned = 0
+    for path in sorted(root.glob("*/*/episodes/*.json")):
+        scanned += 1
+        _, was_removed = load_result(path)
+        removed += int(was_removed)
+    print(f"Checked {scanned} result JSON files; removed {removed} invalid files")
+    return removed
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("output_root")
     parser.add_argument("--repo-root", default=Path(__file__).resolve().parent)
     parser.add_argument("--require-100-success", action="store_true")
+    parser.add_argument("--clean-invalid-only", action="store_true")
     args = parser.parse_args()
     root = Path(args.output_root)
     repo = Path(args.repo_root)
+    if args.clean_invalid_only:
+        clean_invalid_results(root)
+        return
     groups = defaultdict(list)
     errors = defaultdict(int)
     stale = defaultdict(int)
     episodes = []
     episodes_by_group = defaultdict(list)
     for path in sorted(root.glob("*/*/episodes/*.json")):
-        value = json.loads(path.read_text())
+        value, _ = load_result(path)
+        if value is None:
+            continue
         task = value["task"]
         split = value["split"]
         key = (task, split)
