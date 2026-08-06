@@ -23,6 +23,7 @@ from oracle_modular_follow import (
     PANOPTIC_KEY,
     RGB_KEY,
     OraclePerception,
+    TargetObservation,
     annotate,
     configure,
     local_target,
@@ -83,6 +84,20 @@ def target_goal_crop(observations, target_semantic_id):
         return None
     x1, y1, x2, y2 = bbox
     return np.asarray(observations[RGB_KEY])[y1:y2 + 1, x1:x2 + 1, :3].copy()
+
+
+def invisible_target(relative_xy):
+    forward, left = (float(value) for value in relative_xy)
+    return TargetObservation(
+        visible=False,
+        bbox_xyxy=None,
+        footpoint_uv=None,
+        relative_xy=(forward, left),
+        range_m=float(np.hypot(forward, left)),
+        bearing_rad=float(np.arctan2(left, forward)),
+        mask_area=0,
+        confidence=0.0,
+    )
 
 
 def compose_rgbd_video_frame(
@@ -185,7 +200,7 @@ def exhausted_success_attempts(result_path: Path, max_attempts: int) -> bool:
 
 def evaluate_episode(
     env, observations, controller, max_steps, save_steps=False,
-    video_path=None, video_fps=8, perception=None,
+    video_path=None, video_fps=8, perception=None, defer_goal_crop=False,
 ):
     episode = env.current_episode
     robot = env.sim.agents_mgr[1].articulated_agent
@@ -203,6 +218,8 @@ def evaluate_episode(
     perception_correct_steps = 0
     perception_target_ious = []
     perception_gt_visible_steps = 0
+    goal_crop_wait_steps = 0
+    goal_crop_initialized = not defer_goal_crop
     records = []
     steps = 0
     max_steps = int(max_steps)
@@ -218,11 +235,12 @@ def evaluate_episode(
 
     try:
         while not env.episode_over and steps < max_steps:
-            required = (
-                (RGB_KEY, PANOPTIC_KEY)
-                if isinstance(perception, OraclePerception)
-                else (RGB_KEY, DEPTH_KEY)
-            )
+            if isinstance(perception, OraclePerception):
+                required = (RGB_KEY, PANOPTIC_KEY)
+            elif not goal_crop_initialized:
+                required = (RGB_KEY, DEPTH_KEY, PANOPTIC_KEY)
+            else:
+                required = (RGB_KEY, DEPTH_KEY)
             missing = [key for key in required if key not in observations]
             if missing:
                 raise KeyError(f"Missing observations {missing}; got {sorted(observations)}")
@@ -231,6 +249,22 @@ def evaluate_episode(
                     observations[RGB_KEY], observations[PANOPTIC_KEY], target_semantic_id,
                     local_target(robot, target_agent),
                 )
+            elif not goal_crop_initialized:
+                reference_rgb = target_goal_crop(observations, target_semantic_id)
+                if reference_rgb is None:
+                    goal_crop_wait_steps += 1
+                    target = invisible_target(local_target(robot, target_agent))
+                else:
+                    perception.reset(reference_rgb=reference_rgb)
+                    goal_crop_initialized = True
+                    print(json.dumps({
+                        "event": "oracle_batch_goal_crop_initialized",
+                        "task": episode.info.get("episode_mode"),
+                        "dataset_index": episode.info.get("_oracle_batch_index"),
+                        "episode_id": str(episode.episode_id),
+                        "step": steps,
+                    }), flush=True)
+                    target = perception(observations[RGB_KEY], observations[DEPTH_KEY])
             else:
                 target = perception(observations[RGB_KEY], observations[DEPTH_KEY])
             current_target_mask = (
@@ -358,6 +392,9 @@ def evaluate_episode(
         "perception_mean_target_iou": (
             float(np.mean(perception_target_ious)) if perception_target_ious else 0.0
         ),
+        "goal_crop_deferred": bool(defer_goal_crop),
+        "goal_crop_wait_steps": goal_crop_wait_steps,
+        "goal_crop_initialized": goal_crop_initialized,
         "distance_start_m": distances[0] if distances else None,
         "distance_min_m": min(distances) if distances else None,
         "distance_mean_m": float(np.mean(distances)) if distances else None,
@@ -688,6 +725,7 @@ def main():
                     if previous_side is not None:
                         evasion_side = -previous_side
                 controller.reset(evasion_side=evasion_side)
+                defer_goal_crop = False
                 if hasattr(perception, "reset"):
                     reference_rgb = None
                     if (
@@ -699,10 +737,18 @@ def main():
                             episode.info["main_human_semantic_id"],
                         )
                         if reference_rgb is None:
-                            raise RuntimeError(
-                                "Target is not visible at reset; dataset must provide "
-                                "a goal RGB crop for goal-crop initialization"
-                            )
+                            defer_goal_crop = True
+                            print(json.dumps({
+                                "event": "oracle_batch_goal_crop_deferred",
+                                "task": args.task,
+                                "split": args.split,
+                                "dataset_index": index,
+                                "episode_key": key,
+                                "message": (
+                                    "Target is not visible at reset; ReID initialization "
+                                    "will occur on its first visible frame"
+                                ),
+                            }), flush=True)
                     perception.reset(reference_rgb=reference_rgb)
                 summary, records = evaluate_episode(
                     env, observations, controller,
@@ -711,6 +757,7 @@ def main():
                     video_path=video_path,
                     video_fps=args.video_fps,
                     perception=perception,
+                    defer_goal_crop=defer_goal_crop,
                 )
                 summary["evasion_side"] = controller._evasion_side
                 result = {**metadata, "summary": summary}

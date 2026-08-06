@@ -13,8 +13,10 @@ from oracle_modular_batch import (
     compose_rgbd_video_frame,
     exhausted_success_attempts,
     episode_key,
+    invisible_target,
     parse_dataset_indices,
     prior_evasion_side,
+    target_goal_crop,
 )
 
 
@@ -94,6 +96,31 @@ class OracleModularBatchTest(unittest.TestCase):
         frame = compose_rgbd_video_frame(rgb, depth)
 
         np.testing.assert_array_equal(frame[:, 8:], 0)
+
+    def test_goal_crop_can_be_deferred_until_target_is_visible(self):
+        observations = {
+            "agent_1_articulated_agent_jaw_rgb": np.arange(
+                4 * 5 * 3, dtype=np.uint8
+            ).reshape(4, 5, 3),
+            "agent_1_articulated_agent_jaw_panoptic": np.zeros(
+                (4, 5, 1), dtype=np.int32
+            ),
+        }
+        self.assertIsNone(target_goal_crop(observations, 42))
+
+        observations["agent_1_articulated_agent_jaw_panoptic"][1:3, 2:5] = 42
+        crop = target_goal_crop(observations, 42)
+        np.testing.assert_array_equal(
+            crop,
+            observations["agent_1_articulated_agent_jaw_rgb"][1:3, 2:5],
+        )
+
+    def test_deferred_goal_target_is_invisible_with_coordinate_range(self):
+        target = invisible_target((3.0, 4.0))
+
+        self.assertFalse(target.visible)
+        self.assertEqual(target.relative_xy, (3.0, 4.0))
+        self.assertEqual(target.range_m, 5.0)
 
 
 if __name__ == "__main__":
