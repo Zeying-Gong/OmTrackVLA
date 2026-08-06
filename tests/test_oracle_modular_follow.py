@@ -7,6 +7,7 @@ import numpy as np
 from oracle_modular_follow import (
     OracleFollowController,
     OracleNavmeshFollower,
+    ModularReactiveFollower,
     TargetObservation,
     bbox_to_footpoint,
     target_mask_to_bbox,
@@ -36,6 +37,33 @@ def make_target(forward, left, visible=True):
 
 
 class OracleModularFollowTest(unittest.TestCase):
+    def test_reactive_controller_ignores_privileged_arguments(self):
+        controller = ModularReactiveFollower()
+        target = make_target(3.0, 0.0)
+
+        decision = controller(None, None, object(), target)
+
+        self.assertEqual(decision.mode, "reactive_approach")
+        self.assertGreater(decision.action.forward, 0.0)
+
+    def test_reactive_pointgoal_can_use_invisible_exact_target(self):
+        controller = ModularReactiveFollower(use_invisible_pointgoal=True)
+        target = make_target(3.0, 0.0, visible=False)
+
+        decision = controller(None, None, object(), target)
+
+        self.assertEqual(decision.mode, "reactive_pointgoal")
+        self.assertGreater(decision.action.forward, 0.0)
+
+    def test_reactive_controller_searches_without_target(self):
+        controller = ModularReactiveFollower()
+        target = make_target(2.0, 0.5, visible=False)
+
+        decision = controller(None, None, object(), target)
+
+        self.assertEqual(decision.mode, "reactive_search")
+        self.assertEqual(decision.action.forward, 0.0)
+
     def test_rgb_bbox_geometry_uses_depth_without_oracle_pose(self):
         depth = np.full((100, 100), 0.2, dtype=np.float32)
         forward, left = bbox_depth_to_relative((40, 10, 60, 90), depth)

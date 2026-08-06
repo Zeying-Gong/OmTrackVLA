@@ -808,6 +808,94 @@ class OracleNavmeshFollower:
         )
 
 
+class ModularReactiveFollower:
+    """Reactive point-goal control using only a TargetObservation.
+
+    It deliberately ignores Habitat simulator state, target-agent poses, and
+    navmesh paths so it can isolate the control side of the modular pipeline.
+    """
+
+    def __init__(
+        self,
+        min_distance_m: float = 1.2,
+        max_distance_m: float = 1.5,
+        max_forward: float = 1.0,
+        max_lateral: float = 1.0,
+        max_yaw: float = 1.0,
+        distance_gain: float = 1.0,
+        lateral_gain: float = 0.8,
+        heading_gain: float = 1.5,
+        lost_search_yaw: float = 0.35,
+        use_invisible_pointgoal: bool = False,
+    ) -> None:
+        if min_distance_m >= max_distance_m:
+            raise ValueError("min_distance_m must be smaller than max_distance_m")
+        self.min_distance_m = float(min_distance_m)
+        self.max_distance_m = float(max_distance_m)
+        self.max_forward = float(max_forward)
+        self.max_lateral = float(max_lateral)
+        self.max_yaw = float(max_yaw)
+        self.distance_gain = float(distance_gain)
+        self.lateral_gain = float(lateral_gain)
+        self.heading_gain = float(heading_gain)
+        self.lost_search_yaw = float(lost_search_yaw)
+        self.use_invisible_pointgoal = bool(use_invisible_pointgoal)
+        self.uses_invisible_pointgoal = self.use_invisible_pointgoal
+        self.lost_retreat_steps = 0
+        self.reset()
+
+    def reset(self, evasion_side: Optional[float] = None) -> None:
+        self._lost_steps = 0
+        self._last_seen_bearing = 0.0
+        self._search_direction = 1.0 if evasion_side is None else float(evasion_side)
+        self._evasion_side = evasion_side
+
+    def __call__(self, sim, robot, target_agent, target: TargetObservation) -> ControlDecision:
+        del sim, robot, target_agent
+        if not target.visible and not self.use_invisible_pointgoal:
+            self._lost_steps += 1
+            if self._lost_steps == 1 and abs(self._last_seen_bearing) > 1e-3:
+                self._search_direction = math.copysign(1.0, self._last_seen_bearing)
+            yaw = float(np.clip(
+                self._search_direction * self.lost_search_yaw,
+                -self.max_yaw,
+                self.max_yaw,
+            ))
+            return ControlDecision(
+                ContinuousAction(0.0, 0.0, yaw),
+                "reactive_search",
+                self._last_seen_bearing,
+                None,
+            )
+
+        self._lost_steps = 0
+        self._last_seen_bearing = float(target.bearing_rad)
+        distance_error = float(target.range_m - self.max_distance_m)
+        forward = self.distance_gain * distance_error
+        if abs(target.bearing_rad) > math.radians(55.0):
+            forward = 0.0
+        else:
+            forward *= max(0.0, math.cos(target.bearing_rad))
+        lateral = self.lateral_gain * float(target.relative_xy[1])
+        forward = float(np.clip(forward, -self.max_forward, self.max_forward))
+        lateral = float(np.clip(lateral, -self.max_lateral, self.max_lateral))
+        yaw = float(np.clip(
+            self.heading_gain * target.bearing_rad,
+            -self.max_yaw,
+            self.max_yaw,
+        ))
+        if not target.visible:
+            mode = "reactive_pointgoal"
+        else:
+            mode = "reactive_approach" if distance_error > 0.05 else "reactive_hold"
+        return ControlDecision(
+            ContinuousAction(forward, lateral, yaw),
+            mode,
+            float(target.bearing_rad),
+            None,
+        )
+
+
 def select_episode(dataset, episode_id: str, scene_substring: str, match_index: int = 0):
     matches = [
         episode

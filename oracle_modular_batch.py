@@ -24,6 +24,7 @@ from oracle_modular_follow import (
     RGB_KEY,
     OraclePerception,
     TargetObservation,
+    ModularReactiveFollower,
     annotate,
     configure,
     local_target,
@@ -141,6 +142,7 @@ def atomic_json(path: Path, value) -> None:
 
 def completed_result(
     index, episode, episodes_dir, videos_dir, save_video, require_success=False,
+    controller=None,
 ):
     key = episode_key(index, episode)
     result_path = episodes_dir / f"{key}.json"
@@ -157,6 +159,10 @@ def completed_result(
     complete = bool(
         "summary" in existing
         and existing.get("controller_version") == CONTROLLER_VERSION
+        and (
+            controller is None
+            or existing.get("controller", "oracle-navmesh") == controller
+        )
         and video_complete
     )
     if require_success:
@@ -292,7 +298,10 @@ def evaluate_episode(
                 candidate_record["target_match"] = candidate_iou >= 0.3
                 candidate_records.append(candidate_record)
             decision = controller(env.sim, robot, target_agent, target)
-            if not target.visible:
+            if (
+                not target.visible
+                and not getattr(controller, "uses_invisible_pointgoal", False)
+            ):
                 coordinate_steps += 1
             if writer is not None:
                 current_following = env.get_metrics().get("human_following")
@@ -450,6 +459,11 @@ def main():
     parser.add_argument(
         "--perception", choices=("oracle", "rgb-person"), default="oracle"
     )
+    parser.add_argument(
+        "--controller",
+        choices=("oracle-navmesh", "reactive"),
+        default="oracle-navmesh",
+    )
     parser.add_argument("--person-detector-weights", default=str(DEFAULT_WEIGHTS))
     parser.add_argument("--person-reid-weights", default=str(DEFAULT_REID_WEIGHTS))
     parser.add_argument("--person-score-threshold", type=float, default=0.30)
@@ -574,6 +588,7 @@ def main():
             if not completed_result(
                 index, episode, episodes_dir, videos_dir, args.save_video,
                 require_success=args.require_success,
+                controller=args.controller,
             )
         ]
     pending_before = len(indexed)
@@ -616,6 +631,16 @@ def main():
         lost_coast_max_translation=args.lost_coast_max_translation,
         **controller_kwargs,
     )
+    if args.controller == "reactive":
+        controller = ModularReactiveFollower(
+            min_distance_m=args.min_distance,
+            max_distance_m=args.max_distance,
+            max_forward=args.max_forward,
+            max_lateral=args.max_lateral,
+            max_yaw=args.max_yaw,
+            lost_search_yaw=args.lost_search_yaw,
+            use_invisible_pointgoal=args.perception == "oracle",
+        )
     if args.perception == "oracle":
         perception = OraclePerception()
         perception_name = "oracle-panoptic-pose"
@@ -641,6 +666,12 @@ def main():
         "selected_episodes": len(indexed),
         "remaining_episodes": remaining_episodes,
         "config": config_path,
+        "controller": args.controller,
+        "controller_input": (
+            "oracle-pointgoal"
+            if getattr(controller, "uses_invisible_pointgoal", False)
+            else "target-observation"
+        ),
         "perception": perception_name,
         "person_score_threshold": args.person_score_threshold,
         "target_initialization": target_initialization,
@@ -694,6 +725,12 @@ def main():
             metadata = {
                 "schema_version": 1,
                 "controller_version": CONTROLLER_VERSION,
+                "controller": args.controller,
+                "controller_input": (
+                    "oracle-pointgoal"
+                    if getattr(controller, "uses_invisible_pointgoal", False)
+                    else "target-observation"
+                ),
                 "task": args.task,
                 "split": args.split,
                 "dataset_index": index,

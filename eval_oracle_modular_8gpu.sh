@@ -69,6 +69,7 @@ MAX_CONSECUTIVE_NATIVE_RESTARTS="${MAX_CONSECUTIVE_NATIVE_RESTARTS:-3}"
 RESTART_DELAY="${RESTART_DELAY:-1}"
 PROGRESS_INTERVAL="${PROGRESS_INTERVAL:-15}"
 PERCEPTION="${PERCEPTION:-oracle}"
+CONTROLLER="${CONTROLLER:-oracle-navmesh}"
 PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth}"
 PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
 PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
@@ -186,6 +187,7 @@ fi
 echo "[oracle-8gpu] tasks=$TASKS splits=$SPLITS shards=$NUM_SHARDS gpus=$GPU_LIST workers_per_gpu=$NUM_WORKERS worker_slots=${#GPUS[@]} backend=$RENDER_BACKEND"
 echo "[oracle-8gpu] controller_version=${ORACLE_CONTROLLER_VERSION:-5}"
 echo "[oracle-8gpu] perception=$PERCEPTION"
+echo "[oracle-8gpu] controller=$CONTROLLER"
 echo "[oracle-8gpu] output=$OUTPUT_ROOT logs=$LOG_ROOT"
 echo "[oracle-8gpu] progress_interval=${PROGRESS_INTERVAL}s resume=enabled"
 if [[ -n "$EXCLUDE_DATASET_INDICES" ]]; then
@@ -216,6 +218,7 @@ run_shard() {
         --max-forward 1.0 --max-lateral 1.0 --max-yaw 1.0 \
         --max-scenes-per-process "$SCENES_PER_PROCESS" \
         --perception "$PERCEPTION" \
+        --controller "$CONTROLLER" \
         --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \
         --person-reid-weights "$PERSON_REID_WEIGHTS" \
         --person-score-threshold "$PERSON_SCORE_THRESHOLD" \

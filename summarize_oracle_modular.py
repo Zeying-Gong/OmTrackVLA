@@ -13,7 +13,8 @@ EXPECTED_CONTROLLER_VERSION = int(os.environ.get("ORACLE_CONTROLLER_VERSION", "5
 CSV_FIELDNAMES = [
     "task", "split", "dataset_index", "episode_key", "scene_id",
     "episode_id", "target_name", "success", "following_rate",
-    "collision", "finish", "total_step", "perception", "result_path",
+    "collision", "finish", "total_step", "perception", "controller",
+    "result_path",
 ]
 REQUIRED_SUMMARY_FIELDS = {
     "success", "following_rate", "collision", "finish", "total_step",
@@ -128,6 +129,7 @@ def main():
                 "finish": s.get("finish", ""),
                 "total_step": s.get("total_step", ""),
                 "perception": value.get("perception", ""),
+                "controller": value.get("controller", ""),
                 "result_path": str(path),
             }
             episodes.append(episode_row)
