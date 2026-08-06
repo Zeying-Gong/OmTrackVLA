@@ -41,7 +41,7 @@ class LocalObstacleMap:
         max_depth_m: float = 10.0,
         grid_size_m: float = 20.0,
         pixels_per_meter: int = 10,
-        robot_radius_m: float = 0.38,
+        robot_radius_m: float = 0.30,
         camera_height_m: float = 0.85,
         min_obstacle_height_m: float = 0.06,
         max_obstacle_height_m: float = 1.8,
@@ -297,8 +297,12 @@ class LocalObstacleMap:
     def visualize(self, target_relative_xy: Optional[Tuple[float, float]] = None) -> np.ndarray:
         canvas = np.full((self.grid_size_px, self.grid_size_px, 3), 235, dtype=np.uint8)
         canvas[self.explored_map == 0] = (205, 205, 205)
-        canvas[self.static_map > 0] = (70, 70, 70)
-        canvas[self.inflated_map > 0] = (25, 25, 25)
+        # Raw static hits and the robot-clearance inflation are deliberately
+        # rendered separately; otherwise the conservative inflated footprint
+        # looks like the whole scene is occupied.
+        canvas[self.static_map > 0] = (105, 105, 105)
+        inflation_only = (self.inflated_map > 0) & (self.static_map == 0)
+        canvas[inflation_only] = (45, 45, 45)
         canvas[self.dynamic_map > 0] = (220, 70, 180)
         canvas[self.trajectory_map > 0] = (40, 110, 230)
         for x, y in self.last_path_px:
@@ -314,4 +318,6 @@ class LocalObstacleMap:
             gx, gy = self._grid(np.array([tf]), np.array([tl]))
             if 0 <= gx[0] < self.grid_size_px and 0 <= gy[0] < self.grid_size_px:
                 cv2.circle(canvas, (int(gx[0]), int(gy[0])), 5, (0, 180, 0), -1)
+        cv2.putText(canvas, "gray=static black=inflated pink=dynamic", (6, 16),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.38, (20, 20, 20), 1, cv2.LINE_AA)
         return cv2.cvtColor(canvas, cv2.COLOR_RGB2BGR)
