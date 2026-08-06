@@ -911,10 +911,15 @@ class MapReactiveFollower(ModularReactiveFollower):
     def reset(self, evasion_side: Optional[float] = None) -> None:
         super().reset(evasion_side=evasion_side)
         if hasattr(self, "obstacle_map"):
+            self.obstacle_map.reset()
+            self._episode_origin = None
+            self._episode_forward_axis = None
+            self._episode_left_axis = None
+            self._map_evasion_direction = self._search_direction
             self.last_map_mode = "map_reset"
 
     def update_observation(
-        self, observations, target: TargetObservation, dynamic_mask=None
+        self, observations, target: TargetObservation, dynamic_mask=None, robot=None
     ) -> None:
         depth = observations.get(DEPTH_KEY)
         if depth is None:
@@ -929,10 +934,33 @@ class MapReactiveFollower(ModularReactiveFollower):
                 max(0, int(y1)):min(dynamic_mask.shape[0], int(y2) + 1),
                 max(0, int(x1)):min(dynamic_mask.shape[1], int(x2) + 1),
             ] = True
+        robot_pose = (0.0, 0.0, 0.0)
+        if robot is not None:
+            position = np.asarray(robot.base_pos, dtype=np.float32)
+            transform = robot.sim_obj.transformation
+            forward_axis = np.asarray(
+                transform.transform_vector(np.array([1.0, 0.0, 0.0]))
+            )
+            left_axis = np.asarray(
+                transform.transform_vector(np.array([0.0, 0.0, -1.0]))
+            )
+            if self._episode_origin is None:
+                self._episode_origin = position.copy()
+                self._episode_forward_axis = forward_axis.copy()
+                self._episode_left_axis = left_axis.copy()
+            delta = position - self._episode_origin
+            episode_forward = float(np.dot(delta, self._episode_forward_axis))
+            episode_left = float(np.dot(delta, self._episode_left_axis))
+            yaw = math.atan2(
+                float(np.dot(forward_axis, self._episode_left_axis)),
+                float(np.dot(forward_axis, self._episode_forward_axis)),
+            )
+            robot_pose = (episode_forward, episode_left, yaw)
         self.obstacle_map.update(
             depth,
             target_bbox=target.bbox_xyxy,
             dynamic_mask=dynamic_mask,
+            robot_pose=robot_pose,
         )
         self.last_map_clearance = dict(self.obstacle_map.last_clearance)
         self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
@@ -962,16 +990,42 @@ class MapReactiveFollower(ModularReactiveFollower):
         )
         self.last_map_mode = map_mode
         if map_mode == "map_blocked":
+            front_clearance = self.last_map_clearance.get("front", 0.0)
+            if front_clearance > 0.90:
+                # A persistent map can become temporarily topologically
+                # blocked by viewpoint noise. If the live depth corridor is
+                # clearly open, cautiously re-acquire the moving person rather
+                # than remaining parked behind an old obstacle trace.
+                recovery = super().__call__(sim, robot, target_agent, target)
+                return ControlDecision(
+                    ContinuousAction(
+                        float(np.clip(recovery.action.forward, 0.0, 0.35)),
+                        float(np.clip(recovery.action.lateral, -0.30, 0.30)),
+                        float(np.clip(recovery.action.yaw, -0.45, 0.45)),
+                    ),
+                    "map_live_depth_recovery",
+                    recovery.guidance_bearing_rad,
+                    None,
+                )
             clear_left = self.last_map_clearance.get("left", 0.0)
             clear_right = self.last_map_clearance.get("right", 0.0)
-            direction = 1.0 if clear_left >= clear_right else -1.0
+            # Keep one side while blocked. Re-selecting the side every frame
+            # makes the robot oscillate in front of chair/table legs.
+            direction = self._map_evasion_direction
+            if clear_left > clear_right + 0.20:
+                direction = 1.0
+            elif clear_right > clear_left + 0.20:
+                direction = -1.0
+            self._map_evasion_direction = direction
             return ControlDecision(
-                ContinuousAction(0.0, 0.25 * direction, 0.25 * direction),
+                ContinuousAction(0.0, 0.45 * direction, 0.15 * direction),
                 "map_blocked_evade",
                 float(target.bearing_rad),
                 None,
             )
         waypoint_bearing = math.atan2(waypoint_left, waypoint_forward)
+        if abs(waypoint_left) > 0.05:
+            self._map_evasion_direction = math.copysign(1.0, waypoint_left)
         forward = self.distance_gain * waypoint_forward
         if abs(waypoint_bearing) > math.radians(55.0):
             forward = 0.0

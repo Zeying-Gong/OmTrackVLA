@@ -309,6 +309,7 @@ def evaluate_episode(
                         if isinstance(perception, OraclePerception)
                         else None
                     ),
+                    robot=robot,
                 )
             decision = controller(env.sim, robot, target_agent, target)
             if (
@@ -384,6 +385,9 @@ def evaluate_episode(
                     "map_mode": getattr(controller, "last_map_mode", None),
                     "map_clearance": getattr(controller, "last_map_clearance", None),
                     "target_dynamic_points": getattr(getattr(controller, "obstacle_map", None), "last_target_dynamic_points", None),
+                    "map_static_cells": int(getattr(getattr(controller, "obstacle_map", None), "static_map", np.zeros(1)).sum()),
+                    "map_dynamic_cells": int(getattr(getattr(controller, "obstacle_map", None), "dynamic_map", np.zeros(1)).sum()),
+                    "map_path_length": len(getattr(getattr(controller, "obstacle_map", None), "last_path_px", [])),
                     "action": decision.action.as_habitat(),
                     "human_following": float(metrics.get("human_following", 0.0) or 0.0),
                     "human_collision": float(metrics.get("human_collision", 0.0) or 0.0),
