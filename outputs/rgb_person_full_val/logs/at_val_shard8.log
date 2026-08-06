@@ -1,0 +1,777 @@
+[oracle-worker] attempt=1 task=at split=val shard=8 gpu=4
+[run_egl] HAB_SIM_EGL_ROOT=/robot/robot-research-exp-0/user/gzy/habitat-sim-src-egl
+[run_egl] EGL_VENDOR_JSON=/tmp/omtrackvla_egl_20260805_195951_at_val_8.json
+[run_egl] EGL_VENDOR_LIB=libEGL_nvidia.so.0
+[run_egl] NVIDIA_GL_LIBS=/robot/robot-research-exp-0/user/zlf/nvidia_gl_libs
+[run_egl] MAGNUM_CUDA_DEVICE=0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-08-05 19:59:59,024 Initializing dataset PointNav-v1
+[shard 8] Starting: 1 episodes to run (88 assigned, 0 already completed (resume), 0 excluded, 88 pending)
+2026-08-05 19:59:59,197 initializing sim RearrangeSim-v2
+Renderer: NVIDIA H100 80GB HBM3/PCIe/SSE2 by NVIDIA Corporation
+OpenGL version: 4.6.0 NVIDIA 550.54.15
+Using optional features:
+    GL_ARB_vertex_array_object
+    GL_ARB_separate_shader_objects
+    GL_ARB_robustness
+    GL_ARB_texture_storage
+    GL_ARB_texture_view
+    GL_ARB_framebuffer_no_attachments
+    GL_ARB_invalidate_subdata
+    GL_ARB_texture_storage_multisample
+    GL_ARB_multi_bind
+    GL_ARB_direct_state_access
+    GL_ARB_get_texture_sub_image
+    GL_ARB_texture_filter_anisotropic
+    GL_KHR_debug
+    GL_KHR_parallel_shader_compile
+    GL_NV_depth_buffer_float
+Using driver workarounds:
+    no-forward-compatible-core-context
+    nv-egl-incorrect-gl11-function-pointers
+    no-layout-qualifiers-on-old-glsl
+    nv-zero-context-profile-mask
+    nv-implementation-color-read-format-dsa-broken
+    nv-cubemap-inconsistent-compressed-image-size
+    nv-cubemap-broken-full-compressed-image-query
+    nv-compressed-block-size-in-bits
+[20:00:36:508137]:[Warning]:[Metadata] SceneDatasetAttributes.cpp(107)::addNewSceneInstanceToDataset : Dataset : 'default' : Lighting Layout Attributes 'no_lights' specified in Scene Attributes but does not exist in dataset, so creating default.
+[20:00:36:508315]:[Warning]:[Scene] SemanticScene.h(328)::checkFileExists : ::loadSemanticSceneDescriptor: Filedata/scene_datasets/hm3d/val/00874-uSKXQ5fFg6u/uSKXQ5fFg6u.basis.scndoes not exist.  Aborting load.
+[20:00:36:508332]:[Warning]:[Scene] SemanticScene.cpp(121)::loadSemanticSceneDescriptor : SSD File Naming Issue! Neither SemanticAttributes-provided name : `data/scene_datasets/hm3d/val/00874-uSKXQ5fFg6u/uSKXQ5fFg6u.basis.scn` nor constructed filename : `data/scene_datasets/hm3d/val/00874-uSKXQ5fFg6u/info_semantic.json` exist on disk.
+[20:00:36:508343]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00874-uSKXQ5fFg6u/uSKXQ5fFg6u.basis.scn` exists but failed to load.
+[20:00:42:516904]:[Warning]:[Sim] Simulator.cpp(594)::instanceStageForSceneAttributes : The active scene does not contain semantic annotations : activeSemanticSceneID_ = 0
+2026-08-05 20:00:43,015 Initializing task MultiHumanTrackingTask-v0
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+[20:00:44:302321]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/base.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:419800]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:419869]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:419915]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:419942]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:419963]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:419998]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:420019]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:420041]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:420072]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:420093]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:420113]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:00:44:420143]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+/data/nfs/share/OmTrackVLA/habitat-lab/habitat/articulated_agent_controllers/humanoid_rearrange_controller.py:114: RuntimeWarning: divide by zero encountered in scalar divide
+  self.motion_fps = self.walk_motion.fps / frames_per_step
+Finished navigation! Current wait step: 1
+Finished navigation! Current wait step: 2
+Finished navigation! Current wait step: 3
+Finished navigation! Current wait step: 4
+Finished navigation! Current wait step: 5
+Finished navigation! Current wait step: 6
+Finished navigation! Current wait step: 7
+Finished navigation! Current wait step: 8
+Finished navigation! Current wait step: 9
+Finished navigation! Current wait step: 10
+Finished navigation! Current wait step: 11
+Finished navigation! Current wait step: 12
+Finished navigation! Current wait step: 13
+[shard 8] 1/1 episodes | 2.6 min elapsed | 0.0 ep/min | ETA 0.0 min
+{"event": "oracle_batch_episode", "key": "000008_uSKXQ5fFg6u_ep_12_b383c8e210", "success": 1.0, "tr": 0.7244897959183674, "cr": 0.0, "steps": 98, "counts": {"completed": 1, "skipped": 0, "errors": 0, "unsuccessful": 0, "exhausted": 0}}
+{
+  "event": "oracle_batch_complete",
+  "task": "at",
+  "split": "val",
+  "shard_id": 8,
+  "num_shards": 16,
+  "dataset_episodes": 1405,
+  "assigned_episodes": 88,
+  "excluded_dataset_indices": [],
+  "excluded_episodes": 0,
+  "pending_before": 88,
+  "selected_episodes": 1,
+  "remaining_episodes": 87,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_infer_at.yaml",
+  "perception": "rgb-person-mobilenet-osnet-v6-worker",
+  "person_score_threshold": 0.3,
+  "target_initialization": "first-visible",
+  "lost_target_policy": "coordinate",
+  "lost_brake_steps": 2,
+  "lost_search_yaw": 0.35,
+  "lost_search_period_steps": 8,
+  "lost_coast_steps": 3,
+  "lost_coast_min_range": 2.0,
+  "lost_coast_max_translation": 0.35,
+  "lost_retreat_steps": 3,
+  "completed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "unsuccessful": 0,
+  "exhausted": 0,
+  "wall_time_seconds": 157.6
+}
+[shard 8] Done: 1/1 completed, 0 errors, 0 unsuccessful, 0 exhausted | Total time: 2.6 min
+[oracle-worker] scene batch complete; restarting for pending scenes
+[oracle-worker] attempt=2 task=at split=val shard=8 gpu=4
+[run_egl] HAB_SIM_EGL_ROOT=/robot/robot-research-exp-0/user/gzy/habitat-sim-src-egl
+[run_egl] EGL_VENDOR_JSON=/tmp/omtrackvla_egl_20260805_195951_at_val_8.json
+[run_egl] EGL_VENDOR_LIB=libEGL_nvidia.so.0
+[run_egl] NVIDIA_GL_LIBS=/robot/robot-research-exp-0/user/zlf/nvidia_gl_libs
+[run_egl] MAGNUM_CUDA_DEVICE=0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-08-05 20:02:49,525 Initializing dataset PointNav-v1
+[shard 8] Starting: 1 episodes to run (88 assigned, 1 already completed (resume), 0 excluded, 87 pending)
+2026-08-05 20:02:49,793 initializing sim RearrangeSim-v2
+Renderer: NVIDIA H100 80GB HBM3/PCIe/SSE2 by NVIDIA Corporation
+OpenGL version: 4.6.0 NVIDIA 550.54.15
+Using optional features:
+    GL_ARB_vertex_array_object
+    GL_ARB_separate_shader_objects
+    GL_ARB_robustness
+    GL_ARB_texture_storage
+    GL_ARB_texture_view
+    GL_ARB_framebuffer_no_attachments
+    GL_ARB_invalidate_subdata
+    GL_ARB_texture_storage_multisample
+    GL_ARB_multi_bind
+    GL_ARB_direct_state_access
+    GL_ARB_get_texture_sub_image
+    GL_ARB_texture_filter_anisotropic
+    GL_KHR_debug
+    GL_KHR_parallel_shader_compile
+    GL_NV_depth_buffer_float
+Using driver workarounds:
+    no-forward-compatible-core-context
+    nv-egl-incorrect-gl11-function-pointers
+    no-layout-qualifiers-on-old-glsl
+    nv-zero-context-profile-mask
+    nv-implementation-color-read-format-dsa-broken
+    nv-cubemap-inconsistent-compressed-image-size
+    nv-cubemap-broken-full-compressed-image-query
+    nv-compressed-block-size-in-bits
+[20:03:03:442916]:[Warning]:[Metadata] SceneDatasetAttributes.cpp(107)::addNewSceneInstanceToDataset : Dataset : 'default' : Lighting Layout Attributes 'no_lights' specified in Scene Attributes but does not exist in dataset, so creating default.
+[20:03:03:443133]:[Warning]:[Scene] SemanticScene.h(328)::checkFileExists : ::loadSemanticSceneDescriptor: Filedata/scene_datasets/hm3d/val/00806-tQ5s4ShP627/tQ5s4ShP627.basis.scndoes not exist.  Aborting load.
+[20:03:03:443152]:[Warning]:[Scene] SemanticScene.cpp(121)::loadSemanticSceneDescriptor : SSD File Naming Issue! Neither SemanticAttributes-provided name : `data/scene_datasets/hm3d/val/00806-tQ5s4ShP627/tQ5s4ShP627.basis.scn` nor constructed filename : `data/scene_datasets/hm3d/val/00806-tQ5s4ShP627/info_semantic.json` exist on disk.
+[20:03:03:443170]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00806-tQ5s4ShP627/tQ5s4ShP627.basis.scn` exists but failed to load.
+[20:03:06:433750]:[Warning]:[Sim] Simulator.cpp(594)::instanceStageForSceneAttributes : The active scene does not contain semantic annotations : activeSemanticSceneID_ = 0
+2026-08-05 20:03:06,674 Initializing task MultiHumanTrackingTask-v0
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+[20:03:07:434190]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/base.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:440801]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:440868]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:440911]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:440939]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:440966]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:441005]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:441032]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:441059]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:441098]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:441133]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:441160]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:03:07:441198]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+/data/nfs/share/OmTrackVLA/habitat-lab/habitat/articulated_agent_controllers/humanoid_rearrange_controller.py:114: RuntimeWarning: divide by zero encountered in scalar divide
+  self.motion_fps = self.walk_motion.fps / frames_per_step
+Finished navigation! Current wait step: 1
+Finished navigation! Current wait step: 2
+Finished navigation! Current wait step: 3
+Finished navigation! Current wait step: 4
+Finished navigation! Current wait step: 5
+Finished navigation! Current wait step: 6
+Finished navigation! Current wait step: 7
+Finished navigation! Current wait step: 8
+Finished navigation! Current wait step: 9
+Finished navigation! Current wait step: 10
+Finished navigation! Current wait step: 11
+Finished navigation! Current wait step: 12
+Finished navigation! Current wait step: 13
+[shard 8] 1/1 episodes | 2.8 min elapsed | 0.0 ep/min | ETA 0.0 min
+{"event": "oracle_batch_episode", "key": "000024_tQ5s4ShP627_ep_3_c29b69039c", "success": 1.0, "tr": 0.660377358490566, "cr": 0.0, "steps": 106, "counts": {"completed": 1, "skipped": 0, "errors": 0, "unsuccessful": 0, "exhausted": 0}}
+{
+  "event": "oracle_batch_complete",
+  "task": "at",
+  "split": "val",
+  "shard_id": 8,
+  "num_shards": 16,
+  "dataset_episodes": 1405,
+  "assigned_episodes": 88,
+  "excluded_dataset_indices": [],
+  "excluded_episodes": 0,
+  "pending_before": 87,
+  "selected_episodes": 1,
+  "remaining_episodes": 86,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_infer_at.yaml",
+  "perception": "rgb-person-mobilenet-osnet-v6-worker",
+  "person_score_threshold": 0.3,
+  "target_initialization": "first-visible",
+  "lost_target_policy": "coordinate",
+  "lost_brake_steps": 2,
+  "lost_search_yaw": 0.35,
+  "lost_search_period_steps": 8,
+  "lost_coast_steps": 3,
+  "lost_coast_min_range": 2.0,
+  "lost_coast_max_translation": 0.35,
+  "lost_retreat_steps": 3,
+  "completed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "unsuccessful": 0,
+  "exhausted": 0,
+  "wall_time_seconds": 174.6
+}
+[shard 8] Done: 1/1 completed, 0 errors, 0 unsuccessful, 0 exhausted | Total time: 2.9 min
+[oracle-worker] scene batch complete; restarting for pending scenes
+[oracle-worker] attempt=3 task=at split=val shard=8 gpu=4
+[run_egl] HAB_SIM_EGL_ROOT=/robot/robot-research-exp-0/user/gzy/habitat-sim-src-egl
+[run_egl] EGL_VENDOR_JSON=/tmp/omtrackvla_egl_20260805_195951_at_val_8.json
+[run_egl] EGL_VENDOR_LIB=libEGL_nvidia.so.0
+[run_egl] NVIDIA_GL_LIBS=/robot/robot-research-exp-0/user/zlf/nvidia_gl_libs
+[run_egl] MAGNUM_CUDA_DEVICE=0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-08-05 20:05:53,222 Initializing dataset PointNav-v1
+[shard 8] Starting: 1 episodes to run (88 assigned, 2 already completed (resume), 0 excluded, 86 pending)
+2026-08-05 20:05:53,523 initializing sim RearrangeSim-v2
+Renderer: NVIDIA H100 80GB HBM3/PCIe/SSE2 by NVIDIA Corporation
+OpenGL version: 4.6.0 NVIDIA 550.54.15
+Using optional features:
+    GL_ARB_vertex_array_object
+    GL_ARB_separate_shader_objects
+    GL_ARB_robustness
+    GL_ARB_texture_storage
+    GL_ARB_texture_view
+    GL_ARB_framebuffer_no_attachments
+    GL_ARB_invalidate_subdata
+    GL_ARB_texture_storage_multisample
+    GL_ARB_multi_bind
+    GL_ARB_direct_state_access
+    GL_ARB_get_texture_sub_image
+    GL_ARB_texture_filter_anisotropic
+    GL_KHR_debug
+    GL_KHR_parallel_shader_compile
+    GL_NV_depth_buffer_float
+Using driver workarounds:
+    no-forward-compatible-core-context
+    nv-egl-incorrect-gl11-function-pointers
+    no-layout-qualifiers-on-old-glsl
+    nv-zero-context-profile-mask
+    nv-implementation-color-read-format-dsa-broken
+    nv-cubemap-inconsistent-compressed-image-size
+    nv-cubemap-broken-full-compressed-image-query
+    nv-compressed-block-size-in-bits
+[20:06:17:093636]:[Warning]:[Metadata] SceneDatasetAttributes.cpp(107)::addNewSceneInstanceToDataset : Dataset : 'default' : Lighting Layout Attributes 'no_lights' specified in Scene Attributes but does not exist in dataset, so creating default.
+[20:06:17:093878]:[Warning]:[Scene] SemanticScene.h(328)::checkFileExists : ::loadSemanticSceneDescriptor: Filedata/scene_datasets/hm3d/val/00822-nrA1tAA17Yp/nrA1tAA17Yp.basis.scndoes not exist.  Aborting load.
+[20:06:17:093898]:[Warning]:[Scene] SemanticScene.cpp(121)::loadSemanticSceneDescriptor : SSD File Naming Issue! Neither SemanticAttributes-provided name : `data/scene_datasets/hm3d/val/00822-nrA1tAA17Yp/nrA1tAA17Yp.basis.scn` nor constructed filename : `data/scene_datasets/hm3d/val/00822-nrA1tAA17Yp/info_semantic.json` exist on disk.
+[20:06:17:093911]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00822-nrA1tAA17Yp/nrA1tAA17Yp.basis.scn` exists but failed to load.
+[20:06:20:058212]:[Warning]:[Sim] Simulator.cpp(594)::instanceStageForSceneAttributes : The active scene does not contain semantic annotations : activeSemanticSceneID_ = 0
+2026-08-05 20:06:20,440 Initializing task MultiHumanTrackingTask-v0
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+[20:06:21:281734]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/base.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283380]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283434]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283474]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283502]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283538]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283575]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283600]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283623]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283658]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283681]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283704]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:06:21:283738]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+/data/nfs/share/OmTrackVLA/habitat-lab/habitat/articulated_agent_controllers/humanoid_rearrange_controller.py:114: RuntimeWarning: divide by zero encountered in scalar divide
+  self.motion_fps = self.walk_motion.fps / frames_per_step
+[shard 8] 1/1 episodes | 1.0 min elapsed | 0.0 ep/min | ETA 0.0 min
+{
+  "event": "oracle_batch_unsuccessful",
+  "task": "at",
+  "split": "val",
+  "dataset_index": 40,
+  "episode_key": "000040_nrA1tAA17Yp_ep_10_49db7b99ed",
+  "result_path": "/data/nfs/share/OmTrackVLA/outputs/rgb_person_full_val/at/val/episodes/000040_nrA1tAA17Yp_ep_10_49db7b99ed.json",
+  "video_path": "/data/nfs/share/OmTrackVLA/outputs/rgb_person_full_val/at/val/videos/000040_nrA1tAA17Yp_ep_10_49db7b99ed.mp4",
+  "success_attempt": 1,
+  "max_success_attempts": 5,
+  "summary": {
+    "finish": false,
+    "status": "Collision",
+    "success": 0.0,
+    "following_rate": 0.7647058823529411,
+    "following_step": 13.0,
+    "total_step": 17,
+    "collision": 1.0,
+    "visible_rate": 1.0,
+    "coordinate_takeover_rate": 0.17647058823529413,
+    "perception_detection_rate": 0.8235294117647058,
+    "perception_target_precision": 1.0,
+    "perception_target_recall": 0.8235294117647058,
+    "perception_mean_target_iou": 0.827391801814629,
+    "distance_start_m": 2.6637561321258545,
+    "distance_min_m": 0.49044379591941833,
+    "distance_mean_m": 1.285999177133336,
+    "distance_max_m": 2.6637561321258545,
+    "distance_end_m": 0.49044379591941833,
+    "final_metrics": {
+      "human_following": 1.0,
+      "human_following_success": 0.0,
+      "human_collision": 1.0,
+      "distance_to_leader": 0.49044379591941833
+    },
+    "evasion_side": 1.0
+  }
+}
+{"event": "oracle_batch_episode", "key": "000040_nrA1tAA17Yp_ep_10_49db7b99ed", "success": 0.0, "tr": 0.7647058823529411, "cr": 1.0, "steps": 17, "counts": {"completed": 1, "skipped": 0, "errors": 0, "unsuccessful": 0, "exhausted": 0}}
+{
+  "event": "oracle_batch_complete",
+  "task": "at",
+  "split": "val",
+  "shard_id": 8,
+  "num_shards": 16,
+  "dataset_episodes": 1405,
+  "assigned_episodes": 88,
+  "excluded_dataset_indices": [],
+  "excluded_episodes": 0,
+  "pending_before": 86,
+  "selected_episodes": 1,
+  "remaining_episodes": 85,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_infer_at.yaml",
+  "perception": "rgb-person-mobilenet-osnet-v6-worker",
+  "person_score_threshold": 0.3,
+  "target_initialization": "first-visible",
+  "lost_target_policy": "coordinate",
+  "lost_brake_steps": 2,
+  "lost_search_yaw": 0.35,
+  "lost_search_period_steps": 8,
+  "lost_coast_steps": 3,
+  "lost_coast_min_range": 2.0,
+  "lost_coast_max_translation": 0.35,
+  "lost_retreat_steps": 3,
+  "completed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "unsuccessful": 0,
+  "exhausted": 0,
+  "wall_time_seconds": 64.4
+}
+[shard 8] Done: 1/1 completed, 0 errors, 0 unsuccessful, 0 exhausted | Total time: 1.1 min
+[oracle-worker] scene batch complete; restarting for pending scenes
+[oracle-worker] attempt=4 task=at split=val shard=8 gpu=4
+[run_egl] HAB_SIM_EGL_ROOT=/robot/robot-research-exp-0/user/gzy/habitat-sim-src-egl
+[run_egl] EGL_VENDOR_JSON=/tmp/omtrackvla_egl_20260805_195951_at_val_8.json
+[run_egl] EGL_VENDOR_LIB=libEGL_nvidia.so.0
+[run_egl] NVIDIA_GL_LIBS=/robot/robot-research-exp-0/user/zlf/nvidia_gl_libs
+[run_egl] MAGNUM_CUDA_DEVICE=0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-08-05 20:07:06,736 Initializing dataset PointNav-v1
+[shard 8] Starting: 1 episodes to run (88 assigned, 3 already completed (resume), 0 excluded, 85 pending)
+2026-08-05 20:07:07,207 initializing sim RearrangeSim-v2
+Renderer: NVIDIA H100 80GB HBM3/PCIe/SSE2 by NVIDIA Corporation
+OpenGL version: 4.6.0 NVIDIA 550.54.15
+Using optional features:
+    GL_ARB_vertex_array_object
+    GL_ARB_separate_shader_objects
+    GL_ARB_robustness
+    GL_ARB_texture_storage
+    GL_ARB_texture_view
+    GL_ARB_framebuffer_no_attachments
+    GL_ARB_invalidate_subdata
+    GL_ARB_texture_storage_multisample
+    GL_ARB_multi_bind
+    GL_ARB_direct_state_access
+    GL_ARB_get_texture_sub_image
+    GL_ARB_texture_filter_anisotropic
+    GL_KHR_debug
+    GL_KHR_parallel_shader_compile
+    GL_NV_depth_buffer_float
+Using driver workarounds:
+    no-forward-compatible-core-context
+    nv-egl-incorrect-gl11-function-pointers
+    no-layout-qualifiers-on-old-glsl
+    nv-zero-context-profile-mask
+    nv-implementation-color-read-format-dsa-broken
+    nv-cubemap-inconsistent-compressed-image-size
+    nv-cubemap-broken-full-compressed-image-query
+    nv-compressed-block-size-in-bits
+[20:07:26:465704]:[Warning]:[Metadata] SceneDatasetAttributes.cpp(107)::addNewSceneInstanceToDataset : Dataset : 'default' : Lighting Layout Attributes 'no_lights' specified in Scene Attributes but does not exist in dataset, so creating default.
+[20:07:26:465978]:[Warning]:[Scene] SemanticScene.h(328)::checkFileExists : ::loadSemanticSceneDescriptor: Filedata/scene_datasets/hm3d/val/00849-a8BtkwhxdRV/a8BtkwhxdRV.basis.scndoes not exist.  Aborting load.
+[20:07:26:466012]:[Warning]:[Scene] SemanticScene.cpp(121)::loadSemanticSceneDescriptor : SSD File Naming Issue! Neither SemanticAttributes-provided name : `data/scene_datasets/hm3d/val/00849-a8BtkwhxdRV/a8BtkwhxdRV.basis.scn` nor constructed filename : `data/scene_datasets/hm3d/val/00849-a8BtkwhxdRV/info_semantic.json` exist on disk.
+[20:07:26:466026]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00849-a8BtkwhxdRV/a8BtkwhxdRV.basis.scn` exists but failed to load.
+[20:07:29:320186]:[Warning]:[Sim] Simulator.cpp(594)::instanceStageForSceneAttributes : The active scene does not contain semantic annotations : activeSemanticSceneID_ = 0
+2026-08-05 20:07:29,597 Initializing task MultiHumanTrackingTask-v0
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+[20:07:30:182134]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/base.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:182829]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:182860]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:182894]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:182916]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:182937]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:182967]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:182988]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:183007]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:183048]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:183067]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:183087]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:07:30:183115]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+/data/nfs/share/OmTrackVLA/habitat-lab/habitat/articulated_agent_controllers/humanoid_rearrange_controller.py:114: RuntimeWarning: divide by zero encountered in scalar divide
+  self.motion_fps = self.walk_motion.fps / frames_per_step
+Finished navigation! Current wait step: 1
+Finished navigation! Current wait step: 2
+Finished navigation! Current wait step: 3
+Finished navigation! Current wait step: 4
+Finished navigation! Current wait step: 5
+Finished navigation! Current wait step: 6
+Finished navigation! Current wait step: 7
+Finished navigation! Current wait step: 8
+Finished navigation! Current wait step: 9
+Finished navigation! Current wait step: 10
+Finished navigation! Current wait step: 11
+Finished navigation! Current wait step: 12
+Finished navigation! Current wait step: 13
+[shard 8] 1/1 episodes | 2.6 min elapsed | 0.0 ep/min | ETA 0.0 min
+{"event": "oracle_batch_episode", "key": "000056_a8BtkwhxdRV_ep_18_45d63061b4", "success": 1.0, "tr": 0.9722222222222222, "cr": 0.0, "steps": 72, "counts": {"completed": 1, "skipped": 0, "errors": 0, "unsuccessful": 0, "exhausted": 0}}
+{
+  "event": "oracle_batch_complete",
+  "task": "at",
+  "split": "val",
+  "shard_id": 8,
+  "num_shards": 16,
+  "dataset_episodes": 1405,
+  "assigned_episodes": 88,
+  "excluded_dataset_indices": [],
+  "excluded_episodes": 0,
+  "pending_before": 85,
+  "selected_episodes": 1,
+  "remaining_episodes": 84,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_infer_at.yaml",
+  "perception": "rgb-person-mobilenet-osnet-v6-worker",
+  "person_score_threshold": 0.3,
+  "target_initialization": "first-visible",
+  "lost_target_policy": "coordinate",
+  "lost_brake_steps": 2,
+  "lost_search_yaw": 0.35,
+  "lost_search_period_steps": 8,
+  "lost_coast_steps": 3,
+  "lost_coast_min_range": 2.0,
+  "lost_coast_max_translation": 0.35,
+  "lost_retreat_steps": 3,
+  "completed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "unsuccessful": 0,
+  "exhausted": 0,
+  "wall_time_seconds": 160.2
+}
+[shard 8] Done: 1/1 completed, 0 errors, 0 unsuccessful, 0 exhausted | Total time: 2.7 min
+[oracle-worker] scene batch complete; restarting for pending scenes
+[oracle-worker] attempt=5 task=at split=val shard=8 gpu=4
+[run_egl] HAB_SIM_EGL_ROOT=/robot/robot-research-exp-0/user/gzy/habitat-sim-src-egl
+[run_egl] EGL_VENDOR_JSON=/tmp/omtrackvla_egl_20260805_195951_at_val_8.json
+[run_egl] EGL_VENDOR_LIB=libEGL_nvidia.so.0
+[run_egl] NVIDIA_GL_LIBS=/robot/robot-research-exp-0/user/zlf/nvidia_gl_libs
+[run_egl] MAGNUM_CUDA_DEVICE=0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-08-05 20:09:56,030 Initializing dataset PointNav-v1
+[shard 8] Starting: 1 episodes to run (88 assigned, 4 already completed (resume), 0 excluded, 84 pending)
+2026-08-05 20:09:56,217 initializing sim RearrangeSim-v2
+Renderer: NVIDIA H100 80GB HBM3/PCIe/SSE2 by NVIDIA Corporation
+OpenGL version: 4.6.0 NVIDIA 550.54.15
+Using optional features:
+    GL_ARB_vertex_array_object
+    GL_ARB_separate_shader_objects
+    GL_ARB_robustness
+    GL_ARB_texture_storage
+    GL_ARB_texture_view
+    GL_ARB_framebuffer_no_attachments
+    GL_ARB_invalidate_subdata
+    GL_ARB_texture_storage_multisample
+    GL_ARB_multi_bind
+    GL_ARB_direct_state_access
+    GL_ARB_get_texture_sub_image
+    GL_ARB_texture_filter_anisotropic
+    GL_KHR_debug
+    GL_KHR_parallel_shader_compile
+    GL_NV_depth_buffer_float
+Using driver workarounds:
+    no-forward-compatible-core-context
+    nv-egl-incorrect-gl11-function-pointers
+    no-layout-qualifiers-on-old-glsl
+    nv-zero-context-profile-mask
+    nv-implementation-color-read-format-dsa-broken
+    nv-cubemap-inconsistent-compressed-image-size
+    nv-cubemap-broken-full-compressed-image-query
+    nv-compressed-block-size-in-bits
+[20:10:09:107759]:[Warning]:[Metadata] SceneDatasetAttributes.cpp(107)::addNewSceneInstanceToDataset : Dataset : 'default' : Lighting Layout Attributes 'no_lights' specified in Scene Attributes but does not exist in dataset, so creating default.
+[20:10:09:107967]:[Warning]:[Scene] SemanticScene.h(328)::checkFileExists : ::loadSemanticSceneDescriptor: Filedata/scene_datasets/hm3d/val/00843-DYehNKdT76V/DYehNKdT76V.basis.scndoes not exist.  Aborting load.
+[20:10:09:107985]:[Warning]:[Scene] SemanticScene.cpp(121)::loadSemanticSceneDescriptor : SSD File Naming Issue! Neither SemanticAttributes-provided name : `data/scene_datasets/hm3d/val/00843-DYehNKdT76V/DYehNKdT76V.basis.scn` nor constructed filename : `data/scene_datasets/hm3d/val/00843-DYehNKdT76V/info_semantic.json` exist on disk.
+[20:10:09:107996]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00843-DYehNKdT76V/DYehNKdT76V.basis.scn` exists but failed to load.
+[20:10:12:894074]:[Warning]:[Sim] Simulator.cpp(594)::instanceStageForSceneAttributes : The active scene does not contain semantic annotations : activeSemanticSceneID_ = 0
+2026-08-05 20:10:13,305 Initializing task MultiHumanTrackingTask-v0
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+[20:10:13:963704]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/base.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970075]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970144]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970188]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970226]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970255]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970293]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970319]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970347]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970385]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970412]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970437]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:10:13:970475]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+/data/nfs/share/OmTrackVLA/habitat-lab/habitat/articulated_agent_controllers/humanoid_rearrange_controller.py:114: RuntimeWarning: divide by zero encountered in scalar divide
+  self.motion_fps = self.walk_motion.fps / frames_per_step
+Finished navigation! Current wait step: 1
+Finished navigation! Current wait step: 2
+Finished navigation! Current wait step: 3
+Finished navigation! Current wait step: 4
+Finished navigation! Current wait step: 5
+Finished navigation! Current wait step: 6
+Finished navigation! Current wait step: 7
+Finished navigation! Current wait step: 8
+Finished navigation! Current wait step: 9
+Finished navigation! Current wait step: 10
+Finished navigation! Current wait step: 11
+Finished navigation! Current wait step: 12
+Finished navigation! Current wait step: 13
+[shard 8] 1/1 episodes | 2.5 min elapsed | 0.0 ep/min | ETA 0.0 min
+{"event": "oracle_batch_episode", "key": "000072_DYehNKdT76V_ep_11_dd32ce7347", "success": 1.0, "tr": 0.9072164948453608, "cr": 0.0, "steps": 97, "counts": {"completed": 1, "skipped": 0, "errors": 0, "unsuccessful": 0, "exhausted": 0}}
+{
+  "event": "oracle_batch_complete",
+  "task": "at",
+  "split": "val",
+  "shard_id": 8,
+  "num_shards": 16,
+  "dataset_episodes": 1405,
+  "assigned_episodes": 88,
+  "excluded_dataset_indices": [],
+  "excluded_episodes": 0,
+  "pending_before": 84,
+  "selected_episodes": 1,
+  "remaining_episodes": 83,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_infer_at.yaml",
+  "perception": "rgb-person-mobilenet-osnet-v6-worker",
+  "person_score_threshold": 0.3,
+  "target_initialization": "first-visible",
+  "lost_target_policy": "coordinate",
+  "lost_brake_steps": 2,
+  "lost_search_yaw": 0.35,
+  "lost_search_period_steps": 8,
+  "lost_coast_steps": 3,
+  "lost_coast_min_range": 2.0,
+  "lost_coast_max_translation": 0.35,
+  "lost_retreat_steps": 3,
+  "completed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "unsuccessful": 0,
+  "exhausted": 0,
+  "wall_time_seconds": 153.8
+}
+[shard 8] Done: 1/1 completed, 0 errors, 0 unsuccessful, 0 exhausted | Total time: 2.6 min
+[oracle-worker] scene batch complete; restarting for pending scenes
+[oracle-worker] attempt=6 task=at split=val shard=8 gpu=4
+[run_egl] HAB_SIM_EGL_ROOT=/robot/robot-research-exp-0/user/gzy/habitat-sim-src-egl
+[run_egl] EGL_VENDOR_JSON=/tmp/omtrackvla_egl_20260805_195951_at_val_8.json
+[run_egl] EGL_VENDOR_LIB=libEGL_nvidia.so.0
+[run_egl] NVIDIA_GL_LIBS=/robot/robot-research-exp-0/user/zlf/nvidia_gl_libs
+[run_egl] MAGNUM_CUDA_DEVICE=0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-08-05 20:12:40,030 Initializing dataset PointNav-v1
+[shard 8] Starting: 1 episodes to run (88 assigned, 5 already completed (resume), 0 excluded, 83 pending)
+2026-08-05 20:12:40,265 initializing sim RearrangeSim-v2
+Renderer: NVIDIA H100 80GB HBM3/PCIe/SSE2 by NVIDIA Corporation
+OpenGL version: 4.6.0 NVIDIA 550.54.15
+Using optional features:
+    GL_ARB_vertex_array_object
+    GL_ARB_separate_shader_objects
+    GL_ARB_robustness
+    GL_ARB_texture_storage
+    GL_ARB_texture_view
+    GL_ARB_framebuffer_no_attachments
+    GL_ARB_invalidate_subdata
+    GL_ARB_texture_storage_multisample
+    GL_ARB_multi_bind
+    GL_ARB_direct_state_access
+    GL_ARB_get_texture_sub_image
+    GL_ARB_texture_filter_anisotropic
+    GL_KHR_debug
+    GL_KHR_parallel_shader_compile
+    GL_NV_depth_buffer_float
+Using driver workarounds:
+    no-forward-compatible-core-context
+    nv-egl-incorrect-gl11-function-pointers
+    no-layout-qualifiers-on-old-glsl
+    nv-zero-context-profile-mask
+    nv-implementation-color-read-format-dsa-broken
+    nv-cubemap-inconsistent-compressed-image-size
+    nv-cubemap-broken-full-compressed-image-query
+    nv-compressed-block-size-in-bits
+[20:12:44:661284]:[Warning]:[Metadata] SceneDatasetAttributes.cpp(107)::addNewSceneInstanceToDataset : Dataset : 'default' : Lighting Layout Attributes 'no_lights' specified in Scene Attributes but does not exist in dataset, so creating default.
+[20:12:44:661442]:[Warning]:[Scene] SemanticScene.h(328)::checkFileExists : ::loadSemanticSceneDescriptor: Filedata/scene_datasets/hm3d/val/00877-4ok3usBNeis/4ok3usBNeis.basis.scndoes not exist.  Aborting load.
+[20:12:44:661456]:[Warning]:[Scene] SemanticScene.cpp(121)::loadSemanticSceneDescriptor : SSD File Naming Issue! Neither SemanticAttributes-provided name : `data/scene_datasets/hm3d/val/00877-4ok3usBNeis/4ok3usBNeis.basis.scn` nor constructed filename : `data/scene_datasets/hm3d/val/00877-4ok3usBNeis/info_semantic.json` exist on disk.
+[20:12:44:661466]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00877-4ok3usBNeis/4ok3usBNeis.basis.scn` exists but failed to load.
+[20:12:46:306500]:[Warning]:[Sim] Simulator.cpp(594)::instanceStageForSceneAttributes : The active scene does not contain semantic annotations : activeSemanticSceneID_ = 0
+2026-08-05 20:12:46,632 Initializing task MultiHumanTrackingTask-v0
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+[20:12:47:135206]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/base.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151187]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151228]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151261]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151283]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151304]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151336]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151355]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151377]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151406]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151427]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151454]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:12:47:151485]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+/data/nfs/share/OmTrackVLA/habitat-lab/habitat/articulated_agent_controllers/humanoid_rearrange_controller.py:114: RuntimeWarning: divide by zero encountered in scalar divide
+  self.motion_fps = self.walk_motion.fps / frames_per_step
+Finished navigation! Current wait step: 1
+Finished navigation! Current wait step: 2
+Finished navigation! Current wait step: 3
+Finished navigation! Current wait step: 4
+Finished navigation! Current wait step: 5
+Finished navigation! Current wait step: 6
+Finished navigation! Current wait step: 7
+Finished navigation! Current wait step: 8
+Finished navigation! Current wait step: 9
+Finished navigation! Current wait step: 10
+Finished navigation! Current wait step: 11
+Finished navigation! Current wait step: 12
+Finished navigation! Current wait step: 13
+[shard 8] 1/1 episodes | 1.1 min elapsed | 0.0 ep/min | ETA 0.0 min
+{"event": "oracle_batch_episode", "key": "000088_4ok3usBNeis_ep_9_00f51215df", "success": 1.0, "tr": 1.0, "cr": 0.0, "steps": 46, "counts": {"completed": 1, "skipped": 0, "errors": 0, "unsuccessful": 0, "exhausted": 0}}
+{
+  "event": "oracle_batch_complete",
+  "task": "at",
+  "split": "val",
+  "shard_id": 8,
+  "num_shards": 16,
+  "dataset_episodes": 1405,
+  "assigned_episodes": 88,
+  "excluded_dataset_indices": [],
+  "excluded_episodes": 0,
+  "pending_before": 83,
+  "selected_episodes": 1,
+  "remaining_episodes": 82,
+  "config": "habitat-lab/habitat/config/benchmark/nav/track/track_infer_at.yaml",
+  "perception": "rgb-person-mobilenet-osnet-v6-worker",
+  "person_score_threshold": 0.3,
+  "target_initialization": "first-visible",
+  "lost_target_policy": "coordinate",
+  "lost_brake_steps": 2,
+  "lost_search_yaw": 0.35,
+  "lost_search_period_steps": 8,
+  "lost_coast_steps": 3,
+  "lost_coast_min_range": 2.0,
+  "lost_coast_max_translation": 0.35,
+  "lost_retreat_steps": 3,
+  "completed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "unsuccessful": 0,
+  "exhausted": 0,
+  "wall_time_seconds": 67.7
+}
+[shard 8] Done: 1/1 completed, 0 errors, 0 unsuccessful, 0 exhausted | Total time: 1.1 min
+[oracle-worker] scene batch complete; restarting for pending scenes
+[oracle-worker] attempt=7 task=at split=val shard=8 gpu=4
+[run_egl] HAB_SIM_EGL_ROOT=/robot/robot-research-exp-0/user/gzy/habitat-sim-src-egl
+[run_egl] EGL_VENDOR_JSON=/tmp/omtrackvla_egl_20260805_195951_at_val_8.json
+[run_egl] EGL_VENDOR_LIB=libEGL_nvidia.so.0
+[run_egl] NVIDIA_GL_LIBS=/robot/robot-research-exp-0/user/zlf/nvidia_gl_libs
+[run_egl] MAGNUM_CUDA_DEVICE=0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+2026-08-05 20:14:04,600 Initializing dataset PointNav-v1
+[shard 8] Starting: 1 episodes to run (88 assigned, 6 already completed (resume), 0 excluded, 82 pending)
+2026-08-05 20:14:04,920 initializing sim RearrangeSim-v2
+Renderer: NVIDIA H100 80GB HBM3/PCIe/SSE2 by NVIDIA Corporation
+OpenGL version: 4.6.0 NVIDIA 550.54.15
+Using optional features:
+    GL_ARB_vertex_array_object
+    GL_ARB_separate_shader_objects
+    GL_ARB_robustness
+    GL_ARB_texture_storage
+    GL_ARB_texture_view
+    GL_ARB_framebuffer_no_attachments
+    GL_ARB_invalidate_subdata
+    GL_ARB_texture_storage_multisample
+    GL_ARB_multi_bind
+    GL_ARB_direct_state_access
+    GL_ARB_get_texture_sub_image
+    GL_ARB_texture_filter_anisotropic
+    GL_KHR_debug
+    GL_KHR_parallel_shader_compile
+    GL_NV_depth_buffer_float
+Using driver workarounds:
+    no-forward-compatible-core-context
+    nv-egl-incorrect-gl11-function-pointers
+    no-layout-qualifiers-on-old-glsl
+    nv-zero-context-profile-mask
+    nv-implementation-color-read-format-dsa-broken
+    nv-cubemap-inconsistent-compressed-image-size
+    nv-cubemap-broken-full-compressed-image-query
+    nv-compressed-block-size-in-bits
+[20:14:28:397731]:[Warning]:[Metadata] SceneDatasetAttributes.cpp(107)::addNewSceneInstanceToDataset : Dataset : 'default' : Lighting Layout Attributes 'no_lights' specified in Scene Attributes but does not exist in dataset, so creating default.
+[20:14:28:397953]:[Warning]:[Scene] SemanticScene.h(328)::checkFileExists : ::loadSemanticSceneDescriptor: Filedata/scene_datasets/hm3d/val/00838-kJJyRFXVpx2/kJJyRFXVpx2.basis.scndoes not exist.  Aborting load.
+[20:14:28:397970]:[Warning]:[Scene] SemanticScene.cpp(121)::loadSemanticSceneDescriptor : SSD File Naming Issue! Neither SemanticAttributes-provided name : `data/scene_datasets/hm3d/val/00838-kJJyRFXVpx2/kJJyRFXVpx2.basis.scn` nor constructed filename : `data/scene_datasets/hm3d/val/00838-kJJyRFXVpx2/info_semantic.json` exist on disk.
+[20:14:28:397982]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00838-kJJyRFXVpx2/kJJyRFXVpx2.basis.scn` exists but failed to load.
+[20:14:31:794855]:[Warning]:[Sim] Simulator.cpp(594)::instanceStageForSceneAttributes : The active scene does not contain semantic annotations : activeSemanticSceneID_ = 0
+2026-08-05 20:14:32,261 Initializing task MultiHumanTrackingTask-v0
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+[20:14:33:246129]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/base.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:246982]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247011]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247040]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247058]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247075]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247111]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/fr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247127]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247144]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247168]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hl.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247184]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.hip.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247200]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.uleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+[20:14:33:247226]:[Warning]:[Assets] ResourceManager.cpp(899)::createRenderAssetInstance : Instantiating render asset `data/robots/hab_spot_arm/urdf/../meshesColored/hr.lleg.glb` with incompatible light setup, instance will not be correctly lit. For objects, please ensure 'requires lighting' is enabled in object config file.
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)
+MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)
+/data/nfs/share/OmTrackVLA/habitat-lab/habitat/articulated_agent_controllers/humanoid_rearrange_controller.py:114: RuntimeWarning: divide by zero encountered in scalar divide
+  self.motion_fps = self.walk_motion.fps / frames_per_step
+Finished navigation! Current wait step: 1
+Finished navigation! Current wait step: 2
+Finished navigation! Current wait step: 3
+Finished navigation! Current wait step: 4
+Finished navigation! Current wait step: 5
+Finished navigation! Current wait step: 6
+Finished navigation! Current wait step: 7
+Finished navigation! Current wait step: 8
+Finished navigation! Current wait step: 9
+Finished navigation! Current wait step: 10
