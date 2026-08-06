@@ -300,13 +300,36 @@ def evaluate_episode(
                 candidate_record["target_iou"] = candidate_iou
                 candidate_record["target_match"] = candidate_iou >= 0.3
                 candidate_records.append(candidate_record)
+            person_dynamic_mask = None
+            if isinstance(perception, OraclePerception):
+                # Habitat's humanoid instances use the 1000--1100 semantic-id
+                # range. Keep every visible person in the dynamic layer; only
+                # the target semantic id is used for tracking metrics/control.
+                panoptic_frame = np.asarray(observations[PANOPTIC_KEY]).squeeze()
+                person_dynamic_mask = np.isin(
+                    panoptic_frame, np.arange(1000, 1101, dtype=panoptic_frame.dtype)
+                )
+            elif candidate_records:
+                # Learned perception has no privileged person IDs. Union all
+                # detector candidates so non-target people are not fossilized
+                # into the persistent static map.
+                person_dynamic_mask = np.zeros(
+                    np.asarray(observations[DEPTH_KEY]).squeeze().shape, dtype=bool
+                )
+                mask_h, mask_w = person_dynamic_mask.shape
+                for candidate in candidate_records:
+                    x1, y1, x2, y2 = candidate["bbox_xyxy"]
+                    person_dynamic_mask[
+                        max(0, int(y1)):min(mask_h, int(y2) + 1),
+                        max(0, int(x1)):min(mask_w, int(x2) + 1),
+                    ] = True
             if hasattr(controller, "update_observation"):
                 controller.update_observation(
                     observations,
                     target,
                     dynamic_mask=(
-                        current_target_mask
-                        if isinstance(perception, OraclePerception)
+                        person_dynamic_mask
+                        if person_dynamic_mask is not None
                         else None
                     ),
                     robot=robot,
