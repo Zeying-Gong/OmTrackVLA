@@ -72,6 +72,8 @@ PERCEPTION="${PERCEPTION:-oracle}"
 CONTROLLER="${CONTROLLER:-oracle-navmesh}"
 MAP_MEMORY_FRAMES="${MAP_MEMORY_FRAMES:--1}"
 MAP_CAMERA_HEIGHT="${MAP_CAMERA_HEIGHT:-0.24}"
+MAP_ROBOT_RADIUS="${MAP_ROBOT_RADIUS:-0.30}"
+MAP_MIN_STATIC_HITS="${MAP_MIN_STATIC_HITS:-1}"
 PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth}"
 PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
 PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
@@ -223,6 +225,8 @@ run_shard() {
         --controller "$CONTROLLER" \
         --map-memory-frames "$MAP_MEMORY_FRAMES" \
         --map-camera-height "$MAP_CAMERA_HEIGHT" \
+        --map-robot-radius "$MAP_ROBOT_RADIUS" \
+        --map-min-static-hits "$MAP_MIN_STATIC_HITS" \
         --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \
         --person-reid-weights "$PERSON_REID_WEIGHTS" \
         --person-score-threshold "$PERSON_SCORE_THRESHOLD" \

@@ -569,6 +569,8 @@ def main():
         help="C2 static-map memory: -1=controller default, 0=full episode, N=last N frames",
     )
     parser.add_argument("--map-camera-height", type=float, default=0.24)
+    parser.add_argument("--map-robot-radius", type=float, default=0.30)
+    parser.add_argument("--map-min-static-hits", type=int, default=1)
     parser.add_argument("--person-detector-weights", default=str(DEFAULT_WEIGHTS))
     parser.add_argument("--person-reid-weights", default=str(DEFAULT_REID_WEIGHTS))
     parser.add_argument("--person-score-threshold", type=float, default=0.30)
@@ -602,6 +604,10 @@ def main():
         parser.error("map-memory-frames must be -1, 0, or a positive integer")
     if args.map_camera_height <= 0.0:
         parser.error("map-camera-height must be positive")
+    if args.map_robot_radius <= 0.0:
+        parser.error("map-robot-radius must be positive")
+    if args.map_min_static_hits <= 0:
+        parser.error("map-min-static-hits must be positive")
     if args.lost_brake_steps < 0:
         parser.error("lost-brake-steps must be non-negative")
     if args.lost_search_period_steps <= 0:
@@ -762,10 +768,14 @@ def main():
             map_memory_frames = map_memory_frames or None
             camera_height_m = args.map_camera_height
             min_obstacle_height_m = 0.08
+            robot_radius_m = 0.22 if args.map_robot_radius == 0.30 else args.map_robot_radius
+            min_static_hits = 2 if args.map_min_static_hits == 1 else args.map_min_static_hits
         else:
             map_memory_frames = None
             camera_height_m = 0.85
             min_obstacle_height_m = 0.06
+            robot_radius_m = args.map_robot_radius
+            min_static_hits = args.map_min_static_hits
         controller = MapReactiveFollower(
             min_distance_m=args.min_distance,
             max_distance_m=args.max_distance,
@@ -777,6 +787,8 @@ def main():
             camera_height_m=camera_height_m,
             map_memory_frames=map_memory_frames,
             min_obstacle_height_m=min_obstacle_height_m,
+            robot_radius_m=robot_radius_m,
+            min_static_hits=min_static_hits,
         )
     if args.perception == "oracle":
         perception = OraclePerception()
@@ -806,6 +818,8 @@ def main():
         "controller": args.controller,
         "map_memory_frames": getattr(controller.obstacle_map, "memory_frames", None) if hasattr(controller, "obstacle_map") else None,
         "map_camera_height_m": getattr(controller.obstacle_map, "camera_height_m", None) if hasattr(controller, "obstacle_map") else None,
+        "map_robot_radius_m": getattr(controller.obstacle_map, "robot_radius_m", None) if hasattr(controller, "obstacle_map") else None,
+        "map_min_static_hits": getattr(controller.obstacle_map, "min_static_hits", None) if hasattr(controller, "obstacle_map") else None,
         "controller_input": (
             "oracle-pointgoal"
             if getattr(controller, "uses_invisible_pointgoal", False)
@@ -869,6 +883,8 @@ def main():
                 "controller": args.controller,
                 "map_memory_frames": getattr(controller.obstacle_map, "memory_frames", None) if hasattr(controller, "obstacle_map") else None,
                 "map_camera_height_m": getattr(controller.obstacle_map, "camera_height_m", None) if hasattr(controller, "obstacle_map") else None,
+                "map_robot_radius_m": getattr(controller.obstacle_map, "robot_radius_m", None) if hasattr(controller, "obstacle_map") else None,
+                "map_min_static_hits": getattr(controller.obstacle_map, "min_static_hits", None) if hasattr(controller, "obstacle_map") else None,
                 "controller_input": (
                     "oracle-pointgoal"
                     if getattr(controller, "uses_invisible_pointgoal", False)

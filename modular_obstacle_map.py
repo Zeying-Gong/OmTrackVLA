@@ -48,6 +48,7 @@ class LocalObstacleMap:
         max_obstacle_height_m: float = 1.8,
         carrot_distance_m: float = 0.55,
         memory_frames: Optional[int] = None,
+        min_static_hits: int = 1,
     ) -> None:
         self.image_width = int(image_width)
         self.image_height = int(image_height)
@@ -63,6 +64,9 @@ class LocalObstacleMap:
         if memory_frames is not None and int(memory_frames) <= 0:
             raise ValueError("memory_frames must be positive or None")
         self.memory_frames = None if memory_frames is None else int(memory_frames)
+        if int(min_static_hits) <= 0:
+            raise ValueError("min_static_hits must be positive")
+        self.min_static_hits = int(min_static_hits)
         self.grid_size_px = int(round(grid_size_m * pixels_per_meter))
         self.center_px = self.grid_size_px // 2
         self._inflation_radius_px = max(
@@ -193,7 +197,8 @@ class LocalObstacleMap:
             np.add.at(self.free_hits, np.where(frame_free > 0), 1)
             np.minimum(self.free_hits, np.iinfo(np.uint16).max, out=self.free_hits)
             raw_static = (
-                (self.static_hits > 0) & (self.static_hits * 3 >= self.free_hits)
+                (self.static_hits >= self.min_static_hits)
+                & (self.static_hits * 3 >= self.free_hits)
             ).astype(np.uint8)
         else:
             # Finite-memory mode: old observations expire instead of permanently
@@ -205,7 +210,10 @@ class LocalObstacleMap:
             observed_free = np.sum(
                 np.stack([item[1] for item in self._static_memory]), axis=0
             )
-            raw_static = ((occupied > 0) & (occupied * 3 >= observed_free)).astype(np.uint8)
+            raw_static = (
+                (occupied >= self.min_static_hits)
+                & (occupied * 3 >= observed_free)
+            ).astype(np.uint8)
         self.static_map = cv2.morphologyEx(
             raw_static, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8)
         )

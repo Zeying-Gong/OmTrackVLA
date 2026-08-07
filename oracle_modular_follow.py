@@ -907,6 +907,8 @@ class MapReactiveFollower(ModularReactiveFollower):
         hfov_deg: float = 60.0,
         camera_height_m: float = 0.24,
         min_obstacle_height_m: float = 0.06,
+        robot_radius_m: float = 0.30,
+        min_static_hits: int = 1,
         map_memory_frames: Optional[int] = None,
         **kwargs,
     ) -> None:
@@ -915,6 +917,8 @@ class MapReactiveFollower(ModularReactiveFollower):
             hfov_deg=hfov_deg,
             camera_height_m=camera_height_m,
             min_obstacle_height_m=min_obstacle_height_m,
+            robot_radius_m=robot_radius_m,
+            min_static_hits=min_static_hits,
             memory_frames=map_memory_frames,
         )
         self.last_map_mode = "map_uninitialized"
