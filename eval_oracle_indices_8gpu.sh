@@ -20,6 +20,8 @@ PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fas
 PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
 PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
 CONTROLLER="${CONTROLLER:-oracle-navmesh}"
+MAP_MEMORY_FRAMES="${MAP_MEMORY_FRAMES:--1}"
+MAP_CAMERA_HEIGHT="${MAP_CAMERA_HEIGHT:-0.24}"
 TARGET_INITIALIZATION="${TARGET_INITIALIZATION:-auto}"
 LOST_TARGET_POLICY="${LOST_TARGET_POLICY:-auto}"
 LOST_BRAKE_STEPS="${LOST_BRAKE_STEPS:-2}"
@@ -87,6 +89,8 @@ echo "[oracle-indices] start index=$index gpu=$gpu display=$display"
         --save-video --video-fps 8 --no-resume \
         --perception "$PERCEPTION" \
         --controller "$CONTROLLER" \
+        --map-memory-frames "$MAP_MEMORY_FRAMES" \
+        --map-camera-height "$MAP_CAMERA_HEIGHT" \
         --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \
         --person-reid-weights "$PERSON_REID_WEIGHTS" \
         --person-score-threshold "$PERSON_SCORE_THRESHOLD" \

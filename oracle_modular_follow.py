@@ -901,9 +901,22 @@ class ModularReactiveFollower:
 class MapReactiveFollower(ModularReactiveFollower):
     """Reactive follower augmented with an Ascent-style local obstacle map."""
 
-    def __init__(self, *args, hfov_deg: float = 90.0, **kwargs) -> None:
+    def __init__(
+        self,
+        *args,
+        hfov_deg: float = 60.0,
+        camera_height_m: float = 0.24,
+        min_obstacle_height_m: float = 0.06,
+        map_memory_frames: Optional[int] = None,
+        **kwargs,
+    ) -> None:
         super().__init__(*args, **kwargs)
-        self.obstacle_map = LocalObstacleMap(hfov_deg=hfov_deg)
+        self.obstacle_map = LocalObstacleMap(
+            hfov_deg=hfov_deg,
+            camera_height_m=camera_height_m,
+            min_obstacle_height_m=min_obstacle_height_m,
+            memory_frames=map_memory_frames,
+        )
         self.last_map_mode = "map_uninitialized"
         self.last_map_clearance = dict(self.obstacle_map.last_clearance)
         self.last_map_visualization = self.obstacle_map.visualize()

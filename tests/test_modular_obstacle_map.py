@@ -45,6 +45,36 @@ class LocalObstacleMapTest(unittest.TestCase):
         obstacle_map.update(depth, dynamic_mask=np.zeros_like(mask))
         self.assertEqual(obstacle_map.dynamic_map.sum(), 0)
 
+    def test_finite_memory_expires_old_static_obstacles(self):
+        obstacle_map = LocalObstacleMap(
+            image_width=64, image_height=64, memory_frames=2
+        )
+        obstacle_depth = np.full((64, 64), 2.0, dtype=np.float32)
+        empty_depth = np.full_like(obstacle_depth, obstacle_map.max_depth_m)
+        obstacle_map.update(obstacle_depth)
+        self.assertGreater(obstacle_map.static_map.sum(), 0)
+
+        obstacle_map.update(empty_depth)
+        self.assertGreater(obstacle_map.static_map.sum(), 0)
+        obstacle_map.update(empty_depth)
+        self.assertEqual(obstacle_map.static_map.sum(), 0)
+
+    def test_ground_plane_is_removed_by_camera_height_projection(self):
+        obstacle_map = LocalObstacleMap(
+            image_width=64, image_height=64, hfov_deg=90.0,
+            camera_height_m=0.24, min_obstacle_height_m=0.08,
+        )
+        depth = np.full((64, 64), obstacle_map.max_depth_m, dtype=np.float32)
+        fy = 32.0
+        center_y = 31.5
+        for y in range(40, 64):
+            depth[y, :] = obstacle_map.camera_height_m * fy / (y - center_y)
+
+        obstacle_map.update(depth)
+
+        self.assertEqual(obstacle_map.static_map.sum(), 0)
+        self.assertGreater(obstacle_map.last_ground_filtered_points, 0)
+
     def test_follow_waypoint_stops_before_target(self):
         obstacle_map = LocalObstacleMap()
         forward, left, mode = obstacle_map.choose_waypoint(

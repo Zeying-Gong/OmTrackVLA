@@ -70,6 +70,8 @@ RESTART_DELAY="${RESTART_DELAY:-1}"
 PROGRESS_INTERVAL="${PROGRESS_INTERVAL:-15}"
 PERCEPTION="${PERCEPTION:-oracle}"
 CONTROLLER="${CONTROLLER:-oracle-navmesh}"
+MAP_MEMORY_FRAMES="${MAP_MEMORY_FRAMES:--1}"
+MAP_CAMERA_HEIGHT="${MAP_CAMERA_HEIGHT:-0.24}"
 PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth}"
 PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
 PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
@@ -219,6 +221,8 @@ run_shard() {
         --max-scenes-per-process "$SCENES_PER_PROCESS" \
         --perception "$PERCEPTION" \
         --controller "$CONTROLLER" \
+        --map-memory-frames "$MAP_MEMORY_FRAMES" \
+        --map-camera-height "$MAP_CAMERA_HEIGHT" \
         --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \
         --person-reid-weights "$PERSON_REID_WEIGHTS" \
         --person-score-threshold "$PERSON_SCORE_THRESHOLD" \

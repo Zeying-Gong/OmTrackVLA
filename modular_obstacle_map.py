@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import heapq
 import math
+from collections import deque
 from typing import Optional, Tuple
 
 import cv2
@@ -42,10 +43,11 @@ class LocalObstacleMap:
         grid_size_m: float = 20.0,
         pixels_per_meter: int = 10,
         robot_radius_m: float = 0.30,
-        camera_height_m: float = 0.85,
+        camera_height_m: float = 0.24,
         min_obstacle_height_m: float = 0.06,
         max_obstacle_height_m: float = 1.8,
         carrot_distance_m: float = 0.55,
+        memory_frames: Optional[int] = None,
     ) -> None:
         self.image_width = int(image_width)
         self.image_height = int(image_height)
@@ -58,6 +60,9 @@ class LocalObstacleMap:
         self.min_obstacle_height_m = float(min_obstacle_height_m)
         self.max_obstacle_height_m = float(max_obstacle_height_m)
         self.carrot_distance_m = float(carrot_distance_m)
+        if memory_frames is not None and int(memory_frames) <= 0:
+            raise ValueError("memory_frames must be positive or None")
+        self.memory_frames = None if memory_frames is None else int(memory_frames)
         self.grid_size_px = int(round(grid_size_m * pixels_per_meter))
         self.center_px = self.grid_size_px // 2
         self._inflation_radius_px = max(
@@ -68,6 +73,7 @@ class LocalObstacleMap:
     def reset(self) -> None:
         shape = (self.grid_size_px, self.grid_size_px)
         self.static_hits = np.zeros(shape, dtype=np.uint16)
+        self._static_memory = deque(maxlen=self.memory_frames)
         self.static_map = np.zeros(shape, dtype=np.uint8)
         self.dynamic_map = np.zeros(shape, dtype=np.uint8)
         self.inflated_map = np.zeros(shape, dtype=np.uint8)
@@ -81,6 +87,8 @@ class LocalObstacleMap:
             "right": self.max_depth_m,
         }
         self.last_target_dynamic_points = 0
+        self.last_ground_filtered_points = 0
+        self.last_ceiling_filtered_points = 0
 
     def _grid(self, forward: np.ndarray, left: np.ndarray):
         gx = np.rint(self.center_px + left * self.pixels_per_meter).astype(np.int32)
@@ -114,13 +122,20 @@ class LocalObstacleMap:
         height, width = depth.shape[:2]
         ys, xs = np.indices((height, width))
 
-        valid = np.isfinite(depth) & (depth > 0.10) & (depth < self.max_depth_m)
+        depth_valid = np.isfinite(depth) & (depth > 0.10) & (depth < self.max_depth_m)
+        valid = depth_valid.copy()
         vfov_rad = 2.0 * math.atan(
             (height / max(width, 1)) * math.tan(self.hfov_rad * 0.5)
         )
         fy = 0.5 * height / math.tan(vfov_rad * 0.5)
         vertical = (0.5 * (height - 1) - ys.astype(np.float32)) * depth / fy
         obstacle_height = self.camera_height_m + vertical
+        self.last_ground_filtered_points = int(np.sum(
+            depth_valid & (obstacle_height < self.min_obstacle_height_m)
+        ))
+        self.last_ceiling_filtered_points = int(np.sum(
+            depth_valid & (obstacle_height > self.max_obstacle_height_m)
+        ))
         valid &= (
             (obstacle_height >= self.min_obstacle_height_m)
             & (obstacle_height <= self.max_obstacle_height_m)
@@ -151,15 +166,18 @@ class LocalObstacleMap:
         inside = valid & (gx >= 0) & (gx < self.grid_size_px) & (gy >= 0) & (gy < self.grid_size_px)
         static_pixels = inside & ~dynamic_pixels
 
-        # Persistent static evidence. A small close operation connects sparse
-        # chair/table legs before robot-radius inflation.
-        np.add.at(
-            self.static_hits,
-            (gy[static_pixels], gx[static_pixels]),
-            1,
-        )
-        np.minimum(self.static_hits, np.iinfo(np.uint16).max, out=self.static_hits)
-        raw_static = (self.static_hits > 0).astype(np.uint8)
+        frame_static = np.zeros_like(self.static_map, dtype=np.uint8)
+        frame_static[gy[static_pixels], gx[static_pixels]] = 1
+        if self.memory_frames is None:
+            # Full-history mode: retain static evidence for the episode.
+            np.add.at(self.static_hits, (gy[static_pixels], gx[static_pixels]), 1)
+            np.minimum(self.static_hits, np.iinfo(np.uint16).max, out=self.static_hits)
+            raw_static = (self.static_hits > 0).astype(np.uint8)
+        else:
+            # Finite-memory mode: old observations expire instead of permanently
+            # fossilizing one-frame depth artifacts.
+            self._static_memory.append(frame_static)
+            raw_static = np.maximum.reduce(tuple(self._static_memory))
         self.static_map = cv2.morphologyEx(
             raw_static, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8)
         )
@@ -318,6 +336,7 @@ class LocalObstacleMap:
             gx, gy = self._grid(np.array([tf]), np.array([tl]))
             if 0 <= gx[0] < self.grid_size_px and 0 <= gy[0] < self.grid_size_px:
                 cv2.circle(canvas, (int(gx[0]), int(gy[0])), 5, (0, 180, 0), -1)
-        cv2.putText(canvas, "gray=static black=inflated pink=dynamic", (6, 16),
+        memory_label = "all" if self.memory_frames is None else str(self.memory_frames)
+        cv2.putText(canvas, f"memory={memory_label} gray=static black=inflated pink=dynamic", (6, 16),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.38, (20, 20, 20), 1, cv2.LINE_AA)
         return cv2.cvtColor(canvas, cv2.COLOR_RGB2BGR)

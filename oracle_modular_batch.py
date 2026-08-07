@@ -449,6 +449,8 @@ def evaluate_episode(
                     "map_static_cells": int(getattr(getattr(controller, "obstacle_map", None), "static_map", np.zeros(1)).sum()),
                     "map_dynamic_cells": int(getattr(getattr(controller, "obstacle_map", None), "dynamic_map", np.zeros(1)).sum()),
                     "map_path_length": len(getattr(getattr(controller, "obstacle_map", None), "last_path_px", [])),
+                    "map_ground_filtered_points": getattr(getattr(controller, "obstacle_map", None), "last_ground_filtered_points", None),
+                    "map_ceiling_filtered_points": getattr(getattr(controller, "obstacle_map", None), "last_ceiling_filtered_points", None),
                     "action": decision.action.as_habitat(),
                     "human_following": float(metrics.get("human_following", 0.0) or 0.0),
                     "human_collision": float(metrics.get("human_collision", 0.0) or 0.0),
@@ -557,9 +559,16 @@ def main():
     )
     parser.add_argument(
         "--controller",
-        choices=("oracle-navmesh", "reactive", "map-reactive"),
+        choices=("oracle-navmesh", "reactive", "map-reactive", "map-reactive-c2"),
         default="oracle-navmesh",
     )
+    parser.add_argument(
+        "--map-memory-frames",
+        type=int,
+        default=-1,
+        help="C2 static-map memory: -1=controller default, 0=full episode, N=last N frames",
+    )
+    parser.add_argument("--map-camera-height", type=float, default=0.24)
     parser.add_argument("--person-detector-weights", default=str(DEFAULT_WEIGHTS))
     parser.add_argument("--person-reid-weights", default=str(DEFAULT_REID_WEIGHTS))
     parser.add_argument("--person-score-threshold", type=float, default=0.30)
@@ -589,6 +598,10 @@ def main():
         parser.error("max-success-attempts must be positive")
     if args.max_steps is not None and args.max_steps <= 0:
         parser.error("max-steps must be positive")
+    if args.map_memory_frames < -1:
+        parser.error("map-memory-frames must be -1, 0, or a positive integer")
+    if args.map_camera_height <= 0.0:
+        parser.error("map-camera-height must be positive")
     if args.lost_brake_steps < 0:
         parser.error("lost-brake-steps must be non-negative")
     if args.lost_search_period_steps <= 0:
@@ -610,7 +623,9 @@ def main():
         f"track_{config_kind}_{args.task}.yaml"
     )
     config = configure(habitat.get_config(config_path), args.scene_dataset)
-    if args.perception == "rgb-person" or args.controller == "map-reactive":
+    if args.perception == "rgb-person" or args.controller in (
+        "map-reactive", "map-reactive-c2"
+    ):
         from habitat.config import read_write
 
         agent_sensors = config.habitat.simulator.agents.agent_1.sim_sensors
@@ -739,7 +754,18 @@ def main():
             lost_search_yaw=args.lost_search_yaw,
             use_invisible_pointgoal=args.perception == "oracle",
         )
-    elif args.controller == "map-reactive":
+    elif args.controller in ("map-reactive", "map-reactive-c2"):
+        if args.controller == "map-reactive-c2":
+            map_memory_frames = (
+                4 if args.map_memory_frames == -1 else args.map_memory_frames
+            )
+            map_memory_frames = map_memory_frames or None
+            camera_height_m = args.map_camera_height
+            min_obstacle_height_m = 0.08
+        else:
+            map_memory_frames = None
+            camera_height_m = 0.85
+            min_obstacle_height_m = 0.06
         controller = MapReactiveFollower(
             min_distance_m=args.min_distance,
             max_distance_m=args.max_distance,
@@ -748,6 +774,9 @@ def main():
             max_yaw=args.max_yaw,
             lost_search_yaw=args.lost_search_yaw,
             use_invisible_pointgoal=args.perception == "oracle",
+            camera_height_m=camera_height_m,
+            map_memory_frames=map_memory_frames,
+            min_obstacle_height_m=min_obstacle_height_m,
         )
     if args.perception == "oracle":
         perception = OraclePerception()
@@ -775,6 +804,8 @@ def main():
         "remaining_episodes": remaining_episodes,
         "config": config_path,
         "controller": args.controller,
+        "map_memory_frames": getattr(controller.obstacle_map, "memory_frames", None) if hasattr(controller, "obstacle_map") else None,
+        "map_camera_height_m": getattr(controller.obstacle_map, "camera_height_m", None) if hasattr(controller, "obstacle_map") else None,
         "controller_input": (
             "oracle-pointgoal"
             if getattr(controller, "uses_invisible_pointgoal", False)
@@ -836,6 +867,8 @@ def main():
                 "schema_version": 1,
                 "controller_version": CONTROLLER_VERSION,
                 "controller": args.controller,
+                "map_memory_frames": getattr(controller.obstacle_map, "memory_frames", None) if hasattr(controller, "obstacle_map") else None,
+                "map_camera_height_m": getattr(controller.obstacle_map, "camera_height_m", None) if hasattr(controller, "obstacle_map") else None,
                 "controller_input": (
                     "oracle-pointgoal"
                     if getattr(controller, "uses_invisible_pointgoal", False)
