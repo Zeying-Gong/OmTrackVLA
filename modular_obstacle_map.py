@@ -73,6 +73,7 @@ class LocalObstacleMap:
     def reset(self) -> None:
         shape = (self.grid_size_px, self.grid_size_px)
         self.static_hits = np.zeros(shape, dtype=np.uint16)
+        self.free_hits = np.zeros(shape, dtype=np.uint16)
         self._static_memory = deque(maxlen=self.memory_frames)
         self.static_map = np.zeros(shape, dtype=np.uint8)
         self.dynamic_map = np.zeros(shape, dtype=np.uint8)
@@ -89,6 +90,7 @@ class LocalObstacleMap:
         self.last_target_dynamic_points = 0
         self.last_ground_filtered_points = 0
         self.last_ceiling_filtered_points = 0
+        self.last_free_cells = 0
 
     def _grid(self, forward: np.ndarray, left: np.ndarray):
         gx = np.rint(self.center_px + left * self.pixels_per_meter).astype(np.int32)
@@ -168,16 +170,42 @@ class LocalObstacleMap:
 
         frame_static = np.zeros_like(self.static_map, dtype=np.uint8)
         frame_static[gy[static_pixels], gx[static_pixels]] = 1
+        # Every depth return also observes free space along the camera ray.
+        # Without this clearing step, accumulated furniture edges can form an
+        # artificial wall that leaves A* no corridor to traverse.
+        frame_free = np.zeros_like(self.static_map, dtype=np.uint8)
+        robot_gx, robot_gy = self._grid(
+            np.array([self.robot_pose[0]]), np.array([self.robot_pose[1]])
+        )
+        start_px = (int(robot_gx[0]), int(robot_gy[0]))
+        sampled = np.flatnonzero(inside.ravel())[::4]
+        inside_flat_gx = gx.ravel()[sampled]
+        inside_flat_gy = gy.ravel()[sampled]
+        for end_x, end_y in zip(inside_flat_gx.tolist(), inside_flat_gy.tolist()):
+            cv2.line(frame_free, start_px, (int(end_x), int(end_y)), 1, 1)
+        # The terminal pixel is an observed surface, not free space.
+        frame_free[gy[inside], gx[inside]] = 0
+        self.last_free_cells = int(frame_free.sum())
         if self.memory_frames is None:
             # Full-history mode: retain static evidence for the episode.
             np.add.at(self.static_hits, (gy[static_pixels], gx[static_pixels]), 1)
             np.minimum(self.static_hits, np.iinfo(np.uint16).max, out=self.static_hits)
-            raw_static = (self.static_hits > 0).astype(np.uint8)
+            np.add.at(self.free_hits, np.where(frame_free > 0), 1)
+            np.minimum(self.free_hits, np.iinfo(np.uint16).max, out=self.free_hits)
+            raw_static = (
+                (self.static_hits > 0) & (self.static_hits * 3 >= self.free_hits)
+            ).astype(np.uint8)
         else:
             # Finite-memory mode: old observations expire instead of permanently
             # fossilizing one-frame depth artifacts.
-            self._static_memory.append(frame_static)
-            raw_static = np.maximum.reduce(tuple(self._static_memory))
+            self._static_memory.append((frame_static, frame_free))
+            occupied = np.sum(
+                np.stack([item[0] for item in self._static_memory]), axis=0
+            )
+            observed_free = np.sum(
+                np.stack([item[1] for item in self._static_memory]), axis=0
+            )
+            raw_static = ((occupied > 0) & (occupied * 3 >= observed_free)).astype(np.uint8)
         self.static_map = cv2.morphologyEx(
             raw_static, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8)
         )
@@ -188,9 +216,6 @@ class LocalObstacleMap:
         self.last_target_dynamic_points = int(np.sum(dynamic_inside))
 
         # Mark the current view as explored and retain the robot trajectory.
-        robot_gx, robot_gy = self._grid(
-            np.array([self.robot_pose[0]]), np.array([self.robot_pose[1]])
-        )
         if 0 <= robot_gx[0] < self.grid_size_px and 0 <= robot_gy[0] < self.grid_size_px:
             cv2.circle(self.trajectory_map, (int(robot_gx[0]), int(robot_gy[0])), 1, 1, -1)
             cv2.circle(self.explored_map, (int(robot_gx[0]), int(robot_gy[0])), int(self.max_depth_m * self.pixels_per_meter), 1, -1)
