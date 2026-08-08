@@ -424,25 +424,30 @@ class LocalObstacleMap:
                 1,
                 cv2.LINE_AA,
             )
+            # Sparse 3-pixel-radius path nodes make the discrete A* route
+            # visible without turning every grid cell into a large blob.
+            node_stride = max(1, len(valid_path) // 24)
+            for px, py in valid_path[::node_stride]:
+                cv2.circle(canvas, (px, py), 3, (0, 210, 255), -1)
         elif valid_path:
             cv2.circle(canvas, valid_path[0], 2, (0, 210, 255), -1)
         if self.last_goal_px is not None:
             gx, gy = self.last_goal_px
             if 0 <= gx < self.grid_size_px and 0 <= gy < self.grid_size_px:
-                cv2.circle(canvas, (gx, gy), 2, (235, 55, 45), -1)
+                cv2.circle(canvas, (gx, gy), 1, (235, 55, 45), -1)
         if self.last_carrot_px is not None:
             cx, cy = self.last_carrot_px
             if 0 <= cx < self.grid_size_px and 0 <= cy < self.grid_size_px:
                 # A small ring and crosshair remain visible after the map is
                 # resized into the video, without masking nearby cells.
                 cv2.circle(canvas, (cx, cy), 2, (255, 225, 0), 1)
-                cv2.line(canvas, (cx - 2, cy), (cx + 2, cy), (255, 225, 0), 1)
-                cv2.line(canvas, (cx, cy - 2), (cx, cy + 2), (255, 225, 0), 1)
+                cv2.line(canvas, (cx - 1, cy), (cx + 1, cy), (255, 225, 0), 1)
+                cv2.line(canvas, (cx, cy - 1), (cx, cy + 1), (255, 225, 0), 1)
         robot_gx, robot_gy = self._grid(
             np.array([self.robot_pose[0]]), np.array([self.robot_pose[1]])
         )
         if 0 <= robot_gx[0] < self.grid_size_px and 0 <= robot_gy[0] < self.grid_size_px:
-            cv2.circle(canvas, (int(robot_gx[0]), int(robot_gy[0])), 1, (255, 0, 0), -1)
+            cv2.circle(canvas, (int(robot_gx[0]), int(robot_gy[0])), 2, (255, 0, 0), -1)
         if target_relative_xy is not None:
             tf, tl = self._local_to_episode(*target_relative_xy)
             gx, gy = self._grid(np.array([tf]), np.array([tl]))
