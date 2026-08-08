@@ -821,6 +821,7 @@ def main():
             camera_height_m = args.map_camera_height
             camera_pitch_deg = args.map_camera_pitch_deg
             min_obstacle_height_m = 0.08
+            max_obstacle_height_m = 1.8
             robot_radius_m = 0.22 if args.map_robot_radius == 0.30 else args.map_robot_radius
             min_static_hits = args.map_min_static_hits
             camera_forward_offset_m = 0.0
@@ -835,6 +836,9 @@ def main():
             camera_forward_offset_m = 0.24
             camera_left_offset_m = 0.0
             min_obstacle_height_m = 0.20
+            # Keep the default-agent calibrated conservative 2-D height band;
+            # the Spot profile changes only camera extrinsics and NavMesh size.
+            max_obstacle_height_m = 1.20
             robot_radius_m = args.map_robot_radius
             min_static_hits = args.map_min_static_hits
         else:
@@ -844,6 +848,7 @@ def main():
             camera_forward_offset_m = 0.0
             camera_left_offset_m = 0.0
             min_obstacle_height_m = 0.06
+            max_obstacle_height_m = 1.8
             robot_radius_m = args.map_robot_radius
             min_static_hits = args.map_min_static_hits
         controller = MapReactiveFollower(
@@ -860,6 +865,7 @@ def main():
             camera_left_offset_m=camera_left_offset_m,
             map_memory_frames=map_memory_frames,
             min_obstacle_height_m=min_obstacle_height_m,
+            max_obstacle_height_m=max_obstacle_height_m,
             robot_radius_m=robot_radius_m,
             min_static_hits=min_static_hits,
         )
