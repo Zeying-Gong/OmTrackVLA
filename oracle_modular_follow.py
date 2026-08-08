@@ -1103,11 +1103,16 @@ class MapReactiveFollower(ModularReactiveFollower):
         self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
 
     def __call__(self, sim, robot, target_agent, target: TargetObservation) -> ControlDecision:
+        # Planning overlays are per control step. Refresh them after choosing
+        # this step's waypoint so the video never shows a stale A* path.
+        self.obstacle_map.clear_plan()
         if not target.visible and not self.use_invisible_pointgoal:
+            self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
             return super().__call__(sim, robot, target_agent, target)
         if target.range_m < self.min_distance_m:
             # The map goal is defined in front of the person; when already too
             # close, retreat using the original person-relative point goal.
+            self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
             return super().__call__(sim, robot, target_agent, target)
         if target.range_m <= self.max_distance_m:
             yaw = float(np.clip(
@@ -1115,6 +1120,7 @@ class MapReactiveFollower(ModularReactiveFollower):
                 -self.max_yaw,
                 self.max_yaw,
             ))
+            self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
             return ControlDecision(
                 ContinuousAction(0.0, 0.0, yaw),
                 "map_follow_band_hold",
@@ -1126,6 +1132,7 @@ class MapReactiveFollower(ModularReactiveFollower):
             desired_distance_m=self.max_distance_m,
         )
         self.last_map_mode = map_mode
+        self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
         if map_mode == "map_blocked":
             self._map_blocked_steps += 1
             front_clearance = self.last_map_clearance.get("front", 0.0)

@@ -93,6 +93,9 @@ class LocalObstacleMap:
         self.explored_map = np.zeros(shape, dtype=np.uint8)
         self.trajectory_map = np.zeros(shape, dtype=np.uint8)
         self.last_path_px = []
+        self.last_start_px = None
+        self.last_goal_px = None
+        self.last_carrot_px = None
         self.robot_pose = (0.0, 0.0, 0.0)
         self.last_clearance = {
             "front": self.max_depth_m,
@@ -350,7 +353,7 @@ class LocalObstacleMap:
         target_forward, target_left = (float(v) for v in target_relative_xy)
         target_range = math.hypot(target_forward, target_left)
         if target_range <= desired_distance_m:
-            self.last_path_px = []
+            self.clear_plan()
             return 0.0, 0.0, "map_hold"
 
         robot_forward, robot_left, _ = self.robot_pose
@@ -367,6 +370,9 @@ class LocalObstacleMap:
         goal = (int(goal_px_arr[0][0]), int(goal_px_arr[1][0]))
         path = self._astar(start, goal)
         self.last_path_px = path
+        self.last_start_px = path[0] if path else start
+        self.last_goal_px = path[-1] if path else goal
+        self.last_carrot_px = None
         if not path:
             return 0.0, 0.0, "map_blocked"
         if len(path) == 1 and target_range > desired_distance_m + 0.10:
@@ -377,6 +383,7 @@ class LocalObstacleMap:
             max(1, int(round(self.carrot_distance_m * self.pixels_per_meter))),
         )
         carrot_x, carrot_y = path[carrot_index]
+        self.last_carrot_px = (carrot_x, carrot_y)
         carrot_episode_forward = (self.center_px - carrot_y) / self.pixels_per_meter
         carrot_episode_left = (self.center_px - carrot_x) / self.pixels_per_meter
         local_forward, local_left = self._episode_to_local(
@@ -385,6 +392,13 @@ class LocalObstacleMap:
         direct = all(not self.inflated_map[y, x] for x, y in path[:carrot_index + 1])
         mode = "map_direct" if direct and len(path) <= carrot_index + 2 else "map_astar"
         return float(local_forward), float(local_left), mode
+
+    def clear_plan(self) -> None:
+        """Clear per-control-step planning overlays without resetting the map."""
+        self.last_path_px = []
+        self.last_start_px = None
+        self.last_goal_px = None
+        self.last_carrot_px = None
 
     def visualize(self, target_relative_xy: Optional[Tuple[float, float]] = None) -> np.ndarray:
         canvas = np.full((self.grid_size_px, self.grid_size_px, 3), 235, dtype=np.uint8)
@@ -397,9 +411,30 @@ class LocalObstacleMap:
         canvas[inflation_only] = (45, 45, 45)
         canvas[self.dynamic_map > 0] = (220, 70, 180)
         canvas[self.trajectory_map > 0] = (40, 110, 230)
-        for x, y in self.last_path_px:
-            if 0 <= x < self.grid_size_px and 0 <= y < self.grid_size_px:
-                canvas[y, x] = (0, 210, 255)
+        valid_path = [
+            (int(x), int(y)) for x, y in self.last_path_px
+            if 0 <= x < self.grid_size_px and 0 <= y < self.grid_size_px
+        ]
+        if len(valid_path) >= 2:
+            cv2.polylines(
+                canvas,
+                [np.asarray(valid_path, dtype=np.int32).reshape((-1, 1, 2))],
+                False,
+                (0, 210, 255),
+                2,
+                cv2.LINE_AA,
+            )
+        elif valid_path:
+            cv2.circle(canvas, valid_path[0], 2, (0, 210, 255), -1)
+        if self.last_goal_px is not None:
+            gx, gy = self.last_goal_px
+            if 0 <= gx < self.grid_size_px and 0 <= gy < self.grid_size_px:
+                cv2.circle(canvas, (gx, gy), 4, (235, 55, 45), -1)
+        if self.last_carrot_px is not None:
+            cx, cy = self.last_carrot_px
+            if 0 <= cx < self.grid_size_px and 0 <= cy < self.grid_size_px:
+                cv2.circle(canvas, (cx, cy), 5, (20, 20, 20), -1)
+                cv2.circle(canvas, (cx, cy), 3, (255, 225, 0), -1)
         robot_gx, robot_gy = self._grid(
             np.array([self.robot_pose[0]]), np.array([self.robot_pose[1]])
         )
@@ -411,6 +446,8 @@ class LocalObstacleMap:
             if 0 <= gx[0] < self.grid_size_px and 0 <= gy[0] < self.grid_size_px:
                 cv2.circle(canvas, (int(gx[0]), int(gy[0])), 5, (0, 180, 0), -1)
         memory_label = "all" if self.memory_frames is None else str(self.memory_frames)
-        cv2.putText(canvas, f"memory={memory_label} gray=static black=inflated pink=dynamic", (6, 16),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.38, (20, 20, 20), 1, cv2.LINE_AA)
+        cv2.putText(canvas, f"memory={memory_label} gray=static black=inflated pink=dynamic", (4, 14),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.31, (20, 20, 20), 1, cv2.LINE_AA)
+        cv2.putText(canvas, "cyan=A* yellow=carrot red=goal green=person blue=robot", (4, 27),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.29, (20, 20, 20), 1, cv2.LINE_AA)
         return cv2.cvtColor(canvas, cv2.COLOR_RGB2BGR)
