@@ -917,10 +917,12 @@ class MapReactiveFollower(ModularReactiveFollower):
         min_static_hits: int = 1,
         map_memory_frames: Optional[int] = None,
         catchup_bias_mps: float = 0.12,
+        planning_hysteresis_m: float = 0.20,
         **kwargs,
     ) -> None:
         super().__init__(*args, **kwargs)
         self.catchup_bias_mps = float(catchup_bias_mps)
+        self.planning_hysteresis_m = max(0.0, float(planning_hysteresis_m))
         self.obstacle_map = LocalObstacleMap(
             hfov_deg=hfov_deg,
             camera_height_m=camera_height_m,
@@ -1125,7 +1127,7 @@ class MapReactiveFollower(ModularReactiveFollower):
             # close, retreat using the original person-relative point goal.
             self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
             return super().__call__(sim, robot, target_agent, target)
-        if target.range_m <= self.max_distance_m:
+        if target.range_m <= self.max_distance_m + self.planning_hysteresis_m:
             yaw = float(np.clip(
                 self.heading_gain * target.bearing_rad,
                 -self.max_yaw,
@@ -1134,7 +1136,7 @@ class MapReactiveFollower(ModularReactiveFollower):
             self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
             return ControlDecision(
                 ContinuousAction(0.0, 0.0, yaw),
-                "map_follow_band_hold",
+                "map_follow_band_hysteresis_hold",
                 float(target.bearing_rad),
                 None,
             )

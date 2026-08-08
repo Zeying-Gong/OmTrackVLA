@@ -102,6 +102,7 @@ class LocalObstacleMap:
         self.last_carrot_px = None
         self.last_history_px = []
         self.last_history_waypoint_px = None
+        self._active_history_episode = None
         self.robot_pose = (0.0, 0.0, 0.0)
         self.last_clearance = {
             "front": self.max_depth_m,
@@ -402,6 +403,8 @@ class LocalObstacleMap:
             # Newer points have priority. Never choose a point substantially
             # behind the robot, which would make the controller backtrack.
             history_candidates = list(history_episode[:-2])[::-1]
+            if self._active_history_episode is not None:
+                history_candidates.insert(0, self._active_history_episode)
             for hf, hl in history_candidates:
                 delta_forward = hf - robot_forward
                 if delta_forward < -0.20:
@@ -410,10 +413,13 @@ class LocalObstacleMap:
                 candidate = self._astar(start, (int(hx[0]), int(hy[0])))
                 if candidate and len(candidate) > 1:
                     history_path = candidate
+                    self._active_history_episode = (hf, hl)
                     self.last_history_waypoint_px = (int(hx[0]), int(hy[0]))
                     break
             if history_path:
                 path = history_path
+        else:
+            self._active_history_episode = None
         self.last_path_px = path
         self.last_start_px = path[0] if path else start
         self.last_goal_px = path[-1] if path else goal
