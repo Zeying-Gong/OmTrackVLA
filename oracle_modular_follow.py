@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+from collections import deque
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Optional, Sequence, Tuple
@@ -915,9 +916,11 @@ class MapReactiveFollower(ModularReactiveFollower):
         robot_radius_m: float = 0.30,
         min_static_hits: int = 1,
         map_memory_frames: Optional[int] = None,
+        catchup_bias_mps: float = 0.12,
         **kwargs,
     ) -> None:
         super().__init__(*args, **kwargs)
+        self.catchup_bias_mps = float(catchup_bias_mps)
         self.obstacle_map = LocalObstacleMap(
             hfov_deg=hfov_deg,
             camera_height_m=camera_height_m,
@@ -936,6 +939,7 @@ class MapReactiveFollower(ModularReactiveFollower):
         self.last_navmesh_calibration = None
         self.last_navmesh_calibration_visualization = None
         self._navmesh_navigable_map = None
+        self._target_history_episode = deque(maxlen=24)
 
     def reset(self, evasion_side: Optional[float] = None) -> None:
         super().reset(evasion_side=evasion_side)
@@ -946,6 +950,7 @@ class MapReactiveFollower(ModularReactiveFollower):
             self._episode_left_axis = None
             self._map_evasion_direction = self._search_direction
             self._map_blocked_steps = 0
+            self._target_history_episode.clear()
             self.last_navmesh_calibration = None
             self.last_navmesh_calibration_visualization = None
             self._navmesh_navigable_map = None
@@ -1056,7 +1061,7 @@ class MapReactiveFollower(ModularReactiveFollower):
         )
 
     def update_observation(
-        self, observations, target: TargetObservation, dynamic_mask=None, robot=None
+        self, observations, target: TargetObservation, dynamic_mask=None, robot=None, target_agent=None
     ) -> None:
         depth = observations.get(DEPTH_KEY)
         if depth is None:
@@ -1099,6 +1104,12 @@ class MapReactiveFollower(ModularReactiveFollower):
             dynamic_mask=dynamic_mask,
             robot_pose=robot_pose,
         )
+        if target.visible and robot is not None and target_agent is not None:
+            target_delta = np.asarray(target_agent.base_pos, dtype=np.float32) - np.asarray(self._episode_origin)
+            self._target_history_episode.append((
+                float(np.dot(target_delta, self._episode_forward_axis)),
+                float(np.dot(target_delta, self._episode_left_axis)),
+            ))
         self.last_map_clearance = dict(self.obstacle_map.last_clearance)
         self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
 
@@ -1130,6 +1141,7 @@ class MapReactiveFollower(ModularReactiveFollower):
         waypoint_forward, waypoint_left, map_mode = self.obstacle_map.choose_waypoint(
             target.relative_xy,
             desired_distance_m=self.max_distance_m,
+            history_episode=list(self._target_history_episode),
         )
         self.last_map_mode = map_mode
         self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
@@ -1181,7 +1193,11 @@ class MapReactiveFollower(ModularReactiveFollower):
         # 0.55 m distance as the velocity error caps the robot below the
         # leader's walking speed and makes it fall progressively behind.
         distance_error = max(0.0, target.range_m - self.max_distance_m)
+        # A small bounded feed-forward prevents a moving leader from opening
+        # the gap while the distance error is still below the velocity cap.
         forward = self.distance_gain * distance_error
+        if distance_error > 0.10:
+            forward += self.catchup_bias_mps
         if abs(waypoint_bearing) > math.radians(55.0):
             forward = 0.0
         else:

@@ -366,6 +366,7 @@ def evaluate_episode(
                         else None
                     ),
                     robot=robot,
+                    target_agent=target_agent,
                 )
             if navmesh_calibration and hasattr(controller, "update_navmesh_calibration"):
                 controller.update_navmesh_calibration(env.sim)
@@ -824,7 +825,9 @@ def main():
             # Keep the default-agent calibrated conservative 2-D height band;
             # the Spot profile changes only camera extrinsics and NavMesh size.
             max_obstacle_height_m = 1.20
-            robot_radius_m = args.map_robot_radius
+            # Keep the diagnostic map raw when --map-robot-radius=0, while
+            # planning uses Spot's physical clearance radius internally.
+            robot_radius_m = 0.30 if args.map_robot_radius == 0.0 else args.map_robot_radius
             min_static_hits = args.map_min_static_hits
         else:
             map_memory_frames = None

@@ -49,6 +49,8 @@ class LocalObstacleMap:
         camera_left_offset_m: float = 0.0,
         min_obstacle_height_m: float = 0.06,
         max_obstacle_height_m: float = 1.8,
+        near_obstacle_range_m: float = 0.90,
+        near_obstacle_min_height_m: float = 0.10,
         carrot_distance_m: float = 0.55,
         memory_frames: Optional[int] = None,
         min_static_hits: int = 1,
@@ -67,6 +69,8 @@ class LocalObstacleMap:
         self.camera_left_offset_m = float(camera_left_offset_m)
         self.min_obstacle_height_m = float(min_obstacle_height_m)
         self.max_obstacle_height_m = float(max_obstacle_height_m)
+        self.near_obstacle_range_m = float(near_obstacle_range_m)
+        self.near_obstacle_min_height_m = float(near_obstacle_min_height_m)
         self.carrot_distance_m = float(carrot_distance_m)
         if memory_frames is not None and int(memory_frames) <= 0:
             raise ValueError("memory_frames must be positive or None")
@@ -165,6 +169,13 @@ class LocalObstacleMap:
             (obstacle_height >= self.min_obstacle_height_m)
             & (obstacle_height <= self.max_obstacle_height_m)
         )
+        # Very close furniture can be clipped below the nominal obstacle
+        # band by the low Spot camera. Admit only near returns that are still
+        # clearly above the ground plane; ground rays remain excluded.
+        near_valid = depth_valid & (depth <= self.near_obstacle_range_m) & (
+            obstacle_height >= self.near_obstacle_min_height_m
+        ) & (obstacle_height <= self.max_obstacle_height_m)
+        valid |= near_valid
 
         if dynamic_mask is not None:
             dynamic_mask = np.asarray(dynamic_mask, dtype=bool)
@@ -349,6 +360,7 @@ class LocalObstacleMap:
         self,
         target_relative_xy: Tuple[float, float],
         desired_distance_m: float = 1.35,
+        history_episode=None,
     ) -> Tuple[float, float, str]:
         target_forward, target_left = (float(v) for v in target_relative_xy)
         target_range = math.hypot(target_forward, target_left)
@@ -368,7 +380,31 @@ class LocalObstacleMap:
         goal_px_arr = self._grid(np.array([follow_goal[0]]), np.array([follow_goal[1]]))
         start = (int(start_px_arr[0][0]), int(start_px_arr[1][0]))
         goal = (int(goal_px_arr[0][0]), int(goal_px_arr[1][0]))
-        path = self._astar(start, goal)
+        direct_path = self._astar(start, goal)
+        path = direct_path
+        # If the current target is around a wall, first route through the most
+        # recent reachable point in the person's demonstrated trajectory.
+        # This preserves the human's already validated passage around corners.
+        history_path = []
+        direct_blocked = len(direct_path) > int(
+            math.hypot(goal[0] - start[0], goal[1] - start[1]) * 1.35
+        )
+        if history_episode and direct_blocked:
+            # Prefer the farthest recent historical point that is still ahead
+            # of the robot; it represents the demonstrated side of the corner.
+            history_candidates = list(history_episode[:-2])
+            history_candidates.sort(
+                key=lambda p: math.hypot(p[0] - robot_forward, p[1] - robot_left),
+                reverse=True,
+            )
+            for hf, hl in history_candidates:
+                hx, hy = self._grid(np.asarray([hf]), np.asarray([hl]))
+                candidate = self._astar(start, (int(hx[0]), int(hy[0])))
+                if candidate and len(candidate) > 1:
+                    history_path = candidate
+                    break
+            if history_path:
+                path = history_path
         self.last_path_px = path
         self.last_start_px = path[0] if path else start
         self.last_goal_px = path[-1] if path else goal
@@ -407,8 +443,8 @@ class LocalObstacleMap:
         # rendered separately; otherwise the conservative inflated footprint
         # looks like the whole scene is occupied.
         canvas[self.static_map > 0] = (105, 105, 105)
-        inflation_only = (self.inflated_map > 0) & (self.static_map == 0)
-        canvas[inflation_only] = (45, 45, 45)
+        # The display keeps raw occupied cells gray; A* still uses the
+        # separately inflated map internally for robot clearance.
         canvas[self.dynamic_map > 0] = (220, 70, 180)
         canvas[self.trajectory_map > 0] = (40, 110, 230)
         valid_path = [
