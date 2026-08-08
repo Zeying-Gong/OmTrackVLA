@@ -399,24 +399,6 @@ def evaluate_episode(
                         interpolation=cv2.INTER_NEAREST,
                     )
                     frame = np.concatenate((frame, map_frame), axis=1)
-                top_down_info = current_metrics.get("top_down_map_following")
-                if top_down_info is not None:
-                    from habitat.utils.visualizations import maps
-
-                    navmesh_frame = maps.colorize_draw_agent_and_fit_to_height(
-                        top_down_info, frame.shape[0]
-                    )
-                    cv2.putText(
-                        navmesh_frame,
-                        "HABITAT NAVMESH / TOP-DOWN GT",
-                        (8, 18),
-                        cv2.FONT_HERSHEY_SIMPLEX,
-                        0.45,
-                        (255, 255, 255),
-                        1,
-                        cv2.LINE_AA,
-                    )
-                    frame = np.concatenate((frame, navmesh_frame), axis=1)
                 calibration_frame = getattr(
                     controller, "last_navmesh_calibration_visualization", None
                 )
@@ -592,7 +574,7 @@ def main():
     parser.add_argument(
         "--navmesh-calibration",
         action="store_true",
-        help="append Habitat TopDownMap/NavMesh ground truth to map-controller videos",
+        help="append a same-grid local NavMesh difference panel (not the global TopDownMap)",
     )
     parser.add_argument("--save-video", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--video-fps", type=int, default=8)
@@ -679,7 +661,10 @@ def main():
     config = configure(
         habitat.get_config(config_path),
         args.scene_dataset,
-        keep_top_down_map=args.navmesh_calibration,
+        # Calibration queries Pathfinder directly on the obstacle-map grid.
+        # The global TopDownMap has a different crop/scale and is intentionally
+        # omitted from diagnostic videos.
+        keep_top_down_map=False,
     )
     if args.perception == "rgb-person" or args.controller in (
         "map-reactive", "map-reactive-c2", "map-reactive-vlfm"

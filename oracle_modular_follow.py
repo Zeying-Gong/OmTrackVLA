@@ -1029,7 +1029,7 @@ class MapReactiveFollower(ModularReactiveFollower):
             )
         cv2.putText(
             canvas,
-            "ALIGNED: red=false obstacle blue=unsafe free",
+            "LOCAL CHECK: red=false obstacle blue=unsafe free",
             (4, 14),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.32,
