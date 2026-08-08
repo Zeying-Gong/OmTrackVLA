@@ -100,6 +100,8 @@ class LocalObstacleMap:
         self.last_start_px = None
         self.last_goal_px = None
         self.last_carrot_px = None
+        self.last_history_px = []
+        self.last_history_waypoint_px = None
         self.robot_pose = (0.0, 0.0, 0.0)
         self.last_clearance = {
             "front": self.max_depth_m,
@@ -386,22 +388,29 @@ class LocalObstacleMap:
         # recent reachable point in the person's demonstrated trajectory.
         # This preserves the human's already validated passage around corners.
         history_path = []
+        self.last_history_waypoint_px = None
+        self.last_history_px = []
+        if history_episode:
+            for hf, hl in history_episode:
+                hx, hy = self._grid(np.asarray([hf]), np.asarray([hl]))
+                if 0 <= hx[0] < self.grid_size_px and 0 <= hy[0] < self.grid_size_px:
+                    self.last_history_px.append((int(hx[0]), int(hy[0])))
         direct_blocked = len(direct_path) > int(
             math.hypot(goal[0] - start[0], goal[1] - start[1]) * 1.35
         )
         if history_episode and direct_blocked:
-            # Prefer the farthest recent historical point that is still ahead
-            # of the robot; it represents the demonstrated side of the corner.
-            history_candidates = list(history_episode[:-2])
-            history_candidates.sort(
-                key=lambda p: math.hypot(p[0] - robot_forward, p[1] - robot_left),
-                reverse=True,
-            )
+            # Newer points have priority. Never choose a point substantially
+            # behind the robot, which would make the controller backtrack.
+            history_candidates = list(history_episode[:-2])[::-1]
             for hf, hl in history_candidates:
+                delta_forward = hf - robot_forward
+                if delta_forward < -0.20:
+                    continue
                 hx, hy = self._grid(np.asarray([hf]), np.asarray([hl]))
                 candidate = self._astar(start, (int(hx[0]), int(hy[0])))
                 if candidate and len(candidate) > 1:
                     history_path = candidate
+                    self.last_history_waypoint_px = (int(hx[0]), int(hy[0]))
                     break
             if history_path:
                 path = history_path
@@ -447,6 +456,22 @@ class LocalObstacleMap:
         # separately inflated map internally for robot clearance.
         canvas[self.dynamic_map > 0] = (220, 70, 180)
         canvas[self.trajectory_map > 0] = (40, 110, 230)
+        if len(self.last_history_px) >= 2:
+            cv2.polylines(
+                canvas,
+                [np.asarray(self.last_history_px, dtype=np.int32).reshape((-1, 1, 2))],
+                False,
+                (255, 165, 0),
+                1,
+                cv2.LINE_AA,
+            )
+            for hx, hy in self.last_history_px[::max(1, len(self.last_history_px) // 12)]:
+                cv2.circle(canvas, (hx, hy), 1, (255, 165, 0), -1)
+        if self.last_history_waypoint_px is not None:
+            cv2.drawMarker(
+                canvas, self.last_history_waypoint_px, (255, 0, 255),
+                cv2.MARKER_DIAMOND, 5, 1, cv2.LINE_AA,
+            )
         valid_path = [
             (int(x), int(y)) for x, y in self.last_path_px
             if 0 <= x < self.grid_size_px and 0 <= y < self.grid_size_px
@@ -492,6 +517,6 @@ class LocalObstacleMap:
         memory_label = "all" if self.memory_frames is None else str(self.memory_frames)
         cv2.putText(canvas, f"memory={memory_label} gray=static black=inflated pink=dynamic", (4, 14),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.31, (20, 20, 20), 1, cv2.LINE_AA)
-        cv2.putText(canvas, "cyan=A* yellow=carrot red=goal green=person blue=robot", (4, 27),
+        cv2.putText(canvas, "cyan=A* yellow=carrot orange=human-traj magenta=hist-goal red=goal green=person blue=robot", (4, 27),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.29, (20, 20, 20), 1, cv2.LINE_AA)
         return cv2.cvtColor(canvas, cv2.COLOR_RGB2BGR)
