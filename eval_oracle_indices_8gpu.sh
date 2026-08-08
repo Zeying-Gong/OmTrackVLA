@@ -20,10 +20,11 @@ PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fas
 PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
 PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
 CONTROLLER="${CONTROLLER:-oracle-navmesh}"
-MAP_MEMORY_FRAMES="${MAP_MEMORY_FRAMES:--1}"
+MAP_MEMORY_FRAMES="${MAP_MEMORY_FRAMES:-0}"
 MAP_CAMERA_HEIGHT="${MAP_CAMERA_HEIGHT:-0.24}"
+MAP_CAMERA_PITCH_DEG="${MAP_CAMERA_PITCH_DEG:-5.0}"
 MAP_ROBOT_RADIUS="${MAP_ROBOT_RADIUS:-0.30}"
-MAP_MIN_STATIC_HITS="${MAP_MIN_STATIC_HITS:-1}"
+MAP_MIN_STATIC_HITS="${MAP_MIN_STATIC_HITS:-2}"
 TARGET_INITIALIZATION="${TARGET_INITIALIZATION:-auto}"
 LOST_TARGET_POLICY="${LOST_TARGET_POLICY:-auto}"
 LOST_BRAKE_STEPS="${LOST_BRAKE_STEPS:-2}"
@@ -93,6 +94,7 @@ echo "[oracle-indices] start index=$index gpu=$gpu display=$display"
         --controller "$CONTROLLER" \
         --map-memory-frames "$MAP_MEMORY_FRAMES" \
         --map-camera-height "$MAP_CAMERA_HEIGHT" \
+        --map-camera-pitch-deg "$MAP_CAMERA_PITCH_DEG" \
         --map-robot-radius "$MAP_ROBOT_RADIUS" \
         --map-min-static-hits "$MAP_MIN_STATIC_HITS" \
         --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \

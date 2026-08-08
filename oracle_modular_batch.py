@@ -7,6 +7,7 @@ import argparse
 import copy
 import hashlib
 import json
+import math
 import os
 import traceback
 from pathlib import Path
@@ -229,6 +230,7 @@ def exhausted_success_attempts(result_path: Path, max_attempts: int) -> bool:
 def evaluate_episode(
     env, observations, controller, max_steps, save_steps=False,
     video_path=None, video_fps=8, perception=None, defer_goal_crop=False,
+    navmesh_calibration=False,
 ):
     episode = env.current_episode
     robot = env.sim.agents_mgr[1].articulated_agent
@@ -365,6 +367,8 @@ def evaluate_episode(
                     ),
                     robot=robot,
                 )
+            if navmesh_calibration and hasattr(controller, "update_navmesh_calibration"):
+                controller.update_navmesh_calibration(env.sim)
             decision = controller(env.sim, robot, target_agent, target)
             if (
                 not target.visible
@@ -372,7 +376,8 @@ def evaluate_episode(
             ):
                 coordinate_steps += 1
             if writer is not None:
-                current_following = env.get_metrics().get("human_following")
+                current_metrics = env.get_metrics()
+                current_following = current_metrics.get("human_following")
                 frame = annotate(
                     observations[RGB_KEY], target, decision,
                     f"{episode.info.get('_oracle_batch_index')} | {scene_key(episode.scene_id)} | ep {episode.episode_id} | step {steps}",
@@ -394,6 +399,34 @@ def evaluate_episode(
                         interpolation=cv2.INTER_NEAREST,
                     )
                     frame = np.concatenate((frame, map_frame), axis=1)
+                top_down_info = current_metrics.get("top_down_map_following")
+                if top_down_info is not None:
+                    from habitat.utils.visualizations import maps
+
+                    navmesh_frame = maps.colorize_draw_agent_and_fit_to_height(
+                        top_down_info, frame.shape[0]
+                    )
+                    cv2.putText(
+                        navmesh_frame,
+                        "HABITAT NAVMESH / TOP-DOWN GT",
+                        (8, 18),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.45,
+                        (255, 255, 255),
+                        1,
+                        cv2.LINE_AA,
+                    )
+                    frame = np.concatenate((frame, navmesh_frame), axis=1)
+                calibration_frame = getattr(
+                    controller, "last_navmesh_calibration_visualization", None
+                )
+                if calibration_frame is not None:
+                    calibration_frame = cv2.resize(
+                        calibration_frame,
+                        (frame.shape[0], frame.shape[0]),
+                        interpolation=cv2.INTER_NEAREST,
+                    )
+                    frame = np.concatenate((frame, calibration_frame), axis=1)
                 writer.append_data(frame)
 
             observations = env.step({
@@ -451,6 +484,9 @@ def evaluate_episode(
                     "map_path_length": len(getattr(getattr(controller, "obstacle_map", None), "last_path_px", [])),
                     "map_ground_filtered_points": getattr(getattr(controller, "obstacle_map", None), "last_ground_filtered_points", None),
                     "map_ceiling_filtered_points": getattr(getattr(controller, "obstacle_map", None), "last_ceiling_filtered_points", None),
+                    "navmesh_calibration": getattr(
+                        controller, "last_navmesh_calibration", None
+                    ),
                     "action": decision.action.as_habitat(),
                     "human_following": float(metrics.get("human_following", 0.0) or 0.0),
                     "human_collision": float(metrics.get("human_collision", 0.0) or 0.0),
@@ -463,7 +499,10 @@ def evaluate_episode(
     if temporary_video is not None:
         temporary_video.replace(video_path)
 
-    final_metrics = env.get_metrics()
+    final_metrics = {
+        key: value for key, value in env.get_metrics().items()
+        if key != "top_down_map_following"
+    }
     if steps < max_steps:
         success = float(bool(
             final_metrics.get("human_following_success", 0.0)
@@ -511,6 +550,9 @@ def evaluate_episode(
             )
             if key in final_metrics and np.isscalar(final_metrics[key])
         },
+        "navmesh_calibration": getattr(
+            controller, "last_navmesh_calibration", None
+        ),
     }
     return summary, records
 
@@ -547,6 +589,11 @@ def main():
         help="comma-separated global dataset indices to skip",
     )
     parser.add_argument("--save-steps", action="store_true")
+    parser.add_argument(
+        "--navmesh-calibration",
+        action="store_true",
+        help="append Habitat TopDownMap/NavMesh ground truth to map-controller videos",
+    )
     parser.add_argument("--save-video", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--video-fps", type=int, default=8)
     parser.add_argument("--no-resume", action="store_true")
@@ -559,7 +606,7 @@ def main():
     )
     parser.add_argument(
         "--controller",
-        choices=("oracle-navmesh", "reactive", "map-reactive", "map-reactive-c2"),
+        choices=("oracle-navmesh", "reactive", "map-reactive", "map-reactive-c2", "map-reactive-vlfm"),
         default="oracle-navmesh",
     )
     parser.add_argument(
@@ -569,8 +616,9 @@ def main():
         help="C2 static-map memory: -1=controller default, 0=full episode, N=last N frames",
     )
     parser.add_argument("--map-camera-height", type=float, default=0.24)
+    parser.add_argument("--map-camera-pitch-deg", type=float, default=5.0)
     parser.add_argument("--map-robot-radius", type=float, default=0.30)
-    parser.add_argument("--map-min-static-hits", type=int, default=1)
+    parser.add_argument("--map-min-static-hits", type=int, default=2)
     parser.add_argument("--person-detector-weights", default=str(DEFAULT_WEIGHTS))
     parser.add_argument("--person-reid-weights", default=str(DEFAULT_REID_WEIGHTS))
     parser.add_argument("--person-score-threshold", type=float, default=0.30)
@@ -604,8 +652,8 @@ def main():
         parser.error("map-memory-frames must be -1, 0, or a positive integer")
     if args.map_camera_height <= 0.0:
         parser.error("map-camera-height must be positive")
-    if args.map_robot_radius <= 0.0:
-        parser.error("map-robot-radius must be positive")
+    if args.map_robot_radius < 0.0:
+        parser.error("map-robot-radius must be non-negative")
     if args.map_min_static_hits <= 0:
         parser.error("map-min-static-hits must be positive")
     if args.lost_brake_steps < 0:
@@ -628,9 +676,13 @@ def main():
         "habitat-lab/habitat/config/benchmark/nav/track/"
         f"track_{config_kind}_{args.task}.yaml"
     )
-    config = configure(habitat.get_config(config_path), args.scene_dataset)
+    config = configure(
+        habitat.get_config(config_path),
+        args.scene_dataset,
+        keep_top_down_map=args.navmesh_calibration,
+    )
     if args.perception == "rgb-person" or args.controller in (
-        "map-reactive", "map-reactive-c2"
+        "map-reactive", "map-reactive-c2", "map-reactive-vlfm"
     ):
         from habitat.config import read_write
 
@@ -760,19 +812,37 @@ def main():
             lost_search_yaw=args.lost_search_yaw,
             use_invisible_pointgoal=args.perception == "oracle",
         )
-    elif args.controller in ("map-reactive", "map-reactive-c2"):
+    elif args.controller in ("map-reactive", "map-reactive-c2", "map-reactive-vlfm"):
         if args.controller == "map-reactive-c2":
             map_memory_frames = (
-                4 if args.map_memory_frames == -1 else args.map_memory_frames
+                0 if args.map_memory_frames == -1 else args.map_memory_frames
             )
             map_memory_frames = map_memory_frames or None
             camera_height_m = args.map_camera_height
+            camera_pitch_deg = args.map_camera_pitch_deg
             min_obstacle_height_m = 0.08
             robot_radius_m = 0.22 if args.map_robot_radius == 0.30 else args.map_robot_radius
-            min_static_hits = 2 if args.map_min_static_hits == 1 else args.map_min_static_hits
+            min_static_hits = args.map_min_static_hits
+            camera_forward_offset_m = 0.0
+            camera_left_offset_m = 0.0
+        elif args.controller == "map-reactive-vlfm":
+            # Ascent/VLFM-style baseline for Spot's configured jaw camera:
+            # level optical axis, 0.24 m forward sensor offset, and explicit
+            # obstacle height band in the episodic frame.
+            map_memory_frames = None
+            camera_height_m = 0.24
+            camera_pitch_deg = 0.0
+            camera_forward_offset_m = 0.24
+            camera_left_offset_m = 0.0
+            min_obstacle_height_m = 0.20
+            robot_radius_m = args.map_robot_radius
+            min_static_hits = args.map_min_static_hits
         else:
             map_memory_frames = None
             camera_height_m = 0.85
+            camera_pitch_deg = 0.0
+            camera_forward_offset_m = 0.0
+            camera_left_offset_m = 0.0
             min_obstacle_height_m = 0.06
             robot_radius_m = args.map_robot_radius
             min_static_hits = args.map_min_static_hits
@@ -785,6 +855,9 @@ def main():
             lost_search_yaw=args.lost_search_yaw,
             use_invisible_pointgoal=args.perception == "oracle",
             camera_height_m=camera_height_m,
+            camera_pitch_deg=camera_pitch_deg,
+            camera_forward_offset_m=camera_forward_offset_m,
+            camera_left_offset_m=camera_left_offset_m,
             map_memory_frames=map_memory_frames,
             min_obstacle_height_m=min_obstacle_height_m,
             robot_radius_m=robot_radius_m,
@@ -816,8 +889,13 @@ def main():
         "remaining_episodes": remaining_episodes,
         "config": config_path,
         "controller": args.controller,
+        "navmesh_calibration": args.navmesh_calibration,
         "map_memory_frames": getattr(controller.obstacle_map, "memory_frames", None) if hasattr(controller, "obstacle_map") else None,
         "map_camera_height_m": getattr(controller.obstacle_map, "camera_height_m", None) if hasattr(controller, "obstacle_map") else None,
+        "map_camera_pitch_deg": math.degrees(getattr(controller.obstacle_map, "camera_pitch_rad", 0.0)) if hasattr(controller, "obstacle_map") else None,
+        "map_camera_hfov_deg": math.degrees(getattr(controller.obstacle_map, "hfov_rad", 0.0)) if hasattr(controller, "obstacle_map") else None,
+        "map_camera_forward_offset_m": getattr(controller.obstacle_map, "camera_forward_offset_m", None) if hasattr(controller, "obstacle_map") else None,
+        "map_camera_left_offset_m": getattr(controller.obstacle_map, "camera_left_offset_m", None) if hasattr(controller, "obstacle_map") else None,
         "map_robot_radius_m": getattr(controller.obstacle_map, "robot_radius_m", None) if hasattr(controller, "obstacle_map") else None,
         "map_min_static_hits": getattr(controller.obstacle_map, "min_static_hits", None) if hasattr(controller, "obstacle_map") else None,
         "controller_input": (
@@ -881,8 +959,13 @@ def main():
                 "schema_version": 1,
                 "controller_version": CONTROLLER_VERSION,
                 "controller": args.controller,
+                "navmesh_calibration": args.navmesh_calibration,
                 "map_memory_frames": getattr(controller.obstacle_map, "memory_frames", None) if hasattr(controller, "obstacle_map") else None,
                 "map_camera_height_m": getattr(controller.obstacle_map, "camera_height_m", None) if hasattr(controller, "obstacle_map") else None,
+                "map_camera_pitch_deg": math.degrees(getattr(controller.obstacle_map, "camera_pitch_rad", 0.0)) if hasattr(controller, "obstacle_map") else None,
+                "map_camera_hfov_deg": math.degrees(getattr(controller.obstacle_map, "hfov_rad", 0.0)) if hasattr(controller, "obstacle_map") else None,
+                "map_camera_forward_offset_m": getattr(controller.obstacle_map, "camera_forward_offset_m", None) if hasattr(controller, "obstacle_map") else None,
+                "map_camera_left_offset_m": getattr(controller.obstacle_map, "camera_left_offset_m", None) if hasattr(controller, "obstacle_map") else None,
                 "map_robot_radius_m": getattr(controller.obstacle_map, "robot_radius_m", None) if hasattr(controller, "obstacle_map") else None,
                 "map_min_static_hits": getattr(controller.obstacle_map, "min_static_hits", None) if hasattr(controller, "obstacle_map") else None,
                 "controller_input": (
@@ -959,6 +1042,7 @@ def main():
                     video_fps=args.video_fps,
                     perception=perception,
                     defer_goal_crop=defer_goal_crop,
+                    navmesh_calibration=args.navmesh_calibration,
                 )
                 summary["evasion_side"] = controller._evasion_side
                 result = {**metadata, "summary": summary}

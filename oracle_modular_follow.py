@@ -18,6 +18,7 @@ from typing import Optional, Sequence, Tuple
 
 import imageio.v2 as imageio
 import imageio.v3 as iio
+import cv2
 import numpy as np
 from PIL import Image, ImageDraw
 
@@ -904,8 +905,11 @@ class MapReactiveFollower(ModularReactiveFollower):
     def __init__(
         self,
         *args,
-        hfov_deg: float = 60.0,
+        hfov_deg: float = 90.0,
         camera_height_m: float = 0.24,
+        camera_pitch_deg: float = 5.0,
+        camera_forward_offset_m: float = 0.0,
+        camera_left_offset_m: float = 0.0,
         min_obstacle_height_m: float = 0.06,
         robot_radius_m: float = 0.30,
         min_static_hits: int = 1,
@@ -916,6 +920,9 @@ class MapReactiveFollower(ModularReactiveFollower):
         self.obstacle_map = LocalObstacleMap(
             hfov_deg=hfov_deg,
             camera_height_m=camera_height_m,
+            camera_pitch_deg=camera_pitch_deg,
+            camera_forward_offset_m=camera_forward_offset_m,
+            camera_left_offset_m=camera_left_offset_m,
             min_obstacle_height_m=min_obstacle_height_m,
             robot_radius_m=robot_radius_m,
             min_static_hits=min_static_hits,
@@ -924,6 +931,9 @@ class MapReactiveFollower(ModularReactiveFollower):
         self.last_map_mode = "map_uninitialized"
         self.last_map_clearance = dict(self.obstacle_map.last_clearance)
         self.last_map_visualization = self.obstacle_map.visualize()
+        self.last_navmesh_calibration = None
+        self.last_navmesh_calibration_visualization = None
+        self._navmesh_navigable_map = None
 
     def reset(self, evasion_side: Optional[float] = None) -> None:
         super().reset(evasion_side=evasion_side)
@@ -933,7 +943,115 @@ class MapReactiveFollower(ModularReactiveFollower):
             self._episode_forward_axis = None
             self._episode_left_axis = None
             self._map_evasion_direction = self._search_direction
+            self._map_blocked_steps = 0
+            self.last_navmesh_calibration = None
+            self.last_navmesh_calibration_visualization = None
+            self._navmesh_navigable_map = None
             self.last_map_mode = "map_reset"
+
+    def update_navmesh_calibration(self, sim) -> None:
+        """Align Habitat NavMesh to the episodic obstacle-map grid."""
+        if self._episode_origin is None:
+            return
+        obstacle_map = self.obstacle_map
+        if self._navmesh_navigable_map is None:
+            size = obstacle_map.grid_size_px
+            navmesh = np.zeros((size, size), dtype=bool)
+            origin = np.asarray(self._episode_origin, dtype=np.float32)
+            forward_axis = np.asarray(self._episode_forward_axis, dtype=np.float32)
+            left_axis = np.asarray(self._episode_left_axis, dtype=np.float32)
+            for gy in range(size):
+                forward = (obstacle_map.center_px - gy) / obstacle_map.pixels_per_meter
+                for gx in range(size):
+                    left = (obstacle_map.center_px - gx) / obstacle_map.pixels_per_meter
+                    world = origin + forward * forward_axis + left * left_axis
+                    navmesh[gy, gx] = bool(sim.pathfinder.is_navigable(world))
+            self._navmesh_navigable_map = navmesh
+
+        observed = (obstacle_map.static_hits > 0) | (obstacle_map.free_hits > 0)
+        predicted_obstacle = obstacle_map.static_map.astype(bool)
+        navmesh_settings = getattr(sim.pathfinder, "nav_mesh_settings", None)
+        navmesh_radius_m = float(
+            getattr(navmesh_settings, "agent_radius", obstacle_map.robot_radius_m)
+        )
+        calibration_radius_px = max(
+            0, int(math.ceil(navmesh_radius_m * obstacle_map.pixels_per_meter))
+        )
+        if calibration_radius_px > 0:
+            radius = calibration_radius_px
+            kernel = cv2.getStructuringElement(
+                cv2.MORPH_ELLIPSE, (2 * radius + 1, 2 * radius + 1)
+            )
+            predicted_obstacle = cv2.dilate(
+                predicted_obstacle.astype(np.uint8), kernel, iterations=1
+            ).astype(bool)
+        predicted_free = observed & ~predicted_obstacle
+        navmesh_free = self._navmesh_navigable_map
+        false_obstacle = observed & predicted_obstacle & navmesh_free
+        unsafe_free = predicted_free & ~navmesh_free
+        comparable_navmesh_free = observed & navmesh_free
+        intersection = int(np.sum(predicted_free & comparable_navmesh_free))
+        union = int(np.sum(predicted_free | comparable_navmesh_free))
+        obstacle_count = int(np.sum(observed & predicted_obstacle))
+        free_count = int(np.sum(predicted_free))
+        calibration = {
+            "observed_cells": int(np.sum(observed)),
+            "navmesh_agent_radius_m": navmesh_radius_m,
+            "control_map_robot_radius_m": obstacle_map.robot_radius_m,
+            "false_obstacle_cells": int(np.sum(false_obstacle)),
+            "unsafe_free_cells": int(np.sum(unsafe_free)),
+            "false_obstacle_rate": (
+                float(np.sum(false_obstacle)) / obstacle_count
+                if obstacle_count else 0.0
+            ),
+            "unsafe_free_rate": (
+                float(np.sum(unsafe_free)) / free_count if free_count else 0.0
+            ),
+            "navigable_iou": float(intersection) / union if union else 1.0,
+        }
+        self.last_navmesh_calibration = calibration
+
+        canvas = np.full((*observed.shape, 3), 205, dtype=np.uint8)
+        canvas[observed & navmesh_free] = (225, 245, 225)
+        canvas[observed & ~navmesh_free] = (95, 95, 95)
+        canvas[observed & predicted_obstacle & ~navmesh_free] = (35, 35, 35)
+        canvas[false_obstacle] = (230, 70, 70)
+        canvas[unsafe_free] = (70, 120, 235)
+        robot_gx, robot_gy = obstacle_map._grid(
+            np.array([obstacle_map.robot_pose[0]]),
+            np.array([obstacle_map.robot_pose[1]]),
+        )
+        if 0 <= robot_gx[0] < canvas.shape[1] and 0 <= robot_gy[0] < canvas.shape[0]:
+            cv2.circle(
+                canvas, (int(robot_gx[0]), int(robot_gy[0])), 4, (0, 0, 255), -1
+            )
+        cv2.putText(
+            canvas,
+            "ALIGNED: red=false obstacle blue=unsafe free",
+            (4, 14),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.32,
+            (20, 20, 20),
+            1,
+            cv2.LINE_AA,
+        )
+        cv2.putText(
+            canvas,
+            (
+                f"FO={calibration['false_obstacle_rate']:.3f} "
+                f"UF={calibration['unsafe_free_rate']:.3f} "
+                f"IoU={calibration['navigable_iou']:.3f}"
+            ),
+            (4, 28),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.32,
+            (20, 20, 20),
+            1,
+            cv2.LINE_AA,
+        )
+        self.last_navmesh_calibration_visualization = cv2.cvtColor(
+            canvas, cv2.COLOR_RGB2BGR
+        )
 
     def update_observation(
         self, observations, target: TargetObservation, dynamic_mask=None, robot=None
@@ -1007,6 +1125,7 @@ class MapReactiveFollower(ModularReactiveFollower):
         )
         self.last_map_mode = map_mode
         if map_mode == "map_blocked":
+            self._map_blocked_steps += 1
             front_clearance = self.last_map_clearance.get("front", 0.0)
             if front_clearance > 0.90:
                 # A persistent map can become temporarily topologically
@@ -1016,7 +1135,7 @@ class MapReactiveFollower(ModularReactiveFollower):
                 recovery = super().__call__(sim, robot, target_agent, target)
                 return ControlDecision(
                     ContinuousAction(
-                        float(np.clip(recovery.action.forward, 0.0, 0.35)),
+                        float(np.clip(recovery.action.forward, 0.0, min(self.max_forward, 0.75))),
                         float(np.clip(recovery.action.lateral, -0.30, 0.30)),
                         float(np.clip(recovery.action.yaw, -0.45, 0.45)),
                     ),
@@ -1026,26 +1145,38 @@ class MapReactiveFollower(ModularReactiveFollower):
                 )
             clear_left = self.last_map_clearance.get("left", 0.0)
             clear_right = self.last_map_clearance.get("right", 0.0)
-            # Keep one side while blocked. Re-selecting the side every frame
-            # makes the robot oscillate in front of chair/table legs.
             direction = self._map_evasion_direction
-            if clear_left > clear_right + 0.20:
-                direction = 1.0
-            elif clear_right > clear_left + 0.20:
-                direction = -1.0
+            # Select once on entry and keep the same side until A* recovers.
+            # Re-selecting from noisy live depth every frame causes a stable
+            # left/right oscillation in front of chair and table legs.
+            if self._map_blocked_steps == 1:
+                if clear_left > clear_right + 0.20:
+                    direction = 1.0
+                elif clear_right > clear_left + 0.20:
+                    direction = -1.0
             self._map_evasion_direction = direction
+            cautious_forward = 0.12 if front_clearance > 0.60 else 0.0
             return ControlDecision(
-                ContinuousAction(0.0, 0.45 * direction, 0.15 * direction),
+                ContinuousAction(
+                    cautious_forward, 0.45 * direction, 0.15 * direction
+                ),
                 "map_blocked_evade",
                 float(target.bearing_rad),
                 None,
             )
+        self._map_blocked_steps = 0
         waypoint_bearing = math.atan2(waypoint_left, waypoint_forward)
         if abs(waypoint_left) > 0.05:
             self._map_evasion_direction = math.copysign(1.0, waypoint_left)
-        forward = self.distance_gain * waypoint_forward
+        # The carrot controls heading, not catch-up speed. Using its short
+        # 0.55 m distance as the velocity error caps the robot below the
+        # leader's walking speed and makes it fall progressively behind.
+        distance_error = max(0.0, target.range_m - self.max_distance_m)
+        forward = self.distance_gain * distance_error
         if abs(waypoint_bearing) > math.radians(55.0):
             forward = 0.0
+        else:
+            forward *= max(0.0, math.cos(waypoint_bearing))
         lateral = self.lateral_gain * waypoint_left
         yaw = self.heading_gain * waypoint_bearing
         action = ContinuousAction(
@@ -1079,7 +1210,7 @@ def select_episode(dataset, episode_id: str, scene_substring: str, match_index: 
     return matches[match_index], len(matches)
 
 
-def configure(config, scene_dataset: str):
+def configure(config, scene_dataset: str, keep_top_down_map: bool = False):
     from habitat.config import read_write
 
     with read_write(config):
@@ -1087,9 +1218,10 @@ def configure(config, scene_dataset: str):
         # These measures are unnecessary for a one-frame smoke test and some
         # require a complete episode rollout.
         measurements = config.habitat.task.measurements
-        for name in ("top_down_map_following",):
-            if name in measurements:
-                del measurements[name]
+        if not keep_top_down_map:
+            for name in ("top_down_map_following",):
+                if name in measurements:
+                    del measurements[name]
     return config
 
 

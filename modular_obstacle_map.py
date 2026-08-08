@@ -44,11 +44,15 @@ class LocalObstacleMap:
         pixels_per_meter: int = 10,
         robot_radius_m: float = 0.30,
         camera_height_m: float = 0.24,
+        camera_pitch_deg: float = 5.0,
+        camera_forward_offset_m: float = 0.0,
+        camera_left_offset_m: float = 0.0,
         min_obstacle_height_m: float = 0.06,
         max_obstacle_height_m: float = 1.8,
         carrot_distance_m: float = 0.55,
         memory_frames: Optional[int] = None,
         min_static_hits: int = 1,
+        free_space_all_depth: bool = False,
     ) -> None:
         self.image_width = int(image_width)
         self.image_height = int(image_height)
@@ -58,6 +62,9 @@ class LocalObstacleMap:
         self.pixels_per_meter = int(pixels_per_meter)
         self.robot_radius_m = float(robot_radius_m)
         self.camera_height_m = float(camera_height_m)
+        self.camera_pitch_rad = math.radians(float(camera_pitch_deg))
+        self.camera_forward_offset_m = float(camera_forward_offset_m)
+        self.camera_left_offset_m = float(camera_left_offset_m)
         self.min_obstacle_height_m = float(min_obstacle_height_m)
         self.max_obstacle_height_m = float(max_obstacle_height_m)
         self.carrot_distance_m = float(carrot_distance_m)
@@ -67,10 +74,11 @@ class LocalObstacleMap:
         if int(min_static_hits) <= 0:
             raise ValueError("min_static_hits must be positive")
         self.min_static_hits = int(min_static_hits)
+        self.free_space_all_depth = bool(free_space_all_depth)
         self.grid_size_px = int(round(grid_size_m * pixels_per_meter))
         self.center_px = self.grid_size_px // 2
         self._inflation_radius_px = max(
-            1, int(math.ceil(self.robot_radius_m * self.pixels_per_meter))
+            0, int(math.ceil(self.robot_radius_m * self.pixels_per_meter))
         )
         self.reset()
 
@@ -97,7 +105,9 @@ class LocalObstacleMap:
         self.last_free_cells = 0
 
     def _grid(self, forward: np.ndarray, left: np.ndarray):
-        gx = np.rint(self.center_px + left * self.pixels_per_meter).astype(np.int32)
+        # Top-down image x increases to the right; keep the agent's left side
+        # on the visual left so the map is not a horizontal mirror of RGB.
+        gx = np.rint(self.center_px - left * self.pixels_per_meter).astype(np.int32)
         gy = np.rint(self.center_px - forward * self.pixels_per_meter).astype(np.int32)
         return gx, gy
 
@@ -134,8 +144,14 @@ class LocalObstacleMap:
             (height / max(width, 1)) * math.tan(self.hfov_rad * 0.5)
         )
         fy = 0.5 * height / math.tan(vfov_rad * 0.5)
-        vertical = (0.5 * (height - 1) - ys.astype(np.float32)) * depth / fy
-        obstacle_height = self.camera_height_m + vertical
+        camera_up = (0.5 * (height - 1) - ys.astype(np.float32)) * depth / fy
+        cos_pitch = math.cos(self.camera_pitch_rad)
+        sin_pitch = math.sin(self.camera_pitch_rad)
+        # Positive pitch means the optical axis points downward.
+        local_forward = cos_pitch * depth + sin_pitch * camera_up
+        obstacle_height = (
+            self.camera_height_m - sin_pitch * depth + cos_pitch * camera_up
+        )
         self.last_ground_filtered_points = int(np.sum(
             depth_valid & (obstacle_height < self.min_obstacle_height_m)
         ))
@@ -159,17 +175,32 @@ class LocalObstacleMap:
             dynamic_pixels = np.zeros_like(valid)
 
         fx = 0.5 * width / math.tan(self.hfov_rad * 0.5)
-        local_forward = depth
         local_left = -(xs.astype(np.float32) - 0.5 * (width - 1)) * depth / fx
         # Remove only the robot footprint, not all near returns: chair legs and
         # low furniture can legitimately be closer than 0.6 m.
-        valid &= np.hypot(local_forward, local_left) > self.robot_radius_m + 0.04
+        outside_footprint = (
+            np.hypot(local_forward, local_left) > self.robot_radius_m + 0.04
+        )
+        valid &= outside_footprint
 
         episode_forward, episode_left = self._local_to_episode(
-            local_forward, local_left, self.robot_pose
+            local_forward + self.camera_forward_offset_m,
+            local_left + self.camera_left_offset_m,
+            self.robot_pose,
         )
         gx, gy = self._grid(episode_forward, episode_left)
         inside = valid & (gx >= 0) & (gx < self.grid_size_px) & (gy >= 0) & (gy < self.grid_size_px)
+        if self.free_space_all_depth:
+            ray_inside = (
+                depth_valid
+                & outside_footprint
+                & (gx >= 0) & (gx < self.grid_size_px)
+                & (gy >= 0) & (gy < self.grid_size_px)
+            )
+        else:
+            # Conservative 2-D mode: do not let rays passing above low
+            # furniture clear its top-down footprint.
+            ray_inside = inside
         static_pixels = inside & ~dynamic_pixels
 
         frame_static = np.zeros_like(self.static_map, dtype=np.uint8)
@@ -182,19 +213,27 @@ class LocalObstacleMap:
             np.array([self.robot_pose[0]]), np.array([self.robot_pose[1]])
         )
         start_px = (int(robot_gx[0]), int(robot_gy[0]))
-        sampled = np.flatnonzero(inside.ravel())[::4]
+        # Sampling a regular image grid preserves field-of-view coverage
+        # without drawing every depth pixel.
+        ray_samples = ray_inside & ((ys % 8) == 0) & ((xs % 8) == 0)
+        sampled = np.flatnonzero(ray_samples.ravel())
         inside_flat_gx = gx.ravel()[sampled]
         inside_flat_gy = gy.ravel()[sampled]
         for end_x, end_y in zip(inside_flat_gx.tolist(), inside_flat_gy.tolist()):
             cv2.line(frame_free, start_px, (int(end_x), int(end_y)), 1, 1)
-        # The terminal pixel is an observed surface, not free space.
+        # Only height-filtered obstacle endpoints are occupied. Ground and
+        # ceiling endpoints remain free-space evidence.
         frame_free[gy[inside], gx[inside]] = 0
         self.last_free_cells = int(frame_free.sum())
         if self.memory_frames is None:
             # Full-history mode: retain static evidence for the episode.
-            np.add.at(self.static_hits, (gy[static_pixels], gx[static_pixels]), 1)
+            # Count observations per frame, not per projected depth pixel.
+            # Many pixels land in the same grid cell; np.add.at on raw points
+            # makes a one-frame artifact immediately exceed a multi-frame hit
+            # threshold.
+            self.static_hits += frame_static.astype(self.static_hits.dtype)
             np.minimum(self.static_hits, np.iinfo(np.uint16).max, out=self.static_hits)
-            np.add.at(self.free_hits, np.where(frame_free > 0), 1)
+            self.free_hits += frame_free.astype(self.free_hits.dtype)
             np.minimum(self.free_hits, np.iinfo(np.uint16).max, out=self.free_hits)
             raw_static = (
                 (self.static_hits >= self.min_static_hits)
@@ -330,6 +369,8 @@ class LocalObstacleMap:
         self.last_path_px = path
         if not path:
             return 0.0, 0.0, "map_blocked"
+        if len(path) == 1 and target_range > desired_distance_m + 0.10:
+            return 0.0, 0.0, "map_blocked"
 
         carrot_index = min(
             len(path) - 1,
@@ -337,7 +378,7 @@ class LocalObstacleMap:
         )
         carrot_x, carrot_y = path[carrot_index]
         carrot_episode_forward = (self.center_px - carrot_y) / self.pixels_per_meter
-        carrot_episode_left = (carrot_x - self.center_px) / self.pixels_per_meter
+        carrot_episode_left = (self.center_px - carrot_x) / self.pixels_per_meter
         local_forward, local_left = self._episode_to_local(
             carrot_episode_forward, carrot_episode_left
         )
