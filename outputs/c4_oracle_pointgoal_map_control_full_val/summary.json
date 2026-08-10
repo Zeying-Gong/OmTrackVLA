@@ -1,0 +1,32 @@
+{
+  "at/val": {
+    "completed": 1405,
+    "expected": 1405,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 0.6427046263345195,
+    "tracking_rate": 0.7490819484213888,
+    "collision_rate": 0.03202846975088968,
+    "finish_rate": 0.9679715302491103
+  },
+  "dt/val": {
+    "completed": 1405,
+    "expected": 1405,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 0.600711743772242,
+    "tracking_rate": 0.688678916986112,
+    "collision_rate": 0.03345195729537367,
+    "finish_rate": 0.9665480427046264
+  },
+  "stt/val": {
+    "completed": 1405,
+    "expected": 1405,
+    "errors": 0,
+    "stale": 0,
+    "success_rate": 0.6654804270462633,
+    "tracking_rate": 0.7734814509257975,
+    "collision_rate": 0.03345195729537367,
+    "finish_rate": 0.9665480427046264
+  }
+}
