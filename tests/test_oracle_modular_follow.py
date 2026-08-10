@@ -6,11 +6,17 @@ import numpy as np
 
 from oracle_modular_follow import (
     OracleFollowController,
+    OraclePerception,
     OracleNavmeshFollower,
+    ContinuousAction,
+    MapReactiveFollower,
     ModularReactiveFollower,
+    NavmeshConnectivityDiagnostic,
     TargetObservation,
     bbox_to_footpoint,
     target_mask_to_bbox,
+    mask_connected_bboxes,
+    select_target_component_bbox,
 )
 from oracle_modular_follow_v6 import OracleNavmeshFollowerV6
 from rgb_person_perception import (
@@ -36,7 +42,113 @@ def make_target(forward, left, visible=True):
     )
 
 
+class OracleComponentSelectionTest(unittest.TestCase):
+    def test_connected_target_regions_are_separate_boxes(self):
+        mask = np.zeros((40, 80), dtype=bool)
+        mask[10:30, 5:20] = True
+        mask[8:32, 55:75] = True
+
+        boxes = mask_connected_bboxes(mask)
+
+        self.assertEqual(boxes, [(5, 10, 19, 29), (55, 8, 74, 31)])
+
+    def test_relative_target_bearing_selects_matching_component(self):
+        mask = np.zeros((40, 80), dtype=bool)
+        mask[10:30, 5:20] = True
+        mask[8:32, 55:75] = True
+
+        bbox = select_target_component_bbox(
+            mask, relative_xy=(2.0, 1.0), image_width=80
+        )
+
+        self.assertEqual(bbox, (55, 8, 74, 31))
+
+    def test_oracle_perception_marks_only_selected_component(self):
+        panoptic = np.zeros((40, 80), dtype=np.int32)
+        panoptic[10:30, 5:20] = 1092
+        panoptic[8:32, 55:75] = 1092
+        perception = OraclePerception()
+
+        target = perception(
+            np.zeros((40, 80, 3), dtype=np.uint8),
+            panoptic,
+            target_semantic_id=1092,
+            relative_xy=(2.0, 1.0),
+        )
+
+        self.assertEqual(target.bbox_xyxy, (55, 8, 74, 31))
+        self.assertEqual(
+            sum(bool(c["selected"]) for c in perception.last_candidate_diagnostics),
+            1,
+        )
+
+    def test_component_depth_prevents_projection_identity_swap(self):
+        mask = np.zeros((40, 80), dtype=bool)
+        mask[10:30, 5:20] = True
+        mask[8:32, 55:75] = True
+        depth = np.full((40, 80), 10.0, dtype=np.float32)
+        depth[10:30, 5:20] = 2.0
+        depth[8:32, 55:75] = 0.8
+
+        bbox = select_target_component_bbox(
+            mask,
+            relative_xy=(2.0, 1.0),
+            image_width=80,
+            previous_bbox=(55, 8, 74, 31),
+            depth=depth,
+        )
+
+        self.assertEqual(bbox, (5, 10, 19, 29))
+
+    def test_sensor_projection_has_priority_over_mirror_depth(self):
+        mask = np.zeros((40, 80), dtype=bool)
+        mask[10:30, 5:20] = True
+        mask[8:32, 55:75] = True
+        depth = np.full((40, 80), 10.0, dtype=np.float32)
+        depth[10:30, 5:20] = 2.0
+        depth[8:32, 55:75] = 0.8
+
+        bbox = select_target_component_bbox(
+            mask,
+            relative_xy=(2.0, -1.0),
+            image_width=80,
+            previous_bbox=(5, 10, 19, 29),
+            depth=depth,
+            projected_uv=(65.0, 31.0),
+        )
+
+        self.assertEqual(bbox, (55, 8, 74, 31))
+
+
 class OracleModularFollowTest(unittest.TestCase):
+    def test_navmesh_diagnostic_distinguishes_human_and_spot_connectivity(self):
+        raw_free = np.zeros((120, 120), dtype=np.uint8)
+        raw_free[10:110, 10:50] = 1
+        raw_free[10:110, 70:110] = 1
+        raw_free[58:62, 50:70] = 1
+
+        class FakePathfinder:
+            nav_mesh_settings = SimpleNamespace(agent_radius=0.30)
+
+            def get_topdown_view(self, meters_per_pixel, height):
+                return raw_free
+
+            def get_bounds(self):
+                return np.array((0.0, 0.0, 0.0)), np.array((12.0, 1.0, 12.0))
+
+        diagnostic = NavmeshConnectivityDiagnostic(
+            meters_per_pixel=0.10, spot_radius_m=0.50
+        )
+        diagnostic.update(
+            SimpleNamespace(pathfinder=FakePathfinder()),
+            np.array((2.0, 0.0, 6.0)),
+            np.array((10.0, 0.0, 6.0)),
+        )
+
+        self.assertTrue(diagnostic.last_connectivity["raw_connected"])
+        self.assertFalse(diagnostic.last_connectivity["spot_connected"])
+        self.assertIsNotNone(diagnostic.last_visualization)
+
     def test_reactive_controller_ignores_privileged_arguments(self):
         controller = ModularReactiveFollower()
         target = make_target(3.0, 0.0)
@@ -63,6 +175,212 @@ class OracleModularFollowTest(unittest.TestCase):
 
         self.assertEqual(decision.mode, "reactive_search")
         self.assertEqual(decision.action.forward, 0.0)
+
+    def test_c4_retreats_away_from_off_axis_person(self):
+        controller = MapReactiveFollower(predictive_human_safety=True)
+        controller(None, None, None, make_target(1.6, 0.4))
+
+        decision = controller(None, None, None, make_target(1.0, 0.4))
+
+        self.assertEqual(decision.mode, "map_predictive_human_retreat")
+        self.assertLess(decision.action.forward, 0.0)
+        self.assertLess(decision.action.lateral, 0.0)
+
+    def test_c3_does_not_enable_predictive_human_retreat(self):
+        controller = MapReactiveFollower(predictive_human_safety=False)
+        controller(None, None, None, make_target(1.6, 0.4))
+
+        decision = controller(None, None, None, make_target(1.0, 0.4))
+
+        self.assertNotEqual(decision.mode, "map_predictive_human_retreat")
+
+    def test_c4_yields_sideways_during_sustained_head_on_closure(self):
+        controller = MapReactiveFollower(predictive_human_safety=True)
+        controller(None, None, None, make_target(1.8, 0.0))
+        controller(None, None, None, make_target(1.2, 0.0))
+
+        decision = controller(None, None, None, make_target(1.0, 0.0))
+
+        self.assertEqual(decision.mode, "map_predictive_human_yield")
+        self.assertGreater(abs(decision.action.lateral), 0.5)
+
+    def test_c4_proactively_yields_near_follow_band_for_incoming_person(self):
+        controller = MapReactiveFollower(predictive_human_safety=True)
+        controller(None, None, None, make_target(2.0, 0.0))
+
+        retreat = controller(None, None, None, make_target(1.7, 0.0))
+        yield_decision = controller(None, None, None, make_target(1.5, 0.0))
+
+        self.assertEqual(retreat.mode, "map_predictive_human_retreat")
+        self.assertLess(retreat.action.forward, 0.0)
+        self.assertEqual(yield_decision.mode, "map_predictive_human_yield")
+        self.assertGreater(abs(yield_decision.action.lateral), 0.5)
+
+    def test_c4_does_not_yield_for_small_stationary_range_jitter(self):
+        controller = MapReactiveFollower(predictive_human_safety=True)
+        controller(None, None, None, make_target(1.75, 0.0))
+
+        decision = controller(None, None, None, make_target(1.73, 0.0))
+
+        self.assertFalse(decision.mode.startswith("map_predictive_human_"))
+
+    def test_c4_keeps_yield_active_while_person_is_still_closing(self):
+        controller = MapReactiveFollower(predictive_human_safety=True)
+        controller(None, None, None, make_target(2.0, 0.0))
+        controller(None, None, None, make_target(1.7, 0.0))
+
+        decision = controller(None, None, None, make_target(1.9, 0.0))
+
+        self.assertEqual(decision.mode, "map_predictive_human_yield")
+
+    def test_c4_visibility_portal_bypasses_follow_band_hold(self):
+        controller = MapReactiveFollower(
+            predictive_human_safety=True,
+            use_invisible_pointgoal=True,
+        )
+        controller._visibility_portal_episode = (1.0, 0.0)
+
+        decision = controller(
+            None, None, None, make_target(1.3, 0.0, visible=False)
+        )
+
+        self.assertEqual(decision.mode, "map_history_waypoint")
+        self.assertGreater(decision.action.forward, 0.0)
+
+    def test_c4_visibility_portal_ignores_occluded_euclidean_near_distance(self):
+        controller = MapReactiveFollower(
+            predictive_human_safety=True,
+            use_invisible_pointgoal=True,
+        )
+        controller._visibility_portal_episode = (1.0, 0.0)
+
+        decision = controller(
+            None, None, None, make_target(1.0, 0.0, visible=False)
+        )
+
+        self.assertEqual(decision.mode, "map_history_waypoint")
+        self.assertGreater(decision.action.forward, 0.0)
+
+    def test_map_controller_turns_in_place_for_sharp_astar_carrot(self):
+        controller = MapReactiveFollower(use_invisible_pointgoal=True)
+        controller.obstacle_map.choose_waypoint = lambda *args, **kwargs: (
+            0.1, 1.0, "map_astar"
+        )
+
+        decision = controller(
+            None, None, None, make_target(3.0, 0.0, visible=False)
+        )
+
+        self.assertGreater(decision.action.forward, 0.0)
+        self.assertEqual(decision.action.lateral, 0.0)
+        self.assertGreater(decision.action.yaw, 0.0)
+
+    def test_c4_invisible_safe_target_releases_predictive_yield(self):
+        controller = MapReactiveFollower(
+            predictive_human_safety=True,
+            use_invisible_pointgoal=True,
+        )
+        controller._human_safety_active = True
+        controller._human_safety_steps = 3
+
+        decision = controller(
+            None, None, None, make_target(1.8, 0.0, visible=False)
+        )
+
+        self.assertFalse(decision.mode.startswith("map_predictive_human_"))
+
+    def test_c4_invisible_in_band_plans_into_target_room(self):
+        controller = MapReactiveFollower(
+            predictive_human_safety=True,
+            use_invisible_pointgoal=True,
+        )
+
+        decision = controller(
+            None, None, None, make_target(1.6, 0.5, visible=False)
+        )
+
+        self.assertIn(decision.mode, ("map_direct_waypoint", "map_astar_waypoint"))
+        self.assertGreater(decision.action.forward, 0.0)
+
+    def test_c4_incoming_occlusion_discards_stale_visibility_portal(self):
+        controller = MapReactiveFollower(
+            predictive_human_safety=True,
+            use_invisible_pointgoal=True,
+        )
+        controller._visibility_portal_episode = (1.0, 0.0)
+        controller._target_closing_ema = 0.08
+        controller._human_safety_active = True
+        controller._human_safety_steps = 3
+
+        decision = controller(
+            None, None, None, make_target(1.8, 0.0, visible=False)
+        )
+
+        self.assertIsNone(controller._visibility_portal_episode)
+        self.assertTrue(decision.mode.startswith("map_predictive_human_"))
+        self.assertLessEqual(decision.action.forward, -0.8)
+        self.assertGreaterEqual(abs(decision.action.lateral), 0.7)
+
+    def test_c4_finishes_occluded_pass_with_committed_reframe_turn(self):
+        controller = MapReactiveFollower(
+            predictive_human_safety=True,
+            use_invisible_pointgoal=True,
+        )
+        controller._human_safety_active = True
+        controller._occluded_pass_active = True
+        controller._human_evasion_direction = -1.0
+        controller._target_closing_ema = 0.0
+
+        decision = controller(
+            None, None, None, make_target(1.8, -0.5, visible=False)
+        )
+
+        self.assertEqual(decision.mode, "map_post_pass_reframe")
+        self.assertLess(decision.action.forward, 0.0)
+        self.assertGreater(decision.action.yaw, 0.0)
+
+    def test_c4_does_not_treat_robot_approach_as_incoming_person(self):
+        controller = MapReactiveFollower(predictive_human_safety=True)
+        controller(None, None, None, make_target(1.8, 0.0))
+        controller.obstacle_map.robot_pose = (0.5, 0.0, 0.0)
+
+        decision = controller(None, None, None, make_target(1.3, 0.0))
+
+        self.assertFalse(decision.mode.startswith("map_predictive_human_"))
+
+    def test_c4_marks_direction_after_two_rejected_translations(self):
+        controller = MapReactiveFollower(motion_blocked_feedback=True)
+        action = ContinuousAction(0.7, 0.0, 0.0)
+
+        controller.record_action(action, "map_direct_waypoint")
+        controller._update_motion_feedback((0.0, 0.0, 0.0))
+        self.assertFalse(controller.last_motion_block_added)
+        controller.record_action(action, "map_direct_waypoint")
+        controller._update_motion_feedback((0.0, 0.0, 0.0))
+
+        self.assertTrue(controller.last_motion_block_added)
+        self.assertGreater(controller.obstacle_map.motion_blocked_map.sum(), 0)
+
+    def test_c3_does_not_add_motion_block_feedback(self):
+        controller = MapReactiveFollower(motion_blocked_feedback=False)
+        controller.record_action(
+            ContinuousAction(0.7, 0.0, 0.0), "map_direct_waypoint"
+        )
+        controller._update_motion_feedback((0.0, 0.0, 0.0))
+
+        self.assertEqual(controller.obstacle_map.motion_blocked_map.sum(), 0)
+
+    def test_c4_does_not_learn_obstacle_while_turning_sharply(self):
+        controller = MapReactiveFollower(motion_blocked_feedback=True)
+        action = ContinuousAction(0.7, 0.0, -1.0)
+
+        controller.record_action(action, "map_direct_waypoint")
+        controller._update_motion_feedback((0.0, 0.0, -0.1))
+        controller.record_action(action, "map_direct_waypoint")
+        controller._update_motion_feedback((0.0, 0.0, -0.2))
+
+        self.assertFalse(controller.last_motion_block_added)
+        self.assertEqual(controller.obstacle_map.motion_blocked_map.sum(), 0)
 
     def test_rgb_bbox_geometry_uses_depth_without_oracle_pose(self):
         depth = np.full((100, 100), 0.2, dtype=np.float32)

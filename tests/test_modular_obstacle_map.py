@@ -166,6 +166,178 @@ class LocalObstacleMapTest(unittest.TestCase):
         self.assertGreater(forward, 0.0)
         self.assertGreater(left, 0.0)
 
+    def test_history_waypoint_prefers_new_progress_over_stale_active_point(self):
+        obstacle_map = LocalObstacleMap(robot_radius_m=0.0)
+        obstacle_map._active_history_episode = (1.0, 0.0)
+        target = (4.0, 0.0)
+        target_goal = obstacle_map._grid(
+            np.asarray([3.0]), np.asarray([0.0])
+        )
+        target_goal = (int(target_goal[0][0]), int(target_goal[1][0]))
+
+        newest = obstacle_map._grid(
+            np.asarray([2.0]), np.asarray([0.0])
+        )
+        newest = (int(newest[0][0]), int(newest[1][0]))
+
+        def fake_astar(start, goal):
+            if start == newest and goal == target_goal:
+                return [start, goal]
+            if goal == target_goal:
+                return [start] * 50 + [goal]
+            if goal == newest:
+                return [start] * 4 + [goal]
+            return [start, goal]
+
+        obstacle_map._astar = fake_astar
+        obstacle_map._path_cost = lambda path: float(max(0, len(path) - 1))
+        obstacle_map.choose_waypoint(
+            target,
+            desired_distance_m=1.0,
+            history_episode=[
+                (1.0, 0.0),
+                (2.0, 0.0),
+                (3.0, 0.0),
+                (4.0, 0.0),
+            ],
+        )
+
+        self.assertEqual(
+            obstacle_map.last_history_waypoint_px,
+            newest,
+        )
+
+    def test_history_waypoint_rejects_full_route_detour(self):
+        obstacle_map = LocalObstacleMap(robot_radius_m=0.0)
+        target = (4.0, 0.0)
+        target_goal_arr = obstacle_map._grid(
+            np.asarray([3.0]), np.asarray([0.0])
+        )
+        target_goal = (int(target_goal_arr[0][0]), int(target_goal_arr[1][0]))
+        history_arr = obstacle_map._grid(
+            np.asarray([2.0]), np.asarray([0.0])
+        )
+        history_goal = (int(history_arr[0][0]), int(history_arr[1][0]))
+        original_astar = obstacle_map._astar
+
+        def fake_astar(start, goal):
+            if start == history_goal and goal == target_goal:
+                return [start] * 30 + [goal]
+            if goal == history_goal:
+                return [start, goal]
+            if goal == target_goal:
+                return [start] * 10 + [goal]
+            return original_astar(start, goal)
+
+        obstacle_map._astar = fake_astar
+        obstacle_map._path_cost = lambda path: float(max(0, len(path) - 1))
+        obstacle_map.choose_waypoint(
+            target,
+            desired_distance_m=1.0,
+            history_episode=[
+                (1.0, 0.0),
+                (2.0, 0.0),
+                (3.0, 0.0),
+                (4.0, 0.0),
+            ],
+        )
+
+        self.assertIsNone(obstacle_map.last_history_waypoint_px)
+        self.assertIsNone(obstacle_map.last_history_path_cost)
+
+    def test_invisible_target_prefers_newest_unreached_history_portal(self):
+        obstacle_map = LocalObstacleMap(robot_radius_m=0.0)
+
+        _, _, mode = obstacle_map.choose_waypoint(
+            (4.0, 1.0),
+            desired_distance_m=1.0,
+            history_episode=[
+                (0.5, 0.0),
+                (1.0, 0.2),
+                (2.0, 0.5),
+            ],
+            prefer_history_waypoint=True,
+        )
+
+        expected = obstacle_map._grid(
+            np.asarray([2.0]), np.asarray([0.5])
+        )
+        self.assertEqual(mode, "map_history")
+        self.assertEqual(
+            obstacle_map.last_history_waypoint_px,
+            (int(expected[0][0]), int(expected[1][0])),
+        )
+
+    def test_explicit_visibility_portal_can_temporarily_backtrack(self):
+        obstacle_map = LocalObstacleMap(robot_radius_m=0.0)
+        obstacle_map.robot_pose = (2.0, 0.0, 0.0)
+
+        _, _, mode = obstacle_map.choose_waypoint(
+            (2.0, 0.0),
+            desired_distance_m=1.0,
+            history_episode=[
+                (0.5, 0.0),
+                (1.5, 0.0),
+                (2.1, 0.0),
+            ],
+            prefer_history_waypoint=True,
+        )
+
+        expected = obstacle_map._grid(
+            np.asarray([1.5]), np.asarray([0.0])
+        )
+        self.assertEqual(mode, "map_history")
+        self.assertEqual(
+            obstacle_map.last_history_waypoint_px,
+            (int(expected[0][0]), int(expected[1][0])),
+        )
+
+    def test_portal_planning_opens_only_demonstrated_human_corridor(self):
+        obstacle_map = LocalObstacleMap(robot_radius_m=0.30)
+        obstacle_map.inflated_map[90, :] = 1
+
+        _, _, mode = obstacle_map.choose_waypoint(
+            (3.0, 0.0),
+            desired_distance_m=1.0,
+            history_episode=[
+                (0.5, 0.0),
+                (1.0, 0.0),
+                (1.5, 0.0),
+                (2.0, 0.0),
+            ],
+            prefer_history_waypoint=True,
+        )
+
+        self.assertEqual(mode, "map_history")
+        self.assertTrue(obstacle_map.last_path_px)
+        self.assertTrue(any(y < 90 for _, y in obstacle_map.last_path_px))
+        self.assertEqual(int(obstacle_map.inflated_map[90].sum()), 200)
+
+    def test_motion_block_is_distinct_persistent_and_used_by_astar(self):
+        obstacle_map = LocalObstacleMap(
+            image_width=64, image_height=64, robot_radius_m=0.0
+        )
+
+        added = obstacle_map.mark_motion_blocked(1.0, 0.0)
+
+        self.assertTrue(added)
+        self.assertGreater(obstacle_map.motion_blocked_map.sum(), 0)
+        start = (obstacle_map.center_px, obstacle_map.center_px)
+        goal = (obstacle_map.center_px, obstacle_map.center_px - 12)
+        path = obstacle_map._astar(start, goal)
+        self.assertTrue(path)
+        self.assertTrue(all(
+            obstacle_map.motion_blocked_map[y, x] == 0 for x, y in path
+        ))
+
+        empty_depth = np.full(
+            (64, 64), obstacle_map.max_depth_m, dtype=np.float32
+        )
+        obstacle_map.update(empty_depth)
+        self.assertGreater(obstacle_map.motion_blocked_map.sum(), 0)
+        image = obstacle_map.visualize()
+        self.assertTrue(np.any(np.all(image == (40, 40, 180), axis=-1)))
+
 
 if __name__ == "__main__":
     unittest.main()

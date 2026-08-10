@@ -27,10 +27,14 @@ from oracle_modular_follow import (
     TargetObservation,
     ModularReactiveFollower,
     MapReactiveFollower,
+    NavmeshConnectivityDiagnostic,
     annotate,
     configure,
     local_target,
+    project_world_to_sensor,
     target_mask_to_bbox,
+    mask_connected_bboxes,
+    select_target_component_bbox,
 )
 from rgb_person_perception import (
     DEFAULT_WEIGHTS,
@@ -262,6 +266,9 @@ def evaluate_episode(
     goal_crop_wait_steps = 0
     goal_crop_initialized = not defer_goal_crop
     records = []
+    navmesh_diagnostic = (
+        NavmeshConnectivityDiagnostic() if navmesh_calibration else None
+    )
     steps = 0
     max_steps = int(max_steps)
     writer = None
@@ -288,9 +295,17 @@ def evaluate_episode(
             if missing:
                 raise KeyError(f"Missing observations {missing}; got {sorted(observations)}")
             if isinstance(perception, OraclePerception):
+                target_projected_uv = project_world_to_sensor(
+                    env.sim,
+                    RGB_KEY,
+                    target_agent.base_pos,
+                    np.asarray(observations[RGB_KEY]).shape,
+                )
                 target = perception(
                     observations[RGB_KEY], observations[PANOPTIC_KEY], target_semantic_id,
                     local_target(robot, target_agent),
+                    depth=observations.get(DEPTH_KEY),
+                    projected_uv=target_projected_uv,
                 )
             elif not goal_crop_initialized:
                 reference_rgb = target_goal_crop(observations, target_semantic_id)
@@ -313,7 +328,20 @@ def evaluate_episode(
             current_target_mask = (
                 np.asarray(observations[PANOPTIC_KEY]).squeeze() == target_semantic_id
             )
-            current_gt_bbox = target_mask_to_bbox(current_target_mask)
+            current_gt_bbox = select_target_component_bbox(
+                current_target_mask,
+                local_target(robot, target_agent),
+                image_width=np.asarray(observations[RGB_KEY]).shape[1],
+                previous_bbox=(
+                    target.bbox_xyxy
+                    if isinstance(perception, OraclePerception) else None
+                ),
+                depth=observations.get(DEPTH_KEY),
+                projected_uv=(
+                    target_projected_uv
+                    if isinstance(perception, OraclePerception) else None
+                ),
+            )
             perception_gt_visible_steps += int(current_gt_bbox is not None)
             target_iou = 0.0
             if target.bbox_xyxy is not None and current_gt_bbox is not None:
@@ -335,6 +363,7 @@ def evaluate_episode(
                 candidate_record["target_match"] = candidate_iou >= 0.3
                 candidate_records.append(candidate_record)
             person_dynamic_mask = None
+            person_boxes = []
             if isinstance(perception, OraclePerception):
                 # Keep every visible humanoid agent in the dynamic layer; only
                 # the target semantic id is used for tracking metrics/control.
@@ -342,6 +371,16 @@ def evaluate_episode(
                 person_dynamic_mask = np.isin(
                     panoptic_frame, human_semantic_ids_array
                 )
+                for semantic_id in human_semantic_ids_array:
+                    for box in mask_connected_bboxes(
+                        panoptic_frame == int(semantic_id)
+                    ):
+                        is_target = bool(
+                            int(semantic_id) == target_semantic_id
+                            and target.bbox_xyxy is not None
+                            and bbox_iou(box, target.bbox_xyxy) >= 0.95
+                        )
+                        person_boxes.append((box, is_target))
             elif candidate_records:
                 # Learned perception has no privileged person IDs. Union all
                 # detector candidates so non-target people are not fossilized
@@ -356,6 +395,10 @@ def evaluate_episode(
                         max(0, int(y1)):min(mask_h, int(y2) + 1),
                         max(0, int(x1)):min(mask_w, int(x2) + 1),
                     ] = True
+                    person_boxes.append((
+                        tuple(candidate["bbox_xyxy"]),
+                        bool(candidate.get("selected", False)),
+                    ))
             if hasattr(controller, "update_observation"):
                 controller.update_observation(
                     observations,
@@ -370,6 +413,10 @@ def evaluate_episode(
                 )
             if navmesh_calibration and hasattr(controller, "update_navmesh_calibration"):
                 controller.update_navmesh_calibration(env.sim)
+            if navmesh_diagnostic is not None:
+                navmesh_diagnostic.update(
+                    env.sim, robot.base_pos, target_agent.base_pos
+                )
             decision = controller(env.sim, robot, target_agent, target)
             if (
                 not target.visible
@@ -383,6 +430,7 @@ def evaluate_episode(
                     observations[RGB_KEY], target, decision,
                     f"{episode.info.get('_oracle_batch_index')} | {scene_key(episode.scene_id)} | ep {episode.episode_id} | step {steps}",
                     current_following,
+                    person_boxes=person_boxes,
                 )
                 frame = np.asarray(frame)
                 if DEPTH_KEY in observations and (
@@ -400,8 +448,14 @@ def evaluate_episode(
                         interpolation=cv2.INTER_NEAREST,
                     )
                     frame = np.concatenate((frame, map_frame), axis=1)
-                calibration_frame = getattr(
-                    controller, "last_navmesh_calibration_visualization", None
+                calibration_frame = (
+                    navmesh_diagnostic.last_visualization
+                    if navmesh_diagnostic is not None
+                    else getattr(
+                        controller,
+                        "last_navmesh_calibration_visualization",
+                        None,
+                    )
                 )
                 if calibration_frame is not None:
                     calibration_frame = cv2.resize(
@@ -412,6 +466,8 @@ def evaluate_episode(
                     frame = np.concatenate((frame, calibration_frame), axis=1)
                 writer.append_data(frame)
 
+            if hasattr(controller, "record_action"):
+                controller.record_action(decision.action, decision.mode)
             observations = env.step({
                 "action": ACTION_NAMES,
                 "action_args": {"agent_1_base_vel": decision.action.as_habitat()},
@@ -465,10 +521,43 @@ def evaluate_episode(
                     "map_static_cells": int(getattr(getattr(controller, "obstacle_map", None), "static_map", np.zeros(1)).sum()),
                     "map_dynamic_cells": int(getattr(getattr(controller, "obstacle_map", None), "dynamic_map", np.zeros(1)).sum()),
                     "map_path_length": len(getattr(getattr(controller, "obstacle_map", None), "last_path_px", [])),
+                    "map_direct_path_cost": getattr(getattr(controller, "obstacle_map", None), "last_direct_path_cost", None),
+                    "map_history_path_cost": getattr(getattr(controller, "obstacle_map", None), "last_history_path_cost", None),
+                    "map_history_path_ratio": getattr(getattr(controller, "obstacle_map", None), "last_history_path_ratio", None),
+                    "map_history_waypoint_px": getattr(getattr(controller, "obstacle_map", None), "last_history_waypoint_px", None),
+                    "target_closing_m_per_step": getattr(
+                        controller, "last_target_closing_m_per_step", None
+                    ),
+                    "visibility_portal_episode": getattr(
+                        controller, "last_visibility_portal_episode", None
+                    ),
+                    "visibility_portal_distance_m": getattr(
+                        controller, "last_visibility_portal_distance_m", None
+                    ),
+                    "predicted_closest_range_m": getattr(
+                        controller, "last_predicted_closest_range_m", None
+                    ),
+                    "motion_displacement_m": getattr(
+                        controller, "last_motion_displacement_m", None
+                    ),
+                    "motion_progress_m": getattr(
+                        controller, "last_motion_progress_m", None
+                    ),
+                    "motion_block_added": getattr(
+                        controller, "last_motion_block_added", None
+                    ),
+                    "motion_blocked_cells": getattr(
+                        getattr(controller, "obstacle_map", None),
+                        "last_motion_blocked_cells", None,
+                    ),
                     "map_ground_filtered_points": getattr(getattr(controller, "obstacle_map", None), "last_ground_filtered_points", None),
                     "map_ceiling_filtered_points": getattr(getattr(controller, "obstacle_map", None), "last_ceiling_filtered_points", None),
                     "navmesh_calibration": getattr(
                         controller, "last_navmesh_calibration", None
+                    ),
+                    "navmesh_connectivity": (
+                        navmesh_diagnostic.last_connectivity
+                        if navmesh_diagnostic is not None else None
                     ),
                     "action": decision.action.as_habitat(),
                     "human_following": float(metrics.get("human_following", 0.0) or 0.0),
@@ -536,6 +625,14 @@ def evaluate_episode(
         "navmesh_calibration": getattr(
             controller, "last_navmesh_calibration", None
         ),
+        "navmesh_connectivity_initial": (
+            navmesh_diagnostic.initial_connectivity
+            if navmesh_diagnostic is not None else None
+        ),
+        "navmesh_connectivity_final": (
+            navmesh_diagnostic.last_connectivity
+            if navmesh_diagnostic is not None else None
+        ),
     }
     return summary, records
 
@@ -589,7 +686,7 @@ def main():
     )
     parser.add_argument(
         "--controller",
-        choices=("oracle-navmesh", "reactive", "map-reactive", "map-reactive-c2", "map-reactive-vlfm"),
+        choices=("oracle-navmesh", "reactive", "map-reactive", "map-reactive-c2", "map-reactive-vlfm", "map-reactive-c4"),
         default="oracle-navmesh",
     )
     parser.add_argument(
@@ -668,7 +765,7 @@ def main():
         keep_top_down_map=False,
     )
     if args.perception == "rgb-person" or args.controller in (
-        "map-reactive", "map-reactive-c2", "map-reactive-vlfm"
+        "map-reactive", "map-reactive-c2", "map-reactive-vlfm", "map-reactive-c4"
     ):
         from habitat.config import read_write
 
@@ -798,7 +895,7 @@ def main():
             lost_search_yaw=args.lost_search_yaw,
             use_invisible_pointgoal=args.perception == "oracle",
         )
-    elif args.controller in ("map-reactive", "map-reactive-c2", "map-reactive-vlfm"):
+    elif args.controller in ("map-reactive", "map-reactive-c2", "map-reactive-vlfm", "map-reactive-c4"):
         if args.controller == "map-reactive-c2":
             map_memory_frames = (
                 0 if args.map_memory_frames == -1 else args.map_memory_frames
@@ -812,7 +909,7 @@ def main():
             min_static_hits = args.map_min_static_hits
             camera_forward_offset_m = 0.0
             camera_left_offset_m = 0.0
-        elif args.controller == "map-reactive-vlfm":
+        elif args.controller in ("map-reactive-vlfm", "map-reactive-c4"):
             # Ascent/VLFM-style baseline for Spot's configured jaw camera:
             # level optical axis, 0.24 m forward sensor offset, and explicit
             # obstacle height band in the episodic frame.
@@ -856,6 +953,8 @@ def main():
             max_obstacle_height_m=max_obstacle_height_m,
             robot_radius_m=robot_radius_m,
             min_static_hits=min_static_hits,
+            predictive_human_safety=args.controller == "map-reactive-c4",
+            motion_blocked_feedback=args.controller == "map-reactive-c4",
         )
     if args.perception == "oracle":
         perception = OraclePerception()

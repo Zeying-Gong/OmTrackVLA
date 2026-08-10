@@ -93,6 +93,7 @@ class LocalObstacleMap:
         self._static_memory = deque(maxlen=self.memory_frames)
         self.static_map = np.zeros(shape, dtype=np.uint8)
         self.dynamic_map = np.zeros(shape, dtype=np.uint8)
+        self.motion_blocked_map = np.zeros(shape, dtype=np.uint8)
         self.inflated_map = np.zeros(shape, dtype=np.uint8)
         self.explored_map = np.zeros(shape, dtype=np.uint8)
         self.trajectory_map = np.zeros(shape, dtype=np.uint8)
@@ -102,6 +103,10 @@ class LocalObstacleMap:
         self.last_carrot_px = None
         self.last_history_px = []
         self.last_history_waypoint_px = None
+        self.last_portal_corridor_px = []
+        self.last_direct_path_cost = None
+        self.last_history_path_cost = None
+        self.last_history_path_ratio = None
         self._active_history_episode = None
         self.robot_pose = (0.0, 0.0, 0.0)
         self.last_clearance = {
@@ -113,6 +118,7 @@ class LocalObstacleMap:
         self.last_ground_filtered_points = 0
         self.last_ceiling_filtered_points = 0
         self.last_free_cells = 0
+        self.last_motion_blocked_cells = 0
 
     def _grid(self, forward: np.ndarray, left: np.ndarray):
         # Top-down image x increases to the right; keep the agent's left side
@@ -273,6 +279,7 @@ class LocalObstacleMap:
         self.static_map = cv2.morphologyEx(
             raw_static, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8)
         )
+        self.static_map = np.maximum(self.static_map, self.motion_blocked_map)
 
         self.dynamic_map.fill(0)
         dynamic_inside = inside & dynamic_pixels
@@ -284,20 +291,78 @@ class LocalObstacleMap:
             cv2.circle(self.trajectory_map, (int(robot_gx[0]), int(robot_gy[0])), 1, 1, -1)
             cv2.circle(self.explored_map, (int(robot_gx[0]), int(robot_gy[0])), int(self.max_depth_m * self.pixels_per_meter), 1, -1)
 
+        self._refresh_inflated((int(robot_gx[0]), int(robot_gy[0])))
+        self._update_clearance(local_forward, local_left, valid & ~dynamic_pixels)
+
+    def _refresh_inflated(self, robot_px=None) -> None:
         combined = np.maximum(self.static_map, self.dynamic_map)
         kernel_size = 2 * self._inflation_radius_px + 1
         kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (kernel_size, kernel_size))
         self.inflated_map = cv2.dilate(combined, kernel, iterations=1)
         # The robot's current footprint must remain a legal A* start cell.
-        if 0 <= robot_gx[0] < self.grid_size_px and 0 <= robot_gy[0] < self.grid_size_px:
+        if robot_px is None:
+            robot_gx, robot_gy = self._grid(
+                np.array([self.robot_pose[0]]), np.array([self.robot_pose[1]])
+            )
+            robot_px = (int(robot_gx[0]), int(robot_gy[0]))
+        if 0 <= robot_px[0] < self.grid_size_px and 0 <= robot_px[1] < self.grid_size_px:
             cv2.circle(
                 self.inflated_map,
-                (int(robot_gx[0]), int(robot_gy[0])),
+                robot_px,
                 self._inflation_radius_px,
                 0,
                 -1,
             )
-        self._update_clearance(local_forward, local_left, valid & ~dynamic_pixels)
+
+    def mark_motion_blocked(
+        self,
+        local_forward: float,
+        local_left: float,
+        robot_pose=None,
+        distance_m: float = 0.50,
+        half_width_m: float = 0.35,
+        thickness_m: float = 0.14,
+    ) -> bool:
+        """Close a direction that rejected repeated translation commands."""
+        norm = math.hypot(local_forward, local_left)
+        if norm <= 1e-6:
+            return False
+        pose = self.robot_pose if robot_pose is None else robot_pose
+        direction_forward = local_forward / norm
+        direction_left = local_left / norm
+        center_forward = distance_m * direction_forward
+        center_left = distance_m * direction_left
+        perpendicular_forward = -direction_left
+        perpendicular_left = direction_forward
+        endpoints = []
+        for side in (-1.0, 1.0):
+            endpoints.append(self._local_to_episode(
+                center_forward + side * half_width_m * perpendicular_forward,
+                center_left + side * half_width_m * perpendicular_left,
+                pose,
+            ))
+        gx0, gy0 = self._grid(
+            np.asarray([endpoints[0][0]]), np.asarray([endpoints[0][1]])
+        )
+        gx1, gy1 = self._grid(
+            np.asarray([endpoints[1][0]]), np.asarray([endpoints[1][1]])
+        )
+        p0 = (int(gx0[0]), int(gy0[0]))
+        p1 = (int(gx1[0]), int(gy1[0]))
+        if not any(
+            0 <= x < self.grid_size_px and 0 <= y < self.grid_size_px
+            for x, y in (p0, p1)
+        ):
+            return False
+        before = int(self.motion_blocked_map.sum())
+        thickness_px = max(1, int(round(
+            thickness_m * self.pixels_per_meter
+        )))
+        cv2.line(self.motion_blocked_map, p0, p1, 1, thickness_px)
+        self.last_motion_blocked_cells = int(self.motion_blocked_map.sum())
+        self.static_map = np.maximum(self.static_map, self.motion_blocked_map)
+        self._refresh_inflated()
+        return self.last_motion_blocked_cells > before
 
     def _update_clearance(self, forward, left, valid):
         sectors = {
@@ -309,7 +374,8 @@ class LocalObstacleMap:
             values = forward[valid & sector & (forward > 0.0)]
             self.last_clearance[name] = float(np.percentile(values, 10)) if values.size else self.max_depth_m
 
-    def _nearest_free(self, point, max_radius=12):
+    def _nearest_free(self, point, max_radius=12, occupancy_map=None):
+        occupancy = self.inflated_map if occupancy_map is None else occupancy_map
         x0, y0 = int(point[0]), int(point[1])
         for radius in range(max_radius + 1):
             candidates = []
@@ -317,16 +383,21 @@ class LocalObstacleMap:
                 for x in range(x0 - radius, x0 + radius + 1):
                     if max(abs(x - x0), abs(y - y0)) != radius:
                         continue
-                    if 0 <= x < self.grid_size_px and 0 <= y < self.grid_size_px and not self.inflated_map[y, x]:
+                    if 0 <= x < self.grid_size_px and 0 <= y < self.grid_size_px and not occupancy[y, x]:
                         candidates.append((math.hypot(x - x0, y - y0), x, y))
             if candidates:
                 _, x, y = min(candidates)
                 return x, y
         return None
 
-    def _astar(self, start, goal):
-        start = self._nearest_free(start, self._inflation_radius_px + 2)
-        goal = self._nearest_free(goal, int(0.8 * self.pixels_per_meter))
+    def _astar(self, start, goal, occupancy_map=None):
+        occupancy = self.inflated_map if occupancy_map is None else occupancy_map
+        start = self._nearest_free(
+            start, self._inflation_radius_px + 2, occupancy
+        )
+        goal = self._nearest_free(
+            goal, int(0.8 * self.pixels_per_meter), occupancy
+        )
         if start is None or goal is None:
             return []
         moves = ((1, 0, 1.0), (-1, 0, 1.0), (0, 1, 1.0), (0, -1, 1.0),
@@ -348,7 +419,7 @@ class LocalObstacleMap:
                 nxt = (current[0] + dx, current[1] + dy)
                 if not (0 <= nxt[0] < self.grid_size_px and 0 <= nxt[1] < self.grid_size_px):
                     continue
-                if self.inflated_map[nxt[1], nxt[0]]:
+                if occupancy[nxt[1], nxt[0]]:
                     continue
                 new_cost = cost + step_cost
                 if new_cost >= best.get(nxt, float("inf")):
@@ -364,10 +435,11 @@ class LocalObstacleMap:
         target_relative_xy: Tuple[float, float],
         desired_distance_m: float = 1.35,
         history_episode=None,
+        prefer_history_waypoint: bool = False,
     ) -> Tuple[float, float, str]:
         target_forward, target_left = (float(v) for v in target_relative_xy)
         target_range = math.hypot(target_forward, target_left)
-        if target_range <= desired_distance_m:
+        if target_range <= desired_distance_m and not prefer_history_waypoint:
             self.clear_plan()
             return 0.0, 0.0, "map_hold"
 
@@ -385,11 +457,17 @@ class LocalObstacleMap:
         goal = (int(goal_px_arr[0][0]), int(goal_px_arr[1][0]))
         direct_path = self._astar(start, goal)
         path = direct_path
+        direct_cost = self._path_cost(direct_path)
+        self.last_direct_path_cost = direct_cost if direct_path else None
+        self.last_history_path_cost = None
+        self.last_history_path_ratio = None
         # If the current target is around a wall, first route through the most
         # recent reachable point in the person's demonstrated trajectory.
         # This preserves the human's already validated passage around corners.
         history_path = []
+        using_history_waypoint = False
         self.last_history_waypoint_px = None
+        self.last_portal_corridor_px = []
         self.last_history_px = []
         if history_episode:
             for hf, hl in history_episode:
@@ -399,27 +477,87 @@ class LocalObstacleMap:
         direct_blocked = len(direct_path) > int(
             math.hypot(goal[0] - start[0], goal[1] - start[1]) * 1.35
         )
-        if history_episode and direct_blocked:
-            # Newer points have priority. Never choose a point substantially
-            # behind the robot, which would make the controller backtrack.
-            history_candidates = list(history_episode[:-2])[::-1]
-            if self._active_history_episode is not None:
-                history_candidates.insert(0, self._active_history_episode)
-            for hf, hl in history_candidates:
-                delta_forward = hf - robot_forward
-                if delta_forward < -0.20:
+        if history_episode and prefer_history_waypoint:
+            # While the person is out of view, first reach the newest point
+            # where they were actually observed. It is a demonstrated portal
+            # through the partially observed map and avoids chasing an exact
+            # coordinate through an unseen wall. Skip reached or regressive
+            # points so the robot never walks backward through old history.
+            self._active_history_episode = None
+            portal_occupancy = self.inflated_map.copy()
+            portal_points = []
+            for hf, hl in history_episode:
+                hx, hy = self._grid(np.asarray([hf]), np.asarray([hl]))
+                point = (int(hx[0]), int(hy[0]))
+                if 0 <= point[0] < self.grid_size_px and 0 <= point[1] < self.grid_size_px:
+                    portal_points.append(point)
+            corridor_radius = max(1, self._inflation_radius_px)
+            for point in portal_points:
+                cv2.circle(portal_occupancy, point, corridor_radius, 0, -1)
+            for first, second in zip(portal_points, portal_points[1:]):
+                if math.hypot(second[0] - first[0], second[1] - first[1]) > 0.8 * self.pixels_per_meter:
+                    continue
+                cv2.line(
+                    portal_occupancy, first, second, 0,
+                    2 * corridor_radius + 1,
+                )
+            self.last_portal_corridor_px = portal_points
+            for hf, hl in reversed(history_episode):
+                robot_to_candidate = math.hypot(
+                    hf - robot_forward, hl - robot_left
+                )
+                if robot_to_candidate <= 0.35:
                     continue
                 hx, hy = self._grid(np.asarray([hf]), np.asarray([hl]))
-                candidate = self._astar(start, (int(hx[0]), int(hy[0])))
-                if candidate and len(candidate) > 1:
+                history_goal = (int(hx[0]), int(hy[0]))
+                candidate = self._astar(
+                    start, history_goal, occupancy_map=portal_occupancy
+                )
+                if not candidate or len(candidate) <= 1:
+                    continue
+                history_path = candidate
+                using_history_waypoint = True
+                self._active_history_episode = (hf, hl)
+                self.last_history_waypoint_px = history_goal
+                self.last_history_path_cost = self._path_cost(candidate)
+                break
+        elif history_episode and direct_blocked:
+            # Newer points have priority, but compare the complete route via
+            # each history point with the direct A* route. Comparing only the
+            # first leg can select an easy-to-reach stale point whose second
+            # leg sends the robot on a large detour.
+            self._active_history_episode = None
+            history_candidates = list(history_episode[:-2])[::-1]
+            for hf, hl in history_candidates:
+                candidate_to_target = math.hypot(
+                    target_episode[0] - hf,
+                    target_episode[1] - hl,
+                )
+                if candidate_to_target >= target_range - 0.10:
+                    continue
+                hx, hy = self._grid(np.asarray([hf]), np.asarray([hl]))
+                history_goal = (int(hx[0]), int(hy[0]))
+                first_leg = self._astar(start, history_goal)
+                second_leg = self._astar(history_goal, goal)
+                if not first_leg or not second_leg or len(first_leg) <= 1:
+                    continue
+                candidate = first_leg + second_leg[1:]
+                candidate_cost = self._path_cost(candidate)
+                if direct_cost > 0.0 and candidate_cost > direct_cost * 1.15:
+                    continue
+                if candidate:
                     history_path = candidate
                     self._active_history_episode = (hf, hl)
-                    self.last_history_waypoint_px = (int(hx[0]), int(hy[0]))
+                    self.last_history_waypoint_px = history_goal
+                    self.last_history_path_cost = candidate_cost
+                    self.last_history_path_ratio = (
+                        candidate_cost / direct_cost if direct_cost > 0.0 else None
+                    )
                     break
-            if history_path:
-                path = history_path
         else:
             self._active_history_episode = None
+        if history_path:
+            path = history_path
         self.last_path_px = path
         self.last_start_px = path[0] if path else start
         self.last_goal_px = path[-1] if path else goal
@@ -441,8 +579,19 @@ class LocalObstacleMap:
             carrot_episode_forward, carrot_episode_left
         )
         direct = all(not self.inflated_map[y, x] for x, y in path[:carrot_index + 1])
-        mode = "map_direct" if direct and len(path) <= carrot_index + 2 else "map_astar"
+        if using_history_waypoint:
+            mode = "map_history"
+        else:
+            mode = "map_direct" if direct and len(path) <= carrot_index + 2 else "map_astar"
         return float(local_forward), float(local_left), mode
+
+    @staticmethod
+    def _path_cost(path) -> float:
+        """Return the metric-independent 8-connected length of a grid path."""
+        return float(sum(
+            math.hypot(x1 - x0, y1 - y0)
+            for (x0, y0), (x1, y1) in zip(path, path[1:])
+        ))
 
     def clear_plan(self) -> None:
         """Clear per-control-step planning overlays without resetting the map."""
@@ -450,6 +599,10 @@ class LocalObstacleMap:
         self.last_start_px = None
         self.last_goal_px = None
         self.last_carrot_px = None
+        self.last_direct_path_cost = None
+        self.last_history_path_cost = None
+        self.last_history_path_ratio = None
+        self.last_portal_corridor_px = []
 
     def visualize(self, target_relative_xy: Optional[Tuple[float, float]] = None) -> np.ndarray:
         canvas = np.full((self.grid_size_px, self.grid_size_px, 3), 235, dtype=np.uint8)
@@ -458,6 +611,7 @@ class LocalObstacleMap:
         # rendered separately; otherwise the conservative inflated footprint
         # looks like the whole scene is occupied.
         canvas[self.static_map > 0] = (105, 105, 105)
+        canvas[self.motion_blocked_map > 0] = (180, 40, 40)
         # The display keeps raw occupied cells gray; A* still uses the
         # separately inflated map internally for robot clearance.
         canvas[self.dynamic_map > 0] = (220, 70, 180)
@@ -473,6 +627,15 @@ class LocalObstacleMap:
             )
             for hx, hy in self.last_history_px[::max(1, len(self.last_history_px) // 12)]:
                 cv2.circle(canvas, (hx, hy), 1, (255, 165, 0), -1)
+        if len(self.last_portal_corridor_px) >= 2:
+            cv2.polylines(
+                canvas,
+                [np.asarray(self.last_portal_corridor_px, dtype=np.int32).reshape((-1, 1, 2))],
+                False,
+                (0, 170, 130),
+                2,
+                cv2.LINE_AA,
+            )
         if self.last_history_waypoint_px is not None:
             cv2.drawMarker(
                 canvas, self.last_history_waypoint_px, (255, 0, 255),
@@ -521,7 +684,7 @@ class LocalObstacleMap:
             if 0 <= gx[0] < self.grid_size_px and 0 <= gy[0] < self.grid_size_px:
                 cv2.circle(canvas, (int(gx[0]), int(gy[0])), 2, (0, 180, 0), -1)
         memory_label = "all" if self.memory_frames is None else str(self.memory_frames)
-        cv2.putText(canvas, f"memory={memory_label} gray=static black=inflated pink=dynamic", (4, 14),
+        cv2.putText(canvas, f"memory={memory_label} gray=static dark-red=motion-block pink=dynamic", (4, 14),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.31, (20, 20, 20), 1, cv2.LINE_AA)
         cv2.putText(canvas, "cyan=A* yellow=carrot orange=human-traj magenta=hist-goal red=goal green=person blue=robot", (4, 27),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.29, (20, 20, 20), 1, cv2.LINE_AA)

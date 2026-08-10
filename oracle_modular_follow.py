@@ -75,6 +75,236 @@ class ControlDecision:
     waypoint_world: Optional[Tuple[float, float, float]]
 
 
+class NavmeshConnectivityDiagnostic:
+    """Visualize raw NavMesh and a conservative Spot-clearance component."""
+
+    def __init__(
+        self,
+        meters_per_pixel: float = 0.05,
+        spot_radius_m: float = 0.50,
+    ) -> None:
+        self.meters_per_pixel = float(meters_per_pixel)
+        self.spot_radius_m = float(spot_radius_m)
+        self.reset()
+
+    def reset(self) -> None:
+        self._raw_free = None
+        self._raw_labels = None
+        self._spot_free = None
+        self._spot_labels = None
+        self._bounds = None
+        self._raw_radius_m = None
+        self.last_visualization = None
+        self.last_connectivity = None
+        self.initial_connectivity = None
+
+    def _to_grid(self, position):
+        if self._bounds is None or self._raw_free is None:
+            return None
+        lower, upper = self._bounds
+        span_z = max(float(upper[2] - lower[2]), 1e-6)
+        span_x = max(float(upper[0] - lower[0]), 1e-6)
+        row = int(round(
+            (float(position[2]) - float(lower[2]))
+            * (self._raw_free.shape[0] - 1) / span_z
+        ))
+        col = int(round(
+            (float(position[0]) - float(lower[0]))
+            * (self._raw_free.shape[1] - 1) / span_x
+        ))
+        return col, row
+
+    @staticmethod
+    def _nearest_free(mask, point, max_radius_px):
+        if point is None:
+            return None
+        x0, y0 = point
+        height, width = mask.shape
+        best = None
+        for radius in range(max_radius_px + 1):
+            x1, x2 = max(0, x0 - radius), min(width - 1, x0 + radius)
+            y1, y2 = max(0, y0 - radius), min(height - 1, y0 + radius)
+            for y in range(y1, y2 + 1):
+                for x in range(x1, x2 + 1):
+                    if max(abs(x - x0), abs(y - y0)) != radius or not mask[y, x]:
+                        continue
+                    distance_sq = (x - x0) ** 2 + (y - y0) ** 2
+                    if best is None or distance_sq < best[0]:
+                        best = (distance_sq, (x, y))
+            if best is not None:
+                return best[1]
+        return None
+
+    def _initialize(self, sim, height_m: float) -> None:
+        pathfinder = sim.pathfinder
+        raw_free = np.asarray(pathfinder.get_topdown_view(
+            meters_per_pixel=self.meters_per_pixel,
+            height=float(height_m),
+        ), dtype=bool)
+        self._raw_free = np.ascontiguousarray(raw_free)
+        _, self._raw_labels = cv2.connectedComponents(
+            self._raw_free.astype(np.uint8), connectivity=8
+        )
+        self._bounds = tuple(
+            np.asarray(value, dtype=np.float32) for value in pathfinder.get_bounds()
+        )
+        settings = getattr(pathfinder, "nav_mesh_settings", None)
+        self._raw_radius_m = float(getattr(settings, "agent_radius", 0.30))
+        extra_radius_px = max(0, int(math.ceil(
+            (self.spot_radius_m - self._raw_radius_m) / self.meters_per_pixel
+        )))
+        if extra_radius_px:
+            kernel = cv2.getStructuringElement(
+                cv2.MORPH_ELLIPSE,
+                (2 * extra_radius_px + 1, 2 * extra_radius_px + 1),
+            )
+            self._spot_free = cv2.erode(
+                self._raw_free.astype(np.uint8), kernel, iterations=1
+            ).astype(bool)
+        else:
+            self._spot_free = self._raw_free.copy()
+        _, self._spot_labels = cv2.connectedComponents(
+            self._spot_free.astype(np.uint8), connectivity=8
+        )
+
+    def update(self, sim, robot_position, target_position) -> None:
+        robot_position = np.asarray(robot_position, dtype=np.float32)
+        target_position = np.asarray(target_position, dtype=np.float32)
+        if self._raw_free is None:
+            self._initialize(sim, float(robot_position[1]))
+
+        raw_robot_px = self._nearest_free(
+            self._raw_free, self._to_grid(robot_position),
+            max(1, int(round(1.0 / self.meters_per_pixel))),
+        )
+        raw_target_px = self._nearest_free(
+            self._raw_free, self._to_grid(target_position),
+            max(1, int(round(1.0 / self.meters_per_pixel))),
+        )
+        spot_robot_px = self._nearest_free(
+            self._spot_free, self._to_grid(robot_position),
+            max(1, int(round(1.0 / self.meters_per_pixel))),
+        )
+        spot_target_px = self._nearest_free(
+            self._spot_free, self._to_grid(target_position),
+            max(1, int(round(1.0 / self.meters_per_pixel))),
+        )
+
+        raw_connected = False
+        geodesic_distance_m = None
+        path_points = []
+        try:
+            import habitat_sim
+
+            snapped_robot = np.asarray(
+                sim.pathfinder.snap_point(robot_position), dtype=np.float32
+            )
+            snapped_target = np.asarray(
+                sim.pathfinder.snap_point(target_position), dtype=np.float32
+            )
+            if np.isfinite(snapped_robot).all() and np.isfinite(snapped_target).all():
+                path = habitat_sim.ShortestPath()
+                path.requested_start = snapped_robot
+                path.requested_end = snapped_target
+                raw_connected = bool(sim.pathfinder.find_path(path))
+                if raw_connected:
+                    geodesic_distance_m = float(path.geodesic_distance)
+                    path_points = [self._to_grid(point) for point in path.points]
+        except (AttributeError, ImportError, RuntimeError, ValueError):
+            raw_robot_label = (
+                int(self._raw_labels[raw_robot_px[1], raw_robot_px[0]])
+                if raw_robot_px is not None else 0
+            )
+            raw_target_label = (
+                int(self._raw_labels[raw_target_px[1], raw_target_px[0]])
+                if raw_target_px is not None else 0
+            )
+            raw_connected = bool(
+                raw_robot_label > 0 and raw_robot_label == raw_target_label
+            )
+
+        robot_label = (
+            int(self._spot_labels[spot_robot_px[1], spot_robot_px[0]])
+            if spot_robot_px is not None else 0
+        )
+        target_label = (
+            int(self._spot_labels[spot_target_px[1], spot_target_px[0]])
+            if spot_target_px is not None else 0
+        )
+        spot_connected = bool(
+            robot_label > 0 and target_label > 0 and robot_label == target_label
+        )
+        connectivity = {
+            "raw_connected": raw_connected,
+            "spot_connected": spot_connected,
+            "raw_navmesh_radius_m": self._raw_radius_m,
+            "spot_radius_m": self.spot_radius_m,
+            "raw_geodesic_distance_m": geodesic_distance_m,
+            "robot_spot_component": robot_label,
+            "target_spot_component": target_label,
+        }
+        self.last_connectivity = connectivity
+        if self.initial_connectivity is None:
+            self.initial_connectivity = dict(connectivity)
+
+        canvas = np.full((*self._raw_free.shape, 3), 45, dtype=np.uint8)
+        canvas[self._raw_free] = (115, 115, 115)
+        canvas[self._spot_free] = (225, 225, 225)
+        if robot_label > 0:
+            canvas[self._spot_labels == robot_label] = (185, 215, 245)
+        if target_label > 0 and target_label != robot_label:
+            canvas[self._spot_labels == target_label] = (245, 205, 185)
+        valid_path = [point for point in path_points if point is not None]
+        if len(valid_path) >= 2:
+            cv2.polylines(
+                canvas,
+                [np.asarray(valid_path, dtype=np.int32).reshape((-1, 1, 2))],
+                False,
+                (0, 220, 220),
+                2,
+                cv2.LINE_AA,
+            )
+        if spot_robot_px is not None:
+            cv2.circle(canvas, spot_robot_px, 4, (30, 70, 230), -1)
+        if spot_target_px is not None:
+            target_color = (40, 190, 60) if spot_connected else (220, 55, 45)
+            cv2.circle(canvas, spot_target_px, 4, target_color, -1)
+
+        points = [point for point in (spot_robot_px, spot_target_px) if point is not None]
+        points.extend(valid_path)
+        if points:
+            xs, ys = zip(*points)
+            margin = max(20, int(round(3.0 / self.meters_per_pixel)))
+            min_size = max(120, int(round(12.0 / self.meters_per_pixel)))
+            cx, cy = int(round((min(xs) + max(xs)) / 2)), int(round((min(ys) + max(ys)) / 2))
+            span = max(max(xs) - min(xs), max(ys) - min(ys)) + 2 * margin
+            span = min(max(span, min_size), max(canvas.shape[:2]))
+            x1 = max(0, min(canvas.shape[1] - span, cx - span // 2))
+            y1 = max(0, min(canvas.shape[0] - span, cy - span // 2))
+            canvas = canvas[y1:y1 + span, x1:x1 + span]
+
+        distance_label = (
+            f"{geodesic_distance_m:.2f}m" if geodesic_distance_m is not None else "none"
+        )
+        cv2.rectangle(canvas, (0, 0), (canvas.shape[1], 48), (255, 255, 255), -1)
+        cv2.putText(
+            canvas,
+            f"NAVMESH raw={'YES' if raw_connected else 'NO'} spot={'YES' if spot_connected else 'NO'}",
+            (5, 13), cv2.FONT_HERSHEY_SIMPLEX, 0.31, (15, 15, 15), 1, cv2.LINE_AA,
+        )
+        cv2.putText(
+            canvas,
+            f"path={distance_label} raw_r={self._raw_radius_m:.2f} spot_r={self.spot_radius_m:.2f}",
+            (5, 27), cv2.FONT_HERSHEY_SIMPLEX, 0.27, (15, 15, 15), 1, cv2.LINE_AA,
+        )
+        cv2.putText(
+            canvas,
+            "gray=raw white=Spot blue=robot island",
+            (5, 41), cv2.FONT_HERSHEY_SIMPLEX, 0.25, (15, 15, 15), 1, cv2.LINE_AA,
+        )
+        self.last_visualization = cv2.cvtColor(canvas, cv2.COLOR_RGB2BGR)
+
+
 def target_mask_to_bbox(mask: np.ndarray) -> Optional[Tuple[int, int, int, int]]:
     """Return an inclusive xyxy box for a binary target mask."""
     mask = np.asarray(mask, dtype=bool).squeeze()
@@ -82,6 +312,95 @@ def target_mask_to_bbox(mask: np.ndarray) -> Optional[Tuple[int, int, int, int]]
         return None
     ys, xs = np.nonzero(mask)
     return int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())
+
+
+def mask_connected_bboxes(
+    mask: np.ndarray, min_area: int = 20
+) -> list[Tuple[int, int, int, int]]:
+    """Split a semantic mask into inclusive boxes for visible components."""
+    binary = np.asarray(mask, dtype=bool).squeeze()
+    if binary.ndim != 2 or not binary.any():
+        return []
+    count, _, stats, _ = cv2.connectedComponentsWithStats(
+        binary.astype(np.uint8), connectivity=8
+    )
+    boxes = []
+    for label in range(1, count):
+        x, y, width, height, area = (int(v) for v in stats[label])
+        if area < int(min_area):
+            continue
+        boxes.append((x, y, x + width - 1, y + height - 1))
+    boxes.sort(key=lambda box: (box[0], box[1]))
+    return boxes
+
+
+def select_target_component_bbox(
+    mask: np.ndarray,
+    relative_xy: Sequence[float],
+    image_width: int,
+    previous_bbox: Optional[Tuple[int, int, int, int]] = None,
+    depth: Optional[np.ndarray] = None,
+    projected_uv: Optional[Tuple[float, float]] = None,
+) -> Optional[Tuple[int, int, int, int]]:
+    """Select the semantic component consistent with target pose and history."""
+    boxes = mask_connected_bboxes(mask)
+    if not boxes:
+        return None
+    person_sized = [
+        box for box in boxes
+        if box[2] - box[0] + 1 >= 10 and box[3] - box[1] + 1 >= 20
+    ]
+    if person_sized:
+        boxes = person_sized
+    forward, left = (float(v) for v in relative_xy)
+    half_width = 0.5 * float(image_width)
+    expected_u = half_width
+    if forward > 0.05:
+        expected_u += half_width * left / forward
+    expected_u = float(np.clip(expected_u, 0.0, max(0.0, image_width - 1.0)))
+    previous_center = None
+    if previous_bbox is not None:
+        previous_center = 0.5 * (previous_bbox[0] + previous_bbox[2])
+    metric_depth = None
+    if depth is not None:
+        metric_depth = np.asarray(depth, dtype=np.float32).squeeze()
+        finite = metric_depth[np.isfinite(metric_depth)]
+        if finite.size and float(np.nanmax(finite)) <= 1.0 + 1e-3:
+            metric_depth = metric_depth * 10.0
+    expected_range = math.hypot(forward, left)
+
+    def box_depth(box):
+        if metric_depth is None or metric_depth.shape != np.asarray(mask).squeeze().shape:
+            return None
+        x1, y1, x2, y2 = box
+        component_mask = np.asarray(mask, dtype=bool).squeeze()[y1:y2 + 1, x1:x2 + 1]
+        values = metric_depth[y1:y2 + 1, x1:x2 + 1][component_mask]
+        values = values[np.isfinite(values) & (values > 0.05)]
+        return float(np.median(values)) if values.size else None
+
+    def score(box):
+        center = 0.5 * (box[0] + box[2])
+        pose_error = abs(center - expected_u) / max(float(image_width), 1.0)
+        temporal_error = (
+            abs(center - previous_center) / max(float(image_width), 1.0)
+            if previous_center is not None else 0.0
+        )
+        measured_depth = box_depth(box)
+        depth_error = (
+            abs(measured_depth - expected_range) / max(expected_range, 0.5)
+            if measured_depth is not None else 0.5
+        )
+        if projected_uv is not None:
+            box_u = 0.5 * (box[0] + box[2])
+            box_v = float(box[3])
+            projection_error = math.hypot(
+                box_u - float(projected_uv[0]),
+                box_v - float(projected_uv[1]),
+            ) / max(float(image_width), 1.0)
+            return 2.0 * projection_error + 0.35 * depth_error + 0.10 * temporal_error
+        return depth_error + 0.25 * pose_error + 0.10 * temporal_error
+
+    return min(boxes, key=score)
 
 
 def bbox_to_footpoint(
@@ -101,8 +420,45 @@ def local_target(robot, target) -> Tuple[float, float]:
     return float(local.x), float(-local.z)
 
 
+def project_world_to_sensor(
+    sim,
+    sensor_key: str,
+    world_point,
+    image_shape,
+    hfov_deg: float = 90.0,
+) -> Optional[Tuple[float, float]]:
+    """Project a world point into a Habitat pinhole sensor image."""
+    try:
+        sensor = sim._sensors[sensor_key]._sensor_object
+        camera_point = sensor.node.absolute_transformation().inverted().transform_point(
+            np.asarray(world_point, dtype=np.float32)
+        )
+        x, y, z = (float(camera_point[i]) for i in range(3))
+    except (AttributeError, KeyError, TypeError, ValueError):
+        return None
+    forward = -z
+    if forward <= 0.05:
+        return None
+    height, width = int(image_shape[0]), int(image_shape[1])
+    fx = 0.5 * width / math.tan(math.radians(hfov_deg) * 0.5)
+    vfov = 2.0 * math.atan((height / max(width, 1)) * math.tan(math.radians(hfov_deg) * 0.5))
+    fy = 0.5 * height / math.tan(vfov * 0.5)
+    return (
+        0.5 * (width - 1) + fx * x / forward,
+        0.5 * (height - 1) - fy * y / forward,
+    )
+
+
 class OraclePerception:
     """Ground-truth target grounding from Habitat panoptic and agent poses."""
+
+    def __init__(self) -> None:
+        self.reset()
+
+    def reset(self, reference_rgb=None) -> None:
+        del reference_rgb
+        self._last_bbox = None
+        self.last_candidate_diagnostics = []
 
     def __call__(
         self,
@@ -110,15 +466,40 @@ class OraclePerception:
         panoptic: np.ndarray,
         target_semantic_id: int,
         relative_xy: Sequence[float],
+        depth: Optional[np.ndarray] = None,
+        projected_uv: Optional[Tuple[float, float]] = None,
     ) -> TargetObservation:
-        del rgb  # Kept in the interface for a later RGB perception replacement.
         mask = np.asarray(panoptic).squeeze() == int(target_semantic_id)
-        bbox = target_mask_to_bbox(mask)
+        boxes = mask_connected_bboxes(mask)
+        bbox = select_target_component_bbox(
+            mask,
+            relative_xy,
+            image_width=np.asarray(rgb).shape[1],
+            previous_bbox=self._last_bbox,
+            depth=depth,
+            projected_uv=projected_uv,
+        )
+        self.last_candidate_diagnostics = [
+            {
+                "bbox_xyxy": box,
+                "confidence": 1.0,
+                "selected": box == bbox,
+                "semantic_id": int(target_semantic_id),
+                "depth_m": self._component_depth(mask, box, depth),
+                "projected_uv": projected_uv,
+            }
+            for box in boxes
+        ]
+        if bbox is not None:
+            self._last_bbox = bbox
         footpoint = bbox_to_footpoint(bbox)
         forward, left = float(relative_xy[0]), float(relative_xy[1])
         range_m = math.hypot(forward, left)
         bearing = math.atan2(left, forward)
-        area = int(mask.sum())
+        area = 0
+        if bbox is not None:
+            x1, y1, x2, y2 = bbox
+            area = int(mask[y1:y2 + 1, x1:x2 + 1].sum())
         return TargetObservation(
             visible=bbox is not None,
             bbox_xyxy=bbox,
@@ -129,6 +510,22 @@ class OraclePerception:
             mask_area=area,
             confidence=1.0 if bbox is not None else 0.0,
         )
+
+    @staticmethod
+    def _component_depth(mask, box, depth):
+        if depth is None:
+            return None
+        metric = np.asarray(depth, dtype=np.float32).squeeze()
+        finite = metric[np.isfinite(metric)]
+        if finite.size and float(np.nanmax(finite)) <= 1.0 + 1e-3:
+            metric = metric * 10.0
+        binary = np.asarray(mask, dtype=bool).squeeze()
+        if metric.shape != binary.shape:
+            return None
+        x1, y1, x2, y2 = box
+        values = metric[y1:y2 + 1, x1:x2 + 1][binary[y1:y2 + 1, x1:x2 + 1]]
+        values = values[np.isfinite(values) & (values > 0.05)]
+        return float(np.median(values)) if values.size else None
 
 
 class OracleFollowController:
@@ -918,11 +1315,35 @@ class MapReactiveFollower(ModularReactiveFollower):
         map_memory_frames: Optional[int] = None,
         catchup_bias_mps: float = 0.12,
         planning_hysteresis_m: float = 0.20,
+        predictive_human_safety: bool = False,
+        motion_blocked_feedback: bool = False,
+        safety_prediction_steps: float = 5.0,
+        safety_release_margin_m: float = 0.20,
+        motion_min_command: float = 0.25,
+        motion_min_displacement_m: float = 0.035,
+        motion_max_block_yaw: float = 0.35,
+        incoming_activation_margin_m: float = 0.35,
+        incoming_closing_threshold_m: float = 0.02,
         **kwargs,
     ) -> None:
         super().__init__(*args, **kwargs)
         self.catchup_bias_mps = float(catchup_bias_mps)
         self.planning_hysteresis_m = max(0.0, float(planning_hysteresis_m))
+        self.predictive_human_safety = bool(predictive_human_safety)
+        self.motion_blocked_feedback = bool(motion_blocked_feedback)
+        self.safety_prediction_steps = max(0.0, float(safety_prediction_steps))
+        self.safety_release_margin_m = max(0.0, float(safety_release_margin_m))
+        self.motion_min_command = max(0.0, float(motion_min_command))
+        self.motion_min_displacement_m = max(
+            0.0, float(motion_min_displacement_m)
+        )
+        self.motion_max_block_yaw = max(0.0, float(motion_max_block_yaw))
+        self.incoming_activation_margin_m = max(
+            0.0, float(incoming_activation_margin_m)
+        )
+        self.incoming_closing_threshold_m = max(
+            0.0, float(incoming_closing_threshold_m)
+        )
         self.obstacle_map = LocalObstacleMap(
             hfov_deg=hfov_deg,
             camera_height_m=camera_height_m,
@@ -942,6 +1363,28 @@ class MapReactiveFollower(ModularReactiveFollower):
         self.last_navmesh_calibration_visualization = None
         self._navmesh_navigable_map = None
         self._target_history_episode = deque(maxlen=24)
+        self._visibility_portal_episode = None
+        self.last_visibility_portal_episode = None
+        self.last_visibility_portal_distance_m = None
+        self._target_was_visible = False
+        self._previous_target_episode = None
+        self._target_velocity_episode_ema = np.zeros(2, dtype=np.float32)
+        self._target_closing_ema = 0.0
+        self._human_safety_active = False
+        self._human_safety_steps = 0
+        self._human_evasion_direction = self._search_direction
+        self._occluded_pass_active = False
+        self._occluded_pass_steps = 0
+        self._post_pass_reframe_steps = 0
+        self.last_target_closing_m_per_step = 0.0
+        self.last_predicted_closest_range_m = None
+        self._last_translation_command = None
+        self._last_translation_pose = None
+        self._motion_stall_steps = 0
+        self._motion_stall_direction = None
+        self.last_motion_displacement_m = None
+        self.last_motion_progress_m = None
+        self.last_motion_block_added = False
 
     def reset(self, evasion_side: Optional[float] = None) -> None:
         super().reset(evasion_side=evasion_side)
@@ -953,6 +1396,28 @@ class MapReactiveFollower(ModularReactiveFollower):
             self._map_evasion_direction = self._search_direction
             self._map_blocked_steps = 0
             self._target_history_episode.clear()
+            self._visibility_portal_episode = None
+            self.last_visibility_portal_episode = None
+            self.last_visibility_portal_distance_m = None
+            self._target_was_visible = False
+            self._previous_target_episode = None
+            self._target_velocity_episode_ema = np.zeros(2, dtype=np.float32)
+            self._target_closing_ema = 0.0
+            self._human_safety_active = False
+            self._human_safety_steps = 0
+            self._human_evasion_direction = self._search_direction
+            self._occluded_pass_active = False
+            self._occluded_pass_steps = 0
+            self._post_pass_reframe_steps = 0
+            self.last_target_closing_m_per_step = 0.0
+            self.last_predicted_closest_range_m = None
+            self._last_translation_command = None
+            self._last_translation_pose = None
+            self._motion_stall_steps = 0
+            self._motion_stall_direction = None
+            self.last_motion_displacement_m = None
+            self.last_motion_progress_m = None
+            self.last_motion_block_added = False
             self.last_navmesh_calibration = None
             self.last_navmesh_calibration_visualization = None
             self._navmesh_navigable_map = None
@@ -1106,14 +1571,94 @@ class MapReactiveFollower(ModularReactiveFollower):
             dynamic_mask=dynamic_mask,
             robot_pose=robot_pose,
         )
+        self._update_motion_feedback(robot_pose)
         if target.visible and robot is not None and target_agent is not None:
             target_delta = np.asarray(target_agent.base_pos, dtype=np.float32) - np.asarray(self._episode_origin)
             self._target_history_episode.append((
                 float(np.dot(target_delta, self._episode_forward_axis)),
                 float(np.dot(target_delta, self._episode_left_axis)),
             ))
+            self._visibility_portal_episode = None
+        elif self._target_was_visible and self._target_history_episode:
+            # Latch the last genuinely observed position at the visibility
+            # boundary. Reaching this portal takes priority over maintaining
+            # follow distance to an exact coordinate behind an unseen wall.
+            self._visibility_portal_episode = self._target_history_episode[-1]
+        self._target_was_visible = bool(target.visible)
         self.last_map_clearance = dict(self.obstacle_map.last_clearance)
         self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
+
+    def _update_motion_feedback(self, robot_pose) -> None:
+        self.last_motion_block_added = False
+        if (
+            not self.motion_blocked_feedback
+            or self._last_translation_command is None
+            or self._last_translation_pose is None
+        ):
+            return
+        command_forward, command_left = self._last_translation_command
+        command_norm = math.hypot(command_forward, command_left)
+        if command_norm < self.motion_min_command:
+            return
+        previous_forward, previous_left, previous_yaw = (
+            self._last_translation_pose
+        )
+        delta = np.asarray((
+            robot_pose[0] - previous_forward,
+            robot_pose[1] - previous_left,
+        ), dtype=np.float32)
+        direction = np.asarray((
+            math.cos(previous_yaw) * command_forward
+            - math.sin(previous_yaw) * command_left,
+            math.sin(previous_yaw) * command_forward
+            + math.cos(previous_yaw) * command_left,
+        ), dtype=np.float32)
+        direction /= max(float(np.linalg.norm(direction)), 1e-6)
+        displacement = float(np.linalg.norm(delta))
+        progress = float(np.dot(delta, direction))
+        self.last_motion_displacement_m = displacement
+        self.last_motion_progress_m = progress
+        blocked = (
+            displacement < self.motion_min_displacement_m
+            or progress < -self.motion_min_displacement_m
+        )
+        if not blocked:
+            self._motion_stall_steps = 0
+            self._motion_stall_direction = None
+            return
+        if (
+            self._motion_stall_direction is None
+            or float(np.dot(direction, self._motion_stall_direction)) < 0.85
+        ):
+            self._motion_stall_steps = 1
+            self._motion_stall_direction = direction
+        else:
+            self._motion_stall_steps += 1
+        if self._motion_stall_steps == 2:
+            self.last_motion_block_added = self.obstacle_map.mark_motion_blocked(
+                command_forward,
+                command_left,
+                robot_pose=self._last_translation_pose,
+            )
+
+    def record_action(self, action: ContinuousAction, mode: str = "") -> None:
+        """Store a command so the next observation can detect rejected motion."""
+        if (
+            not self.motion_blocked_feedback
+            or mode.startswith("map_predictive_human_")
+            or abs(action.yaw) > self.motion_max_block_yaw
+            or math.hypot(action.forward, action.lateral)
+            < self.motion_min_command
+        ):
+            self._last_translation_command = None
+            self._last_translation_pose = None
+            self._motion_stall_steps = 0
+            self._motion_stall_direction = None
+            return
+        self._last_translation_command = (
+            float(action.forward), float(action.lateral)
+        )
+        self._last_translation_pose = tuple(self.obstacle_map.robot_pose)
 
     def __call__(self, sim, robot, target_agent, target: TargetObservation) -> ControlDecision:
         # Planning overlays are per control step. Refresh them after choosing
@@ -1122,12 +1667,224 @@ class MapReactiveFollower(ModularReactiveFollower):
         if not target.visible and not self.use_invisible_pointgoal:
             self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
             return super().__call__(sim, robot, target_agent, target)
-        if target.range_m < self.min_distance_m:
+        target_episode = self.obstacle_map._local_to_episode(
+            *target.relative_xy
+        )
+        portal_active = False
+        portal_distance = 0.0
+        if not target.visible and self._visibility_portal_episode is not None:
+            if (
+                self._target_closing_ema
+                >= self.incoming_closing_threshold_m
+            ):
+                # The person disappeared while passing toward the robot. The
+                # last visible body position is behind the pass direction and
+                # must not be treated as a doorway breadcrumb.
+                self._visibility_portal_episode = None
+            else:
+                robot_forward, robot_left, _ = self.obstacle_map.robot_pose
+                portal_distance = math.hypot(
+                    self._visibility_portal_episode[0] - robot_forward,
+                    self._visibility_portal_episode[1] - robot_left,
+                )
+                if portal_distance > 0.35:
+                    portal_active = True
+                else:
+                    self._visibility_portal_episode = None
+        self.last_visibility_portal_episode = self._visibility_portal_episode
+        self.last_visibility_portal_distance_m = (
+            float(portal_distance) if portal_active else None
+        )
+        closing = 0.0
+        radial = np.asarray(target.relative_xy, dtype=np.float32)
+        if self._previous_target_episode is not None:
+            target_motion = np.asarray(target_episode) - np.asarray(
+                self._previous_target_episode
+            )
+            self._target_velocity_episode_ema = (
+                0.5 * self._target_velocity_episode_ema
+                + 0.5 * target_motion.astype(np.float32)
+            )
+            robot_forward, robot_left, _ = self.obstacle_map.robot_pose
+            radial = np.asarray(target_episode) - np.asarray(
+                (robot_forward, robot_left)
+            )
+            radial_norm = float(np.linalg.norm(radial))
+            if radial_norm > 1e-6:
+                # Positive only when the person, rather than the robot's own
+                # approach, moves toward the current robot position.
+                closing = max(
+                    0.0, -float(np.dot(target_motion, radial / radial_norm))
+                )
+        self._previous_target_episode = tuple(float(v) for v in target_episode)
+        self._target_closing_ema = (
+            0.65 * self._target_closing_ema + 0.35 * closing
+        )
+        target_velocity = self._target_velocity_episode_ema
+        velocity_sq = float(np.dot(target_velocity, target_velocity))
+        closest_time = 0.0
+        if velocity_sq > 1e-6:
+            closest_time = float(np.clip(
+                -np.dot(radial, target_velocity) / velocity_sq,
+                0.0,
+                self.safety_prediction_steps,
+            ))
+        predicted_range = float(np.linalg.norm(
+            radial + closest_time * target_velocity
+        ))
+        self.last_target_closing_m_per_step = float(self._target_closing_ema)
+        self.last_predicted_closest_range_m = predicted_range
+        if self.predictive_human_safety:
+            safety_was_active = self._human_safety_active
+            incoming_near_follow_band = (
+                target.visible
+                and
+                self._target_closing_ema >= self.incoming_closing_threshold_m
+                and target.range_m
+                < self.max_distance_m + self.incoming_activation_margin_m
+            )
+            if (
+                not portal_active
+                and (
+                    predicted_range < 0.65
+                    or target.range_m < 0.75
+                    or incoming_near_follow_band
+                )
+            ):
+                self._human_safety_active = True
+            elif (
+                (
+                    not target.visible
+                    and target.range_m >= 1.0
+                    and self._target_closing_ema
+                    < 0.5 * self.incoming_closing_threshold_m
+                )
+                or (
+                    target.range_m >= self.min_distance_m + self.safety_release_margin_m
+                    and predicted_range >= 0.90
+                    and self._target_closing_ema
+                    < 0.5 * self.incoming_closing_threshold_m
+                )
+            ):
+                self._human_safety_active = False
+            if self._human_safety_active:
+                self._human_safety_steps += 1
+                if not target.visible:
+                    self._occluded_pass_active = True
+                    self._occluded_pass_steps += 1
+                    if self._occluded_pass_steps > 3:
+                        self._human_safety_active = False
+                else:
+                    self._occluded_pass_steps = 0
+            if self._human_safety_active:
+                if not safety_was_active:
+                    clear_left = self.last_map_clearance.get("left", 0.0)
+                    clear_right = self.last_map_clearance.get("right", 0.0)
+                    if clear_left > clear_right + 0.15:
+                        self._human_evasion_direction = 1.0
+                    elif clear_right > clear_left + 0.15:
+                        self._human_evasion_direction = -1.0
+                # Retreat along the full 2-D direction away from the person.
+                # C3 reversed only Vx but kept Vy pointing toward the person.
+                retreat_error = max(
+                    0.0,
+                    self.min_distance_m + self.safety_release_margin_m
+                    - predicted_range,
+                )
+                retreat_speed = float(np.clip(
+                    0.35 + 1.5 * retreat_error, 0.35, self.max_forward
+                ))
+                away_forward = -math.cos(target.bearing_rad) * retreat_speed
+                away_lateral = -math.sin(target.bearing_rad) * retreat_speed
+                head_on = (
+                    self._human_safety_steps >= 2
+                    and self._target_closing_ema
+                    >= self.incoming_closing_threshold_m
+                    and abs(target.bearing_rad) < math.radians(40.0)
+                )
+                if head_on:
+                    # Backing away cannot resolve a head-on encounter when the
+                    # leader walks at comparable speed. Commit to one clear
+                    # side instead of oscillating in front of the person.
+                    if target.visible:
+                        away_forward = min(away_forward, -0.30)
+                        away_lateral = 0.55 * self._human_evasion_direction
+                    else:
+                        # During an occluded pass, create enough clearance to
+                        # remain on the connected-room side before turning to
+                        # re-acquire. A small visible-mode sidestep leaves Spot
+                        # stranded at the doorway after the person passes.
+                        away_forward = min(away_forward, -0.85)
+                        away_lateral = 0.75 * self._human_evasion_direction
+                yaw = float(np.clip(
+                    self.heading_gain * target.bearing_rad,
+                    -0.5 * self.max_yaw,
+                    0.5 * self.max_yaw,
+                ))
+                self.last_map_visualization = self.obstacle_map.visualize(
+                    target.relative_xy
+                )
+                return ControlDecision(
+                    ContinuousAction(
+                        float(np.clip(away_forward, -self.max_forward, self.max_forward)),
+                        float(np.clip(away_lateral, -self.max_lateral, self.max_lateral)),
+                        yaw,
+                    ),
+                    (
+                        "map_predictive_human_yield"
+                        if head_on else "map_predictive_human_retreat"
+                    ),
+                    float(target.bearing_rad),
+                    None,
+                )
+            self._human_safety_steps = 0
+            if self._occluded_pass_active:
+                self._occluded_pass_active = False
+                self._occluded_pass_steps = 0
+                self._post_pass_reframe_steps = 10
+        if target.visible:
+            self._post_pass_reframe_steps = 0
+        if self._post_pass_reframe_steps > 0:
+            phase = 10 - self._post_pass_reframe_steps
+            turn_direction = -self._human_evasion_direction
+            forward_profile = (
+                -0.25, -0.15, 0.0, 0.0, 0.10,
+                0.15, 0.20, 0.25, 0.30, 0.35,
+            )
+            lateral_profile = (
+                0.0, 0.08, 0.15, 0.20, 0.20,
+                0.15, 0.10, 0.05, 0.0, 0.0,
+            )
+            yaw_profile = (
+                1.0, 1.0, 1.0, 1.0, 1.0,
+                0.90, 0.80, 0.70, 0.60, 0.50,
+            )
+            forward = forward_profile[phase]
+            lateral = turn_direction * lateral_profile[phase]
+            yaw = turn_direction * yaw_profile[phase]
+            self._post_pass_reframe_steps -= 1
+            return ControlDecision(
+                ContinuousAction(forward, lateral, yaw),
+                "map_post_pass_reframe",
+                float(target.bearing_rad),
+                None,
+            )
+        room_entry_active = not target.visible and not portal_active
+        if (
+            target.range_m < self.min_distance_m
+            and not portal_active
+            and not room_entry_active
+        ):
             # The map goal is defined in front of the person; when already too
             # close, retreat using the original person-relative point goal.
             self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
             return super().__call__(sim, robot, target_agent, target)
-        if target.range_m <= self.max_distance_m + self.planning_hysteresis_m:
+        if (
+            target.visible
+            and
+            target.range_m <= self.max_distance_m + self.planning_hysteresis_m
+            and not portal_active
+        ):
             yaw = float(np.clip(
                 self.heading_gain * target.bearing_rad,
                 -self.max_yaw,
@@ -1140,10 +1897,21 @@ class MapReactiveFollower(ModularReactiveFollower):
                 float(target.bearing_rad),
                 None,
             )
+        planning_history = list(self._target_history_episode)
+        if (
+            portal_active
+            and (
+                not planning_history
+                or planning_history[-1] != self._visibility_portal_episode
+            )
+        ):
+            planning_history.append(self._visibility_portal_episode)
+        planning_distance = 0.75 if room_entry_active else self.max_distance_m
         waypoint_forward, waypoint_left, map_mode = self.obstacle_map.choose_waypoint(
             target.relative_xy,
-            desired_distance_m=self.max_distance_m,
-            history_episode=list(self._target_history_episode),
+            desired_distance_m=planning_distance,
+            history_episode=planning_history,
+            prefer_history_waypoint=portal_active,
         )
         self.last_map_mode = map_mode
         self.last_map_visualization = self.obstacle_map.visualize(target.relative_xy)
@@ -1195,16 +1963,31 @@ class MapReactiveFollower(ModularReactiveFollower):
         # 0.55 m distance as the velocity error caps the robot below the
         # leader's walking speed and makes it fall progressively behind.
         distance_error = max(0.0, target.range_m - self.max_distance_m)
+        if room_entry_active:
+            distance_error = max(
+                distance_error, target.range_m - planning_distance
+            )
+        if portal_active:
+            # Portal traversal is a topological commitment, not a request to
+            # close the current person distance. Keep translating toward the
+            # doorway even while the person coordinate remains in-band.
+            distance_error = max(distance_error, portal_distance)
         # A small bounded feed-forward prevents a moving leader from opening
         # the gap while the distance error is still below the velocity cap.
         forward = self.distance_gain * distance_error
         if distance_error > 0.10:
             forward += self.catchup_bias_mps
+        heading_alignment = max(0.0, math.cos(waypoint_bearing))
         if abs(waypoint_bearing) > math.radians(55.0):
-            forward = 0.0
+            forward = (
+                min(0.18, self.max_forward)
+                if self.last_map_clearance.get("front", 0.0) > 0.90
+                else 0.0
+            )
+            lateral = 0.0
         else:
-            forward *= max(0.0, math.cos(waypoint_bearing))
-        lateral = self.lateral_gain * waypoint_left
+            forward *= heading_alignment
+            lateral = self.lateral_gain * waypoint_left * heading_alignment
         yaw = self.heading_gain * waypoint_bearing
         action = ContinuousAction(
             float(np.clip(forward, -self.max_forward, self.max_forward)),
@@ -1258,11 +2041,15 @@ def annotate(
     decision: ControlDecision,
     title: str,
     official_following: Optional[float] = None,
+    person_boxes=None,
 ) -> Image.Image:
     image = Image.fromarray(np.asarray(rgb)[..., :3].astype(np.uint8))
     draw = ImageDraw.Draw(image)
     width, height = image.size
     draw.line((width // 2, 0, width // 2, height), fill=(30, 144, 255), width=2)
+    for box, is_target in person_boxes or []:
+        if not is_target:
+            draw.rectangle(box, outline=(40, 120, 255), width=3)
     if target.bbox_xyxy is not None:
         draw.rectangle(target.bbox_xyxy, outline=(255, 40, 40), width=4)
     if target.footpoint_uv is not None:
