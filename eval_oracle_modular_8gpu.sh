@@ -70,6 +70,7 @@ RESTART_DELAY="${RESTART_DELAY:-1}"
 PROGRESS_INTERVAL="${PROGRESS_INTERVAL:-15}"
 PERCEPTION="${PERCEPTION:-oracle}"
 CONTROLLER="${CONTROLLER:-oracle-navmesh}"
+TARGET_MODE="${TARGET_MODE:-auto}"
 MAP_MEMORY_FRAMES="${MAP_MEMORY_FRAMES:-0}"
 MAP_CAMERA_HEIGHT="${MAP_CAMERA_HEIGHT:-0.24}"
 MAP_CAMERA_PITCH_DEG="${MAP_CAMERA_PITCH_DEG:-5.0}"
@@ -224,6 +225,7 @@ run_shard() {
         --max-scenes-per-process "$SCENES_PER_PROCESS" \
         --perception "$PERCEPTION" \
         --controller "$CONTROLLER" \
+        --target-mode "$TARGET_MODE" \
         --map-memory-frames "$MAP_MEMORY_FRAMES" \
         --map-camera-height "$MAP_CAMERA_HEIGHT" \
         --map-camera-pitch-deg "$MAP_CAMERA_PITCH_DEG" \

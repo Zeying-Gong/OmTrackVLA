@@ -54,6 +54,18 @@ else:
     raise RuntimeError(f"Unsupported ORACLE_CONTROLLER_VERSION={CONTROLLER_VERSION}")
 
 
+class PointPerception:
+    """Coordinate-only target provider with no RGB/ReID/panoptic input."""
+
+    name = "point-coordinate"
+
+    def reset(self, reference_rgb=None):
+        del reference_rgb
+
+    def __call__(self, relative_xy):
+        return invisible_target(relative_xy)
+
+
 def parse_dataset_indices(value: str) -> tuple[int, ...]:
     try:
         indices = {int(item.strip()) for item in value.split(",") if item.strip()}
@@ -128,8 +140,21 @@ def invisible_target(relative_xy):
     )
 
 
+def world_from_local_xy(robot, relative_xy):
+    """Convert a robot-frame (forward, left) point to episode world coordinates."""
+    import magnum as mn
+
+    forward, left = (float(value) for value in relative_xy)
+    local = mn.Vector3(forward, 0.0, -left)
+    delta = robot.sim_obj.transformation.transform_vector(local)
+    return np.asarray(robot.base_pos, dtype=np.float32) + np.asarray(
+        [delta.x, delta.y, delta.z], dtype=np.float32
+    )
+
+
 def compose_rgbd_video_frame(
     rgb_frame: np.ndarray, raw_depth: np.ndarray, max_depth_m: float = 10.0,
+    target=None, control_target=None, target_mode: str = "visual",
 ) -> np.ndarray:
     rgb = np.asarray(rgb_frame)[..., :3].astype(np.uint8)
     depth = metric_depth(raw_depth, max_depth_m=max_depth_m)
@@ -157,7 +182,55 @@ def compose_rgbd_video_frame(
         (box[0] - 2, box[1] - 2, box[2] + 2, box[3] + 2), fill=(0, 0, 0)
     )
     draw.text((8, 8), label, fill=(255, 255, 255))
+    if target is not None and control_target is not None:
+        _draw_target_compass(
+            depth_image, target, control_target, target_mode
+        )
     return np.concatenate((rgb, np.asarray(depth_image)), axis=1)
+
+
+def _draw_target_compass(depth_image, visual_target, control_target, target_mode):
+    """Overlay only the target-source compass and its compact color legend."""
+    image = np.asarray(depth_image).copy()
+    height, width = image.shape[:2]
+    panel_w, panel_h = 178, 132
+    x0, y0 = max(4, width - panel_w - 8), 8
+    overlay = image.copy()
+    cv2.rectangle(overlay, (x0, y0), (x0 + panel_w, y0 + panel_h), (0, 0, 0), -1)
+    image[:] = cv2.addWeighted(overlay, 0.62, image, 0.38, 0.0)
+    center = (x0 + 58, y0 + 67)
+    radius = 42
+    cv2.circle(image, center, radius, (180, 180, 180), 1, cv2.LINE_AA)
+    cv2.line(image, (center[0] - radius, center[1]), (center[0] + radius, center[1]), (90, 90, 90), 1)
+    cv2.line(image, (center[0], center[1] - radius), (center[0], center[1] + radius), (90, 90, 90), 1)
+    cv2.circle(image, center, 3, (255, 255, 255), -1)
+
+    def arrow(relative_xy, color, scale=18.0):
+        if relative_xy is None:
+            return
+        forward, left = (float(v) for v in relative_xy)
+        norm = max(1e-6, (forward * forward + left * left) ** 0.5)
+        length = min(radius - 5, max(10.0, norm * scale))
+        end = (
+            int(round(center[0] - left / norm * length)),
+            int(round(center[1] - forward / norm * length)),
+        )
+        cv2.arrowedLine(image, center, end, color, 2, cv2.LINE_AA, tipLength=0.22)
+
+    # The RGB panel already shows visual identity. Keep the compass focused on
+    # the coordinate input.
+    point_color = (50, 140, 255)
+    if target_mode in ("point", "hybrid"):
+        arrow(control_target.relative_xy, point_color)
+
+    legend = []
+    if target_mode in ("point", "hybrid"):
+        legend.append((point_color, "point"))
+    for index, (color, label) in enumerate(legend):
+        y = y0 + 22 + index * 19
+        cv2.line(image, (x0 + 104, y), (x0 + 122, y), color, 3, cv2.LINE_AA)
+        cv2.putText(image, label, (x0 + 128, y + 4), cv2.FONT_HERSHEY_SIMPLEX, 0.38, (255, 255, 255), 1, cv2.LINE_AA)
+    depth_image.paste(Image.fromarray(image))
 
 
 def atomic_json(path: Path, value) -> None:
@@ -235,6 +308,7 @@ def evaluate_episode(
     env, observations, controller, max_steps, save_steps=False,
     video_path=None, video_fps=8, perception=None, defer_goal_crop=False,
     navmesh_calibration=False,
+    target_mode="visual",
 ):
     episode = env.current_episode
     robot = env.sim.agents_mgr[1].articulated_agent
@@ -272,18 +346,29 @@ def evaluate_episode(
     steps = 0
     max_steps = int(max_steps)
     writer = None
+    video_writer_cv2 = None
+    video_backend = os.environ.get("OMTRACKVLA_VIDEO_BACKEND", "imageio")
+    frame_dir = os.environ.get("OMTRACKVLA_FRAME_DIR")
+    if frame_dir:
+        frame_dir = Path(frame_dir)
+        frame_dir.mkdir(parents=True, exist_ok=True)
     temporary_video = None
     if video_path is not None:
         video_path = Path(video_path)
         video_path.parent.mkdir(parents=True, exist_ok=True)
         temporary_video = video_path.with_name(video_path.stem + ".tmp.mp4")
-        writer = imageio.get_writer(
-            temporary_video, fps=video_fps, codec="libx264", macro_block_size=1
-        )
+        if video_backend == "imageio":
+            writer = imageio.get_writer(
+                temporary_video, fps=video_fps, codec="libx264", macro_block_size=1
+            )
+        elif video_backend != "opencv":
+            raise ValueError(f"Unsupported OMTRACKVLA_VIDEO_BACKEND={video_backend}")
 
     try:
         while not env.episode_over and steps < max_steps:
-            if isinstance(perception, OraclePerception) and not isinstance(controller, MapReactiveFollower):
+            if isinstance(perception, PointPerception):
+                required = ()
+            elif isinstance(perception, OraclePerception) and not isinstance(controller, MapReactiveFollower):
                 required = (RGB_KEY, PANOPTIC_KEY)
             elif isinstance(perception, OraclePerception):
                 required = (RGB_KEY, DEPTH_KEY, PANOPTIC_KEY)
@@ -294,7 +379,9 @@ def evaluate_episode(
             missing = [key for key in required if key not in observations]
             if missing:
                 raise KeyError(f"Missing observations {missing}; got {sorted(observations)}")
-            if isinstance(perception, OraclePerception):
+            if isinstance(perception, PointPerception):
+                target = perception(local_target(robot, target_agent))
+            elif isinstance(perception, OraclePerception):
                 target_projected_uv = project_world_to_sensor(
                     env.sim,
                     RGB_KEY,
@@ -325,6 +412,22 @@ def evaluate_episode(
                     target = perception(observations[RGB_KEY], observations[DEPTH_KEY])
             else:
                 target = perception(observations[RGB_KEY], observations[DEPTH_KEY])
+            control_target = target
+            if target_mode in ("point", "hybrid"):
+                # Point mode uses only the coordinate channel. Hybrid mode
+                # keeps visual visibility/identity while using coordinates for
+                # geometry and for recovery when the target is occluded.
+                forward, left = local_target(robot, target_agent)
+                control_target = TargetObservation(
+                    visible=(True if target_mode == "point" else target.visible),
+                    bbox_xyxy=(None if target_mode == "point" else target.bbox_xyxy),
+                    footpoint_uv=(None if target_mode == "point" else target.footpoint_uv),
+                    relative_xy=(forward, left),
+                    range_m=float(np.hypot(forward, left)),
+                    bearing_rad=float(np.arctan2(left, forward)),
+                    mask_area=(0 if target_mode == "point" else target.mask_area),
+                    confidence=(1.0 if target_mode == "point" else target.confidence),
+                )
             current_target_mask = (
                 np.asarray(observations[PANOPTIC_KEY]).squeeze() == target_semantic_id
             )
@@ -417,13 +520,23 @@ def evaluate_episode(
                 navmesh_diagnostic.update(
                     env.sim, robot.base_pos, target_agent.base_pos
                 )
-            decision = controller(env.sim, robot, target_agent, target)
+            target_world = None
+            if target_mode == "visual" and isinstance(controller, OracleNavmeshFollower):
+                if target.visible:
+                    target_world = world_from_local_xy(robot, target.relative_xy)
+            if isinstance(controller, OracleNavmeshFollower):
+                decision = controller(
+                    env.sim, robot, target_agent, control_target,
+                    target_world=target_world,
+                )
+            else:
+                decision = controller(env.sim, robot, target_agent, control_target)
             if (
                 not target.visible
                 and not getattr(controller, "uses_invisible_pointgoal", False)
             ):
                 coordinate_steps += 1
-            if writer is not None:
+            if writer is not None or frame_dir is not None:
                 current_metrics = env.get_metrics()
                 current_following = current_metrics.get("human_following")
                 frame = annotate(
@@ -433,13 +546,24 @@ def evaluate_episode(
                     person_boxes=person_boxes,
                 )
                 frame = np.asarray(frame)
-                if DEPTH_KEY in observations and (
+                has_depth_panel = DEPTH_KEY in observations and (
                     not isinstance(perception, OraclePerception)
                     or isinstance(controller, MapReactiveFollower)
-                ):
+                )
+                if has_depth_panel:
                     frame = compose_rgbd_video_frame(
-                        frame, observations[DEPTH_KEY]
+                        frame,
+                        observations[DEPTH_KEY],
+                        target=target,
+                        control_target=control_target,
+                        target_mode=target_mode,
                     )
+                else:
+                    rgb_panel = Image.fromarray(frame)
+                    _draw_target_compass(
+                        rgb_panel, target, control_target, target_mode
+                    )
+                    frame = np.asarray(rgb_panel)
                 map_frame = getattr(controller, "last_map_visualization", None)
                 if map_frame is not None:
                     map_frame = cv2.resize(
@@ -464,7 +588,25 @@ def evaluate_episode(
                         interpolation=cv2.INTER_NEAREST,
                     )
                     frame = np.concatenate((frame, calibration_frame), axis=1)
-                writer.append_data(frame)
+                if frame_dir is not None:
+                    imageio.imwrite(
+                        frame_dir / f"frame_{steps:06d}.png",
+                        np.asarray(frame, dtype=np.uint8),
+                    )
+                if writer is not None and video_backend == "opencv":
+                    if video_writer_cv2 is None:
+                        height, width = frame.shape[:2]
+                        video_writer_cv2 = cv2.VideoWriter(
+                            str(temporary_video),
+                            cv2.VideoWriter_fourcc(*"mp4v"),
+                            float(video_fps),
+                            (width, height),
+                        )
+                        if not video_writer_cv2.isOpened():
+                            raise RuntimeError("OpenCV VideoWriter failed to open")
+                    video_writer_cv2.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+                elif writer is not None:
+                    writer.append_data(frame)
 
             if hasattr(controller, "record_action"):
                 controller.record_action(decision.action, decision.mode)
@@ -568,6 +710,8 @@ def evaluate_episode(
     finally:
         if writer is not None:
             writer.close()
+        if video_writer_cv2 is not None:
+            video_writer_cv2.release()
     if temporary_video is not None:
         temporary_video.replace(video_path)
 
@@ -682,7 +826,12 @@ def main():
     parser.add_argument("--max-success-attempts", type=int, default=5)
     parser.add_argument("--evasion-side", type=float, choices=(-1.0, 1.0))
     parser.add_argument(
-        "--perception", choices=("oracle", "rgb-person"), default="oracle"
+        "--perception", choices=("oracle", "rgb-person", "point"), default="oracle"
+    )
+    parser.add_argument(
+        "--target-mode", choices=("auto", "visual", "point", "hybrid"),
+        default="auto",
+        help="target information source: visual point, coordinate point, or hybrid",
     )
     parser.add_argument(
         "--controller",
@@ -750,6 +899,18 @@ def main():
     lost_target_policy = args.lost_target_policy
     if lost_target_policy == "auto":
         lost_target_policy = "coordinate"
+    target_mode = args.target_mode
+    if target_mode == "auto":
+        if args.perception == "point":
+            target_mode = "point"
+        elif args.perception == "rgb-person" and args.controller == "oracle-navmesh":
+            target_mode = "point"
+        elif args.perception == "oracle" and args.controller != "oracle-navmesh":
+            target_mode = "point"
+        else:
+            target_mode = "visual"
+    if target_mode == "visual" and args.controller == "oracle-navmesh":
+        lost_target_policy = "stop-search"
 
     config_kind = "train" if args.split == "train" else "infer"
     config_path = (
@@ -893,7 +1054,9 @@ def main():
             max_lateral=args.max_lateral,
             max_yaw=args.max_yaw,
             lost_search_yaw=args.lost_search_yaw,
-            use_invisible_pointgoal=args.perception == "oracle",
+            use_invisible_pointgoal=(
+                args.perception == "oracle" or target_mode == "hybrid"
+            ),
         )
     elif args.controller in ("map-reactive", "map-reactive-c2", "map-reactive-vlfm", "map-reactive-c4"):
         if args.controller == "map-reactive-c2":
@@ -956,7 +1119,10 @@ def main():
             predictive_human_safety=args.controller == "map-reactive-c4",
             motion_blocked_feedback=args.controller == "map-reactive-c4",
         )
-    if args.perception == "oracle":
+    if args.perception == "point":
+        perception = PointPerception()
+        perception_name = PointPerception.name
+    elif args.perception == "oracle":
         perception = OraclePerception()
         perception_name = "oracle-panoptic-pose"
     else:
@@ -982,6 +1148,7 @@ def main():
         "remaining_episodes": remaining_episodes,
         "config": config_path,
         "controller": args.controller,
+        "target_mode": target_mode,
         "navmesh_calibration": args.navmesh_calibration,
         "map_memory_frames": getattr(controller.obstacle_map, "memory_frames", None) if hasattr(controller, "obstacle_map") else None,
         "map_camera_height_m": getattr(controller.obstacle_map, "camera_height_m", None) if hasattr(controller, "obstacle_map") else None,
@@ -1136,6 +1303,7 @@ def main():
                     perception=perception,
                     defer_goal_crop=defer_goal_crop,
                     navmesh_calibration=args.navmesh_calibration,
+                    target_mode=target_mode,
                 )
                 summary["evasion_side"] = controller._evasion_side
                 result = {**metadata, "summary": summary}

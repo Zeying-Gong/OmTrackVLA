@@ -966,7 +966,10 @@ class OracleNavmeshFollower:
         _, self._evasion_side, goal = max(candidates, key=lambda item: item[0])
         return self._path_waypoint(sim, robot, goal)
 
-    def __call__(self, sim, robot, target_agent, target: TargetObservation) -> ControlDecision:
+    def __call__(
+        self, sim, robot, target_agent, target: TargetObservation,
+        target_world: Optional[Sequence[float]] = None,
+    ) -> ControlDecision:
         if not target.visible and self.lost_target_policy == "stop-search":
             return self._lost_target_decision(target)
 
@@ -983,7 +986,10 @@ class OracleNavmeshFollower:
                 self._pass_yield_active = False
                 self._lost_steps = 0
 
-        target_pos = np.asarray(target_agent.base_pos, dtype=np.float32)
+        target_pos = np.asarray(
+            target_agent.base_pos if target_world is None else target_world,
+            dtype=np.float32,
+        )
         robot_pos = np.asarray(robot.base_pos, dtype=np.float32)
         coordinate_takeover = not target.visible
         control_target = target
