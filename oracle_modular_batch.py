@@ -1054,9 +1054,7 @@ def main():
             max_lateral=args.max_lateral,
             max_yaw=args.max_yaw,
             lost_search_yaw=args.lost_search_yaw,
-            use_invisible_pointgoal=(
-                args.perception == "oracle" or target_mode == "hybrid"
-            ),
+            use_invisible_pointgoal=target_mode in ("point", "hybrid"),
         )
     elif args.controller in ("map-reactive", "map-reactive-c2", "map-reactive-vlfm", "map-reactive-c4"):
         if args.controller == "map-reactive-c2":
@@ -1106,7 +1104,7 @@ def main():
             max_lateral=args.max_lateral,
             max_yaw=args.max_yaw,
             lost_search_yaw=args.lost_search_yaw,
-            use_invisible_pointgoal=args.perception == "oracle",
+            use_invisible_pointgoal=target_mode in ("point", "hybrid"),
             camera_height_m=camera_height_m,
             camera_pitch_deg=camera_pitch_deg,
             camera_forward_offset_m=camera_forward_offset_m,
