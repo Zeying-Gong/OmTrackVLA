@@ -16,9 +16,16 @@ from unified import TASK_IMAGEGOAL, TASK_POINTNAV, make_sample_dict
 
 
 def _relative_pose_point(ext_start, base_extrinsic, world_point):
-    """World -> robot-local point given extrinsics of the start frame."""
+    """World -> robot-local point given extrinsics of the start frame.
+
+    Matches InternNav navdp_lerobot_dataset.py: the robot rotation is composed
+    with the inverse of the base/camera extrinsic rotation so the resulting
+    local frame is the robot body frame (base_extrinsic is generally NOT an
+    identity rotation on D435i).
+    """
     R_base = np.array(ext_start[:3, :3], dtype=np.float64)
     T_base = np.array(ext_start[:3, 3], dtype=np.float64)
+    R_base = R_base @ np.linalg.inv(np.array(base_extrinsic[:3, :3], dtype=np.float64))
     homo_RT = np.eye(4)
     homo_RT[:3, :3] = R_base
     homo_RT[:3, 3] = T_base
@@ -132,11 +139,22 @@ class NavDPDataset:
         mem = int(self.rng.randint(start, max(start + 1, target)))
         return start, target, mem
 
+    def _img_shape(self, ep):
+        """(H, W) of the rgb frames; cached per episode."""
+        if "img_shape" not in ep:
+            import cv2
+
+            img = cv2.imread(ep["rgb"][0])
+            ep["img_shape"] = img.shape[:2] if img is not None else (480, 640)
+        return ep["img_shape"]
+
     def get(self, index, task_override=None):
         ep = self.episodes[index]
         d, extrinsics, base_ext, intrinsic = self._parquet(ep)
         traj_len = extrinsics.shape[0]
         start, target, mem = self._sample_indices(traj_len)
+
+        task = task_override or self.condition
 
         n = self.memory_size
         mem_idx = np.arange(mem - (n - 1) * self.pred_digit, mem + 1, self.pred_digit)
@@ -144,13 +162,14 @@ class NavDPDataset:
         window = [ep["rgb"][int(i)] for i in mem_idx]
         current = ep["rgb"][mem]
         depth = ep["depth"][mem] if mem < len(ep["depth"]) else None
-        target_img = ep["rgb"][target]
-        future_rgb = ep["rgb"][min(len(ep["rgb"]) - 1, target)]
 
-        # future trajectory in local frame
+        # future trajectory in the local frame of the CURRENT (mem) frame.
+        # InternNav's process_actions() starts from memory_start_choice = the
+        # frame we actually observe; using extrinsics[start] mis-anchors the
+        # trajectory (a `start` frame we never see as `current`).
         local = []
-        for t in range(start, target + 1):
-            local.append(_relative_pose_point(extrinsics[start], base_ext, extrinsics[t][:3, 3]))
+        for t in range(mem, target + 1):
+            local.append(_relative_pose_point(extrinsics[mem], base_ext, extrinsics[t][:3, 3]))
         local = np.array(local, dtype=np.float64)
         init_vec = local[1] - local[0] if local.shape[0] > 1 else np.array([1.0, 0.0, 0.0])
         xyt = _xyz_to_xyt(local, init_vec)
@@ -160,14 +179,34 @@ class NavDPDataset:
         traj = xyt[action_indexes]  # absolute ego waypoints (predict_size+1,3)
         diffs = (traj[1:] - traj[:-1]) * 4.0
         pointgoal = list(xyt[-1][:2]) + [float(xyt[-1][2])]
+        goal_dist = float(np.hypot(pointgoal[0], pointgoal[1]))
 
         # goal visibility in the current view (same projection as NavDP pixel_goal)
         camera_coord = np.matmul(base_ext[:3, :3], np.array([-local[-1][1], local[-1][0], base_ext[2, 3] * 0.8]))
         u = intrinsic[0, 2] + (camera_coord[0] / camera_coord[2]) * intrinsic[0, 0]
         v = intrinsic[1, 2] + (-camera_coord[1] / camera_coord[2]) * intrinsic[1, 1]
-        visible = bool(0 < u < 1e6 and 0 < v < 1e6) and camera_coord[2] > 0.05
+        ih, iw = self._img_shape(ep)
+        visible = bool(0 <= u < iw and 0 <= v < ih) and camera_coord[2] > 0.05
 
-        task = task_override or self.condition
+        # Modal isolation: a task sees exactly ONE goal modality.
+        #   pointnav  -> PointGoal only (goal image withheld)
+        #   imagegoal -> goal image only (PointGoal withheld)
+        # The goal distance is still emitted as a supervision label (stop /
+        # target-state), which is legitimate: it is a label, not an input.
+        if task == TASK_POINTNAV:
+            target_img = None
+            pg = pointgoal
+            pg_valid = visible
+        elif task == TASK_IMAGEGOAL:
+            target_img = ep["rgb"][target]
+            pg = None
+            pg_valid = False
+        else:
+            target_img = None
+            pg = pointgoal
+            pg_valid = visible
+        future_rgb = ep["rgb"][min(len(ep["rgb"]) - 1, target)]
+
         return make_sample_dict(
             task=task,
             ep_id=ep["ep_id"],
@@ -179,13 +218,13 @@ class NavDPDataset:
             traj=[list(p) for p in traj],
             actions=[list(p) for p in diffs],
             collision=False,
-            target_dist=None,
-            valid=True,
-            pointgoal=pointgoal,
-            pointgoal_valid=visible,
+            target_dist=goal_dist,
+            valid=visible,
+            pointgoal=pg,
+            pointgoal_valid=pg_valid,
             future_rgb=future_rgb,
             depth=depth,
-            extra={"start": start, "target": target, "mem": mem},
+            extra={"start": start, "target": target, "mem": mem, "goal_dist": goal_dist},
         )
 
     def sample(self, task_override=None):

@@ -1,5 +1,10 @@
-"""Task-balanced mixed dataset over Sage3D(person_follow) + TpT(person_follow)
-+ NavDP(pointnav/imagegoal), sampling sources by weight 2:1:1."""
+"""Task-balanced mixed dataset over Sage3D(person_follow+waypoint) + TpT
+(person_follow, no waypoint) + NavDP(pointnav/imagegoal).
+
+Sampling is stratified by (task, supervision type) so that person-follow
+waypoint supervision (Sage3D) keeps a guaranteed share instead of being diluted
+by the ~141k no-waypoint TpT rows.
+"""
 from __future__ import annotations
 
 import numpy as np
@@ -17,7 +22,7 @@ class MixedOmniDataset:
         sage_root,
         tpt_root,
         navdp_root,
-        weights=(2.0, 1.0, 1.0),
+        weights=(1.0, 0.5, 1.0, 1.0),  # (sage waypoint, tpt no-wp, pointnav, imagegoal)
         seed=0,
         image_size=224,
         memory_size=8,
@@ -34,50 +39,57 @@ class MixedOmniDataset:
         self.tpt = TpTDataset(tpt_root)
         self.navdp = NavDPDataset(navdp_root, memory_size=memory_size, seed=seed)
 
-        # Build lazily-addressable person_follow units (sage: per derived step;
-        # tpt: per video-frame row).
-        self.pf_units = []  # (src, id, key, n)
+        # Sage3D person-follow steps WITH waypoint supervision.
+        self.sage_units = []  # (src, id, key, n)
         for i in range(len(self.sage)):
             n = self.sage.step_count(i)
             for k in range(start_offset, n):
-                self.pf_units.append(("sage", None if False else i, k, n))
+                self.sage_units.append(("sage", i, k, n))
+        # TpT person-follow frames WITHOUT waypoint supervision.
+        self.tpt_units = []
         for i in range(len(self.tpt)):
             t = self.tpt._table(self.tpt.seqs[i]["seq"])
             nrow = t.num_rows
             for r in range(start_offset, nrow):
-                self.pf_units.append(("tpt", i, r, nrow))
+                self.tpt_units.append(("tpt", i, r, nrow))
 
+        self.pf_units = self.sage_units + self.tpt_units   # compat alias
         self.episodes = len(self.navdp)
 
     def __len__(self):
-        return len(self.pf_units) + self.episodes * 2
+        return len(self.sage_units) + len(self.tpt_units) + self.episodes * 2
 
-    def _pf_sample(self, i):
-        src, id_, key, _ = self.pf_units[i]
+    def _pf_sample(self, unit):
+        src, id_, key, _ = unit
         if src == "sage":
             return self.sage.get(id_, key)
         return self.tpt.get(self.tpt.seqs[id_]["seq"], key)
 
     def get_sample(self, index=None, as_arrays=False):
+        n_sage = len(self.sage_units)
+        n_tpt = len(self.tpt_units)
+        n_nav = self.episodes
         if index is None:
             c = self.rng.rand()
             if c < self.weights[0]:
-                s = self._pf_sample(int(self.rng.randint(0, len(self.pf_units))))
+                s = self._pf_sample(self.sage_units[int(self.rng.randint(0, n_sage))])
             elif c < self.weights[0] + self.weights[1]:
+                s = self._pf_sample(self.tpt_units[int(self.rng.randint(0, n_tpt))])
+            elif c < self.weights[0] + self.weights[1] + self.weights[2]:
                 s = self.navdp.sample(TASK_POINTNAV)
             else:
                 s = self.navdp.sample(TASK_IMAGEGOAL)
         else:
-            # deterministic: map index buckets by weights across units
+            # deterministic: bucket by index across the four groups
             idx = int(index) % len(self)
-            n_pf = len(self.pf_units)
-            n_nav = self.episodes
-            if idx < n_pf:
-                s = self._pf_sample(idx)
-            elif idx < n_pf + n_nav:
-                s = self.navdp.get(idx - n_pf, TASK_POINTNAV)
+            if idx < n_sage:
+                s = self._pf_sample(self.sage_units[idx])
+            elif idx < n_sage + n_tpt:
+                s = self._pf_sample(self.tpt_units[idx - n_sage])
+            elif idx < n_sage + n_tpt + n_nav:
+                s = self.navdp.get(idx - n_sage - n_tpt, TASK_POINTNAV)
             else:
-                s = self.navdp.get(idx - n_pf - n_nav, TASK_IMAGEGOAL)
+                s = self.navdp.get(idx - n_sage - n_tpt - n_nav, TASK_IMAGEGOAL)
         if s is None:
             return None
         if as_arrays:

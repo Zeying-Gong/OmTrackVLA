@@ -40,6 +40,7 @@ class Attention(nn.Module):
         q = q * self.scale
         attn = q @ k.transpose(-2, -1)
         if attn_mask is not None:
+            # attn_mask: (B, 1, N, N) per-batch, or (1, 1, N, N) broadcast
             attn = attn + attn_mask
         attn = F.softmax(attn, dim=-1)
         x = (attn @ v).transpose(1, 2).reshape(B, N, C)
@@ -87,11 +88,13 @@ class FrameGlobalBackbone(nn.Module):
         nn.init.trunc_normal_(self.policy_queries, std=0.02)
         self.blocks = nn.ModuleList([EvggtBlock(dim, num_heads, mlp_ratio) for _ in range(2 * depth)])
 
-    def forward(self, frame_tokens, context_tokens, grid=None):
+    def forward(self, frame_tokens, context_tokens, grid=None, frame_valid=None):
         """frame_tokens: (B, T, P, dim) temporal stack of frame patch grids.
 
         grid: (Hp, Wp) real patch grid of the frames. If None, a square grid
         is inferred from P (backward-compatible fallback).
+        frame_valid: (B, T) float 0/1 flag for each frame; invalid frames (e.g.
+        repeat-last padded history) are excluded from attention except self.
 
         Returns (h_t, fused_patches):
           h_t: (B, dim) policy state (mean of policy query tokens).
@@ -127,9 +130,23 @@ class FrameGlobalBackbone(nn.Module):
         frame_mask = frame_mask | (idx[:, None] == idx[None, :])
         frame_attn_mask = torch.where(frame_mask, 0.0, float("-inf"))[None, None].to(seq.dtype)
 
+        # Per-batch validity for Global Attention: invalid frame patches (e.g.
+        # repeat-last padded history) may only attend themselves; everything
+        # else attends globally as usual.
+        global_attn_mask = None
+        if frame_valid is not None:
+            fv = frame_valid.float()[:, :, None].expand(B, T, P).reshape(B, T * P)  # (B, TP)
+            valid_tok = torch.cat(
+                [fv, torch.ones(B, N - T * P, device=device)], dim=1
+            ).bool()                                                                 # (B, N)
+            block = (~valid_tok)[:, :, None] | (~valid_tok)[:, None, :]              # (B, N, N)
+            keep_self = torch.eye(N, dtype=torch.bool, device=device)[None]
+            global_attn_mask = torch.where(block & ~keep_self, float("-inf"), 0.0)
+            global_attn_mask = global_attn_mask[:, None].to(seq.dtype)               # (B, 1, N, N)
+
         for i in range(self.depth):
             seq = self.blocks[2 * i](seq, attn_mask=frame_attn_mask, cos=cos, sin=sin)
-            seq = self.blocks[2 * i + 1](seq, cos=cos, sin=sin)
+            seq = self.blocks[2 * i + 1](seq, attn_mask=global_attn_mask, cos=cos, sin=sin)
 
         h_t = seq[:, -Q:].mean(dim=1)
         fused_patches = seq[:, (T - 1) * P:T * P]

@@ -28,11 +28,17 @@ SUCCESS_RADIUS = 1.0  # unified 1.0 m protocol (note 16)
 
 
 def waypoints_to_actions(wpts, horizon=8):
-    """Absolute ego waypoints -> incremental (H, 4) actions (dx, dy, sin, cos).
+    """Absolute ego waypoints -> (H, 4) actions (dx, dy, sin, cos) + n_valid.
 
     wpts: list of [x, y] or [x, y, yaw]; yaw recovered from displacement when absent.
-    Position list is padded to horizon+1 (last point repeated) so horizon actions
-    are produced; a held final step maps to a zero displacement action.
+    The FIRST waypoint is the origin (current pose). Positions are padded to
+    horizon+1 (last point repeated) so horizon actions are produced; a held final
+    step maps to a zero displacement action.
+
+    Returns (acts, n_valid): acts (horizon, 4); n_valid = number of REAL
+    displacement steps (M-1, capped at horizon). Sage3D stores 8 points including
+    the origin, so it only yields 7 real actions; the padded final step must NOT
+    be supervised as a "stop" action (caller masks steps >= n_valid).
     """
     if not wpts:
         return None
@@ -41,6 +47,7 @@ def waypoints_to_actions(wpts, horizon=8):
         return None
     pos = np.stack([p[:2] for p in pts])            # (M, 2)
     M = pos.shape[0]
+    n_valid = min(M - 1, horizon)
 
     if pts[0].size >= 3:
         yaw = np.array([p[2] for p in pts], dtype=np.float64)
@@ -68,7 +75,7 @@ def waypoints_to_actions(wpts, horizon=8):
         acts[k, 1] = -s * d[0] + c * d[1]
         acts[k, 2] = np.sin(dyaw)
         acts[k, 3] = np.cos(dyaw)
-    return acts
+    return acts, n_valid
 
 
 def _task_id(task):
@@ -83,7 +90,12 @@ def _goal_spec(task):
 
 
 def _history_frames(sample, max_history=8):
-    """Filter zero-padded window frames, keep up to max_history, repeat-last pad."""
+    """Filter zero-padded window frames; return (stack, mask) or None.
+
+    mask (K,) marks REAL frames (1) vs repeat-last padded history (0), so
+    padded copies of the oldest real frame do not get treated as independent
+    observations in Global Attention.
+    """
     win = sample.get("window_arr")
     if win is None:
         return None
@@ -91,9 +103,13 @@ def _history_frames(sample, max_history=8):
     if not valid:
         return None
     valid = valid[-max_history:]
-    if len(valid) < max_history:
-        valid = [valid[0]] * (max_history - len(valid)) + valid
-    return np.stack(valid)                               # (K, H, W, 3)
+    K = len(valid)
+    mask = np.ones((K,), np.float32)
+    if K < max_history:
+        n_pad = max_history - K
+        valid = [valid[0]] * n_pad + valid
+        mask = np.concatenate([np.zeros((n_pad,), np.float32), mask])
+    return np.stack(valid), mask                      # ((K, H, W, 3), (K,))
 
 
 def collate_batch(samples, image_size=224, max_history=8, horizon=8, device="cpu"):
@@ -124,12 +140,15 @@ def collate_batch(samples, image_size=224, max_history=8, horizon=8, device="cpu
     # ---- history frames ------------------------------------------------------
     hist = [_history_frames(s, max_history) for s in samples]
     if any(h is not None for h in hist):
-        K = hist[0].shape[0] if hist[0] is not None else max_history
+        K = hist[0][0].shape[0] if hist[0] is not None else max_history
         harr = np.zeros((B, K, image_size, image_size, 3), np.float32)
+        hmask = np.zeros((B, K), np.float32)
         for i, h in enumerate(hist):
             if h is not None:
-                harr[i] = h
+                harr[i] = h[0]
+                hmask[i] = h[1]
         mkw["history_rgb"] = torch.as_tensor(harr).permute(0, 1, 4, 2, 3).float().to(device)
+        mkw["history_valid"] = torch.as_tensor(hmask, device=device)
 
     # ---- pointgoal (B, 7): x, y, range, bearing, uncertainty, age, valid ----
     if any(s.get("pointgoal") is not None for s in samples):
@@ -151,17 +170,21 @@ def collate_batch(samples, image_size=224, max_history=8, horizon=8, device="cpu
                                        dtype=torch.float32, device=device)
 
     # ---- future rgb (training-only teacher path) -----------------------------
+    fvalid = np.zeros((B,), np.float32)
     if any(s.get("future_rgb") for s in samples):
         fut = []
-        for s in samples:
+        for i, s in enumerate(samples):
             p = s.get("future_rgb")
             if p and isinstance(p, str):
                 fut.append(resize_keep_aspect(imread_rgb(p), image_size))
+                fvalid[i] = 1.0
             elif isinstance(p, np.ndarray):
                 fut.append(p)
+                fvalid[i] = 1.0
             else:
                 fut.append(np.zeros((image_size, image_size, 3), np.float32))
         mkw["future_rgb"] = torch.as_tensor(np.stack(fut)).permute(0, 3, 1, 2).float().to(device)
+    mkw["future_valid"] = torch.as_tensor(fvalid, device=device)
 
     # ---- loss batch ------------------------------------------------------------
     traj = np.zeros((B, horizon, 4), np.float32)
@@ -173,17 +196,21 @@ def collate_batch(samples, image_size=224, max_history=8, horizon=8, device="cpu
     stop_mask = np.zeros((B,), np.int64)
 
     for i, s in enumerate(samples):
-        acts = waypoints_to_actions(s.get("traj"), horizon)
-        if acts is not None and s.get("valid", True):
+        r = waypoints_to_actions(s.get("traj"), horizon)
+        # Waypoint supervision keyed on TRAJECTORY validity (not target
+        # visibility): a hidden target still has a reliable sim trajectory.
+        if r is not None and s.get("trajectory_valid", True):
+            acts, n_valid = r
             traj[i] = acts
-            conf = float(s.get("extra", {}).get("success", 1.0) or 1.0)
-            a_valid[i] = 1.0
-            a_conf[i] = max(conf, 0.1)
+            succ = s.get("extra", {}).get("success")
+            conf = float(succ) if succ is not None else 1.0   # success=0 must stay 0, not or-1.0
+            a_valid[i, :n_valid] = 1.0                        # only REAL displacement steps
+            a_conf[i, :n_valid] = max(conf, 0.1)
         # target relative state (dx, dy, vis)
         tlocal = s.get("extra", {}).get("target_local")
         if tlocal is not None and len(tlocal) >= 2:
             tstate[i, 0], tstate[i, 1] = float(tlocal[0]), float(tlocal[1])
-            tstate[i, 2] = 1.0 if s.get("valid") else 0.0
+            tstate[i, 2] = 1.0 if s.get("target_visible", True) else 0.0
             tstate_valid[i] = 1.0
         elif s.get("pointgoal") is not None:
             p = s["pointgoal"]
@@ -193,7 +220,10 @@ def collate_batch(samples, image_size=224, max_history=8, horizon=8, device="cpu
         # stop supervision: only terminal tasks (pointnav/imagegoal)
         if s["task"] in (TASK_POINTNAV, TASK_IMAGEGOAL):
             stop_mask[i] = 1
-            d = float(np.hypot(tstate[i, 0], tstate[i, 1])) if s.get("pointgoal") else float("inf")
+            gd = s.get("extra", {}).get("goal_dist")
+            d = float(gd) if gd is not None else (
+                float(np.hypot(tstate[i, 0], tstate[i, 1])) if s.get("pointgoal") else float("inf")
+            )
             stop_label[i] = 1.0 if d <= SUCCESS_RADIUS else 0.0
 
     loss_batch = {

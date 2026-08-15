@@ -73,9 +73,48 @@ class TpTDataset:
                     pass
             self.seqs.append({"seq": s, "desc": desc, "meta": meta, "parquet": parquet})
         self._tab = {}
+        self._ref_cache = {}
 
     def __len__(self):
         return len(self.seqs)
+
+    def _reference_target(self, seq):
+        """Fixed per-video identity reference crop (first existing bbox frame).
+
+        Cached under <seq>/_target_refs/ref.jpg. Row-level bbox stays as
+        supervision; identity reference is episode-stable.
+        """
+        if seq in self._ref_cache:
+            return self._ref_cache[seq]
+        t = self._table(seq)
+        cols = t.to_pydict()
+        rgb_dir = self.video_frames(seq)
+        ref = None
+        for r in range(len(cols["video_idx"])):
+            if not bool(cols["is_exist"][r]):
+                continue
+            vid = int(cols["video_idx"][r])
+            frame = os.path.join(rgb_dir, f"frame_{vid:06d}.jpg")
+            if not os.path.isfile(frame):
+                continue
+            bb = list(cols["bbox_qv"][r])
+            bbox = [bb[0], bb[1], bb[0] + bb[2], bb[1] + bb[3]]
+            try:
+                ref = _crop_target(frame, bbox)
+            except Exception:
+                ref = None
+            if ref:
+                break
+        if ref:
+            ref_path = os.path.join(self.tpt_root, seq, "_target_refs", "ref.jpg")
+            os.makedirs(os.path.dirname(ref_path), exist_ok=True)
+            if not os.path.exists(ref_path):
+                import shutil
+                shutil.copyfile(ref, ref_path)
+            self._ref_cache[seq] = ref_path
+            return ref_path
+        self._ref_cache[seq] = None
+        return None
 
     def _table(self, seq):
         if seq not in self._tab:
@@ -101,8 +140,11 @@ class TpTDataset:
         current = os.path.join(rgb_dir, f"frame_{vid:06d}.jpg")
         if not os.path.isfile(current):
             return None
+        # History must be OLDEST -> NEWEST (matching Sage3D/NavDP and the
+        # 3D mRoPE temporal axis). The loop below naturally walks backward,
+        # so collect then reverse.
         history = []
-        for i in range(1, self.history + 1):
+        for i in range(self.history, 0, -1):
             p = os.path.join(rgb_dir, f"frame_{vid - i * self.step_stride:06d}.jpg")
             history.append(p if os.path.isfile(p) else None)
         history = [p for p in history if p]
@@ -112,7 +154,7 @@ class TpTDataset:
         # TpT stores bbox as [x, y, w, h]; convert to [x0, y0, x1, y1]
         bbox = [bbox_raw[0], bbox_raw[1], bbox_raw[0] + bbox_raw[2], bbox_raw[1] + bbox_raw[3]]
         is_exist = bool(cols["is_exist"][row_idx])
-        target_img = _crop_target(current, bbox) if is_exist else None
+        target_img = self._reference_target(seq)   # fixed identity reference (per-video)
         pos = list(cols["odom_pos"][row_idx])
         quat = list(cols["odom_quat_xyzw"][row_idx])
         motion = None
@@ -144,6 +186,8 @@ class TpTDataset:
             collision=False,
             target_dist=None,
             valid=is_exist,
+            target_visible=is_exist,
+            trajectory_valid=False,
             future_rgb=future,
             extra=extra,
         )

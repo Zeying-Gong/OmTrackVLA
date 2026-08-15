@@ -141,3 +141,84 @@ PYTHONPATH=/data/nfs/share/OmTrackVLA /data/nfs/share/gzy/miniconda3/envs/omtrac
 - **depth 2D æŠ¥é”™**ï¼š`cv2.resize` ä¼šæŠŠ `(270,480,1)` å‹å› 2Dï¼Œä¸”åŸå‡½æ•°æœ«å°¾ `/255.0` å¯¹ depth ä¸æ­£ç¡®ï¼›`_rk` æ”¹ä¸º 2D åˆ†æ”¯å®Œæ•´è‡ªåš letterboxã€ä¸é™¤ 255ã€‚
 - **TpT `traj=None`**ï¼š`waypoints_to_actions` åŠ  `if not wpts: return None`ï¼Œæ— è½¨è¿¹æ ·æœ¬ action_valid=0ã€‚
 - **forward_dyn ä¸è§¦å‘**ï¼š`train_e2e.py` è¡¥ `mkw["trajectory"] = batch["trajectory"]`ï¼Œå¦åˆ™ `policy.forward` ç¼º trajectory åˆ†æ”¯ç›´æ¥è·³è¿‡ã€‚
+
+---
+
+## è¿½åŠ ï¼šç¬¬äºŒè½®è¯„å®¡ä¿®å¤ï¼ˆ2026-08-15ï¼‰
+
+### ä¸¥é‡é—®é¢˜
+
+1. **Sage3D ç¬¬ 8 æ­¥è¢«é”™è¯¯ç›‘ç£ä¸ºåœæ­¢**
+   - äº‹å®ï¼š`waypoints_ego` æ˜¯ 8 ç‚¹ä¸”**åŒ…å«åŸç‚¹**ï¼ˆ`README.md:100`ï¼‰ï¼Œåªèƒ½äº§ç”Ÿ 7 ä¸ªä½ç§»ï¼›æ—§ collate é‡å¤æœ«ç‚¹åæŠŠç¬¬ 8 æ­¥ action_valid ç½® 1ï¼Œç³»ç»Ÿå­¦ä¹ "æœ€åä¸€æ­¥åœæ­¢"ã€‚
+   - ä¿®å¤ï¼š`waypoints_to_actions` è¿”å› `(acts, n_valid)`ï¼Œ`n_valid = min(M-1, horizon)`ï¼ˆçœŸå®ä½ç§»æ•°ï¼‰ï¼›collate ä»… `a_valid[i, :n_valid]=1`ã€‚éªŒè¯ï¼šSage3D æ ·æœ¬ n_valid=7ï¼Œç¬¬ 8 æ­¥é›¶åŠ¨ä½œä¸å†è¢«ç›‘ç£ã€‚
+
+2. **è¡Œäºº target crop ä¸æ˜¯å›ºå®šèº«ä»½å‚è€ƒ**
+   - äº‹å®ï¼šSage3D/TpT æ¯å¸§ä»å½“å‰å¸§ bbox é‡è£ targetï¼Œç›®æ ‡ä¸å¯è§æ—¶æ—  crop â†’ æ— æ³•è®­ç»ƒèº«ä»½ä¿æŒ/é®æŒ¡æ¢å¤/å¤šäºº ReIDã€‚
+   - ä¿®å¤ï¼š`sage3d_ds._reference_target` / `tpt_ds._reference_target` æ¯ä¸ª episode/è§†é¢‘ç¼“å­˜**é¦–ä¸ªå¯è§å¸§**çš„ bbox crop åˆ° `<ep_dir>/_target_refs/ref.jpg`ï¼Œæ‰€æœ‰ step å…±ç”¨åŒä¸€ referenceï¼›å½“å‰ bbox ä»…é€šè¿‡ `bbox`/`target_local` ä½œç›‘ç£æ ‡ç­¾ã€‚
+
+3. **å¯å­¦ä¹  null token åŸºæœ¬æœªä½¿ç”¨**
+   - äº‹å®ï¼šcollate å¯¹ç¼ºç›®æ ‡æ ·æœ¬å¡«é»‘å›¾å¹¶æ•´ä½“ä¼ å…¥ `target_image`ï¼Œpolicy åªåœ¨ `target_image is None`ï¼ˆæ•´æ‰¹ï¼‰æ‰ç”¨ nullï¼Œæ··åˆ batch ä¸­ç¼ºç›®æ ‡æ ·æœ¬å®é™…èµ°é»‘å›¾ DINO+TargetEncoderã€‚
+   - ä¿®å¤ï¼špolicy åœ¨ `target_valid` å­˜åœ¨æ—¶é€æ ·æœ¬æ··åˆ `target_tokens = where(target_valid>0.5, encoded, null)`ï¼›`null_target` æ”¹ä¸º `(1, n_identity_tokens, dim)`ã€‚
+
+4. **inverse dynamics æ ¸å¿ƒé—®é¢˜**
+   - äº‹å®ï¼šfuture RGB â†’ frozen DINO â†’ mean pool â†’ `future_pool` â†’ detachï¼Œæœªç”¨å…±äº« backboneã€‚
+   - ä¿®å¤ï¼š`h_future` ç”±**åŒä¸€ FrameGlobalBackbone** å‰å‘æœªæ¥å¸§å¾—åˆ° `h_{t+H}`ï¼ˆ`fut_patches[:, None]`ï¼‰ï¼Œä»…å–‚ç»™ inverse æ—¶ `h_future.detach()`ï¼›åˆ é™¤ `future_pool`ã€‚
+
+### å…¶ä»–é‡è¦é—®é¢˜
+
+- **`success or 1.0` bug**ï¼š`success=0` è¢« `or` è½¬æˆ 1.0ï¼ˆå¤±è´¥ episode æ»¡ç½®ä¿¡åº¦ï¼‰ï¼›æ”¹ä¸º `conf = float(succ) if succ is not None else 1.0`ã€‚
+- **history-valid mask**ï¼š`_history_frames` è¿”å› `(stack, mask)`ï¼Œrepeat-last å¡«å……å¸§ mask=0ï¼›collate è¾“å‡º `history_valid`ï¼›`evggt.FrameGlobalBackbone` æ¥å— `frame_valid`ï¼ŒGlobal Attention å¯¹æ— æ•ˆå¸§æ„é€  per-batch maskï¼ˆä»…å…è®¸è‡ª attendï¼‰ï¼ŒFrame Attention ä¿æŒåŒå¸§è¯­ä¹‰ã€‚
+- **future-valid mask**ï¼šcollate è¾“å‡º `future_valid`ï¼›`forward_loss` çš„ dino/depth/free/target_state ä¸ `a_inv` çš„ waypoint loss å‡æŒ‰ `future_valid` æ©ç ã€‚
+
+### éªŒè¯ç»“æœï¼ˆv2ï¼‰
+
+```
+python e2e_policy/smoke_test.py --size 224 --history 3 --iter 2 --device cuda   # SMOKE OK
+python e2e_policy/train_e2e.py --steps 300 --batch 8 --device cuda             # æ”¶æ•›
+```
+
+- smokeï¼štrainable 13.67Mï¼ˆnull_target=4 tokensï¼Œinverse èµ°å…±äº« backboneï¼‰ï¼Œ`h_future (2,384)` æ­£å¸¸è¾“å‡ºã€‚
+- çœŸå®è®­ç»ƒï¼šloss 0.89 â†’ 0.05ï¼ˆstep 250ï¼‰ï¼ŒL_wp 0.27 â†’ 0.01ã€‚
+- Sage3D åè®®éªŒè¯ï¼š`n_valid=7`ï¼Œreference crop ç”Ÿæˆäº `_target_refs/ref.jpg`ã€‚
+
+---
+
+## ×·¼Ó£ºµÚÈıÂÖÆÀÉóĞŞ¸´£¨Êı¾İÓïÒå£¬2026-08-15£©
+
+Ğ­×÷Õß·¢ÏÖ 9 ¸öÊı¾İÓïÒåÎÊÌâ£¬È«²¿È·ÈÏÊôÊµ²¢ĞŞ¸´¡£
+
+### ÑÏÖØÎÊÌâ
+
+1. **NavDP µ±Ç°Ö¡Óë¹ì¼£²Î¿¼Ïµ´íÎ»**
+   - ÊÂÊµ£ºµ±Ç°Í¼ÓÃ gb[mem]£¬µ« local ¹ì¼£ÒÔ extrinsics[start] ÎªÔ­µã£¨start<mem<target£©¡£Êµ²â start=0/mem=67/target=68 Ê± pointgoal¡Ö0.97m£¬Ä¿±ê½öÍí 1 ²½¡£
+   - ĞŞ¸´£ºlocal ¹ì¼£¸ÄÒÔ extrinsics[mem]£¨µ±Ç°Ö¡£©ÎªÔ­µã£¬Óë InternNav memory_start_choice Ò»ÖÂ¡£ÑéÖ¤£º	raj[0]¡Ö[0,0,0]£¬goal_dist ÖĞÎ» 0.36m¡£
+
+2. **NavDP ºöÂÔ base_extrinsic Ğı×ª**
+   - ÊÂÊµ£ºº¯Êı½ÓÊÕ ase_extrinsic µ«´ÓÎ´Ê¹ÓÃ£»D435i base_ext ·Çµ¥Î»Ğı×ª¡£
+   - ĞŞ¸´£º_relative_pose_point ¼Ó R_base = R_base @ inv(base_extrinsic[:3,:3])£¬Í¬ InternNav navdp_lerobot_dataset.py:268¡£
+
+3. **PointNav/ImageGoal ÌØÈ¨Ä£Ì¬Ğ¹Â©**
+   - ÊÂÊµ£ºÁ½ÈÎÎñ¶¼·µ»Ø target_img + pointgoal£¬collate Í¬Ê±ËÍÄ£ĞÍ¡£
+   - ĞŞ¸´£º°´ÈÎÎñÆÁ±Î¡ª¡ªpointnav Ö»¸ø pointgoal£¨target_img=None£©£¬imagegoal Ö»¸ø goal image£¨pointgoal=None£©¡£goal_dist ÈÔ×÷Îª¼à¶½±êÇ©½ø extra£¨±êÇ©·ÇÊäÈë£©¡£
+
+4. **valid »ìÏı"Ä¿±ê¿É¼û"Óë"¹ì¼£ÓĞĞ§"**
+   - ÊÂÊµ£ºSage3D alid=visible ±» collate ÓÃÀ´ gate waypoint£¬Ä¿±êÕÚµ²¼´²»¼ÆËã waypoint loss£¬¶ªµôÕÚµ²»Ö¸´Ñù±¾¡£
+   - ĞŞ¸´£ºmake_sample_dict ²ğ 	arget_visible / 	rajectory_valid / uture_valid Èı×Ö¶Î£»collate waypoint ¼à¶½¸Ä°´ 	rajectory_valid£¬target-state °´ 	arget_visible¡£ÑéÖ¤£º	rajectory_valid ÓÉ traj ´æÔÚ¾ö¶¨¡£
+
+### ÖØÒªÎÊÌâ
+
+5. **TpT ÀúÊ·Ö¡Ë³Ğò·´ÁË**£ºÑ­»· i=history..1 ºóÔÙ¹ıÂË£¬×ÔÈ»µÃµ½¾É¡úĞÂ£»ÑéÖ¤ [18,22,...,46] ÉıĞò¡£
+6. **NavDP ¶şÎ¬ depth ÎŞ·¨×ßÍ³Ò» loader**£ºesize_keep_aspect Ô­ÉúÖ§³Ö 2D Êı×é¡¢depth ²» /255£»É¾³ı 	rain_e2e.py µÄ monkey patch¡£ÑéÖ¤ (224,224,1) Õı³£¡£
+7. **¿É¼ûĞÔ±ß½ç´íÎó**£º <u<1e6 ¸ÄÎªÕæÊµÍ¼Ïñ¿í¸ß  <=u<W and 0<=v<H£¨_img_shape »º´æ per-episode£©¡£
+8. **Sage3D future RGB Óë horizon Î´¶ÔÆë**£ºÔ­¹Ì¶¨ k+3£¬¸Ä k + nh*step_stride£¨waypoint_horizon ÖÕµã£©¡£ÑéÖ¤ k=3¡úframe 11¡£
+9. **»ìºÏ²ÉÑù waypoint ¼à¶½Õ¼±ÈÏ¡ÊÍ**£ºÔ­°´ĞĞÊı»ìºÏ£¬TpT(~141k) ÑÍÃ» Sage3D(~38k)£¬waypoint Õ¼±È ~10%¡£¸ÄÎª°´ (ÈÎÎñ, ¼à¶½ÀàĞÍ) ËÄ×é·Ö²ã (sage-wp, tpt-nowp, pointnav, imagegoal) = (1, 0.5, 1, 1)¡£ÑéÖ¤ person_follow+wp Õ¼±È 23%¡£
+
+### ÑéÖ¤½á¹û£¨v3£©
+
+`
+python verify_fix2.py    # 9 ÏîÈ«²¿ OK
+python e2e_policy/train_e2e.py --steps 300 --batch 8 --device cuda
+`
+
+- verify_fix2£º2D depth¡¢NavDP ²Î¿¼Ïµ/Ğı×ª/¿É¼ûĞÔ¡¢Ä£Ì¬¸ôÀë¡¢valid ²ğ·Ö¡¢TpT Ë³Ğò¡¢future horizon¡¢·Ö²ã²ÉÑù¡¢load_sample_arrays(depth) È«²¿Í¨¹ı¡£
+- ÕæÊµÑµÁ·£º300-step ÊÕÁ²£¬loss ~0.12@step295£¬ÎŞ±ÀÀ£¡£

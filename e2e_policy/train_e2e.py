@@ -21,36 +21,6 @@ from e2e_policy.data_collate import collate_batch
 from mixed import MixedOmniDataset
 
 
-def _patch_unified_2d_depth():
-    """Make unified.resize_keep_aspect accept 2D single-channel (depth) arrays.
-
-    The NavDP loader emits HxW uint16 depth; the stock helper only pads 3-channel
-    RGB. Wrap without modifying the original tools/data_loader files.
-    """
-    import unified as U
-
-    _orig = U.resize_keep_aspect
-
-    def _rk(img, size):
-        if img.ndim != 2:
-            return _orig(img, size)
-        import cv2
-
-        H, W = img.shape[:2]
-        prop = size / max(H, W)
-        r = cv2.resize(img, (-1, -1), fx=prop, fy=prop, interpolation=cv2.INTER_AREA)
-        pad_w = max((size - r.shape[1]) // 2, 0)
-        pad_h = max((size - r.shape[0]) // 2, 0)
-        r = np.pad(r, ((pad_h, pad_h), (pad_w, pad_w)), mode="constant", constant_values=0)
-        r = cv2.resize(r, (size, size), interpolation=cv2.INTER_AREA)
-        return r.astype(np.float32)
-
-    U.resize_keep_aspect = _rk
-
-
-_patch_unified_2d_depth()
-
-
 def parse_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sage-root", default="/data/nfs/share/OmTrackVLA/example_datasets/sage3d_extracted")

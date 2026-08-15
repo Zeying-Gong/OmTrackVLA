@@ -59,6 +59,7 @@ class Sage3DDataset:
         self.step_stride = max(1, step_stride)
         self.index = []  # list of dict: run, mode, ep, cam, instruction, success, ep_dir, derived
         self._derived_cache = {}
+        self._ref_cache = {}
 
         runs = sorted(
             d for d in os.listdir(extracted_root)
@@ -91,9 +92,6 @@ class Sage3DDataset:
                     }
                 )
 
-        # Next non-consecutive maximal-descent gives ~future frame.
-        self._future_offset = self.step_stride * 3
-
     def __len__(self):
         return len(self.index)
 
@@ -111,6 +109,42 @@ class Sage3DDataset:
 
     def _resolve(self, i):
         return self.index[i] if isinstance(i, int) else i
+
+    def _reference_target(self, idx):
+        """Fixed per-episode identity reference crop (first visible frame's bbox).
+
+        Cached under <ep_dir>/_target_refs/ref.jpg. Current-frame bbox is used
+        only as supervision, never as the identity reference.
+        """
+        ep_dir = idx["ep_dir"]
+        if ep_dir in self._ref_cache:
+            return self._ref_cache[ep_dir]
+        ref_path = os.path.join(ep_dir, "_target_refs", "ref.jpg")
+        if os.path.isfile(ref_path):
+            self._ref_cache[ep_dir] = ref_path
+            return ref_path
+        derived = self._derived(idx)
+        steps = derived.get("steps", [])
+        rgb = _list_frame_paths(ep_dir, "rgb")
+        ref = None
+        for k, st in enumerate(steps):
+            if k >= len(rgb) or not st.get("visible") or not st.get("bbox"):
+                continue
+            try:
+                ref = _crop_target(rgb[k], st["bbox"])
+            except Exception:
+                ref = None
+            if ref:
+                break
+        if ref:
+            os.makedirs(os.path.dirname(ref_path), exist_ok=True)
+            if not os.path.exists(ref_path):
+                import shutil
+                shutil.copyfile(ref, ref_path)
+            self._ref_cache[ep_dir] = ref_path
+            return ref_path
+        self._ref_cache[ep_dir] = None
+        return None
 
     def step_count(self, i):
         idx = self._resolve(i)
@@ -132,17 +166,14 @@ class Sage3DDataset:
         current = rgb[k]
         window = [rgb[i] for i in range(max(0, k - self.step_stride * 8), k, self.step_stride)]
         bbox = st.get("bbox")
-        valid = bool(st.get("visible", False))
-        target_img = None
-        if valid and bbox:
-            try:
-                target_img = _crop_target(current, bbox)
-            except Exception:
-                target_img = None
+        visible = bool(st.get("visible", False))
+        target_img = self._reference_target(idx)   # fixed identity reference (episode-level)
         wpts = st.get("waypoints_ego") or []
         if wpts and len(wpts) < nh:
             wpts = wpts + [[wpts[-1][0], wpts[-1][1]]] * (nh - len(wpts))
-        future_rgb = rgb[min(len(rgb) - 1, k + self._future_offset)] if rgb else None
+        # future RGB aligned to the END of the action horizon (k + nh*stride),
+        # matching the forward-dynamics chunk instead of a fixed ~3 steps.
+        future_rgb = rgb[min(len(rgb) - 1, k + nh * self.step_stride)] if rgb else None
         extra = {
             "success": idx["success"],
             "following_rate": idx["following_rate"],
@@ -161,7 +192,9 @@ class Sage3DDataset:
             traj=wpts[:nh],
             collision=bool(st.get("collision", False)),
             target_dist=st.get("target_dist"),
-            valid=valid,
+            valid=visible,
+            target_visible=visible,
+            trajectory_valid=bool(wpts),
             future_rgb=future_rgb,
             extra=extra,
         )

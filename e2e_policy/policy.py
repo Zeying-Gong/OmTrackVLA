@@ -50,20 +50,19 @@ class E2EFollowPolicy(nn.Module):
         self.waypoint_head = WaypointHead(cfg.dim, cfg.horizon, cfg.action_dim)
         self.stop_head = StopHead(cfg.dim) if cfg.use_stop_head else None
         self.target_state_head = TargetStateHead(cfg.dim) if cfg.use_target_state_head else None
-        self.null_target = nn.Parameter(torch.zeros(1, 1, cfg.dim))   # learnable null (note 3.3)
+        self.null_target = nn.Parameter(torch.zeros(1, cfg.n_identity_tokens, cfg.dim))   # learnable null (note 3.3)
         nn.init.trunc_normal_(self.null_target, std=0.02)
         if cfg.use_forward_dyn:
             self.forward_dyn = ForwardDynamics(cfg.dim, cfg.action_dim, cfg.horizon)
         if cfg.use_inverse_dyn:
             self.inverse_dyn = InverseDynamics(cfg.dim, cfg.horizon, cfg.action_dim)
-        self.future_pool = nn.Sequential(nn.Linear(cfg.dim, cfg.dim), nn.GELU(), nn.Linear(cfg.dim, cfg.dim))
 
     def forward(self, current_rgb,
                 target_image=None, target_type=None, target_valid=None, target_confidence=None,
                 pointgoal=None,
-                history_rgb=None, history_motion=None,
+                history_rgb=None, history_motion=None, history_valid=None,
                 task_type=None, goal_spec=None,
-                trajectory=None, future_rgb=None):
+                trajectory=None, future_rgb=None, future_valid=None):
         """Returns a dict of outputs. `trajectory`/`future_rgb` only used in training."""
         cfg = self.cfg
         B = current_rgb.shape[0]
@@ -71,18 +70,29 @@ class E2EFollowPolicy(nn.Module):
 
         cur_patches = self.dino.forward_patches(current_rgb)          # (B, P, C)
 
+        frame_valid = None
         if history_rgb is not None:
             K = history_rgb.shape[1]
             hp = self.dino.forward_patches(history_rgb.reshape(B * K, *history_rgb.shape[2:]))
             hp = hp.reshape(B, K, -1, C)
             cur_patches = torch.cat([hp, cur_patches[:, None]], dim=1)  # (B, T, P, C), current last
+            if history_valid is not None:
+                frame_valid = torch.cat(
+                    [history_valid, torch.ones(B, 1, device=history_valid.device)], dim=1
+                )
         else:
             cur_patches = cur_patches[:, None]                         # (B, 1, P, C)
 
         ctx = []
         if target_image is not None:
             tgt_patches = self.dino.forward_patches(target_image)     # (B, Pt, C)
-            ctx.append(self.target_enc(tgt_patches, target_type, target_valid, target_confidence))
+            enc = self.target_enc(tgt_patches, target_type, target_valid, target_confidence)
+            if target_valid is not None:
+                # per-sample identity conditioning: valid -> encoder output, else null
+                null = self.null_target.expand(B, -1, -1)
+                v = target_valid[:, None, None]
+                enc = torch.where(v > 0.5, enc, null)
+            ctx.append(enc)
         else:
             ctx.append(self.null_target.expand(B, -1, -1))            # learnable null token
 
@@ -98,7 +108,7 @@ class E2EFollowPolicy(nn.Module):
         context = torch.cat(ctx, dim=1) if ctx else current_rgb.new_zeros(B, 0, C)
 
         grid = self.dino.grid_size(current_rgb)
-        h_t, fused_patches = self.backbone(cur_patches, context, grid=grid)
+        h_t, fused_patches = self.backbone(cur_patches, context, grid=grid, frame_valid=frame_valid)
 
         out = {
             "a_hat": self.waypoint_head(h_t),
@@ -116,7 +126,11 @@ class E2EFollowPolicy(nn.Module):
                 fut_patches = self.dino.forward_patches(future_rgb)
                 out["future_patches_teacher"] = fut_patches.detach()
             if future_rgb is not None and trajectory is not None:
-                h_future = self.future_pool(fut_patches.mean(dim=1))
+                # Future observation through the SAME backbone -> h_{t+H};
+                # only the result fed to inverse dynamics is stop-gradded.
+                h_future, _ = self.backbone(
+                    fut_patches[:, None], context, grid=grid, frame_valid=None
+                )
                 out["h_future"] = h_future
                 if cfg.use_inverse_dyn:
                     out["a_inv"] = self.inverse_dyn(h_t, h_future.detach())

@@ -45,6 +45,7 @@ def _spatial_grad(x, h, w):
 def forward_loss(fwd, cur_teacher, future_teacher, grid=(16, 16),
                  depth_target=None, free_target=None, patch_weight=None,
                  target_state_target=None, target_state_valid=None,
+                 future_valid=None,
                  alpha_depth=0.5, beta_grad=0.1, gamma_free=0.1, delta_state=0.2):
     """Training-only forward dynamics loss (note sec 7/8)."""
     B = cur_teacher.shape[0]
@@ -53,6 +54,8 @@ def forward_loss(fwd, cur_teacher, future_teacher, grid=(16, 16),
     tn = F.normalize(delta_target, dim=-1)
     L_dino = 1.0 - (pn * tn).sum(dim=-1)                 # (B, P)
     w = patch_weight if patch_weight is not None else torch.ones_like(L_dino)
+    if future_valid is not None:
+        w = w * future_valid[:, None]
     L = masked_weighted_mean(L_dino, w)
     L_depth = L_grad = L_free = None
 
@@ -77,6 +80,9 @@ def forward_loss(fwd, cur_teacher, future_teacher, grid=(16, 16),
         vis_t = target_state_target[..., 2:3]
         pos_v = target_state_valid[..., :1] if target_state_valid is not None else torch.ones(B, 1, device=st.device)
         vis_v = target_state_valid[..., 2:3] if target_state_valid is not None else torch.ones(B, 1, device=st.device)
+        if future_valid is not None:
+            pos_v = pos_v * future_valid[:, :1]
+            vis_v = vis_v * future_valid[:, :1]
         L_pos = masked_weighted_mean(smooth_l1(st[:, :2], pos_t).mean(-1, keepdim=True), pos_v)
         L_vis = masked_weighted_mean(
             F.binary_cross_entropy_with_logits(st[:, 2:3], vis_t, reduction="none"), vis_v
@@ -153,13 +159,17 @@ def compute_total_loss(out, batch, cfg, lambda_fd=1.0, lambda_inv=0.5, lambda_ta
             patch_weight=pw,
             target_state_target=batch.get("target_state"),
             target_state_valid=batch.get("target_state_valid"),
+            future_valid=batch.get("future_valid"),
         )
         fd_term = L_fd
         logs.update(lf)
 
     if "a_inv" in out and out["a_inv"] is not None:
-        L_inv, _ = waypoint_loss(out["a_inv"], batch["trajectory"],
-                                 batch["action_valid"], batch["action_confidence"], lambda_se2=0.0)
+        av = batch["action_valid"]
+        if batch.get("future_valid") is not None:
+            av = av * batch["future_valid"][:, None]
+        L_inv, _ = waypoint_loss(out["a_inv"], batch["trajectory"], av,
+                                 batch["action_confidence"], lambda_se2=0.0)
         inv_term = L_inv
 
     if "target_state" in out and out["target_state"] is not None:
