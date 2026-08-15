@@ -61,7 +61,7 @@ class HistoryEncoder(nn.Module):
     A per-slot order embedding is added so the cache keeps temporal structure.
     """
 
-    def __init__(self, dim=384, motion_dim=3, max_history=32):
+    def __init__(self, dim=384, motion_dim=2, max_history=32):
         super().__init__()
         self.motion_mlp = nn.Sequential(nn.Linear(motion_dim, dim), nn.GELU(), nn.Linear(dim, dim))
         self.norm = nn.LayerNorm(dim)

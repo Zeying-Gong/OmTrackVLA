@@ -35,13 +35,23 @@ def _relative_pose_point(ext_start, base_extrinsic, world_point):
 
 
 def _xyz_to_xyt(xyz, init_vector):
-    xyt = []
-    for i in range(xyz.shape[0] - 1):
+    """Waypoints with heading from consecutive displacement.
+
+    Emits M points (every element of xyz, INCLUDING the final position), with
+    heading held from the last displacement. Omitting the last point dropped the
+    goal whenever the trajectory is short (target=mem+1 -> only origin).
+    """
+    n = xyz.shape[0]
+    if n < 2:
+        return np.empty((0, 3), dtype=np.float64)
+    yaw = np.zeros(n, dtype=np.float64)
+    for i in range(n - 1):
         cv = xyz[i + 1] - xyz[i]
         dot = np.dot(init_vector[:2], cv[:2])
         cross = np.cross(init_vector[:2], cv[:2])
-        xyt.append([xyz[i][0], xyz[i][1], float(np.arctan2(cross, dot))])
-    return np.array(xyt, dtype=np.float64)
+        yaw[i] = float(np.arctan2(cross, dot))
+    yaw[-1] = yaw[-2]
+    return np.column_stack([xyz[:, 0], xyz[:, 1], yaw])
 
 
 class NavDPDataset:
@@ -157,11 +167,15 @@ class NavDPDataset:
         task = task_override or self.condition
 
         n = self.memory_size
-        mem_idx = np.arange(mem - (n - 1) * self.pred_digit, mem + 1, self.pred_digit)
+        # history strictly BEFORE the current (mem) frame; `current` is appended
+        # by the policy, so including mem here would duplicate the current image
+        # at two different 3D-mRoPE time coordinates.
+        mem_idx = np.arange(mem - (n - 1) * self.pred_digit, mem, self.pred_digit)
         mem_idx = mem_idx[mem_idx >= 0]
         window = [ep["rgb"][int(i)] for i in mem_idx]
         current = ep["rgb"][mem]
         depth = ep["depth"][mem] if mem < len(ep["depth"]) else None
+        future_depth = ep["depth"][target] if target < len(ep["depth"]) else None
 
         # future trajectory in the local frame of the CURRENT (mem) frame.
         # InternNav's process_actions() starts from memory_start_choice = the
@@ -224,7 +238,8 @@ class NavDPDataset:
             pointgoal_valid=pg_valid,
             future_rgb=future_rgb,
             depth=depth,
-            extra={"start": start, "target": target, "mem": mem, "goal_dist": goal_dist},
+            extra={"start": start, "target": target, "mem": mem, "goal_dist": goal_dist,
+                   "future_depth": future_depth},
         )
 
     def sample(self, task_override=None):

@@ -134,4 +134,11 @@ def load_sample_arrays(s, img_size=224, memory_size=8):
         d[d > 5.0] = 0
         d[d < 0.1] = 0
         out["depth"] = d[..., None] if d.ndim == 2 else d
+    fdp = s.get("extra", {}).get("future_depth")
+    if fdp and os.path.isfile(fdp):
+        fd = cv2.imread(fdp, cv2.IMREAD_ANYDEPTH).astype(np.float32) / 10000.0
+        fd = resize_keep_aspect(fd, img_size, normalize=False)
+        fd[fd > 5.0] = 0
+        fd[fd < 0.1] = 0
+        out["future_depth"] = fd[..., None] if fd.ndim == 2 else fd
     return out

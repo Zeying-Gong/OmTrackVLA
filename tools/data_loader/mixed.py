@@ -99,4 +99,5 @@ class MixedOmniDataset:
             s["window_arr"] = arrs["window"]
             s["target_arr"] = arrs["target"]
             s["depth_arr"] = arrs.get("depth")
+            s["future_depth"] = arrs.get("future_depth")
         return s

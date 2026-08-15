@@ -222,3 +222,45 @@ python e2e_policy/train_e2e.py --steps 300 --batch 8 --device cuda
 
 - verify_fix2：2D depth、NavDP 参考系/旋转/可见性、模态隔离、valid 拆分、TpT 顺序、future horizon、分层采样、load_sample_arrays(depth) 全部通过。
 - 真实训练：300-step 收敛，loss ~0.12@step295，无崩溃。
+
+---
+
+## 追加：第三轮评审修复（标签与 mask，2026-08-15）
+
+### 主要问题（5 项，均验证通过）
+
+1. **Sage3D 动作标签不含原点**
+   - 事实：extract_sage3d.build_waypoints 首点取 s+1（未来帧），8 点全为未来位置，不含原点；collate 却假定首点是原点 → 首段动作被丢弃、只生成 7 个有效动作。
+   - 修复：waypoints_to_actions 检测首点 hypot>1e-6 时显式 prepend [0,0]，监督 8 段动作。验证：40/40 样本 n_valid=8，首动作非零。
+
+2. **Sage3D future frame 未对齐动作终点**
+   - 事实：waypoint 用 waypoint_stride=3（第 8 点≈k+22），future_rgb 却取 k+8（早约 14 帧）。
+   - 修复：uture_rgb = rgb[k + 1 + (nh-1)*waypoint_stride]（k+22）。验证：k=3→frame 25。
+
+3. **future_valid 未进入 loss**
+   - 事实：collate 只把 future_valid 放入 model_kwargs，loss_batch 没有它 → losses.py 恒读 None，缺未来帧样本仍用黑图算 loss。
+   - 修复：uture_valid 放入 loss_batch；losses.py 的 uture_valid[:, :1] 索引改为 eshape(-1,1)（形状 (B,)）。
+
+4. **NavDP 终点丢失 + 错误 stop 标签**
+   - 事实：_xyz_to_xyt 只加入 xyz[i]，漏掉最后一个位置；	arget=mem+1 时 xyt 只剩原点，PointGoal=[0,0,0]、stop 误标 1（200 样本中 13 个）。
+   - 修复：_xyz_to_xyt 输出 M 点（含终点），heading 末点 hold；collate 
+_valid 改为按"非零位移"计数，短轨迹尾部的零/重复动作不再监督。验证：200 样本 10 个短轨迹，0 个零 pointgoal；n_valid 分布 {1:32,...,8:74}。
+
+5. **NavDP 历史重复包含当前帧**
+   - 事实：window 末尾即 mem，policy 又 append 当前帧 → 同一图出现在两个 3D-mRoPE 时间坐标。
+   - 修复：mem_idx 上界改为 mem（不含），window 严格在当前帧之前。验证：100/100 无重复。
+
+### 新增发现（2 项，均修复）
+
+- **stop_loss 全 person-follow 时错误回退全批 BCE**：	ask_mask.sum()==0 时返回 zeros 损失。
+- **辅助分支未获得真实监督**：history_motion 经 collate 传入 policy（HistoryEncoder.motion_dim=2 适配 TpT 2D motion）；uture_depth 从 NavDP loader → load_sample_arrays → collate 生成 depth_residual（未来-当前 depth，16×16 grid）与 ree_target（free-space mask），按 depth_valid 掩码，forward-loss 的 L_depth/L_free/L_grad 现在有真实监督。
+
+### 验证结果（v3）
+
+`
+python verify_fix3.py    # P1-P5 + stop_loss + history_motion 全部 OK
+python e2e_policy/train_e2e.py --steps 300 --batch 8 --use-forward-dyn --use-inverse-dyn --device cuda
+`
+
+- verify_fix3：Sage3D 8 动作、future 对齐、future_valid in loss_batch、NavDP 终点不丢/短轨迹 mask、window 无重复、stop_loss 零、history_motion 全通过。
+- 训练（forward/inverse dyn + depth/free）：L_wp 收敛至 ~0.01-0.03，L_depth/L_free/L_grad 正常下降，无崩溃。

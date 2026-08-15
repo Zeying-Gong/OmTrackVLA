@@ -31,14 +31,14 @@ def waypoints_to_actions(wpts, horizon=8):
     """Absolute ego waypoints -> (H, 4) actions (dx, dy, sin, cos) + n_valid.
 
     wpts: list of [x, y] or [x, y, yaw]; yaw recovered from displacement when absent.
-    The FIRST waypoint is the origin (current pose). Positions are padded to
-    horizon+1 (last point repeated) so horizon actions are produced; a held final
-    step maps to a zero displacement action.
+    The origin (current pose) is prepended EXPLICITLY when the first waypoint is
+    not the origin (e.g. Sage3D stores only FUTURE +1,+4,... frame positions, no
+    origin). Positions are padded to horizon+1 (last point repeated) so horizon
+    actions are produced; a held final step maps to a zero displacement action.
 
     Returns (acts, n_valid): acts (horizon, 4); n_valid = number of REAL
-    displacement steps (M-1, capped at horizon). Sage3D stores 8 points including
-    the origin, so it only yields 7 real actions; the padded final step must NOT
-    be supervised as a "stop" action (caller masks steps >= n_valid).
+    displacement steps = count of non-held (non-zero) consecutive displacements
+    (capped at horizon). Held/duplicated trailing steps are NOT supervised.
     """
     if not wpts:
         return None
@@ -46,8 +46,13 @@ def waypoints_to_actions(wpts, horizon=8):
     if len(pts) < 2:
         return None
     pos = np.stack([p[:2] for p in pts])            # (M, 2)
+
+    # Sage3D/TpT store future-only waypoints (no origin) -> prepend [0,0].
+    if np.hypot(pos[0, 0], pos[0, 1]) > 1e-6:
+        pos = np.concatenate([np.zeros((1, 2)), pos], axis=0)
+        if pts[0].size >= 3:
+            pts = [np.array([0.0, 0.0, pts[0][2]], dtype=np.float64)] + pts
     M = pos.shape[0]
-    n_valid = min(M - 1, horizon)
 
     if pts[0].size >= 3:
         yaw = np.array([p[2] for p in pts], dtype=np.float64)
@@ -55,6 +60,11 @@ def waypoints_to_actions(wpts, horizon=8):
         d = np.diff(pos, axis=0)                    # (M-1, 2)
         yaw = np.arctan2(d[:, 1], d[:, 0])
         yaw = np.concatenate([yaw, yaw[-1:]])
+
+    # count real (non-held) displacement steps BEFORE padding/truncation
+    disp = np.diff(pos, axis=0)                     # (M-1, 2)
+    n_real = int((np.hypot(disp[:, 0], disp[:, 1]) > 1e-6).sum())
+    n_valid = min(n_real, horizon)
 
     if M < horizon + 1:
         pad = np.repeat(pos[-1:], horizon + 1 - M, axis=0)
@@ -150,6 +160,18 @@ def collate_batch(samples, image_size=224, max_history=8, horizon=8, device="cpu
         mkw["history_rgb"] = torch.as_tensor(harr).permute(0, 1, 4, 2, 3).float().to(device)
         mkw["history_valid"] = torch.as_tensor(hmask, device=device)
 
+    # ---- history_motion (B, K, 2): ego displacement over the history window ----
+    hm_arr = np.zeros((B, 1, 2), np.float32)
+    hm_valid = np.zeros((B, 1), np.float32)
+    for i, s in enumerate(samples):
+        m = s.get("extra", {}).get("history_motion")
+        if m is not None and len(m) >= 2:
+            hm_arr[i, 0, :2] = m[:2]
+            hm_valid[i, 0] = 1.0
+    if hm_valid.sum() > 0:
+        mkw["history_motion"] = torch.as_tensor(hm_arr, device=device)
+        mkw["history_motion_valid"] = torch.as_tensor(hm_valid, device=device)
+
     # ---- pointgoal (B, 7): x, y, range, bearing, uncertainty, age, valid ----
     if any(s.get("pointgoal") is not None for s in samples):
         pg = np.zeros((B, 7), np.float32)
@@ -185,6 +207,25 @@ def collate_batch(samples, image_size=224, max_history=8, horizon=8, device="cpu
                 fut.append(np.zeros((image_size, image_size, 3), np.float32))
         mkw["future_rgb"] = torch.as_tensor(np.stack(fut)).permute(0, 3, 1, 2).float().to(device)
     mkw["future_valid"] = torch.as_tensor(fvalid, device=device)
+
+    # ---- forward-dynamics depth/free-space targets (B, gridH*gridW) ------------
+    grid_h = grid_w = image_size // 14      # DINOv2 patch grid (16x16 at 224)
+    depth_res = np.zeros((B, grid_h * grid_w), np.float32)
+    free_tgt = np.zeros((B, grid_h * grid_w), np.float32)
+    dvalid = np.zeros((B,), np.float32)
+    for i, s in enumerate(samples):
+        d_cur = s.get("depth_arr")
+        fd = s.get("future_depth")
+        if d_cur is not None and fd is not None:
+            # 2D -> single channel, downscale to grid
+            dc = d_cur[..., 0] if d_cur.ndim == 3 else d_cur
+            fc = fd[..., 0] if fd.ndim == 3 else fd
+            import cv2
+            dc_g = cv2.resize(dc, (grid_w, grid_h), interpolation=cv2.INTER_AREA)
+            fc_g = cv2.resize(fc, (grid_w, grid_h), interpolation=cv2.INTER_AREA)
+            depth_res[i] = (fc_g - dc_g).reshape(-1)
+            free_tgt[i] = ((fc_g > 0.15) & (fc_g < 4.5)).astype(np.float32).reshape(-1)
+            dvalid[i] = 1.0
 
     # ---- loss batch ------------------------------------------------------------
     traj = np.zeros((B, horizon, 4), np.float32)
@@ -234,5 +275,9 @@ def collate_batch(samples, image_size=224, max_history=8, horizon=8, device="cpu
         "target_state_valid": torch.as_tensor(tstate_valid, device=device),
         "stop_label": torch.as_tensor(stop_label, device=device),
         "stop_task_mask": torch.as_tensor(stop_mask, device=device),
+        "future_valid": torch.as_tensor(fvalid, device=device),
+        "depth_residual": torch.as_tensor(depth_res, device=device),
+        "free_target": torch.as_tensor(free_tgt, device=device),
+        "depth_valid": torch.as_tensor(dvalid, device=device),
     }
     return mkw, loss_batch

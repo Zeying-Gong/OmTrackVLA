@@ -45,7 +45,7 @@ def _spatial_grad(x, h, w):
 def forward_loss(fwd, cur_teacher, future_teacher, grid=(16, 16),
                  depth_target=None, free_target=None, patch_weight=None,
                  target_state_target=None, target_state_valid=None,
-                 future_valid=None,
+                 future_valid=None, depth_valid=None,
                  alpha_depth=0.5, beta_grad=0.1, gamma_free=0.1, delta_state=0.2):
     """Training-only forward dynamics loss (note sec 7/8)."""
     B = cur_teacher.shape[0]
@@ -60,7 +60,11 @@ def forward_loss(fwd, cur_teacher, future_teacher, grid=(16, 16),
     L_depth = L_grad = L_free = None
 
     if depth_target is not None:
-        L_depth = masked_weighted_mean(smooth_l1(fwd["depth_residual"], depth_target), w)
+        if depth_valid is not None:
+            wd = w * depth_valid[:, None]
+        else:
+            wd = w
+        L_depth = masked_weighted_mean(smooth_l1(fwd["depth_residual"], depth_target), wd)
         h, ww = grid
         gpred = _spatial_grad(fwd["depth_residual"], h, ww)
         gtar = _spatial_grad(depth_target, h, ww)
@@ -68,9 +72,13 @@ def forward_loss(fwd, cur_teacher, future_teacher, grid=(16, 16),
         L = L + alpha_depth * L_depth + beta_grad * L_grad
 
     if free_target is not None:
+        if depth_valid is not None:
+            wf = w * depth_valid[:, None]
+        else:
+            wf = w
         L_free = masked_weighted_mean(
             F.binary_cross_entropy_with_logits(fwd["free_logit"], free_target, reduction="none"),
-            w,
+            wf,
         )
         L = L + gamma_free * L_free
 
@@ -81,8 +89,9 @@ def forward_loss(fwd, cur_teacher, future_teacher, grid=(16, 16),
         pos_v = target_state_valid[..., :1] if target_state_valid is not None else torch.ones(B, 1, device=st.device)
         vis_v = target_state_valid[..., 2:3] if target_state_valid is not None else torch.ones(B, 1, device=st.device)
         if future_valid is not None:
-            pos_v = pos_v * future_valid[:, :1]
-            vis_v = vis_v * future_valid[:, :1]
+            fv = future_valid.reshape(-1, 1).float()
+            pos_v = pos_v * fv
+            vis_v = vis_v * fv
         L_pos = masked_weighted_mean(smooth_l1(st[:, :2], pos_t).mean(-1, keepdim=True), pos_v)
         L_vis = masked_weighted_mean(
             F.binary_cross_entropy_with_logits(st[:, 2:3], vis_t, reduction="none"), vis_v
@@ -98,8 +107,11 @@ def stop_loss(stop_logit, stop_label, task_mask=None):
     """BCE stop loss, masked to tasks with a terminal stop (pointnav/imagegoal)."""
     if stop_label is None:
         return None
-    if task_mask is not None and task_mask.sum() > 0:
+    if task_mask is not None:
         sel = task_mask > 0
+        if sel.sum() == 0:
+            # e.g. batch of all person-follow: no terminal task -> no stop signal
+            return torch.zeros((), device=stop_logit.device)
         return F.binary_cross_entropy_with_logits(stop_logit[sel], stop_label[sel].float())
     return F.binary_cross_entropy_with_logits(stop_logit, stop_label.float())
 
@@ -160,6 +172,7 @@ def compute_total_loss(out, batch, cfg, lambda_fd=1.0, lambda_inv=0.5, lambda_ta
             target_state_target=batch.get("target_state"),
             target_state_valid=batch.get("target_state_valid"),
             future_valid=batch.get("future_valid"),
+            depth_valid=batch.get("depth_valid"),
         )
         fd_term = L_fd
         logs.update(lf)

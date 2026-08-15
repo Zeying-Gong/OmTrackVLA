@@ -171,9 +171,13 @@ class Sage3DDataset:
         wpts = st.get("waypoints_ego") or []
         if wpts and len(wpts) < nh:
             wpts = wpts + [[wpts[-1][0], wpts[-1][1]]] * (nh - len(wpts))
-        # future RGB aligned to the END of the action horizon (k + nh*stride),
-        # matching the forward-dynamics chunk instead of a fixed ~3 steps.
-        future_rgb = rgb[min(len(rgb) - 1, k + nh * self.step_stride)] if rgb else None
+        # future RGB aligned to the END of the action horizon. Waypoints are
+        # stored at frames {+1, +1+stride, ..., +1+(nh-1)*stride} (extract
+        # build_waypoints: idx = s + 1 + j*stride), so the final waypoint sits
+        # exactly at k + 1 + (nh-1)*stride.
+        nws = derived.get("waypoint_stride", 3)
+        future_k = k + 1 + (nh - 1) * nws
+        future_rgb = rgb[min(len(rgb) - 1, future_k)] if rgb else None
         extra = {
             "success": idx["success"],
             "following_rate": idx["following_rate"],
