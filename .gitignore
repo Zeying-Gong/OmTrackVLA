@@ -35,3 +35,8 @@ sim_data/eval/
 sim_data/eval_smoke/
 sim_data/sim_data0420
 sim_data/stt_seed1000
+
+# Raw datasets and experiment outputs (do not commit)
+data/tpt_bench/
+data/sage3d_extracted/
+outputs/

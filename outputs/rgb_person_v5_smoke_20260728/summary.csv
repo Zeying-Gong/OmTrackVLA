@@ -1,5 +1,0 @@
-task,split,dataset_index,perception,controller_version,success,following_rate,collision,total_steps,oracle_visible_rate,coordinate_takeover_rate,detected_steps,mean_detection_confidence,target_precision,target_recall,mean_target_iou
-stt,val,0,rgb-person-mobilenet-v1-worker,5,1.0,0.9672131147540983,0.0,61,1.0,0.03278688524590164,59,0.9400995530065943,,,
-stt,val,1,rgb-person-mobilenet-v1-worker,5,1.0,0.8723404255319149,0.0,47,1.0,0.1702127659574468,39,0.8088925100387411,,,
-dt,val,0,rgb-person-mobilenet-dinov3-v2-worker,5,0.0,0.26666666666666666,1.0,60,0.65,0.18333333333333332,49,0.8127274602651596,0.16326530612244897,0.20512820512820512,0.14876719009565498
-at,val,0,rgb-person-mobilenet-dinov3-v2-worker,5,1.0,0.9508196721311475,0.0,61,1.0,0.04918032786885246,58,0.9217879840585051,1.0,0.9508196721311475,0.8238542728441784
