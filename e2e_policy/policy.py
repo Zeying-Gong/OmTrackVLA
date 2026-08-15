@@ -6,7 +6,7 @@ import torch.nn as nn
 from .dino_backbone import DinoEncoder
 from .evggt import FrameGlobalBackbone
 from .encoders import TargetEncoder, PointGoalEncoder, HistoryEncoder, TaskEncoder
-from .heads import WaypointHead, StopHead, ForwardDynamics, InverseDynamics
+from .heads import WaypointHead, StopHead, TargetStateHead, ForwardDynamics, InverseDynamics
 
 
 @dataclass
@@ -21,6 +21,7 @@ class PolicyConfig:
     horizon: int = 8
     action_dim: int = 4          # dx, dy, sin(yaw), cos(yaw) [+ optional speed]
     use_stop_head: bool = True
+    use_target_state_head: bool = True
     use_forward_dyn: bool = True
     use_inverse_dyn: bool = True
 
@@ -48,6 +49,9 @@ class E2EFollowPolicy(nn.Module):
         )
         self.waypoint_head = WaypointHead(cfg.dim, cfg.horizon, cfg.action_dim)
         self.stop_head = StopHead(cfg.dim) if cfg.use_stop_head else None
+        self.target_state_head = TargetStateHead(cfg.dim) if cfg.use_target_state_head else None
+        self.null_target = nn.Parameter(torch.zeros(1, 1, cfg.dim))   # learnable null (note 3.3)
+        nn.init.trunc_normal_(self.null_target, std=0.02)
         if cfg.use_forward_dyn:
             self.forward_dyn = ForwardDynamics(cfg.dim, cfg.action_dim, cfg.horizon)
         if cfg.use_inverse_dyn:
@@ -80,7 +84,7 @@ class E2EFollowPolicy(nn.Module):
             tgt_patches = self.dino.forward_patches(target_image)     # (B, Pt, C)
             ctx.append(self.target_enc(tgt_patches, target_type, target_valid, target_confidence))
         else:
-            ctx.append(current_rgb.new_zeros(B, 1, C))                # learnable-free null token
+            ctx.append(self.null_target.expand(B, -1, -1))            # learnable null token
 
         if pointgoal is not None:
             ctx.append(self.pointgoal_enc(pointgoal).unsqueeze(1))
@@ -93,7 +97,8 @@ class E2EFollowPolicy(nn.Module):
 
         context = torch.cat(ctx, dim=1) if ctx else current_rgb.new_zeros(B, 0, C)
 
-        h_t, fused_patches = self.backbone(cur_patches, context)
+        grid = self.dino.grid_size(current_rgb)
+        h_t, fused_patches = self.backbone(cur_patches, context, grid=grid)
 
         out = {
             "a_hat": self.waypoint_head(h_t),
@@ -103,16 +108,19 @@ class E2EFollowPolicy(nn.Module):
         }
         if self.stop_head is not None:
             out["stop_logit"] = self.stop_head(h_t)
+        if self.target_state_head is not None:
+            out["target_state"] = self.target_state_head(h_t)
 
         if self.training:
             if future_rgb is not None:
                 fut_patches = self.dino.forward_patches(future_rgb)
                 out["future_patches_teacher"] = fut_patches.detach()
+            if future_rgb is not None and trajectory is not None:
                 h_future = self.future_pool(fut_patches.mean(dim=1))
                 out["h_future"] = h_future
-                if cfg.use_inverse_dyn and trajectory is not None:
+                if cfg.use_inverse_dyn:
                     out["a_inv"] = self.inverse_dyn(h_t, h_future.detach())
-            if cfg.use_forward_dyn and trajectory is not None:
-                out["forward"] = self.forward_dyn(h_t, fused_patches, trajectory)
+                if cfg.use_forward_dyn:
+                    out["forward"] = self.forward_dyn(h_t, fused_patches, trajectory)
 
         return out

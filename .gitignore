@@ -40,3 +40,4 @@ sim_data/stt_seed1000
 data/tpt_bench/
 data/sage3d_extracted/
 outputs/
+e2e_policy/*.log

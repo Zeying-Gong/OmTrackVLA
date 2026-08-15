@@ -107,6 +107,28 @@ def build_patch_weight(target_mask, free_mask=None, alpha_target=2.0, beta_free=
     return w
 
 
+def target_loss(target_state_pred, target_state_target, target_state_valid=None):
+    """Target relative-state loss (identity/visibility supervision, note sec 8).
+
+    target_state_pred: (B, 3) = (dx, dy, vis_logit).
+    target_state_target: (B, 3) = (dx, dy, vis_label).
+    """
+    if target_state_target is None:
+        return None
+    pos_v = target_state_valid[..., :1] if target_state_valid is not None else torch.ones(
+        target_state_target.shape[0], 1, device=target_state_target.device)
+    vis_v = target_state_valid[..., 2:3] if target_state_valid is not None else torch.ones(
+        target_state_target.shape[0], 1, device=target_state_target.device)
+    L_pos = masked_weighted_mean(
+        smooth_l1(target_state_pred[:, :2], target_state_target[:, :2]).mean(-1, keepdim=True), pos_v
+    )
+    L_vis = masked_weighted_mean(
+        F.binary_cross_entropy_with_logits(target_state_pred[:, 2:3], target_state_target[:, 2:3], reduction="none"),
+        vis_v,
+    )
+    return L_pos + L_vis
+
+
 def compute_total_loss(out, batch, cfg, lambda_fd=1.0, lambda_inv=0.5, lambda_target=0.5,
                        lambda_stop=0.3, lambda_se2=0.1):
     """Assemble the full training loss (note sec 8)."""
@@ -139,6 +161,12 @@ def compute_total_loss(out, batch, cfg, lambda_fd=1.0, lambda_inv=0.5, lambda_ta
         L_inv, _ = waypoint_loss(out["a_inv"], batch["trajectory"],
                                  batch["action_valid"], batch["action_confidence"], lambda_se2=0.0)
         inv_term = L_inv
+
+    if "target_state" in out and out["target_state"] is not None:
+        L_tgt = target_loss(out["target_state"], batch["target_state"], batch.get("target_state_valid"))
+        if L_tgt is not None:
+            tgt_term = L_tgt
+            logs["L_target"] = L_tgt.item()
 
     if "stop_logit" in out and "stop_label" in batch:
         L_stop = stop_loss(out["stop_logit"], batch["stop_label"], batch.get("stop_task_mask"))

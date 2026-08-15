@@ -87,8 +87,11 @@ class FrameGlobalBackbone(nn.Module):
         nn.init.trunc_normal_(self.policy_queries, std=0.02)
         self.blocks = nn.ModuleList([EvggtBlock(dim, num_heads, mlp_ratio) for _ in range(2 * depth)])
 
-    def forward(self, frame_tokens, context_tokens):
+    def forward(self, frame_tokens, context_tokens, grid=None):
         """frame_tokens: (B, T, P, dim) temporal stack of frame patch grids.
+
+        grid: (Hp, Wp) real patch grid of the frames. If None, a square grid
+        is inferred from P (backward-compatible fallback).
 
         Returns (h_t, fused_patches):
           h_t: (B, dim) policy state (mean of policy query tokens).
@@ -104,8 +107,12 @@ class FrameGlobalBackbone(nn.Module):
         N = seq.shape[1]
         device = frame_tokens.device
 
-        Wp = int(round(P ** 0.5))
-        vis_ids, next_off = get_3d_mrope_ids_vae_tokens(T, P // Wp, Wp, 0, device=device)
+        if grid is not None:
+            Hp, Wp = grid
+        else:
+            Wp = int(round(P ** 0.5))
+            Hp = P // Wp
+        vis_ids, next_off = get_3d_mrope_ids_vae_tokens(T, Hp, Wp, 0, device=device)
         ctx_ids, _ = get_3d_mrope_ids_text_tokens(N - T * P, next_off, device=device)
         position_ids = torch.cat([vis_ids, ctx_ids], dim=1)  # (3, N)
         cos, sin = build_3d_mrope_cos_sin(

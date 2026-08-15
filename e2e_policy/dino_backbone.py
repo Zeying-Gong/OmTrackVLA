@@ -42,3 +42,9 @@ class DinoEncoder(nn.Module):
         rgb = (rgb - self._mean) / self._std
         toks = self.model.get_intermediate_layers(rgb, n=1, norm=True)[0]
         return toks
+
+    @torch.no_grad()
+    def grid_size(self, rgb):
+        """Returns the real patch grid (Hp, Wp) for an image of rgb's spatial size."""
+        h, w = rgb.shape[-2:]
+        return h // self.patch_size, w // self.patch_size
