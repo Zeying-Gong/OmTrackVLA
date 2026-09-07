@@ -13,7 +13,7 @@
 - 主要观测：后续 egocentric RGB 历史。
 - 输出：机器人未来的局部 waypoint trajectory。
 - 明确不需要：自然语言描述、VQA、语义 CoT。
-- 当前状态：训练阶段与数据需求设计中，尚未限定 backbone 或动作头表示；WP-0/NEXT-001 已完成，三套正式外部数据的文档、机器可读manifest、全量元数据/路径一致性检查和分层媒体解码均已落库，并发布了每套16连续帧的GitHub微型真实样例。下一项是WP-1数据契约。
+- 当前状态：WP-0数据审计和WP-1统一数据契约均已完成；三套正式外部数据的文档、机器可读manifest、只读审计、微型真实样例，以及严格区分模型输入/路由元数据/监督/来源的契约与验证器均已落库。SAGE3D策略轨迹、TpT物理时钟和真实UWB仍受显式gate阻断。下一项是WP-2的Phase 1最小闭环与backbone/几何接口验证。
 - 集群入口：仓库内的`scripts/run_pipeline_8xh100.sh`已创建，可在已分配的单节点8×H100上直接bash启动，负责环境预检、三Phase衔接、断点续跑、eval/render/gate与产物管理；新的训练/evaluation Python模块及Phase配置尚未实现，因此当前只能通过dry-run，正式preflight会明确报告缺失项。OmTrackVLA当前状态已冻结到`wam`分支并推送到GitHub `origin/wam`。
 - 当前方案：采用 3 个正式阶段——Phase 1身份与几何World-Action预训练、Phase 2目标人物跟随监督训练、Phase 3噪声与闭环恢复训练。
 - World-Action 路线：优先评估 DA3 等视觉几何基础模型。利用其从视频恢复的相机轨迹作为显式 pseudo ego-motion，而不是再学习 WALA 式 latent action；借鉴 FutureNav 的 forward/inverse dynamics 与单步 future-state prediction。普通无任务 ego 视频只训练几何与状态转移辅助能力，不直接提供 policy trajectory 监督。
@@ -51,7 +51,7 @@
 ### 协作者按顺序执行的工作包
 
 1. **WP-0：数据审计，已完成。** 正式外部数据范围固定为`/h100-2/vln_n1/traj_data`（InternData-N1）、`/data/nfs/share/OmTrackVLA/data/sage3d_extracted`和`/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2`。产物为`docs/data_inventory.md`、`configs/data_inventory.json`和`scripts/audit_data_inventory.py`；审计只读、检查全量元数据/路径并按group/mode-camera/sequence分层解码媒体，不生成target crop。另有`example_datasets/samples`保存每套16帧的可公开浏览微型真实样例，仅用于理解数据。
-2. **WP-1：冻结数据契约。** 基于真实样本写`docs/data_contract.md`，明确定义一次性`initial_rgb + initial_bbox`、后续RGB历史、UWB字段与有效性、expert future waypoints、辅助GT和缺失值；实现只读校验脚本及单元测试。逐帧bbox只能放在label域，不能出现在model input域。
+2. **WP-1：冻结数据契约，已完成。** `docs/data_contract.md`和`configs/data_contract.json`已冻结一次性初始化事件、RGB历史、UWB与路由元数据、8点底盘系expert轨迹、辅助GT及`null + valid/mask`缺失值；`scripts/validate_data_contract.py`只读强制执行输入/标签隔离、四种条件模式、坐标/时钟不变量及源准入gate。逐帧bbox只能在label域，不能出现在model input域。
 3. **WP-2：打通Phase 1最小闭环。** 只在确认存在合适的普通人物跟踪视频和带pose ego视频后，实现真实的`omtrackvla.training.train`、`omtrackvla.evaluation.{evaluate,render,gate}`入口，以及`configs/phases/phase1_pretrain.yaml`、`configs/benchmarks/phase1.yaml`、`configs/gates/phase1.yaml`。先用小数据/单卡验证，再运行8卡；必须产出B1-ID、B1-GEO、B1-PROBE指标和固定`viz_val`视频。
 4. **WP-3：打通Phase 2基本跟随。** 从Habitat episode元数据实际渲染RGB并由oracle生成robot expert future waypoints，或接入经WP-0确认的现成expert数据；实现四种模态模式。没有真实UWB日志时，可从同步robot/target pose生成明确标记为`simulated_uwb`的数据，但不得声称已覆盖真实UWB误差。
 5. **WP-4：打通Phase 3恢复。** 先完成3A离线受控扰动，再验证仿真可从模型访问状态查询expert后实现3B DAgger。始终混入Phase 2干净专家数据，并用相同scene/seed对比Phase 2与Phase 3。
@@ -60,7 +60,7 @@
 ### 当前明确阻塞项
 
 - 正式pipeline所需4个Python入口和9个Phase/benchmark/gate配置尚未实现，所以现在正式preflight失败是预期行为。
-- Sage3D已确认同时提供RGB历史、投影bbox标签和8点ego waypoint，但没有真实UWB；TpT没有expert waypoint，InternData-N1不是人物跟随数据。四种目标条件模式、时间/坐标契约和严格数据划分仍需WP-1与NEXT-015冻结。
+- 四种目标条件模式、canonical坐标/时间接口和最小样本schema已由WP-1冻结，但这不等于源适配已通过：SAGE3D策略使用仍须确认step时间、base/camera变换并验证投影bbox；TpT没有expert waypoint且物理时钟未解决；InternData-N1不是人物跟随数据。严格数据划分仍由NEXT-015冻结。
 - 当前没有真实UWB日志、设备标定或误差统计被纳入仓库；在获得这些数据前，只能验证接口和仿真UWB，不能完成产品级UWB鲁棒性结论。
 
 ## 1. 已确认决策
@@ -96,6 +96,7 @@
 | DEC-027 | 2026-09-07 | GitHub版本提供8×H100一键流水线，逐Phase保存配置、数据manifest、代码版本、checkpoint、指标、失败案例和视频 | 让协作者可复现训练并快速定位阶段性问题 | 启动器已实现；训练入口待实现 |
 | DEC-028 | 2026-09-07 | 以当前模块化精简后的OmTrackVLA状态为WAM开发基线，并使用独立`wam`分支 | 保留旧分支历史，同时让新方法从已验证的干净快照开始 | 已确认；已推送`origin/wam` |
 | DEC-029 | 2026-09-07 | 在GitHub发布三套正式数据各16个连续真实帧的微型样例，并保留目录结构、必要元数据/Parquet切片、RGB/depth和可直接浏览的预览 | 让协作者无需访问完整数据即可认识真实结构与外观；用户明确确认该用途 | 已确认；禁止将样例视为训练/评测划分，禁止上传视频、点云、crop/cache或绝对symlink |
+| DEC-030 | 2026-09-07 | WP-1统一使用anchor时刻底盘系（x前、y左、z上，米/弧度）、归一化xyxy bbox、含anchor的8点绝对局部XY轨迹和显式时间偏移；序列只在history index 0消费一次外部bbox，UWB tag ID仅作路由；所有缺失值用`null + valid/mask` | 消除不同源的坐标、时间、缺失值和输入/标签边界歧义，同时阻止未确认source semantics静默进入训练 | 已确认；SAGE3D policy、TpT physical clock、real UWB继续由机器可读gate阻断 |
 
 ## 2. 当前提案与待确认决策
 
@@ -403,15 +404,16 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | CHG-009 | 2026-09-07 | `docs/data_inventory.md`、`configs/data_inventory.json`、`scripts/audit_data_inventory.py`、测试 | 完成WP-0：冻结三套正式数据的schema、规模、accepted规则、split unit、禁用字段与时钟风险；实现可复现只读审计 | 训练前必须有可执行、可追溯且不改源数据的盘点 | 全量元数据/路径检查；Intern/SAGE/TpT分别48/108/47个媒体解码；manifest对比；单元测试 | NEXT-001 |
 | CHG-010 | 2026-09-07 | `example_datasets/`、`.gitignore` | 审计旧样例视图并只发布结构说明/审计记录，不发布原始媒体和绝对symlink | 旧视图解引用约1.80 GB且含旧TpT、生成crop/cache；公开仓库未找到数据再分发许可，源机无Git LFS | 27,750文件、扩展名/最大文件/symlink/凭据/嵌套仓库检查；Git ignore检查 | NEXT-001 |
 | CHG-011 | 2026-09-07 | `example_datasets/`、`scripts/export_example_datasets.py`、`.gitignore`、测试 | 按用户确认改为发布可审计微型真实子集：三套数据各16连续帧，含必要结构/元数据切片和GitHub预览；增加校验和与数据声明 | 协作者需要直接认识真实数据外观和结构，而不是只看schema文档 | 5,854,999字节/99文件；98文件SHA-256通过；48 RGB、32 depth、3 preview和2 Parquet全部重读；无symlink/嵌套仓库/凭据特征/禁入派生文件；预览人工核对 | DEC-029 |
+| CHG-012 | 2026-09-07 | `docs/data_contract.md`、`configs/data_contract.json`、`scripts/validate_data_contract.py`、`docs/data_inventory.md`、测试 | 完成WP-1：冻结模型输入、路由元数据、policy/identity监督、坐标/时间、缺失值、四种条件模式、安全约束和source admission gate | loader和训练模块必须共享一个可执行边界，不能各自猜测bbox、UWB、waypoint或源时钟语义 | 契约自检、有效policy/identity样本、禁止后续bbox、UWB年龄/协方差、轨迹mask、RGB故障停车、路径越界/只读存在性及source gate测试；全仓122项unittest通过 | DEC-030；NEXT-002～004 |
 
 ## 12. 下一步计划
 
 | 优先级 | ID | 工作项 | 依赖 | 预期产出 | 状态 |
 |---:|---|---|---|---|---|
 | P0 | NEXT-001 | 盘点现有数据及其字段、规模、路径和质量 | 数据目录访问 | `docs/data_inventory.md`、机器可读manifest和完整 DATA 表 | 已完成；全量元数据/路径检查和分层媒体解码通过；严格划分转NEXT-015 |
-| P0 | NEXT-002 | 将已选变换约定落成robot、target、UWB和waypoint坐标系规范 | 传感器/仿真接口 | 含公式、单位和时间语义的坐标系规范 | 待开始 |
-| P0 | NEXT-003 | 设计一次视觉初始化与内部目标身份记忆的训练样本表示 | 输入数据格式 | 目标身份条件规范 | 待开始 |
-| P0 | NEXT-004 | 定义 Phase 2 最小训练样本 schema | NEXT-001～003 | 样本字段与缺失值规则 | 待开始 |
+| P0 | NEXT-002 | 将已选变换约定落成robot、target、UWB和waypoint坐标系规范 | 传感器/仿真接口 | 含公式、单位和时间语义的坐标系规范 | 已完成；见`docs/data_contract.md`，具体source adapter仍须逐gate确认 |
+| P0 | NEXT-003 | 设计一次视觉初始化与内部目标身份记忆的训练样本表示 | 输入数据格式 | 目标身份条件规范 | 已完成；初始化是history index 0的一次事件，后续bbox仅作label |
+| P0 | NEXT-004 | 定义 Phase 2 最小训练样本 schema | NEXT-001～003 | 样本字段与缺失值规则 | 已完成；schema v1及只读验证器已落库 |
 | P0 | NEXT-009 | 在候选几何backbone上验证camera pose、depth、confidence及中间feature接口 | 模型权重与视频样本 | backbone/pseudo-motion可用性报告 | 待开始 |
 | P0 | NEXT-010 | 定义DA3 pose到统一SE(2) pseudo trajectory的转换、尺度校准和置信度过滤 | NEXT-002、NEXT-009 | 几何伪动作规范 | 待开始 |
 | P0 | NEXT-011 | 定义FutureNav式forward/inverse/单步next-state目标及feature teacher | NEXT-009～010 | World-Action辅助loss规范 | 待开始 |
@@ -442,4 +444,6 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | WP-0数据清单 | `schema v1` | `docs/data_inventory.md`、`configs/data_inventory.json` | 三套正式外部数据的字段、规模、质量、split unit与禁止输入 |
 | WP-0只读审计 | `script v1` | `scripts/audit_data_inventory.py` | 全量元数据/路径核对与确定性分层媒体解码；源数据零写入 |
 | 微型真实样例与旧视图审计 | `schema v2` | `example_datasets/` | 每套正式数据16连续帧、预览、manifest与校验和；同时保留旧symlink视图审计和发布边界 |
-| 项目进展记录 | `v9 (2026-09-07)` | 仓库根目录`PROGRESS.md` | 本文件；WP-0及协作者真实样例已完成，下一项是WP-1数据契约 |
+| WP-1统一数据契约 | `schema v1` | `docs/data_contract.md`、`configs/data_contract.json` | 输入/标签隔离、canonical坐标/时间、四条件模式、缺失值、source gate和最小policy/identity clip schema |
+| WP-1只读验证器 | `script v1` | `scripts/validate_data_contract.py` | 校验契约及JSON/JSONL样本；可选只检查记录实际引用的文件，不扫描数据根 |
+| 项目进展记录 | `v10 (2026-09-07)` | 仓库根目录`PROGRESS.md` | 本文件；WP-0/WP-1已完成，下一项是WP-2 Phase 1最小闭环 |

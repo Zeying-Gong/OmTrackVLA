@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "contract_id": "omtrackvla-wp1-2026-09-07",
+  "status": "interface_frozen_source_gates_enforced",
+  "scope": "person-following policy and identity-auxiliary clip records",
+  "model_input_policy": {
+    "natural_language_allowed": false,
+    "external_bbox_after_history_index": 0,
+    "target_tag_id_is_routing_only": true,
+    "allowed_top_level_keys": [
+      "condition_mode",
+      "anchor_timestamp_ns",
+      "rgb_sensor_valid",
+      "rgb_history",
+      "visual_initialization",
+      "uwb_target"
+    ],
+    "forbidden_keys_recursive": [
+      "instruction",
+      "sub_instruction",
+      "revised_sub_instruction",
+      "sum_instruction",
+      "desc",
+      "language",
+      "prompt",
+      "caption",
+      "target_track_id",
+      "target_tag_id",
+      "per_frame_bbox",
+      "target_bbox",
+      "target_visible",
+      "target_pose_ground_truth",
+      "is_exist",
+      "is_behind_glass"
+    ]
+  },
+  "coordinates": {
+    "base_frame": {
+      "name": "base_at_observation",
+      "origin": "robot base origin at anchor_timestamp_ns",
+      "x_axis": "forward",
+      "y_axis": "left",
+      "z_axis": "up",
+      "linear_unit": "metre",
+      "yaw_positive": "counter_clockwise_about_positive_z",
+      "yaw_unit": "radian"
+    },
+    "transform_notation": "^A T_B maps coordinates from frame B into frame A",
+    "bbox": {
+      "field": "bbox_xyxy_norm",
+      "order": ["x0", "y0", "x1", "y1"],
+      "image_axes": "x_right_y_down",
+      "range": [0.0, 1.0],
+      "clipping": "clip_to_image_before_normalization",
+      "empty_representation": null
+    },
+    "expert_trajectory": {
+      "field": "waypoints_base_xy_m",
+      "frame": "base_at_observation",
+      "representation": "absolute_positions_not_deltas",
+      "point_order": ["x_forward_m", "y_left_m"],
+      "horizon_points": 8,
+      "includes_anchor_point": true,
+      "anchor_offset_s": 0.0,
+      "loss_and_metrics_ignore_anchor_by_default": true
+    }
+  },
+  "time": {
+    "timestamp_type": "non_negative_integer_nanoseconds",
+    "clock_domain": "episode_monotonic_after_adapter_synchronization",
+    "anchor_rule": "anchor_timestamp_ns equals the final rgb_history timestamp",
+    "history_order": "strictly_increasing",
+    "uwb_order": "source_timestamp_ns <= receive_timestamp_ns <= anchor_timestamp_ns",
+    "uwb_age_formula": "age_s = (anchor_timestamp_ns - source_timestamp_ns) / 1e9",
+    "trajectory_offsets": "seconds_after_anchor; first value is 0 and later values strictly increase"
+  },
+  "sample_schema": {
+    "required_top_level_keys": [
+      "schema_version",
+      "sample_id",
+      "sample_role",
+      "source",
+      "model_inputs",
+      "routing_metadata",
+      "supervision",
+      "provenance"
+    ],
+    "sample_roles": ["policy", "identity_auxiliary"],
+    "dataset_ids": [
+      "intern_data_n1",
+      "sage3d_extracted",
+      "tpt_bench_clean_v2",
+      "habitat_sim",
+      "real_robot"
+    ],
+    "condition_modes": ["visual_uwb", "visual_only", "uwb_only", "safe_stop"],
+    "uwb_measurement_kinds": ["real_uwb", "simulated_uwb", "none"],
+    "los_states": ["los", "nlos", "unknown"],
+    "occlusion_states": ["visible", "occluded", "out_of_view", "unknown"],
+    "safety_reasons": ["none", "no_reliable_target", "rgb_sensor_failure", "ambiguous_binding"]
+  },
+  "missing_values": {
+    "serialization": "null_plus_explicit_valid_or_valid_mask",
+    "nan_or_infinity_allowed": false,
+    "invalid_rgb_path": null,
+    "invalid_bbox": null,
+    "invalid_uwb_payload": null,
+    "invalid_waypoint": null,
+    "tensor_fill_after_masking": 0.0
+  },
+  "source_adapters": {
+    "intern_data_n1": {
+      "eligible_roles": [],
+      "status": "outside_person_following_contract",
+      "reason": "geometry/dynamics only; no target identity or person-follow expert trajectory"
+    },
+    "sage3d_extracted": {
+      "eligible_roles": ["identity_auxiliary"],
+      "status": "policy_blocked_pending_clock_transform_and_bbox_validation",
+      "split_unit": "run",
+      "bbox_conversion": "pixel xyxy -> clipped normalized xyxy",
+      "waypoint_candidate": "8 absolute ego-frame xy points at source step offsets 0,3,...,21",
+      "required_policy_gates": [
+        "confirm simulator step interval and waypoint sampling time",
+        "confirm base axes/yaw sign and robot-to-camera transform",
+        "validate projected bboxes on the frozen subset"
+      ]
+    },
+    "tpt_bench_clean_v2": {
+      "eligible_roles": ["identity_auxiliary"],
+      "status": "identity_only_physical_clock_unresolved",
+      "split_unit": "sequence",
+      "bbox_conversion": "bbox_qv pixel xywh -> clipped normalized xyxy",
+      "required_policy_gates": [
+        "dataset has no person-follow expert trajectory",
+        "resolve approximately 4.48x video versus GT/ODOM elapsed-time ratio"
+      ]
+    },
+    "habitat_sim": {
+      "eligible_roles": ["policy", "identity_auxiliary"],
+      "status": "allowed_when_record_provenance_names_transform_clock_and_generation_specs",
+      "split_unit": "scene/seed"
+    },
+    "real_robot": {
+      "eligible_roles": ["policy", "identity_auxiliary"],
+      "status": "allowed_when_record_provenance_names_transform_clock_and_generation_specs",
+      "split_unit": "site/session/target"
+    }
+  },
+  "frozen_gates": {
+    "split_manifests": "NEXT-015; not part of WP-1",
+    "real_uwb_coverage": "blocked until device logs, calibration, latency, and LOS/NLOS semantics are recorded",
+    "tpt_motion_or_velocity": "blocked until clock-domain mapping is resolved",
+    "sage3d_policy_waypoints": "blocked until timing, transform, and bbox gates are cleared"
+  }
+}

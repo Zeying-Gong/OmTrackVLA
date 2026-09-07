@@ -122,12 +122,12 @@ Across sequences, elapsed `gt_ts_ns`/`odom_ts_s` time divided by elapsed `vid_pt
 
 ## Quality status and remaining gates
 
-WP-0 establishes what exists and makes the audit reproducible. It does not freeze the WP-1 data contract or train/val/test manifests.
+WP-0 establishes what exists and makes the audit reproducible. WP-1 now freezes the canonical model/label boundary, anchor-base axes, normalized bbox, waypoint and missing-value representations in `docs/data_contract.md` and `configs/data_contract.json`. That interface does not silently certify unresolved source semantics, and train/val/test manifests remain a separate task.
 
-The following remain blocking for formal training:
+The following remain blocking for the affected training uses:
 
-- resolve TpT clock semantics;
-- freeze camera/base/world transforms, yaw convention, metric scale, waypoint interval, and missing-label representation;
-- create run/scene/sequence-level train, val, `viz_val`, and `test_locked` manifests with overlap tests;
+- confirm SAGE3D simulator step timing, base/camera transform and yaw convention before admitting its waypoints as canonical policy supervision;
 - validate SAGE3D projected bboxes on the frozen training subset;
+- resolve TpT clock semantics before using its ODOM for physical motion or velocity;
+- create run/scene/sequence-level train, val, `viz_val`, and `test_locked` manifests with overlap tests;
 - acquire real UWB logs and calibration, or explicitly limit experiments to `simulated_uwb`.
