@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "inventory_id": "omtrackvla-wp0-2026-09-07",
+  "audited_at": "2026-09-07",
+  "policy": {
+    "source_access": "read_only",
+    "media_validation": "deterministic_stratified_decode",
+    "natural_language_model_input": false,
+    "split_units": {
+      "intern_data_n1": "group/scene",
+      "sage3d_extracted": "run",
+      "tpt_bench_clean_v2": "sequence"
+    }
+  },
+  "datasets": [
+    {
+      "id": "intern_data_n1",
+      "data_id": "DATA-008",
+      "root": "/h100-2/vln_n1/traj_data",
+      "completeness": "user_confirmed_complete",
+      "counts": {
+        "groups": 12,
+        "scene_directories": 3730,
+        "scenes": 3725,
+        "media_only_scene_directories": 5,
+        "episodes": 196536
+      },
+      "storage": {
+        "allocated_bytes": null,
+        "note": "Per user direction, do not run a full du over this large small-file tree."
+      },
+      "formats": ["json", "jsonl", "parquet", "png", "mp4", "ply"],
+      "features": {
+        "rgb": true,
+        "depth": true,
+        "camera_intrinsic": true,
+        "camera_extrinsic": true,
+        "robot_pose_or_realized_motion": true,
+        "target_person_bbox_or_id": false,
+        "target_person_pose": false,
+        "expert_person_follow_waypoints": false,
+        "uwb": false,
+        "natural_language_metadata": true
+      },
+      "split_key": "group/scene",
+      "allowed_uses": ["phase1_geometry", "phase1_dynamics"],
+      "prohibited_model_inputs": ["tasks", "sub_instruction", "revised_sub_instruction", "sum_instruction"]
+    },
+    {
+      "id": "sage3d_extracted",
+      "data_id": "DATA-009",
+      "root": "/data/nfs/share/OmTrackVLA/data/sage3d_extracted",
+      "counts": {
+        "runs": 912,
+        "episodes": 7110,
+        "canonically_accepted_episodes": 7105,
+        "indexed_rejected_episodes": 5,
+        "accepted_marker_directories": 7105,
+        "accepted_markers_not_indexed": 0,
+        "indexed_source_success_false": 7,
+        "steps": 2132276,
+        "steps_with_8_point_waypoints": 1975856,
+        "terminal_steps_without_waypoints": 156420,
+        "canonical_acceptance_vs_source_success_conflicts": 2
+      },
+      "storage": {
+        "allocated_bytes": 171095801856,
+        "human_approx": "160 GiB"
+      },
+      "formats": ["json", "png", "jpg", "mp4"],
+      "features": {
+        "rgb": true,
+        "depth": true,
+        "camera_intrinsic": true,
+        "camera_extrinsic": true,
+        "robot_pose": true,
+        "target_person_bbox_or_id": true,
+        "target_person_pose": true,
+        "expert_person_follow_waypoints": true,
+        "waypoint_horizon_points": 8,
+        "waypoint_stride_steps": 3,
+        "uwb": false,
+        "natural_language_metadata": true
+      },
+      "canonical_acceptance": "root index.json membership AND _ACCEPTED marker AND quality.json status=accepted",
+      "split_key": "run",
+      "allowed_uses": ["phase1_identity", "phase2_following", "phase3_offline_perturbation"],
+      "prohibited_model_inputs": ["instruction", "per_frame_bbox", "per_frame_visible", "target_pose_ground_truth"]
+    },
+    {
+      "id": "tpt_bench_clean_v2",
+      "data_id": "DATA-010",
+      "root": "/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2",
+      "counts": {
+        "sequences": 47,
+        "rows": 141326,
+        "rgb_frames": 141326,
+        "visible_rows": 117611,
+        "glass_occlusion_rows": 24170,
+        "missing_or_zero_byte_rgb_frames": 0
+      },
+      "storage": {
+        "allocated_bytes": 17604104192,
+        "human_approx": "17 GiB"
+      },
+      "formats": ["json", "txt", "parquet", "jpg"],
+      "features": {
+        "rgb": true,
+        "depth": false,
+        "robot_odometry": true,
+        "target_person_bbox_or_id": true,
+        "target_person_pose": false,
+        "expert_person_follow_waypoints": false,
+        "uwb": false,
+        "natural_language_metadata": true
+      },
+      "clock_audit": {
+        "gt_elapsed_over_video_elapsed_median": 4.475160813810337,
+        "min": 4.255264634153226,
+        "max": 4.866799087105263,
+        "status": "unresolved_do_not_freeze_horizon"
+      },
+      "split_key": "sequence",
+      "allowed_uses": ["phase1_identity", "phase2_identity_auxiliary", "phase3_identity_auxiliary"],
+      "prohibited_model_inputs": ["desc", "per_frame_bbox", "is_exist", "is_behind_glass"]
+    }
+  ]
+}

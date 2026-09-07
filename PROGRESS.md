@@ -13,11 +13,11 @@
 - 主要观测：后续 egocentric RGB 历史。
 - 输出：机器人未来的局部 waypoint trajectory。
 - 明确不需要：自然语言描述、VQA、语义 CoT。
-- 当前状态：训练阶段与数据需求设计中，尚未限定 backbone 或动作头表示。
+- 当前状态：训练阶段与数据需求设计中，尚未限定 backbone 或动作头表示；WP-0/NEXT-001 已完成，三套正式外部数据的文档、机器可读manifest、全量元数据/路径一致性检查和分层媒体解码均已落库。下一项是WP-1数据契约。
 - 集群入口：仓库内的`scripts/run_pipeline_8xh100.sh`已创建，可在已分配的单节点8×H100上直接bash启动，负责环境预检、三Phase衔接、断点续跑、eval/render/gate与产物管理；新的训练/evaluation Python模块及Phase配置尚未实现，因此当前只能通过dry-run，正式preflight会明确报告缺失项。OmTrackVLA当前状态已冻结到`wam`分支并推送到GitHub `origin/wam`。
 - 当前方案：采用 3 个正式阶段——Phase 1身份与几何World-Action预训练、Phase 2目标人物跟随监督训练、Phase 3噪声与闭环恢复训练。
 - World-Action 路线：优先评估 DA3 等视觉几何基础模型。利用其从视频恢复的相机轨迹作为显式 pseudo ego-motion，而不是再学习 WALA 式 latent action；借鉴 FutureNav 的 forward/inverse dynamics 与单步 future-state prediction。普通无任务 ego 视频只训练几何与状态转移辅助能力，不直接提供 policy trajectory 监督。
-- 当前主要风险：UWB 冷启动后的首次视觉绑定；首帧/首次绑定目标身份如何长期保留；UWB 时间延迟、坐标转换与误差标定；pseudo ego-motion 的尺度及可执行性；专家状态与模型实际访问状态存在分布偏移。
+- 当前主要风险：UWB 冷启动后的首次视觉绑定；首帧/首次绑定目标身份如何长期保留；UWB 时间延迟、坐标转换与误差标定；pseudo ego-motion 的尺度及可执行性；专家状态与模型实际访问状态存在分布偏移；TpT 视频时钟与 GT/ODOM 时钟语义尚未统一；Sage3D loader必须严格执行三条件accepted规则。
 
 ## 0.1 协作者接手入口：当前该做什么
 
@@ -25,12 +25,12 @@
 
 ### 工作目录与安全边界
 
-- GitHub开发分支是`wam`。在H100上使用干净目录`/h100/OmTrackVLA-wam`；旧目录`/h100/OmTrackVLA`含有大量未提交实验代码和数据，暂时只读，不执行`git clean`、`git reset --hard`或`git add -A`。
+- GitHub开发分支是`wam`。在H100上使用干净共享目录`/data/nfs/share/wam_tracking/OmTrackVLA`；旧目录`/data/nfs/share/OmTrackVLA`含有大量未提交实验代码和数据，暂时只读，不执行`git clean`、`git reset --hard`或`git add -A`。
 - 开始前运行`git status --short`并记录`git rev-parse HEAD`。正式流水线默认拒绝dirty worktree。
 - Git只保存代码、配置、小型manifest和文档。数据、checkpoint、视频及运行日志不得提交；它们通过`OMTRACKVLA_DATA_ROOT`和`outputs/training/`管理。
 - 本文件中的“已确认”是任务约束；“提案”和“待开始”可以通过实验修改，但修改时必须记录证据、失败原因和关联commit。
 
-### 已核对的仓库与数据事实（2026-09-07，4090工作副本）
+### 已核对的仓库与数据事实（2026-09-07，g0014/NFS复核）
 
 | 路径/对象 | 实际状态 | 可直接用于什么 | 不能假设什么 |
 |---|---|---|---|
@@ -42,12 +42,14 @@
 | episode字段 | 已看到`scene_id`、机器人初始pose、`main_human_semantic_id`、humanoid名称与人物waypoint字段；还含`instruction` | 识别目标人物、构造仿真真值和生成样本 | `instruction`不得进入本项目模型输入；人物waypoint不自动等于机器人expert trajectory |
 | `data/scene_datasets` | 本机软链接到`/data/nas_ray/home/zeying.gong/datasets/scene_datasets`，目标存在；该链接不进Git | Habitat场景资产 | 新clone/H100会自动拥有同一路径 |
 | `data/humanoids`、`data/versioned_data` | 本机存在且被Git忽略，约573 MB和57 MB；主humanoid目录有100个人物资产目录 | Habitat人物资产 | 它们是训练样本或会随Git下载 |
-| H100旧目录的`data/tpt_bench_clean/`、`data/tpt_bench_clean_pilot/`、`data/tpt_bench_clean_v2/` | 已从H100的Git状态确认存在且未跟踪；内容尚未审计 | 候选真实/仿真数据源，需只读盘点 | 不能仅凭目录名决定哪个版本用于训练 |
+| `/h100-2/vln_n1/traj_data` | 完整的 InternData-N1 展开目录；12个group、196,536 episodes；3,730个scene目录中3,725个含正式episode，另5个仅含未索引depth残留 | Phase 1导航几何、pose/action与future-state预训练 | 不是人物跟随数据；自然语言task不得进入模型；5个无metadata/parquet的残留目录不得入manifest；旧报告的85,124 episodes是漏扫结果 |
+| `/data/nfs/share/OmTrackVLA/data/sage3d_extracted` | 约160 GiB（`du -s -B1`为171,095,801,856字节）；912 runs、7,110个索引episode、其中7,105个canonical accepted；2,132,276 steps | RGB/depth、robot/target pose、投影bbox和8点ego waypoint；Phase 1/2主要监督源 | 无真实UWB；156,420个尾部step无未来waypoint；根索引另含5个rejected，且2个accepted与源`success`不一致，不能用`success`代替accepted规则 |
+| `/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2` | 约17 GiB（`du -s -B1`为17,604,104,192字节）；47序列、141,326帧；parquet与RGB逐帧对应 | Phase 1B身份保持、遮挡/干扰人与可见性监督 | 无expert waypoint/UWB；`vid_pts_ms`与GT/ODOM时钟的整段时长约差4.48倍，冻结horizon前必须核实 |
 | 仓库Git跟踪的`data/` | 31个文件，约19.7 MB；WAM提交没有新增大数据 | 小型episode元数据和Spot机器人资产 | `??`本地数据已经上传GitHub |
 
 ### 协作者按顺序执行的工作包
 
-1. **WP-0：数据审计，当前最高优先级。** 对H100旧目录中的三个`tpt_bench_clean*`候选目录以及仓库6个episode文件做只读盘点。至少输出样本数、磁盘大小、文件格式、RGB/时间戳/bbox或ID/robot pose/target pose/expert trajectory/UWB字段、坐标系、采样频率、损坏样本数和train/val泄漏风险。产出`docs/data_inventory.md`和机器可读manifest；在本文件第6节回填真实结果。未完成前不要启动正式8卡训练。
+1. **WP-0：数据审计，已完成。** 正式外部数据范围固定为`/h100-2/vln_n1/traj_data`（InternData-N1）、`/data/nfs/share/OmTrackVLA/data/sage3d_extracted`和`/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2`。产物为`docs/data_inventory.md`、`configs/data_inventory.json`和`scripts/audit_data_inventory.py`；审计只读、检查全量元数据/路径并按group/mode-camera/sequence分层解码媒体，不生成target crop。
 2. **WP-1：冻结数据契约。** 基于真实样本写`docs/data_contract.md`，明确定义一次性`initial_rgb + initial_bbox`、后续RGB历史、UWB字段与有效性、expert future waypoints、辅助GT和缺失值；实现只读校验脚本及单元测试。逐帧bbox只能放在label域，不能出现在model input域。
 3. **WP-2：打通Phase 1最小闭环。** 只在确认存在合适的普通人物跟踪视频和带pose ego视频后，实现真实的`omtrackvla.training.train`、`omtrackvla.evaluation.{evaluate,render,gate}`入口，以及`configs/phases/phase1_pretrain.yaml`、`configs/benchmarks/phase1.yaml`、`configs/gates/phase1.yaml`。先用小数据/单卡验证，再运行8卡；必须产出B1-ID、B1-GEO、B1-PROBE指标和固定`viz_val`视频。
 4. **WP-3：打通Phase 2基本跟随。** 从Habitat episode元数据实际渲染RGB并由oracle生成robot expert future waypoints，或接入经WP-0确认的现成expert数据；实现四种模态模式。没有真实UWB日志时，可从同步robot/target pose生成明确标记为`simulated_uwb`的数据，但不得声称已覆盖真实UWB误差。
@@ -57,7 +59,7 @@
 ### 当前明确阻塞项
 
 - 正式pipeline所需4个Python入口和9个Phase/benchmark/gate配置尚未实现，所以现在正式preflight失败是预期行为。
-- Git仓库中尚无可直接确认的数据，能够同时提供“RGB历史 + 一次初始化bbox或UWB-only标记 + expert future waypoints”；需要WP-0确认H100本地数据，或从现有Habitat episodes生成。
+- Sage3D已确认同时提供RGB历史、投影bbox标签和8点ego waypoint，但没有真实UWB；TpT没有expert waypoint，InternData-N1不是人物跟随数据。四种目标条件模式、时间/坐标契约和严格数据划分仍需WP-1与NEXT-015冻结。
 - 当前没有真实UWB日志、设备标定或误差统计被纳入仓库；在获得这些数据前，只能验证接口和仿真UWB，不能完成产品级UWB鲁棒性结论。
 
 ## 1. 已确认决策
@@ -282,7 +284,7 @@ GitHub只保存代码、配置、环境锁定文件和数据manifest；训练数
 
 ## 6. 数据清单
 
-> 已完成Git跟踪数据与4090仿真资产的初步盘点；H100的`tpt_bench_clean*`和其他训练数据仍待逐样本审计。`未知` 不应默认解释为不存在。
+> 正式外部数据范围已固定为 InternData-N1、Sage3D extracted 和 TpT clean v2。2026-09-07 已完成`docs/data_inventory.md`、`configs/data_inventory.json`、只读审计脚本、全量元数据/路径检查和确定性分层媒体解码。严格数据划分由NEXT-015继续完成。`未知` 不应默认解释为不存在。
 
 | DATA-ID | 数据集/位置 | RGB | 首次 bbox | 逐帧 ID/bbox | Robot pose | Target pose/UWB | Expert trajectory | Rollout | 可用于阶段 | 当前问题 |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
@@ -293,7 +295,25 @@ GitHub只保存代码、配置、环境锁定文件和数据manifest；训练数
 | DATA-005 | 仿真 rollout 数据 | 可生成 | 可生成 | 可生成 | 可生成 | 可生成含UWB噪声 | 可从任意状态重标注 | 可生成 | Phase 3B；三阶段后可选RL | 需确认arbitrary-state expert、传感器失效注入和仿真吞吐量 |
 | DATA-006 | Git内`data/datasets/track/{STT,DT,AT}` | 需运行仿真生成 | 当前文件无预计算bbox | 有`main_human_semantic_id`和人物配置，逐帧框需渲染/生成 | 只有episode初始robot pose及场景配置 | 有人物起点/waypoint元数据，无UWB日志 | 无预计算robot expert future waypoints | 无 | 仿真样本生成；Phase 2/3 benchmark基础 | 6个文件、共25,986 episodes；必须验证episode语义、生成器和scene隔离后再做manifest |
 | DATA-007 | 4090本地Habitat资产：`data/scene_datasets`、`data/humanoids`、`data/versioned_data` | 资产可渲染 | 可由仿真GT生成 | 可由semantic ID生成 | 仿真可得 | 仿真可得 | 需oracle生成 | 可生成 | Phase 1～3仿真数据生产 | 被Git忽略；H100需独立挂载/软链接，路径不能写死为4090绝对路径 |
-| DATA-008 | H100旧目录`data/tpt_bench_clean{,_pilot,_v2}` | 未知 | 未知 | 未知 | 未知 | 未知 | 未知 | 未知 | 待WP-0审计后决定 | 只确认目录存在且未被Git跟踪；不得删除或直接选版本训练 |
+| DATA-008 | InternData-N1：`/h100-2/vln_n1/traj_data` | 有RGB+depth | 无人物bbox | 无人物ID/bbox | 有逐帧pose矩阵和离散action | 有导航goal，无人物target pose/UWB | 可由pose/action构造导航轨迹监督 | 已展开episode | Phase 1A几何/动态预训练 | 12 group、196,536 episodes、3,725个正式scene；5个仅含未索引depth的目录已排除；旧85,124统计漏扫；自然语言task不得输入；按group/scene隔离 |
+| DATA-009 | Sage3D：`/data/nfs/share/OmTrackVLA/data/sage3d_extracted` | 有，2,132,276帧，另有等量depth | 可从首个可见投影bbox构造 | 有逐帧投影bbox/visible标签；源episode含目标语义信息 | 有逐帧robot pose/yaw | 有逐帧target pose/target_local；无真实UWB | 有8点ego waypoint；1,975,856帧有效 | 已抽取仿真run | Phase 1B、Phase 2、Phase 3A | 约160 GiB；7,110个索引episode中7,105个canonical accepted、5个rejected；2个accepted与源`success`不一致；按run隔离 |
+| DATA-010 | TpT clean v2：`/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2` | 有，141,326帧 | 可用每序列首个可见bbox构造 | 有逐帧bbox、is_exist、玻璃遮挡标签；无显式跨序列person ID | 有ODOM position/quaternion | 无target pose/UWB | 无 | 47条真实跟踪序列 | Phase 1B；Phase 2/3身份辅助 | 约17 GiB；RGB/parquet无缺帧；视频时钟与GT/ODOM时钟约差4.48倍；必须按sequence隔离 |
+
+### 6.1 2026-09-07容量与规模基线
+
+| 数据根 | 当前容量/规模 | 与此前记录比较 |
+|---|---|---|
+| `/h100-2/vln_n1/traj_data` | 按项目确认视为完整数据；12 group、196,536 episodes；不再对海量小文件执行全量`du` | 顶层目录自2026-06-12～15未变化；旧85,124 episodes是统计漏扫，不代表数据近期增长 |
+| `/data/nfs/share/OmTrackVLA/data/sage3d_extracted` | 约160 GiB；171,095,801,856分配字节；2,132,276 steps | 与本次会话前次复测的160 GiB一致，未见变化 |
+| `/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2` | 约17 GiB；17,604,104,192分配字节；141,326帧 | 与本次会话前次复测的17 GiB一致，未见变化 |
+
+### 6.2 WP-0审计结论
+
+- `scripts/audit_data_inventory.py`只在显式`--output`位于数据根之外时写报告；数据根内没有创建或修改文件，也不会生成`_target_crops`。
+- InternData-N1：全量metadata/Parquet episode ID与声明计数一致；48个按12 group分层的RGB/depth样本解码通过；5个无metadata/Parquet的depth-only残留目录以warning排除；不执行全量`du`。
+- SAGE3D：7,110个索引episode的derived step、RGB/depth文件ID与路径全量一致；108个按mode-camera分层的RGB/depth样本解码通过；canonical accepted为“根索引成员 + `_ACCEPTED` + `quality.status=accepted”的7,105个episode。
+- TpT clean v2：47个sequence的141,326个Parquet行与非空RGB逐一对应；47个按sequence分层的JPEG样本解码通过；GT/ODOM相对视频时钟倍率中位4.4752、范围4.2553～4.8668，继续作为WP-1阻塞项。
+- 三套数据均无真实UWB；自然语言字段已列入禁止模型输入项。
 
 ### 数据进入训练前的必要检查
 
@@ -377,12 +397,15 @@ GitHub只保存代码、配置、环境锁定文件和数据manifest；训练数
 | CHG-005 | 2026-09-07 | OmTrackVLA Git历史 | 创建`wam`分支；先提交当前模块化精简基线，再单独提交8×H100流水线 | 将此前工作区状态冻结为可复现起点 | 102项pytest、Shell语法、diff check及凭据模式扫描通过；工作区干净 | DEC-028 |
 | CHG-006 | 2026-09-07 | 4090 GitHub连接与`origin/wam` | 配置OmTrackVLA仓库专用Deploy Key别名，将origin切换为SSH并推送`wam` | 允许集群机以仓库级权限拉取和推送 | SSH认证成功；`ls-remote`与本地HEAD均为`45af91e2` | DEC-028 |
 | CHG-007 | 2026-09-07 | 仓库根目录`PROGRESS.md` | 将外层项目进展文档纳入`wam`，新增协作者接手入口、实际仓库/数据快照、顺序工作包和明确阻塞项，并修正pipeline配置后缀 | 让协作者只读本文件即可知道当前事实、下一项工作与验收产物 | 路径/数据计数核对、Markdown检查、Git diff和测试 | DEC-027～DEC-028 |
+| CHG-008 | 2026-09-07 | `PROGRESS.md` | 将正式外部数据范围纠正为完整InternData-N1、Sage3D extracted和TpT clean v2，记录当前容量、规模、schema事实及已发现风险 | 用户确认正式数据根；旧文档错误地把三个TpT目录列为候选，且InternData-N1旧统计漏扫 | g0014只读路径/mtime/`du`/parquet/JSON元数据复核及Git diff | NEXT-001 |
+| CHG-009 | 2026-09-07 | `docs/data_inventory.md`、`configs/data_inventory.json`、`scripts/audit_data_inventory.py`、测试 | 完成WP-0：冻结三套正式数据的schema、规模、accepted规则、split unit、禁用字段与时钟风险；实现可复现只读审计 | 训练前必须有可执行、可追溯且不改源数据的盘点 | 全量元数据/路径检查；Intern/SAGE/TpT分别48/108/47个媒体解码；manifest对比；单元测试 | NEXT-001 |
+| CHG-010 | 2026-09-07 | `example_datasets/`、`.gitignore` | 审计旧样例视图并只发布结构说明/审计记录，不发布原始媒体和绝对symlink | 旧视图解引用约1.80 GB且含旧TpT、生成crop/cache；公开仓库未找到数据再分发许可，源机无Git LFS | 27,750文件、扩展名/最大文件/symlink/凭据/嵌套仓库检查；Git ignore检查 | NEXT-001 |
 
 ## 12. 下一步计划
 
 | 优先级 | ID | 工作项 | 依赖 | 预期产出 | 状态 |
 |---:|---|---|---|---|---|
-| P0 | NEXT-001 | 盘点现有数据及其字段、规模、路径和质量 | 数据目录访问 | `docs/data_inventory.md`、机器可读manifest和完整 DATA 表 | 进行中；Git/4090初盘已完成，H100`tpt_bench_clean*`待审计 |
+| P0 | NEXT-001 | 盘点现有数据及其字段、规模、路径和质量 | 数据目录访问 | `docs/data_inventory.md`、机器可读manifest和完整 DATA 表 | 已完成；全量元数据/路径检查和分层媒体解码通过；严格划分转NEXT-015 |
 | P0 | NEXT-002 | 将已选变换约定落成robot、target、UWB和waypoint坐标系规范 | 传感器/仿真接口 | 含公式、单位和时间语义的坐标系规范 | 待开始 |
 | P0 | NEXT-003 | 设计一次视觉初始化与内部目标身份记忆的训练样本表示 | 输入数据格式 | 目标身份条件规范 | 待开始 |
 | P0 | NEXT-004 | 定义 Phase 2 最小训练样本 schema | NEXT-001～003 | 样本字段与缺失值规则 | 待开始 |
@@ -413,4 +436,7 @@ GitHub只保存代码、配置、环境锁定文件和数据manifest；训练数
 | 集群训练说明 | `2caaa97e17e29f28ea43a4230ebe475319b38347f58f6318d19abe5f58d2b676` | `/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/docs/cluster_training.md` | 运行、恢复、模块接口及产物说明 |
 | WAM模块化基线提交 | `724c87658b505b08dfb24942265e1791ef2be83b` | `OmTrackVLA origin/wam` | 当前精简仓库快照；102项测试通过 |
 | WAM流水线提交 | `45af91e2239a315730eb6248cc289df6c7f3710a` | `OmTrackVLA origin/wam` | 三阶段8×H100启动器；工作区干净 |
-| 项目进展记录 | `v7 (2026-09-07)` | 仓库根目录`PROGRESS.md` | 本文件；GitHub协作者入口，含实际数据快照与顺序待办 |
+| WP-0数据清单 | `schema v1` | `docs/data_inventory.md`、`configs/data_inventory.json` | 三套正式外部数据的字段、规模、质量、split unit与禁止输入 |
+| WP-0只读审计 | `script v1` | `scripts/audit_data_inventory.py` | 全量元数据/路径核对与确定性分层媒体解码；源数据零写入 |
+| 样例视图审计 | `schema v1` | `example_datasets/` | 记录旧symlink视图及公开仓库发布边界；不含原始数据 |
+| 项目进展记录 | `v8 (2026-09-07)` | 仓库根目录`PROGRESS.md` | 本文件；WP-0已完成，下一项是WP-1数据契约 |

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "audited_at": "2026-09-07",
+  "source_view": "/data/nfs/share/OmTrackVLA/example_datasets",
+  "dereferenced": {
+    "bytes": 1799301124,
+    "files": 27750,
+    "largest_file_bytes": 6567841,
+    "files_over_github_100mb_limit": 0,
+    "nested_git_repositories": 0,
+    "suspicious_credential_filenames": 0,
+    "credential_pattern_files": 0,
+    "generated_or_cache_files": {
+      "target_crops": 1158,
+      "target_refs": 15,
+      "track_object_images": 13,
+      "python_cache_files": 11
+    }
+  },
+  "symbolic_links": [
+    {
+      "path": "data_loader",
+      "target": "/data/nfs/share/OmTrackVLA/tools/data_loader"
+    },
+    {
+      "path": "sage3d_extracted/0001_83992",
+      "target": "/data/nfs/share/OmTrackVLA/data/sage3d_extracted/0001_83992"
+    },
+    {
+      "path": "tpt_bench/0000",
+      "target": "/data/nfs/share/OmTrackVLA/data/tpt_bench/0000"
+    },
+    {
+      "path": "tpt_bench/0001",
+      "target": "/data/nfs/share/OmTrackVLA/data/tpt_bench/0001"
+    },
+    {
+      "path": "traj_data/3dfront_d435i/00154c06-2ee2-408a-9664-b8fd74742897",
+      "target": "/h100-2/vln_n1/traj_data/3dfront_d435i/00154c06-2ee2-408a-9664-b8fd74742897"
+    }
+  ],
+  "publication": {
+    "repository_visibility": "public",
+    "git_lfs_available_on_source": false,
+    "redistribution_license_found_beside_data_roots": false,
+    "raw_samples_published": false,
+    "decision": "publish documentation and audit metadata only"
+  }
+}
