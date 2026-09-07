@@ -29,11 +29,14 @@ data/official_0420/
 data/tpt_bench/
 data/sage3d_extracted/
 
-# Public-repository example area: keep only audited documentation. Raw media,
-# Parquet payloads, generated crops, and absolute links stay on the cluster.
+# Public-repository example area: keep audited documentation and the reviewed
+# tiny sample only. Full datasets, generated crops, and absolute links stay out.
 example_datasets/*
 !example_datasets/README.md
 !example_datasets/view_inventory.json
+!example_datasets/DATA_NOTICE.md
+!example_datasets/samples/
+!example_datasets/samples/**
 
 # Experiment outputs
 outputs/

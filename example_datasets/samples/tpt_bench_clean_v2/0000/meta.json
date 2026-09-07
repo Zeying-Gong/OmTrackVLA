@@ -1,0 +1,39 @@
+{
+  "seq": "0000",
+  "src_est_size": [
+    1655,
+    836
+  ],
+  "src_scale_x": 0.5800604229607251,
+  "src_scale_y": 0.4784688995215311,
+  "quickview_size": [
+    960,
+    400
+  ],
+  "gts_frames": 31104,
+  "video_frames": 7776,
+  "gt_video_ratio": 4.0,
+  "match_k": 4,
+  "geometry": {
+    "src_size_est": [
+      1655,
+      836
+    ],
+    "bbox_extent_p995": [
+      1655.0,
+      836.0
+    ],
+    "bbox_extent_max": [
+      1696.0,
+      881.0
+    ],
+    "scale_src2qv": [
+      0.5800604229607251,
+      0.4784688995215311
+    ],
+    "in_frame_ratio": 0.9827674897119342,
+    "median_center_disp_px": 6.997627258300781,
+    "p95_center_disp_px": 25.472954368591306
+  },
+  "note": "bbox_source is annotator/GT coords; bbox_qv scales by src_est (p99.5 of bbox extent), NOT a fixed 1280x720 guess. in_frame_ratio and center displacement in meta.geometry indicate mapping quality; confirm with dataset author before training on target patches from quickview."
+}

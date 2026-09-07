@@ -1,0 +1,121 @@
+{
+  "checksummed_files": 98,
+  "datasets": {
+    "intern_data_n1": {
+      "depth_frames": 16,
+      "notes": [
+        "instruction fields are metadata only and prohibited from model inputs"
+      ],
+      "parquet_rows": 16,
+      "rgb_frames": 16,
+      "selection": {
+        "episode": 0,
+        "frame_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "source": "/h100-2/vln_n1/traj_data/3dfront_d435i/00154c06-2ee2-408a-9664-b8fd74742897"
+    },
+    "sage3d_extracted": {
+      "canonical_acceptance": "root index member AND _ACCEPTED AND quality.status=accepted",
+      "depth_frames": 16,
+      "notes": [
+        "yellow preview boxes are labels, not model inputs"
+      ],
+      "rgb_frames": 16,
+      "selection": {
+        "step_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "source": "/data/nfs/share/OmTrackVLA/data/sage3d_extracted/0001_83992/stt/0/go2_realsense_d435i"
+    },
+    "tpt_bench_clean_v2": {
+      "notes": [
+        "yellow preview boxes are labels, not model inputs",
+        "GT/ODOM and video clock semantics remain unresolved"
+      ],
+      "parquet_rows": 16,
+      "rgb_frames": 16,
+      "selection": {
+        "parquet_row_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "video_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "source": "/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2/0000"
+    }
+  },
+  "excluded": [
+    "absolute symbolic links",
+    "target crops and target refs",
+    "videos and point clouds",
+    "Python caches",
+    "all non-selected frames and episodes"
+  ],
+  "frame_count_per_dataset": 16,
+  "purpose": "small real-data examples for understanding layout and appearance; not training data",
+  "schema_version": 1
+}

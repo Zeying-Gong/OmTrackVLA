@@ -1,0 +1,9 @@
+Sequence: 0000, the tracking length: 1036.8s, the target disappearance length: 8.1s, the average distractors per second in the disappearance interval: 7.0, the number of target disappearance: 14
+
+At the initial frame, the target person appears as follows:
+Clothing: Black T-shirt with white text on the back, paired with dark plaid pajama-style pants.
+Footwear: Black sneakers with white soles.
+Posture: Standing upright, arms relaxed at the sides, facing forward.
+Hair: Short, neatly trimmed black hair.
+
+In the following tracking frames, the target person walks through various scenarios including <robotics laboratory, research institute hallway, elevator, coffee bar, campus roadway, campus corridor, student canteen>. There is <no clothing change> throughout this sequence. This sequence is captured under <normal> lighting conditions.

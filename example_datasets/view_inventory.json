@@ -43,7 +43,13 @@
     "repository_visibility": "public",
     "git_lfs_available_on_source": false,
     "redistribution_license_found_beside_data_roots": false,
-    "raw_samples_published": false,
-    "decision": "publish documentation and audit metadata only"
+    "raw_samples_published": true,
+    "decision": "publish one audited 16-frame real-data excerpt per authoritative dataset",
+    "published_subset": {
+      "path": "example_datasets/samples",
+      "bytes": 5854999,
+      "files": 99,
+      "checksummed_files": 98
+    }
   }
 }

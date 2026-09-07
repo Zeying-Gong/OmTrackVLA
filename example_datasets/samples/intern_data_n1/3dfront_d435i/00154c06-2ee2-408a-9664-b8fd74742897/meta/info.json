@@ -1,0 +1,59 @@
+{
+  "chunks_size": 1000,
+  "codebase_version": "v2.1",
+  "data_path": "data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet",
+  "features": {
+    "action": {
+      "dtype": "float32",
+      "shape": [
+        4,
+        4
+      ]
+    },
+    "observation.camera_extrinsic": {
+      "dtype": "float32",
+      "shape": [
+        4,
+        4
+      ]
+    },
+    "observation.camera_intrinsic": {
+      "dtype": "float32",
+      "shape": [
+        3,
+        3
+      ]
+    }
+  },
+  "fps": 30,
+  "robot_type": "unknown",
+  "sample_subset": true,
+  "source_episode_index": 0,
+  "source_frame_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "splits": {
+    "train": "0:1"
+  },
+  "total_chunks": 1,
+  "total_episodes": 1,
+  "total_frames": 16,
+  "total_tasks": 78,
+  "total_videos": 0,
+  "video_path": "videos/chunk-{episode_chunk:03d}/{video_key}/episode_{episode_index:06d}.mp4"
+}
