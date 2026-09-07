@@ -1,3 +1,18 @@
+# -*- coding: utf-8 -*-
+# Copyright 2026 The OpenBMB Team. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple, Union
 import attr
 import numpy as np
@@ -91,8 +106,8 @@ class NavigationEpisode(Episode):
 @registry.register_measure
 class DidMultiAgentsCollide(Measure):
     """
-    Detects if the multi-agent ( more than 1 humanoids agents) in the scene 
-    are colliding with each other at the current step. 
+    Detects if the multi-agent ( more than 1 humanoids agents) in the scene
+    are colliding with each other at the current step.
     """
 
     @staticmethod
@@ -121,7 +136,7 @@ class DidMultiAgentsCollide(Measure):
             if coll_name_matches(cp, main_human_id):
                 if coll_name_matches(cp, robot_id):
                     found_contact = True
-                    break  
+                    break
 
         self._metric = found_contact
 
@@ -186,9 +201,9 @@ class DistanceToLeader(Measure):
         human_pos = self._sim.get_agent_data(
             main_human_id
         ).articulated_agent.base_pos
-        
+
         distance_to_target = np.linalg.norm(current_position - human_pos)
- 
+
         self._metric = distance_to_target
 
 
@@ -212,12 +227,12 @@ class HumanDistanceToGoal(Measure):
         self.goals = [np.array([0, 0, 0], dtype=np.float32) for _ in range(self.num_goals)]
         for goal in episode.goals:
             self.goals = [np.array(pos, dtype=np.float32) for pos in goal.position]
-        
+
         self.update_metric(episode=episode, *args, **kwargs)  # type: ignore
 
     def update_metric(self, episode, *args: Any, **kwargs: Any):
         current_position = self._sim.get_agent_data(0).articulated_agent.base_pos
-        
+
         path = habitat_sim.ShortestPath()
         path.requested_start = current_position
         path.requested_end = self.goals[-1]
@@ -229,7 +244,7 @@ class HumanDistanceToGoal(Measure):
         #     self.goals[-1],
         #     episode,
         # )
- 
+
         self._metric = geodesic_distance
 
 
@@ -254,16 +269,16 @@ class HumanFollowing(Measure):
 
     def _reach_agent(self, task, obs):
         """Check if the agent reaches the target agent or not"""
-  
+
         facing = obs.get("agent_1_main_humanoid_detector_sensor")
 
         distance_to_target = task.measurements.measures[
             DistanceToLeader.cls_uuid
         ].get_metric()
-        
+
         if  distance_to_target <= self._success_distance and facing["facing"]:
             return True
-        
+
         return False
 
     def reset_metric(self, episode, task, *args: Any, **kwargs: Any):
@@ -310,10 +325,10 @@ class HumanFollowingSuccess(Measure):
         distance_to_target = task.measurements.measures[
             DistanceToLeader.cls_uuid
         ].get_metric()
-        
+
         if distance_to_target <= self._success_following_distance_upper and distance_to_target >= self._success_following_distance_lower and facing:
             return True
-        
+
         return False
 
     def reset_metric(self, episode, task, *args: Any, **kwargs: Any):
@@ -585,7 +600,7 @@ class TopDownMapFollowing(Measure):
                     thickness=thickness,
                 )
         angle = TopDownMapFollowing.get_polar_angle(agent_state, agent_index)
- 
+
         self.update_fog_of_war_mask(np.array([a_x, a_y]), angle)
 
         self._previous_xy_location[agent_index] = (a_y, a_x)
@@ -609,7 +624,7 @@ class TopDownMapFollowing(Measure):
 @dataclass
 class DidMultiAgentsCollideConfig(MeasurementConfig):
     type: str = "DidMultiAgentsCollide"
-    
+
 @dataclass
 class HumanCollisionMeasurementConfig(MeasurementConfig):
     type: str = "HumanCollision"

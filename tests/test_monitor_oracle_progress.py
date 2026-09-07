@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from monitor_oracle_progress import (
+from scripts.monitor_oracle_progress import (
     EXPECTED_CONTROLLER_VERSION,
     completed_count,
     dataset_count,

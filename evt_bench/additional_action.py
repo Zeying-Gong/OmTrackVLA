@@ -1,3 +1,18 @@
+# -*- coding: utf-8 -*-
+# Copyright 2026 The OpenBMB Team. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from gym import spaces
 from dataclasses import dataclass
 import numpy as np
@@ -98,7 +113,7 @@ class OracleNavAction_wopddl(BaseVelAction, HumanoidJointAction):
             )
             task.humanoid_controller = humanoid_controller
         return task.humanoid_controller
-    
+
     def spec_inst_humanoid_controller(self, task, config):
         # Instantiation of humanoid controller for specific agent
         # Follow the lazy version, but tell each humanoid agent
@@ -188,7 +203,7 @@ class OracleNavAction_wopddl(BaseVelAction, HumanoidJointAction):
         :param point: Vector3 indicating the target point
         """
         agent_pos = np.array(self.cur_articulated_agent.base_pos)
-        
+
         path = habitat_sim.ShortestPath()
         path.requested_start = agent_pos
         path.requested_end = point
@@ -197,7 +212,7 @@ class OracleNavAction_wopddl(BaseVelAction, HumanoidJointAction):
             return [agent_pos, point]
         if all(np.array_equal(point, path.points[0]) for point in path.points):
             return [agent_pos, point]
-        
+
         return path.points
 
     def step(self, *args, **kwargs):
@@ -211,7 +226,7 @@ class OracleNavAction_wopddl(BaseVelAction, HumanoidJointAction):
         ):
             return
         nav_to_target_idx = int(nav_to_target_idx[0]) - 1
-        
+
         final_nav_targ, obj_targ_pos = self._get_target_for_idx(
             nav_to_target_idx
         )
@@ -319,7 +334,7 @@ class OracleNavObstacleAction(OracleNavAction_wopddl):
             )  # 0.25 is a magic number
             # set a minimum value for the human velocity scale
             human_velocity_scale = max(human_velocity_scale, 0.1)
-        
+
         std = 3.0
         # scale the amplitude by the human velocity
         amp = 1.0 * human_velocity_scale
@@ -345,7 +360,7 @@ class OracleNavObstacleAction(OracleNavAction_wopddl):
         weight = amp * np.exp(-(rel_dist**2) / std)
         weight[0] = 1.0
         weight_norm = weight[:, None] / weight.sum()
-        
+
         # weighted sum of the old target position and
         # relative position that avoids human
         final_rel_pos = (rel_pos * weight_norm).sum(0)
@@ -371,7 +386,7 @@ class OracleNavObstacleAction(OracleNavAction_wopddl):
         nav_to_target_coord = kwargs.get(
             self._action_arg_prefix + "oracle_nav_obstacle_action"
         )
-        
+
         if nav_to_target_coord is None or np.linalg.norm(nav_to_target_coord) == 0:
             return None
         self.humanoid_controller.reset(
@@ -398,7 +413,7 @@ class OracleNavObstacleAction(OracleNavAction_wopddl):
 
             # Compute heading angle (2D calculation)
             robot_forward = robot_forward[[0, 2]]
-            
+
             rel_targ = rel_targ[[0, 2]]
             rel_pos = (nav_to_target_coord - current_human_pos)[[0, 2]]
 
@@ -408,7 +423,7 @@ class OracleNavObstacleAction(OracleNavAction_wopddl):
             new_human_pos_list = []
             nearby_human_idx = []
             old_rel_targ = rel_targ
-            
+
             if self.human_num > 0:
                 # This is very specific to SIRo. Careful merging
                 for agent_index in range(self._sim.num_articulated_agents):
@@ -418,17 +433,17 @@ class OracleNavObstacleAction(OracleNavAction_wopddl):
                         distance = self._sim.geodesic_distance(current_human_pos, new_human_pos)
                         if distance < 2.0 and robot_human_vec_dot_product(new_human_pos, current_human_pos, base_T) > 0.5:
                             nearby_human_idx.append(agent_index)
-                
+
                 if self.old_human_pos_list is not None and len(nearby_human_idx) > 0:
                     new_human_pos_array = np.array(new_human_pos_list)
                     old_human_pos_array = np.array(self.old_human_pos_list)
                     rel_targ = self.update_rel_targ_obstacle(
                         rel_targ, new_human_pos_array[nearby_human_idx][:, [0, 2]], old_human_pos_array[nearby_human_idx][:, [0, 2]]
                     )
-                self.old_human_pos_list = new_human_pos_list 
+                self.old_human_pos_list = new_human_pos_list
             # NEW: If avoiding the human makes us change dir, we will
             # go backwards at times to avoid rotating
-                
+
             dot_prod_rel_targ = (rel_targ * old_rel_targ).sum()
             did_change_dir = dot_prod_rel_targ < 0
 
@@ -438,12 +453,12 @@ class OracleNavObstacleAction(OracleNavAction_wopddl):
             dist_to_final_nav_targ = np.linalg.norm(
                 (nav_to_target_coord - current_human_pos)[[0, 2]]
             )
-            
+
             at_goal = (
                 dist_to_final_nav_targ < self._config.dist_thresh
                 and angle_to_final_goal < self._config.turn_thresh
             ) or dist_to_final_nav_targ < self._config.dist_thresh / 10.0
-            
+
             if self.motion_type == "base_velocity":
                 if not at_goal:
                     if dist_to_final_nav_targ < self._config.dist_thresh:
@@ -516,7 +531,7 @@ class OracleNavObstacleAction(OracleNavAction_wopddl):
                 else:
                     self.humanoid_controller.calculate_stop_pose()
                     self.skill_done = True
-                    
+
                 self._update_controller_to_navmesh()
                 base_action = self.humanoid_controller.get_pose()
                 kwargs[
@@ -549,7 +564,7 @@ class OracleNavRandCoordActionForOtherHuman(OracleNavObstacleAction):  # type: i
         #     self._sim.pathfinder, self._sim, allow_outdoor=False # True
         # )
 
-    
+
     @property
     def action_space(self):
         return spaces.Dict(
@@ -620,10 +635,10 @@ class OracleNavRandCoordActionForOtherHuman(OracleNavObstacleAction):  # type: i
     def _angle_between_vectors(self, v1, v2):
         v1_2d = np.array([v1[0], v1[2]])
         v2_2d = np.array([v2[0], v2[2]])
-        
+
         dot_product = np.dot(v1_2d, v2_2d)
         cos_theta = dot_product / (np.linalg.norm(v1_2d) * np.linalg.norm(v2_2d))
-        
+
         return cos_theta > 0.8
 
     def _inside_two_agents(self, human_pos, robot_pos, my_pos):
@@ -684,13 +699,13 @@ class OracleNavRandCoordActionForOtherHuman(OracleNavObstacleAction):  # type: i
             ).articulated_agent.base_pos
 
             human_pos = self.cur_articulated_agent.base_pos
-            
+
             # The human needs to stop and wait for robot or the main human to move close
             if self._reach_agent(robot_pos, human_pos) or self._reach_agent(main_human_pos, human_pos):
                 speed = np.random.uniform(
                     self._config.lin_speed / 2.0, self._config.lin_speed
                 )
-                lin_speed = speed 
+                lin_speed = speed
                 ang_speed = self._config.ang_speed
                 self.humanoid_controller.set_framerate_for_linspeed(
                     lin_speed, ang_speed, self._sim.ctrl_freq
@@ -700,7 +715,7 @@ class OracleNavRandCoordActionForOtherHuman(OracleNavObstacleAction):  # type: i
                 self.humanoid_controller.set_framerate_for_linspeed(
                     0, 0, self._sim.ctrl_freq
                 )
-            
+
         return ret_val
 
 """
@@ -775,7 +790,7 @@ class OracleNavRandCoordActionForOtherHuman(OracleNavObstacleAction):  # type: i
 #         nav_to_target_coord = kwargs.get(
 #             self._action_arg_prefix + "oracle_nav_obstacle_action_main_human"
 #         )
-        
+
 #         if nav_to_target_coord is None or np.linalg.norm(nav_to_target_coord) == 0:
 #             return None
 #         self.humanoid_controller.reset(
@@ -824,17 +839,17 @@ class OracleNavRandCoordActionForOtherHuman(OracleNavObstacleAction):  # type: i
 #                         distance = self._sim.geodesic_distance(current_human_pos, new_human_pos)
 #                         if distance < 3.0 and robot_human_vec_dot_product(new_human_pos, current_human_pos, base_T) > 0.5:
 #                             nearby_human_idx.append(agent_index-2)
-                
+
 #                 if self.old_human_pos_list is not None and len(nearby_human_idx) > 0:
 #                     new_human_pos_array = np.array(new_human_pos_list)
 #                     old_human_pos_array = np.array(self.old_human_pos_list)
 #                     rel_targ = self.update_rel_targ_obstacle(
 #                         rel_targ, new_human_pos_array[nearby_human_idx][:, [0, 2]], old_human_pos_array[nearby_human_idx][:, [0, 2]]
 #                     )
-#                 self.old_human_pos_list = new_human_pos_list 
+#                 self.old_human_pos_list = new_human_pos_list
 #             # NEW: If avoiding the human makes us change dir, we will
 #             # go backwards at times to avoid rotating
-                
+
 #             dot_prod_rel_targ = (rel_targ * old_rel_targ).sum()
 #             did_change_dir = dot_prod_rel_targ < 0
 
@@ -934,7 +949,7 @@ class OracleNavRandCoordActionForOtherHuman(OracleNavObstacleAction):  # type: i
 #                 raise ValueError(
 #                     "Unrecognized motion type for oracle nav obstacle action"
 #                 )
-"""           
+"""
 
 @registry.register_task_action
 class OracleNavCoordActionObstacleForMainHuman(OracleNavObstacleAction):
@@ -949,8 +964,8 @@ class OracleNavCoordActionObstacleForMainHuman(OracleNavObstacleAction):
         self.current_goal_idx = 0
         self.wait_step_for_robot = 0
         self.goals = [np.array([0, 0, 0], dtype=np.float32) for _ in range(self.num_goals)]
-        
-    
+
+
     @property
     def action_space(self):
         return spaces.Dict(
@@ -978,7 +993,7 @@ class OracleNavCoordActionObstacleForMainHuman(OracleNavObstacleAction):
         self.wait_step_for_robot = 0
         kwargs['task'].is_stop_called = False
         self.max_stop_step = random.randint(5, 15)
-        
+
         if self._agent_index == 0:
             for goal in kwargs["episode"].goals:
                 self.goals = [np.array(pos, dtype=np.float32) for pos in goal.position]
@@ -987,7 +1002,7 @@ class OracleNavCoordActionObstacleForMainHuman(OracleNavObstacleAction):
 
     def step(self, *args, **kwargs):
         self.skill_done = False
-        
+
         if self.coord_nav is None and self.goals is not None:
             if self.current_goal_idx < len(self.goals):
                 self.coord_nav = self.goals[self.current_goal_idx]
@@ -1015,7 +1030,7 @@ class OracleNavCoordActionObstacleForMainHuman(OracleNavObstacleAction):
         self.humanoid_controller.set_framerate_for_linspeed(
             lin_speed, ang_speed, self._sim.ctrl_freq
         )
-        
+
         return ret_val
 
 
@@ -1102,7 +1117,7 @@ class OracleNavCoordinateActionForRobot(BaseVelNonCylinderAction):  # type: igno
         else:
             vel = [0, 0, turn_vel_weighted]
         return vel
-    
+
     def _compute_combine_speed(self, rel_targ, robot_forward, dist_to_human):
         # Calculate forward speed and tangent speed
         robotforward = robot_forward / np.linalg.norm(robot_forward)
@@ -1126,9 +1141,9 @@ class OracleNavCoordinateActionForRobot(BaseVelNonCylinderAction):  # type: igno
 
         forward_speed = np.maximum(reltarg_robot[1], 0) * (self._sim.ctrl_freq / 4)
         tangent_speed = reltarg_robot[0] * (self._sim.ctrl_freq / 4)
-        
+
         truncated_forward_ratio = np.minimum(np.abs(self._config.max_forward_speed / forward_speed), temporal_max_forward_speed_ratio)
-        truncated_tangent_ratio = np.minimum(np.abs(self._config.max_tangent_speed / tangent_speed), 1.0)           
+        truncated_tangent_ratio = np.minimum(np.abs(self._config.max_tangent_speed / tangent_speed), 1.0)
         truncated_ratio = np.minimum(truncated_forward_ratio, truncated_tangent_ratio)
 
         forward_speed_weighted = forward_speed * truncated_ratio / self._config.max_forward_speed
@@ -1143,7 +1158,7 @@ class OracleNavCoordinateActionForRobot(BaseVelNonCylinderAction):  # type: igno
             turn_vel_weighted = -turn_vel_weighted
 
         return [forward_speed_weighted, -tangent_speed_weighted, turn_vel_weighted]
-    
+
     def step(self, *args, **kwargs):
         main_human_id = 0
         nav_to_target_coord = self._sim.get_agent_data(
@@ -1165,7 +1180,7 @@ class OracleNavCoordinateActionForRobot(BaseVelNonCylinderAction):  # type: igno
             # Compute distance and angle to target
             if len(curr_path_points) == 1:
                 curr_path_points += curr_path_points
-            
+
             cur_nav_targ = curr_path_points[1]
 
             forward = np.array([1.0, 0, 0])
@@ -1187,8 +1202,8 @@ class OracleNavCoordinateActionForRobot(BaseVelNonCylinderAction):  # type: igno
             dist_to_final_nav_targ = np.sqrt(diff_x**2 + diff_z**2)
 
             distance_path = self._sim.geodesic_distance(self.cur_articulated_agent.base_pos, nav_to_target_coord)
-            
-            
+
+
             # Distance at which we don't need to check angle
             # this is because in some cases we may be very close to the object
             # which causes instability in the angle_to_obj
@@ -1204,7 +1219,7 @@ class OracleNavCoordinateActionForRobot(BaseVelNonCylinderAction):  # type: igno
                     vel = self._compute_turn_speed(
                         rel_pos,
                         robot_forward,
-                    ) 
+                    )
                 else:
                     # Move to main human
                     vel = self._compute_combine_speed(
@@ -1215,7 +1230,7 @@ class OracleNavCoordinateActionForRobot(BaseVelNonCylinderAction):  # type: igno
             else:
                 # Reach the goal, stop
                 vel = [0, 0, 0]
-                
+
             print("final vel: ", vel)
             kwargs[f"{self._action_arg_prefix}base_vel"] = np.array(vel)
             return BaseVelNonCylinderAction.step(self, *args, **kwargs)
@@ -1226,7 +1241,7 @@ class OracleNavCoordinateActionForRobot(BaseVelNonCylinderAction):  # type: igno
 class DiscreteStopActionConfig(ActionConfig):
     type: str = "DiscreteStopAction"
     lin_speed: float = 0.0
-    ang_speed: float = 0.0 
+    ang_speed: float = 0.0
     allow_back: bool = False
     value: int = 1
     allow_dyn_slide: bool = False # True
@@ -1240,7 +1255,7 @@ class DiscreteStopActionConfig(ActionConfig):
 class DiscreteMoveForwardActionConfig(ActionConfig):
     type: str = "DiscreteMoveForwardAction"
     lin_speed: float = 10.0
-    ang_speed: float = 0.0 
+    ang_speed: float = 0.0
     allow_back: bool = False
     value: int = 1
     allow_dyn_slide: bool = False # True
@@ -1254,7 +1269,7 @@ class DiscreteMoveForwardActionConfig(ActionConfig):
 class DiscreteTurnLeftActionConfig(ActionConfig):
     type: str = "DiscreteTurnLeftAction"
     lin_speed: float = 0.0
-    ang_speed: float = 10.0 
+    ang_speed: float = 10.0
     allow_back: bool = False
     value: int = 1
     allow_dyn_slide: bool = False # True
@@ -1268,7 +1283,7 @@ class DiscreteTurnLeftActionConfig(ActionConfig):
 class DiscreteTurnRightActionConfig(ActionConfig):
     type: str = "DiscreteTurnRightAction"
     lin_speed: float = 0.0
-    ang_speed: float = -10.0 
+    ang_speed: float = -10.0
     allow_back: bool = False
     value: int = 1
     allow_dyn_slide: bool = False # True

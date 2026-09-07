@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from oracle_modular_follow import (
+from omtrackvla.oracle_modular_follow import (
     OracleFollowController,
     OraclePerception,
     OracleNavmeshFollower,
@@ -18,8 +18,8 @@ from oracle_modular_follow import (
     mask_connected_bboxes,
     select_target_component_bbox,
 )
-from oracle_modular_follow_v6 import OracleNavmeshFollowerV6
-from rgb_person_perception import (
+from omtrackvla.oracle_modular_follow_v6 import OracleNavmeshFollowerV6
+from omtrackvla.rgb_person_perception import (
     RGBPersonPerception,
     bbox_depth_to_relative,
     bbox_iou,

@@ -7,7 +7,7 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from oracle_modular_batch import (
+from omtrackvla.oracle_modular_batch import (
     CONTROLLER_VERSION,
     completed_result,
     compose_rgbd_video_frame,

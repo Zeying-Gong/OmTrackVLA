@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from modular_obstacle_map import LocalObstacleMap
+from omtrackvla.modular_obstacle_map import LocalObstacleMap
 
 
 class LocalObstacleMapTest(unittest.TestCase):

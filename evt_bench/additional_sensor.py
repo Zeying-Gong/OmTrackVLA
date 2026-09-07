@@ -1,4 +1,18 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Copyright 2026 The OpenBMB Team. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
@@ -61,7 +75,6 @@ class MainHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
         self._human_pixel_threshold = config.human_pixel_threshold
         self._return_image = config.return_image
         self._is_return_image_bbox = config.is_return_image_bbox
-        self._first_init = True
 
         # Check the observation size
         jaw_panoptic_shape = None
@@ -82,7 +95,7 @@ class MainHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
 
     def _get_sensor_type(self, *args, **kwargs):
         return SensorTypes.TENSOR
-        
+
     def _get_observation_space(self, *args, **kwargs):
         return spaces.Dict({
             "facing": spaces.Box(
@@ -108,8 +121,9 @@ class MainHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
         return rmin, rmax, cmin, cmax
 
     def get_observation(self, observations, episode, *args, **kwargs):
+        # Avatar identity is episode-specific, so a sensor reused across
+        # resets must not retain the first episode's semantic ID.
         self._human_id = episode.info["main_human_semantic_id"]
-        self._first_init = False
         use_k = f"agent_{self.agent_id}_articulated_agent_jaw_panoptic"
         if use_k in observations:
             panoptic = observations[use_k]
@@ -121,7 +135,7 @@ class MainHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
                     "mask": np.zeros(
                         (self._height, self._width, 1), dtype=np.float32
                     )
-                } 
+                }
             else:
                 return {
                     "facing": np.zeros((1,), dtype=np.float32),
@@ -134,7 +148,7 @@ class MainHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
         }
 
         tgt_mask = np.float32(panoptic == self._human_id)
-        
+
         if self._is_return_image_bbox and np.sum(tgt_mask) > 0:
             rmin, rmax, cmin, cmax = self._get_bbox(tgt_mask)
             result["box"] = np.array([cmin, rmin, cmax, rmax], dtype=np.float32)
@@ -144,9 +158,9 @@ class MainHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
             self._human_pixel_threshold < human_pixel_count < self._height * self._width * 0.3
         ):
             result["facing"] = np.ones((1,), dtype=np.float32)
-        
+
         return result
-    
+
 @registry.register_sensor
 class OtherHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
     def __init__(self, sim, config, *args, **kwargs):
@@ -176,7 +190,7 @@ class OtherHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
 
     def _get_sensor_type(self, *args, **kwargs):
         return SensorTypes.TENSOR
-        
+
     def _get_observation_space(self, *args, **kwargs):
         return spaces.Dict({
             "facing": spaces.Box(
@@ -228,7 +242,7 @@ class OtherHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
             if other_human_id == self._human_id:
                 continue
             tgt_mask = np.float32(panoptic == other_human_id)
-            
+
             if self._is_return_image_bbox and np.sum(tgt_mask) > 0:
                 rmin, rmax, cmin, cmax = self._get_bbox(tgt_mask)
                 result["box"] = np.array([rmin, cmin, rmax, cmax], dtype=np.float32)
@@ -242,7 +256,7 @@ class OtherHumanoidDetectorSensor(UsesArticulatedAgentInterface, Sensor):
                 human_pixel_count > self._height * self._width * 0.2
             ):
                 result["block"] = np.ones((1,), dtype=np.float32)
-        
+
         return result
 
 

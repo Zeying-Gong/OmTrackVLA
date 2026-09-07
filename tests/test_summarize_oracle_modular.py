@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / "summarize_oracle_modular.py"
+SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "summarize_oracle_modular.py"
 
 
 def write_dataset(repo, task, split, count):

@@ -1,240 +1,168 @@
-# OmTrackVLA 🤖 👀
+# OmTrackVLA Modular
 
-**Visual Navigation & Following for Everyone.**
+一个面向仿真行人跟随的精简实验仓库。当前仓库只保留：
 
-[](https://opensource.org/licenses/Apache-2.0) [](https://www.google.com/search?q=) [](https://www.google.com/search?q=) [](https://arxiv.org/abs/2509.12129)
+- EVT-Bench / Habitat 跟随环境；
+- Oracle perception 和 Oracle NavMesh 上限；
+- RGB-D detector/ReID 感知；
+- reactive、obstacle-map、A* 和动态安全控制；
+- 分片评测、进度监控、结果汇总和相关回归测试。
 
-**OmTrackVLA** is a fully open-source Vision-Language-Action (VLA) stack that turns **monocular video** and **natural-language instructions** into actionable, short-horizon waypoints.
+原始 OmTrackVLA 训练/推理、端到端 waypoint policy、FLUX/RL、数据转换试验和历史输出已移出当前主线，便于从模块化 baseline 上开始新方法。
 
-This repository is dedicated to democratizing embodied AI. We have intentionally released our highly efficient **0.6B checkpoint** along with the **full training pipeline**.
+## 目录结构
 
-### 🚀 Why OmTrackVLA?
+```text
+OmTrackVLA/
+├── omtrackvla/                     模块化方法和评测核心
+│   ├── oracle_modular_follow.py   感知/控制接口与控制器
+│   ├── modular_obstacle_map.py    深度局部地图与路径规划
+│   ├── rgb_person_perception.py   RGB-D detector/ReID 感知
+│   ├── oracle_modular_batch.py    episode/分片评测入口
+│   └── oracle_modular_follow_v6.py 历史 V6 NavMesh 参数对照
+├── scripts/                        启动、渲染、监控、汇总与诊断
+├── evt_bench/                      EVT-Bench 动作、sensor、metric 和环境注册
+├── habitat-lab/                    项目所需的 Habitat 定制版
+├── data/                           task config、episode 和机器人资产
+├── third_party/torchreid/           RGB 感知所需的 OSNet 实现
+├── tests/                          模块化/Oracle 回归测试
+├── results/                        紧凑的可追溯结果表
+├── README.md                       当前使用方式
+└── PROJECT_NOTES.md                 设计约定与开发注意事项
+```
 
-  * **Fully Open Source:** We release the model weights, inference code, *and* the training stack—not just the inference wrapper.
-  * **Accessible:** Designed to reproduce, fine-tune, and deploy with affordable compute .
-  * **Multimodal Control:** Combines learned priors with visual input to guide real or simulated robots via simple text prompts.
+## 当前 baseline
 
-> **Acknowledgment:** OmTrackVLA builds on the ideas introduced by the original [TrackVLA project](https://github.com/wsakobe/TrackVLA). Their partially-open release inspired this community-driven effort to keep the ecosystem open so researchers and developers can continue improving the stack together.
+| 编号 | 感知 | 控制 | 用途 |
+|---|---|---|---|
+| A | Oracle panoptic + GT point | Oracle NavMesh | 环境上限 |
+| B | RGB-D detector + ReID | Oracle NavMesh | 单测感知 |
+| C0 | Oracle point | Direct reactive | 最小控制 baseline |
+| C1--C3 | Oracle point + depth | 局部地图 + A* + 历史轨迹 | 模块递进消融 |
+| C4 | Oracle point + depth | C3 + 动态行人安全层 | 当前主 baseline |
+| D | RGB/RGB-D + ReID | C4 | 非 Oracle 模块化系统 |
 
----
+C4 在每个任务 1,405 个 val episode 上的历史结果：
 
-## 📢 News & Updates
+| Task | Success | Tracking | Collision | Finish |
+|---|---:|---:|---:|---:|
+| STT | 66.55% | 77.35% | 3.35% | 96.65% |
+| DT | 60.07% | 68.87% | 3.35% | 96.65% |
+| AT | 64.27% | 74.91% | 3.20% | 96.80% |
 
-- 🔥 We have updated the model weights and refreshed the benchmark scores in the performance table. The latest checkpoint is available at **[omlab/OmTrackVLA-0.6B](https://huggingface.co/omlab/OmTrackVLA-0.6B)**. We will keep updating — **please keep watching this repository!**
-- **[Coming Soon]** 📦 We will be releasing the full training data. Stay tuned!
+详细历史表见 `results/oracle_v5_summary.csv`。
 
----
+## 环境
 
-
-## Demo In Action
-
-The system processes video history and text instructions to predict future waypoints. Below are examples of the tracker in action:
-<div align="center">
-<img src="examples/ex1.gif" width="45%" alt="Tracked clip 1" />
-<img src="examples/ex2.gif" width="45%" alt="Tracked clip 2" />
-</div>
-
-
-## 1. Requirements & Environment Setup
-
-1. **Create the Conda env**
-   ```bash
-   conda create -n omtrack python=3.9 cmake=3.14.0
-   conda activate omtrack
-   ```
-2. **Install Habitat-Sim 0.3.1 (with Bullet)**
-   ```bash
-   conda install habitat-sim==0.3.1 withbullet -c conda-forge -c aihabitat
-   ```
-3. **Clone this repository**
-   ```bash
-   git clone https://github.com/om-ai-lab/OmTrackVLA.git
-   cd OmTrackVLA
-   ```
-4. **Install Habitat-Lab**
-   ```bash
-   pip install -e habitat-lab
-   ```
----
-
-## 2. Dataset Preparation (TrackVLA parity)
-
-The simulator assets and humanoid avatars follow the exact instructions from the original TrackVLA github release. Please accept the respective licenses before downloading.
-
-### 2.1 HM3D + MP3D Scenes
-   - Request access through the Habitat links used by TrackVLA: [HM3D](https://github.com/facebookresearch/habitat-sim/blob/main/DATASETS.md#habitat-matterport-3d-research-dataset-hm3d) and [MP3D](https://github.com/facebookresearch/habitat-sim/blob/main/DATASETS.md#matterport3d-mp3d-dataset).
-   - After the providers approve your request, download the archives locally and extract them under `data/scene_datasets` so the final layout matches:
-     ```
-     data/
-       scene_datasets/
-         hm3d/
-           train/...
-           val/...
-           minival/...
-         mp3d/
-           1LXtFkjw3qL/...
-           ...
-     ```
-   - If you stage the downloads elsewhere first, move them with a command such as:
-     ```bash
-     mv /path/to/hm3d data/scene_datasets/
-     mv /path/to/mp3d data/scene_datasets/
-     ```
-     Ensure the directory names stay lowercase (`hm3d`, `mp3d`) so Habitat configs resolve correctly.
-
-### 2.2 Humanoid Avatars
-   - From the repository root run:
-     ```bash
-     python download_humanoid_data.py
-     ```
-     This script mirrors TrackVLA’s original helper and should populate `data/humanoids`.
-   - If the script fails (e.g., quota errors), manually download `humanoids.zip` from [Google Drive](https://drive.google.com/file/d/1aE_wyvPqvOuVmF8px2vTO3trr70DKf1l/view), then extract it with:
-     ```bash
-     unzip humanoids.zip -d data/
-     ```
-     Double-check that `data/humanoids/**` now contains the FBX meshes required by Habitat.
-
-### 2.3 Verification
-   - Run `ls data/scene_datasets/{hm3d,mp3d}` to confirm both corpora are present.
-   - Re-run any Habitat episodes (e.g., `run_eval.py`) to ensure the simulator can resolve the scene assets and humanoid avatars without missing-file errors.
-
-Keeping this layout in sync with TrackVLA’s published instructions avoids surprises when sharing configs or checkpoints across both projects.
-
----
-
-## 3. Data Processing Pipeline
-
-### 3.1 Build Dataset (`make_tracking_data.py`)
-This script integrates egocentric base velocities to emit future indicator curves, waypoints, and sliding-window JSONL shards. Each episode requires the `<stem>.mp4` RGB capture alongside `<stem>_info.json` pose metadata.
-
-**Quick Start (Sample Data)**
-
-The repo ships with a tiny rollout snapshot under `sim_data/sample`. Generate a ready-to-train dataset with:
+已在 4090 机器上创建独立环境，包含 Python 3.9、Habitat-Sim 0.3.1 headless/Bullet、PyTorch 2.5.1 + CUDA 12.4 和基础依赖：
 
 ```bash
-python make_tracking_data.py \
-    --input_root sim_data/sample \
-    --output_root data/sample
+export PYTHON_BIN=/data/nas_ray/home/zeying.gong/venvs/omtrackvla-modular/bin/python
+export PYTHONPATH="$PWD/habitat-lab:$PWD"
 ```
 
-This mirrors the `sim_data` tree under `data/sample/frames`, writes JSONL shards to `data/sample/jsonl`, and primes `data/sample/dataset.json` if `--out_file` is set.
+可以执行 `mamba activate /data/nas_ray/home/zeying.gong/venvs/omtrackvla-modular` 激活，也可直接使用上述 `PYTHON_BIN`。环境可通过根目录的 `environment.yml` 重建。
 
-**Full Usage**
+模型权重已安装在 `models/`（不入 Git）。重新拉取或校验可执行：
 
 ```bash
-python make_tracking_data.py \
-    --input_root sim_data/sample \
-    --output_root data/sample \
-    --history 31 --horizon 8 --dt 0.1 \
-    --only_success \
-    --instruction "Follow the target person without collision."
+bash scripts/download_weights.sh
 ```
 
-Episodes are replicated under `frames/seed_xxx/...`, with corresponding `jsonl/seed_xxx/scene/episode.jsonl` files storing history frames (`images`), the current frame (`current`), the instruction, future waypoints (`trajectory`), and velocity commands (`actions`). Use `--out_file` to emit a monolithic dataset JSON in addition to per-episode shards.
+脚本从 TorchVision/OSNet 的公开模型源下载到临时文件，SHA-256 校验通过后才替换目标文件；重复执行时会跳过已校验权重。
 
-### 3.2 Precompute Vision Tokens (`precache_frames.py`)
-`train.py` stays I/O bound when every frame already has DINO/SiGLIP embeddings cached. `precache_frames.py` precomputes both fine and coarse tokens so the trainer can mmap `.pt` tensors instead of re-encoding on the fly.
+## 运行
+
+所有命令均从仓库根目录执行。
+
+单 episode 调试：
 
 ```bash
-python precache_frames.py \
-    --data_root data/sample \
-    --cache_root data/sample/vision_cache \
-    --batch_size 8 \
-    --image_size 384
+"$PYTHON_BIN" -m omtrackvla.oracle_modular_batch \
+  --task at \
+  --split val \
+  --shard-id 0 \
+  --num-shards 1 \
+  --dataset-index 49 \
+  --output-root outputs/debug_at_49 \
+  --perception oracle \
+  --controller map-reactive-c4 \
+  --save-steps \
+  --save-video \
+  --no-resume
 ```
 
-Tokens are stored as `.half()` tensors to save disk, and any missing coarse tokens are backfilled via pooling when only the fine representation exists. Layout auto-detection handles nested `frames/seed_xxx/...` structures.
-
----
-
-## 4. Training
-
-`train.py` hosts the Qwen-based planner with masked waypoint losses. Point it at the dataset JSONL directory and the cached vision tokens to kick off optimization.
+多 GPU 全量评测：
 
 ```bash
-python train.py \
-    --train_json data/sample/jsonl \
-    --cache_root data/sample/vision_cache \
-    --out_dir ckpt_sample \
-    --epochs 2 \
-    --batch_size 8 \
-    --n_waypoints 8 \
-    --history 31 \
-    --lr 2e-5 \
-    --mixed_precision \
-    --save_trajectories
+GPU_LIST=0,1,2,3,4,5,6,7 \
+NUM_WORKERS=2 \
+PERCEPTION=oracle \
+CONTROLLER=map-reactive-c4 \
+TASKS=stt,dt,at \
+SPLITS=val \
+RENDER_BACKEND=egl \
+SAVE_VIDEO=1 \
+OUTPUT_ROOT="$PWD/outputs/c4_oracle_val" \
+bash scripts/eval_oracle_modular_8gpu.sh
 ```
 
-- **Checkpointing:** Every 100 steps a `.pt` file lands in `out_dir`; set `--max_ckpts` to cap retention.
-- **Visualization:** Enable `--save_trajectories` to collect `.npz` bundles plus overlay images under `vis/`.
-- **Resume:** Pass `--resume` or `--resume_ckpt /path/to/model_epochXX_stepXXXXXX.pt` to pick up training midstream.
-- **Scaling knobs:** Adjust `--train_json` to target any directory of JSONL shards, tweak `--history` / `--n_waypoints` for different temporal windows, and flip `--distributed` when launching via `torchrun`.
-
----
-
-## 5. Evaluation
-
-`eval.sh` fans Habitat-based rollouts across configurable chunks and expects `CKPT`, `HF_MODEL_ID`, or `HF_MODEL_DIR` to define which weights to load. Outputs land under `sim_data/eval/<task>` alongside per-episode videos and metrics. Use `bash kill_eval.sh` to cleanly terminate all spawned jobs.
-
-### 5.1 Using the Pre-trained 0.6B Model
-- **Option A — Auto-download**
-  ```bash
-  HF_MODEL_ID=omlab/OmTrackVLA-0.6B bash eval.sh
-  ```
-- **Option B — Manual download**
-  ```bash
-  huggingface-cli download omlab/OmTrackVLA-0.6B --local-dir open_trackvla_hf
-  HF_MODEL_DIR=$(pwd)/open_trackvla_hf bash eval.sh
-  ```
-
-### 5.2 Evaluating Custom Checkpoints
-
-Point `CKPT` at any artifact produced by `train.py`:
+指定 episode 并行回归：
 
 ```bash
-CKPT=/path/to/model_epoch05_step009000.pt bash eval.sh
+DATASET_INDICES=0,1,2,49 \
+TASK=at \
+SPLIT=val \
+PERCEPTION=oracle \
+CONTROLLER=map-reactive-c4 \
+bash scripts/eval_oracle_indices_8gpu.sh
 ```
 
-Tune `CHUNKS`, `NUM_PARALLEL`, or the Habitat config inside `eval.sh` to rebalance throughput vs. coverage.
+将 `PERCEPTION=oracle` 改为 `PERCEPTION=rgb-person` 可测 RGB-D detector/ReID 前端。不同感知或 controller 必须使用不同 `OUTPUT_ROOT`。
 
-## 📊 Performance (EVT-Bench)
+## 诊断和测试
 
-| Methods      | STT (SR↑ / TR↑ / CR↓) | DT (SR↑ / TR↑ / CR↓) | AT (SR↑ / TR↑ / CR↓) |
-|--------------|------------------------|----------------------|----------------------|
-| IBVS†        | 42.9 / 56.2 / 3.75     | 10.6 / 28.4 / 6.14   | 15.2 / 39.5 / 4.90   |
-| PoliFormer†  | 4.67 / 15.5 / 40.1     | 2.62 / 13.2 / 44.5   | 3.04 / 15.4 / 41.5   |
-| EVT          | 24.4 / 39.1 / 42.5     | 3.23 / 11.2 / 47.9   | 17.4 / 21.1 / 45.6   |
-| EVT‡         | 32.5 / 49.9 / 40.5     | 15.7 / 35.7 / 53.3   | 18.3 / 21.0 / 44.9   |
-| Uni-NaVid (Vicuna-7B)    | 25.7 / 39.5 / 41.9     | 11.3 / 27.4 / 43.5   | 8.26 / 28.6 / 43.7   |
-| TrackVLA (Vicuna-7B)     | 85.1 / 78.6 / 1.65     | 57.6 / 63.2 / 5.80   | 50.2 / 63.7 / 17.1   |
-| Previous ckpt (0.6B)  | 64.8 / 84.4 / 5.00     | 33.6 / 66.3 / 8.84   | 39.6 / 76.7 / 6.38   |
-| Our latest ckpt (0.6B)  | 81.41 / 82.77 / 5.13     | 41.54 / 58.80 / 11.31   | 60.04 / 73.89 / 7.60   |
-
-
-† Uses GroundingDINO as the open-vocabulary detector. ‡ Uses SoM + GPT-4o as the vision stack (see the TrackVLA paper Table 2).
-
-**Transparency note:** With the updated 0.6B checkpoint, OmTrackVLA now surpasses the 7B TrackVLA baseline on success rate (SR↑) in the AT setting (60.04 vs 50.2) while remaining competitive on STT (81.41 vs 85.1). Tracking rate (TR↑) leads on STT and AT, with a marginal gap on DT. Collision rate (CR↓) is lower than TrackVLA on AT but remains higher on STT and DT — reducing collisions in denser scenarios without sacrificing tracking performance is an active area of improvement. We continue to prioritize this lightweight release to keep reproduction and fine-tuning accessible.
-
-
-
-## 📚 Resources & References
-- Baseline checkpoint: [omlab/OmTrackVLA-0.6B](https://huggingface.co/omlab/OmTrackVLA-0.6B)
-- TrackVLA: Embodied Visual Tracking in the Wild [arXiv:2505.23189](https://arxiv.org/abs/2505.23189)
-- Embodied Navigation Foundation Model [arXiv:2509.12129](https://arxiv.org/abs/2509.12129)
-
-## Citation
-
-If you find OmTrackVLA useful in your research or applications, please cite it using the following BibTeX:
-
-```bibtex
-@misc{omtrackvla2025,
-  author       = {Kyusong Lee, Heting Ying and Tiancheng Zhao},
-  title        = {OmTrackVLA: Open-Source Visual Language Action Model for Visual Navigation and Following},
-  year         = {2025},
-  publisher    = {GitHub},
-  journal      = {GitHub Repository},
-  howpublished = {https://github.com/om-ai-lab/OmTrackVLA}
-}
+```bash
+"$PYTHON_BIN" -m scripts.diagnostics.avatar_switch_smoke
+"$PYTHON_BIN" -m scripts.diagnostics.debug_stt_depth_observation
+"$PYTHON_BIN" -m scripts.diagnostics.default_pointnav_map_debug
+python -m pytest -q
 ```
 
-**Happy tracking!** Contributions and issue reports are welcome via pull requests.
+脚本语法检查：
+
+```bash
+bash -n scripts/*.sh
+```
+
+## 数据与本地产物
+
+- EVT episode：`data/datasets/track/{STT,DT,AT}/{train,val}`；
+- avatar：`data/humanoids/humanoid_data`；
+- scene：`data/scene_datasets` 软链接；
+- Spot 资产：`data/robots/hab_spot_arm`；
+- detector/ReID 权重：`models/`；
+- 评测输出：`outputs/`，默认不入 Git。
+
+数据、权重和视频都不应直接提交。只将固定配置、紧凑 summary 和必要的小型回归样例纳入 Git。
+
+## 开发新方法
+
+新方法优先实现为已有接口的替换件：
+
+- 新感知：输出 `TargetObservation`；
+- 新控制器：输入目标观测和可选 depth/map，输出 `ContinuousAction`；
+- 新建图/规划：替换或扩展 `LocalObstacleMap`；
+- 新评测组合：在 `oracle_modular_batch.py` 中注册，保持相同 metric 和输出 schema。
+
+约定、已知坑和扩展点见 `PROJECT_NOTES.md`。
+
+## 归档
+
+2026-09-04 清理前的未跟踪第三方源码、RL 诊断脚本和约 9.3 GB 历史输出已移到：
+
+```text
+/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA_archive_20260904
+```
+
+已跟踪的旧方法仍可从 Git 历史恢复。

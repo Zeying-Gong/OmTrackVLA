@@ -1,43 +1,41 @@
-habitat-lab
-data/humanoids
-data/sample
-data/scene_datasets
-ckpt_qwen5
+# Python/test caches
 __pycache__/
-*.pyc
-__pycache__
-trackvla_vis/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
 
-# Keep experiment outputs reproducible in Git. Raw logs remain ignored, while
-# their compact summaries are tracked below.
-logs/**
-!logs/**/
-!logs/**/summary.txt
+# Local environments and editor state
+.venv/
+venv/
+.idea/
+.vscode/
+
+# Model weights and caches
+models/
 ckpt*/
-
 *.pt
 *.pth
 *.bin
 *.safetensors
-
 *.npy
 *.npz
 
-# Local datasets, model caches, and experiment artifacts
-data/official_0420
-hf_exports/
-models/
-oracle_modular_dataset_eval
-perf_data/
-sim_data/at_seed1000
-sim_data/dt_seed1000
-sim_data/eval/
-sim_data/eval_smoke/
-sim_data/sim_data0420
-sim_data/stt_seed1000
-
-# Raw datasets and experiment outputs (do not commit)
+# Raw datasets and linked simulator assets
+data/humanoids/
+data/scene_datasets
+data/versioned_data/
+data/sample/
+data/official_0420/
 data/tpt_bench/
 data/sage3d_extracted/
+
+# Experiment outputs
 outputs/
-e2e_policy/*.log
+logs/
+trackvla_vis/
+perf_data/
+
+# Render/runtime leftovers
+*.log
+*.mp4
+*.avi

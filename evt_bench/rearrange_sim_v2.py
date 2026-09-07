@@ -1,4 +1,18 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Copyright 2026 The OpenBMB Team. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 # Copyright (c) Meta Platforms, Inc. and its affiliates.
 # This source code is licensed under the MIT license found in the
@@ -111,7 +125,7 @@ class RearrangeSim_v2(HabitatSim):
         self._viz_handle_to_template: Dict[str, float] = {}
         self._viz_objs: Dict[str, Any] = {}
         self._draw_bb_objs: List[int] = []
-        
+
         self.agents_mgr = ArticulatedAgentManager(self.habitat_config, self)
 
         # Setup config options.
@@ -278,7 +292,7 @@ class RearrangeSim_v2(HabitatSim):
         # self._handle_to_goal_name = ep_info.info["object_labels"]
         if "object_labels" in ep_info.info: # my added, to differ from the social navigation task and social rearrange task
             self._handle_to_goal_name = ep_info.info["object_labels"]
-        
+
             self.ep_info = ep_info
             new_scene = self.prev_scene_id != ep_info.scene_id
             if new_scene:
@@ -379,7 +393,7 @@ class RearrangeSim_v2(HabitatSim):
         else:
             self.ep_info = ep_info
             new_scene = self.prev_scene_id != ep_info.scene_id
-            
+
             # if new_scene:
             #     self._prev_obj_names = None
 
@@ -394,7 +408,7 @@ class RearrangeSim_v2(HabitatSim):
             # self._clear_objects(should_add_objects, new_scene)
 
             is_hard_reset = new_scene # or should_add_objects
-            
+
             if is_hard_reset:
                 with read_write(config):
                     config["scene"] = ep_info.scene_id
@@ -403,10 +417,10 @@ class RearrangeSim_v2(HabitatSim):
                 self.add_perf_timing("super_reconfigure", t_start)
                 # The articulated object handles have changed.
                 self._start_art_states = {}
-                
+
             if new_scene:
                 self.agents_mgr.on_new_scene()
-                
+
             self.prev_scene_id = ep_info.scene_id
             self._viz_templates = {}
             self._viz_handle_to_template = {}
@@ -477,10 +491,10 @@ class RearrangeSim_v2(HabitatSim):
                     ao: (ao.joint_positions, ao.transformation)
                     for ao in self.art_objs
                 }
-            
+
             if self._should_setup_semantic_ids:
                 self._setup_semantic_ids()
-                
+
 
     @add_perf_timing_func()
     def _setup_semantic_ids(self):
