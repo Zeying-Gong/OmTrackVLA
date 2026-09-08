@@ -13,11 +13,11 @@
 - 主要观测：后续 egocentric RGB 历史。
 - 输出：机器人未来的局部 waypoint trajectory。
 - 明确不需要：自然语言描述、VQA、语义 CoT。
-- 当前状态：WP-0数据审计和WP-1统一数据契约均已完成；WP-2已实现Phase 1固定split、只读source adapter、共享视觉baseline、真实train/eval/render/gate入口和单卡小样本闭环。DA3-SMALL实际权重、隔离运行时和4帧GPU probe已跑通，并据真实结果修复OpenCV/Habitat轴桥接；SAGE3D策略轨迹、TpT物理时钟和真实UWB仍受显式gate阻断，DA3多场景尺度/置信度准入及正式规模训练尚未完成，因此WP-2仍在进行中。
+- 当前状态：WP-0数据审计和WP-1统一数据契约均已完成；WP-2已实现Phase 1固定split、只读source adapter、共享视觉baseline、真实train/eval/render/gate入口和单卡小样本闭环。DA3-SMALL实际权重、隔离运行时和4帧GPU probe已跑通，并据真实结果修复OpenCV/Habitat轴桥接；384帧SAGE3D bbox独立检测器审计确认抽取器存在水平符号错误和错误可见性判定，修复侧车准入前禁止其bbox/visible进入身份监督；TpT物理时钟、真实UWB、DA3多场景尺度/置信度准入及正式规模训练尚未完成，因此WP-2仍在进行中。
 - 集群入口：仓库内的`scripts/run_pipeline_8xh100.sh`已创建，可在已分配的单节点8×H100上直接bash启动，负责环境预检、三Phase衔接、断点续跑、eval/render/gate与产物管理；Phase 1模块和3个配置已接通并通过单卡preflight，Phase 2/3的6个配置与实现仍缺失，因此`--phase all`会明确失败。OmTrackVLA使用`wam`分支并通过GitHub `origin/wam`协作。
 - 当前方案：采用 3 个正式阶段——Phase 1身份与几何World-Action预训练、Phase 2目标人物跟随监督训练、Phase 3噪声与闭环恢复训练。
 - World-Action 路线：优先评估 DA3 等视觉几何基础模型。利用其从视频恢复的相机轨迹作为显式 pseudo ego-motion，而不是再学习 WALA 式 latent action；借鉴 FutureNav 的 forward/inverse dynamics 与单步 future-state prediction。普通无任务 ego 视频只训练几何与状态转移辅助能力，不直接提供 policy trajectory 监督。
-- 当前主要风险：UWB 冷启动后的首次视觉绑定；首帧/首次绑定目标身份如何长期保留；UWB 时间延迟、坐标转换与误差标定；pseudo ego-motion 的尺度及可执行性；专家状态与模型实际访问状态存在分布偏移；TpT 视频时钟与 GT/ODOM 时钟语义尚未统一；Sage3D loader必须严格执行三条件accepted规则。
+- 当前主要风险：UWB 冷启动后的首次视觉绑定；首帧/首次绑定目标身份如何长期保留；UWB 时间延迟、坐标转换与误差标定；pseudo ego-motion 的尺度及可执行性；专家状态与模型实际访问状态存在分布偏移；TpT 视频时钟与 GT/ODOM 时钟语义尚未统一；SAGE3D除严格执行三条件accepted规则外，还必须修复投影bbox水平符号、画面相交和遮挡可见性。
 
 ## 0.1 协作者接手入口：当前该做什么
 
@@ -43,7 +43,7 @@
 | `data/scene_datasets` | 本机软链接到`/data/nas_ray/home/zeying.gong/datasets/scene_datasets`，目标存在；该链接不进Git | Habitat场景资产 | 新clone/H100会自动拥有同一路径 |
 | `data/humanoids`、`data/versioned_data` | 本机存在且被Git忽略，约573 MB和57 MB；主humanoid目录有100个人物资产目录 | Habitat人物资产 | 它们是训练样本或会随Git下载 |
 | `/h100-2/vln_n1/traj_data` | 完整的 InternData-N1 展开目录；12个group、196,536 episodes；3,730个scene目录中3,725个含正式episode，另5个仅含未索引depth残留 | Phase 1导航几何、pose/action与future-state预训练 | 不是人物跟随数据；自然语言task不得进入模型；5个无metadata/parquet的残留目录不得入manifest；旧报告的85,124 episodes是漏扫结果 |
-| `/data/nfs/share/OmTrackVLA/data/sage3d_extracted` | 约160 GiB（`du -s -B1`为171,095,801,856字节）；912 runs、7,110个索引episode、其中7,105个canonical accepted；2,132,276 steps | RGB/depth、robot/target pose、投影bbox和8点ego waypoint；Phase 1/2主要监督源 | 无真实UWB；156,420个尾部step无未来waypoint；根索引另含5个rejected，且2个accepted与源`success`不一致，不能用`success`代替accepted规则 |
+| `/data/nfs/share/OmTrackVLA/data/sage3d_extracted` | 约160 GiB（`du -s -B1`为171,095,801,856字节）；912 runs、7,110个索引episode、其中7,105个canonical accepted；2,132,276 steps | RGB/depth、robot/target pose和8点ego waypoint；修复后可作为Phase 1/2监督候选 | 无真实UWB；156,420个尾部step无未来waypoint；抽取器把左轴当右轴造成bbox水平镜像，且`visible`未检查画面相交/遮挡，当前bbox/visible禁止直接训练；见`docs/sage3d_bbox_audit.md` |
 | `/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2` | 约17 GiB（`du -s -B1`为17,604,104,192字节）；47序列、141,326帧；parquet与RGB逐帧对应 | Phase 1B身份保持、遮挡/干扰人与可见性监督 | 无expert waypoint/UWB；`vid_pts_ms`与GT/ODOM时钟的整段时长约差4.48倍，冻结horizon前必须核实 |
 | `example_datasets/samples` | 三套正式数据各16个连续真实帧；5,854,999字节、99文件；含48 RGB、32个16-bit depth、2个16行Parquet及3张预览 | 协作者在GitHub检查真实外观、目录结构、深度编码和标签形状 | 不是训练/评测划分；预览黄框和逐帧标签不得作为模型输入；不授予上游数据额外权利 |
 | 仓库Git跟踪的`data/` | 31个文件，约19.7 MB；WAM提交没有新增大数据 | 小型episode元数据和Spot机器人资产 | `??`本地数据已经上传GitHub |
@@ -52,7 +52,7 @@
 
 1. **WP-0：数据审计，已完成。** 正式外部数据范围固定为`/h100-2/vln_n1/traj_data`（InternData-N1）、`/data/nfs/share/OmTrackVLA/data/sage3d_extracted`和`/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2`。产物为`docs/data_inventory.md`、`configs/data_inventory.json`和`scripts/audit_data_inventory.py`；审计只读、检查全量元数据/路径并按group/mode-camera/sequence分层解码媒体，不生成target crop。另有`example_datasets/samples`保存每套16帧的可公开浏览微型真实样例，仅用于理解数据。
 2. **WP-1：冻结数据契约，已完成。** `docs/data_contract.md`和`configs/data_contract.json`已冻结一次性初始化事件、RGB历史、UWB与路由元数据、8点底盘系expert轨迹、辅助GT及`null + valid/mask`缺失值；`scripts/validate_data_contract.py`只读强制执行输入/标签隔离、四种条件模式、坐标/时钟不变量及源准入gate。逐帧bbox只能在label域，不能出现在model input域。
-3. **WP-2：打通Phase 1最小闭环，进行中。** 已确认InternData-N1可提供pose ego几何流，SAGE3D/TpT可提供identity流；已实现真实的`omtrackvla.training.train`、`omtrackvla.evaluation.{evaluate,render,gate}`入口、3个Phase 1配置和单卡小样本闭环，能产出B1-ID、B1-GEO、B1-PROBE与固定`viz_val`视频。DA3-SMALL的固定源码、权重和隔离依赖已部署，真实probe已验证depth/confidence/pose/intrinsics/feature并修复坐标转换。剩余工作是用多场景held-out样本冻结尺度/置信度过滤证据，然后运行正式规模baseline与8卡流水线。
+3. **WP-2：打通Phase 1最小闭环，进行中。** 已确认InternData-N1可提供pose ego几何流，TpT可提供identity流，SAGE3D identity流则因投影bbox/visible审计失败而暂时阻断；已实现真实的`omtrackvla.training.train`、`omtrackvla.evaluation.{evaluate,render,gate}`入口、3个Phase 1配置和单卡小样本闭环，能产出B1-ID、B1-GEO、B1-PROBE与固定`viz_val`视频。DA3-SMALL的固定源码、权重和隔离依赖已部署，真实probe已验证depth/confidence/pose/intrinsics/feature并修复坐标转换。剩余工作是完成SAGE3D只读修复侧车和准入审计、用多场景held-out样本冻结DA3尺度/置信度过滤证据，然后运行正式规模baseline与8卡流水线。
 4. **WP-3：打通Phase 2基本跟随。** 从Habitat episode元数据实际渲染RGB并由oracle生成robot expert future waypoints，或接入经WP-0确认的现成expert数据；实现四种模态模式。没有真实UWB日志时，可从同步robot/target pose生成明确标记为`simulated_uwb`的数据，但不得声称已覆盖真实UWB误差。
 5. **WP-4：打通Phase 3恢复。** 先完成3A离线受控扰动，再验证仿真可从模型访问状态查询expert后实现3B DAgger。始终混入Phase 2干净专家数据，并用相同scene/seed对比Phase 2与Phase 3。
 6. **WP-5：每个工作包都回填。** 在第9～11节追加实验、失败和修改记录；写明命令、commit、数据manifest、checkpoint、指标和产物路径。失败也要记录，不覆盖历史，不只汇报总loss。
@@ -60,7 +60,7 @@
 ### 当前明确阻塞项
 
 - Phase 1所需4个Python入口和3个Phase/benchmark/gate配置已实现；Phase 2/3仍缺6个配置及相应实现，因此当前只允许`--phase 1`通过正式preflight，`--phase all`失败是预期行为。
-- 四种目标条件模式、canonical坐标/时间接口和最小样本schema已由WP-1冻结，但这不等于源适配已通过：SAGE3D策略使用仍须确认step时间、base/camera变换并验证投影bbox；TpT没有expert waypoint且物理时钟未解决；InternData-N1不是人物跟随数据。严格数据划分仍由NEXT-015冻结。
+- 四种目标条件模式、canonical坐标/时间接口和最小样本schema已由WP-1冻结，但这不等于源适配已通过：SAGE3D抽取器的投影bbox水平符号及可见性已确认错误，修复侧车通过独立检测器/深度复核前不得进入身份loss或评测；TpT没有expert waypoint且物理时钟未解决；InternData-N1不是人物跟随数据。严格数据划分仍由NEXT-015冻结。
 - 当前没有真实UWB日志、设备标定或误差统计被纳入仓库；在获得这些数据前，只能验证接口和仿真UWB，不能完成产品级UWB鲁棒性结论。
 
 ### 当前可视化与判读边界
@@ -69,6 +69,7 @@
 |---|---|---|---|
 | InternData-N1预览 | `example_datasets/samples/previews/intern_data_n1.jpg` | egocentric RGB连续性、视角与场景外观 | 无人物目标，不能检查身份跟踪或跟随效果 |
 | SAGE3D预览 | `example_datasets/samples/previews/sage3d_extracted.jpg` | 仿真人物外观、连续帧和GT投影bbox是否合理 | 黄框是离线GT，不是模型预测，也不是后续模型输入 |
+| SAGE3D bbox审计 | `docs/sage3d_bbox_audit.md`及H100的`results/wp2_sage_bbox_audit_v2/` | 黄框投影错误、水平镜像反事实、独立person detector框及mode/camera/时间分层统计 | detector是审计证据，不自动等于目标GT；当前源bbox/visible未准入训练 |
 | TpT clean v2预览 | `example_datasets/samples/previews/tpt_bench_clean_v2.jpg` | 真实机器人鱼眼画面、人物尺度变化和GT bbox | 黄框是离线GT；不能证明时钟已对齐或模型已学会重识别 |
 | Phase 1 smoke视频 | H100共享工作副本的`results/wp2_phase1_memory_smoke/phase_1/visualizations/phase1_viz.mp4` | render链路、`PRED/GT`标识、身份/几何面板和视频编码是否工作 | 仅2-step开发smoke，正式gate预期失败，不是可报告的模型效果 |
 | Phase 1 smoke指标 | 同目录的`metrics.json`、`report.md`、`gate.json` | 指标字段、报告和失败原因是否完整 | 不能作为baseline数值或Phase 1验收结果 |
@@ -113,6 +114,7 @@
 | DEC-031 | 2026-09-08 | Phase 1固定按Intern `group/scene`、SAGE3D `run`、TpT `sequence`隔离划分，种子为20260907；训练adapter只能内存裁剪初始化目标，不得向源数据写crop/cache | 防止scene/人物/episode泄漏，并修复旧外部loader会在源目录生成`_target_crops/_target_refs`的问题 | 已实现；manifest只枚举split unit和必要元数据，不扫描全量媒体 |
 | DEC-032 | 2026-09-08 | Phase 1先以无下载权重的共享ResNet-18建立可执行双流baseline；DA3-SMALL作为Apache-2.0几何teacher候选，实际输出验证前不得生成pseudo label | 先验证数据、分布式训练和评测闭环，同时不把尚未安装/验证的DA3接口伪装成已完成 | baseline smoke与DA3单clip真实接口probe已完成；多场景pseudo-label准入仍未通过 |
 | DEC-033 | 2026-09-08 | DA3使用官方commit `3d835ec1...`和DA3-SMALL revision `e08cab65...`的独立源码、Python target目录和校验权重；pose必须经过OpenCV/Habitat相机轴桥接、Intern底盘外参、canonical基变换和显式metric scale | 不污染现有训练环境；真实probe证明直接混用OpenCV与Habitat外参会产生近90度平移和yaw符号错误 | 已确认；单clip修正后平移/yaw均值误差为0.00496m/0.00519rad，但同clip标定与评测不能用于正式准入 |
+| DEC-034 | 2026-09-08 | SAGE3D源`bbox/visible`在修复侧车通过独立person detector、深度和人工拼图审计前，不得进入Phase 1身份loss或指标；修复与伪标注不得覆盖只读源，detector/ReID仅用于离线监督或审计，不构成后续推理bbox输入 | 384帧分层审计确认抽取器水平轴符号错误、画面外零面积框和未验证遮挡可见性；直接训练会把背景当目标并污染身份记忆 | 已确认；TpT身份流和Intern几何流不受影响，SAGE3D修复转NEXT-021 |
 
 ## 2. 当前提案与待确认决策
 
@@ -381,6 +383,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | EXP-TEMPLATE | YYYY-MM-DD |  |  |  |  |  |  |  |  |
 | EXP-001 | 2026-09-08 | 验证Phase 1从真实source adapter、RGB历史身份记忆到train/eval/render/gate的最小闭环 | 基于`f487a13`的未提交WP-2实现 | `phase1_pretrain.yaml`；单卡每源1 split unit/2 step；8卡每卡1 batch；8+8 eval、8+8 probe | `phase1_v1.json`，SHA-256 `254c7c6c...`; Intern/SAGE/TpT正式根 | 20260907 | B1-ID visibility=0.5、IoU=0.193、success@0.5=0；B1-GEO translation RMSE=0.155m、yaw MAE=0.116rad；B1-PROBE相对改善=0.156 | 带GRU history的checkpoint、三类指标、report和8帧960×380 MP4均生成；8×H100 DDP/NCCL及rank-0 checkpoint通过；正式gate按预期未通过 | 接口、历史记忆、单卡/8卡反向传播闭环成立；2-step结果不代表正式能力，必须保留gate失败并继续正式训练 |
 | EXP-002 | 2026-09-08 | 实际验证DA3-SMALL的几何与feature接口，并检查DA3 pose到Intern canonical SE(2)的约定 | `4fa9143`加坐标修正工作树 | DA3官方commit `3d835ec1...`；模型revision `e08cab65...`；504px；4帧；feature layer 5/11 | Intern `3dfront_d435i/00154c06...` episode 0，indices 0/4/8/12 | 不适用 | depth/conf/pose/intrinsics及两层feature均有限；scale=2.07116；修正后translation mean=0.00496m、yaw mean=0.00519rad | GPU前向约0.68s；发现并修复OpenCV/Habitat轴混用和缺失canonical基变换；confidence中位4.3767 | NEXT-009接口验证完成；同clip用于尺度标定与误差计算，不能据此准入pseudo label，继续NEXT-010多场景held-out验证 |
+| EXP-003 | 2026-09-08 | 审计SAGE3D投影bbox/visible能否作为身份监督 | `0bc9075`加只读审计工作树 | 384帧、128 episodes、每episode首/中/末3帧、覆盖18个mode/camera分层；Faster R-CNN MobileNet person阈值0.30；IoU 0.50/0.20 | SAGE3D正式根只读；detector权重SHA-256 `907ea3f9...` | 20260908 | 5个源框裁剪后零面积；379个有效框中331帧检测到人；强一致176、部分86、冲突69；中位IoU 0.533 | 初始/中间/末帧冲突率分别1.87%/32.43%/27.43%；水平镜像后中位IoU 0.638、强一致247、冲突14；报告和72例拼图在`results/wp2_sage_bbox_audit_v2/` | 当前SAGE bbox/visible未准入；根因是左轴误作右轴并缺少画面相交/遮挡检查，转NEXT-021修复侧车 |
 
 建议每个实验至少记录：
 
@@ -398,6 +401,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | FAIL-TEMPLATE | EXP-XXX |  |  |  |  |  |  |
 | FAIL-001 | EXP-001 | DA3实际推理尚不能在`omtrackvla`环境启动 | 导入DA3官方API所需运行时 | 官方仓库固定commit `3d835ec1...`；原环境缺`huggingface_hub`、`safetensors`及若干导出依赖，且本机没有模型权重 | 部署独立源码、Python target运行时和SHA-256固定的DA3-SMALL权重；不改原conda环境 | EXP-002已真实加载权重并完成GPU推理；历史失败保留，NEXT-009接口gate解除 | 固定源码/模型revision、权重hash和隔离路径；不得把可选`gsplat`警告误判为几何probe失败 |
 | FAIL-002 | EXP-002 | 首次真实DA3 pose转换出现近90度平移方向和yaw符号错误 | 直接将DA3 OpenCV w2c与Intern/Habitat相机外参组合 | 首次报告translation/yaw均值误差0.254m/0.171rad；四种变换数值对照仅“OpenCV/Habitat桥接+canonical基变换”同时恢复方向和符号 | 增加`diag(1,-1,-1,1)`相机轴桥接、`(right,forward)→(forward,left)`及非单位真实形态外参回归测试 | 同clip经robust scale后降至0.00496m/0.00519rad | 单位外参测试不足；后续坐标适配测试必须包含真实轴向、非零相机高度、平移和旋转 |
+| FAIL-003 | EXP-003 | SAGE3D中后段黄色GT框频繁落在人物另一侧的墙、门或窗上，另有`visible=true`但框在画面外 | Phase 1 smoke人工查看及384帧分层detector审计 | 抽取器定义`right=[-sin(yaw),cos(yaw)]`，实际为left，却使用`u=cx+fx*right/fwd`；水平镜像反事实将冲突69降至14；5个源框裁剪后零面积 | 已完成只读审计、反事实统计和可视化；尚未生成正式修复侧车 | 源`bbox/visible`禁止直接训练，修复进入NEXT-021 | 坐标投影测试必须覆盖非中心目标、左右两侧、出画、遮挡和多相机；首帧中心样本不能作为唯一验证 |
 
 失败原因应区分：
 
@@ -428,6 +432,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | CHG-013 | 2026-09-08 | `omtrackvla/{data,geometry,models,training,evaluation}`、Phase 1配置、manifest、脚本、文档和测试 | 实现WP-2首个可执行闭环：只读identity/geometry adapter、显式SE(2)转换、带GRU历史身份记忆的共享视觉双流baseline、分布式训练、B1评测、视频渲染和严格gate | 将流水线从dry-run推进到真实Phase 1，同时保持源准入和输入/标签边界 | 133项unittest；真实三源adapter smoke；单卡2-step和8×H100每卡1-batch DDP；B1-ID/B1-GEO/B1-PROBE；8帧MP4重读；正式gate预期失败；Phase 1 pipeline preflight通过 | DEC-031～032；EXP-001；NEXT-009～011、015～018 |
 | CHG-014 | 2026-09-08 | DA3隔离运行时/权重、`omtrackvla/geometry/se2.py`、probe脚本、测试和文档 | 部署固定DA3-SMALL并完成真实GPU probe；修复OpenCV/Habitat轴桥接和canonical基变换；报告scale、置信度和feature形状 | 单元合成测试未覆盖真实相机坐标约定，首次实际pose暴露轴向错误 | 固定权重SHA；4帧真实推理；四种变换对照；非单位相机外参回归；全仓测试 | DEC-033；EXP-002；FAIL-001～002；NEXT-009～010 |
 | CHG-015 | 2026-09-08 | `PROGRESS.md` | 同步协作者事实表与Phase 1最新实现状态，更新日期和DEC-027状态，并增加现有可视化位置及判读边界 | 消除“Phase 1已实现”与旧表“训练模块不存在”的内部矛盾，防止将数据预览或2-step smoke误判为正式模型结果 | 全文一致性检查、路径核对、135项测试和流水线dry-run | DEC-027、DEC-031～033；EXP-001～002 |
+| CHG-016 | 2026-09-08 | `scripts/audit_sage3d_bboxes.py`、`docs/sage3d_bbox_audit.md`、测试和`PROGRESS.md` | 新增SAGE3D bbox只读分层审计、独立person detector对照、水平镜像反事实、时间/mode-camera统计及最差样本拼图；记录准入阻断和修复顺序 | 用户发现SAGE3D黄色GT疑似错位；正式训练前必须区分模型误差与源标签错误 | 384帧/128 episodes/18分层H100审计；5项单测；人工查看72个最差样本；源目录零写入 | DEC-034；EXP-003；FAIL-003；NEXT-021 |
 
 ## 12. 下一步计划
 
@@ -449,6 +454,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | P0 | NEXT-018 | 实现启动器约定的training/evaluation/render/gate模块及9个Phase/benchmark/gate配置 | 模型、数据schema、NEXT-004、NEXT-015～016 | 正式preflight通过并完成最小Phase 1训练 | Phase 1的4入口/3配置及单卡最小闭环已完成；正式规模8卡与Phase 2/3的6配置待完成 |
 | P0 | NEXT-019 | 为4090机器配置GitHub认证并推送`wam`分支 | GitHub HTTPS token或SSH key | `origin/wam`及协作者拉取命令 | 已完成 |
 | P0 | NEXT-020 | 将`PROGRESS.md`纳入仓库并建立协作者顺序工作包 | 当前项目事实与数据初盘 | GitHub可见的单一协作入口 | 已完成 |
+| P0 | NEXT-021 | 修复并重新准入SAGE3D bbox/visible身份监督 | EXP-003、相机外参、RGB对齐depth、模块化person detector/ReID | 不改源数据的版本化修复侧车、投影/遮挡测试、独立审计报告和Phase 1 admission gate | 进行中；水平符号根因已确认，需正确重投影、画面相交/深度遮挡判定，并对残余歧义使用detector+OSNet/DINO；通过前SAGE身份loss保持阻断 |
 | P1 | NEXT-005 | 收集真实UWB误差、偏置、漂移、延迟、丢包和置信度校准统计 | 定位模块日志 | 噪声模型报告 | 待开始 |
 | P1 | NEXT-006 | 定义 Phase 3 噪声矩阵和难度课程 | NEXT-005 | 扰动配置规范 | 待开始 |
 | P1 | NEXT-007 | 验证仿真是否支持任意访问状态的 expert relabel | 仿真环境 | DAgger 可行性结论 | 待开始 |
@@ -473,4 +479,5 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | Phase 1最小闭环 | `baseline v1` | `omtrackvla/{data,geometry,models,training,evaluation}`及3个Phase 1配置 | 只读双流adapter、共享ResNet-18、B1-ID/B1-GEO/B1-PROBE、render和gate；正式训练待完成 |
 | Phase 1 smoke产物 | `EXP-001` | `results/wp2_phase1_memory_smoke/phase_1`（不进Git） | 带GRU history的2-step开发checkpoint、metrics、report、gate失败原因和8帧可视化；不得当作正式baseline |
 | DA3几何probe | 官方commit `3d835ec1...`；模型revision `e08cab65...` | `scripts/probe_da3_geometry.py`、`docs/da3_geometry_probe.md`；运行JSON在`results/wp2_da3_probe/`（不进Git） | 真实4帧H100输出已验证；修正后单clip scale/translation/yaw为2.07116/0.00496m/0.00519rad；多场景准入待完成 |
-| 项目进展记录 | `v13 (2026-09-08)` | 仓库根目录`PROGRESS.md` | 本文件；同步Phase 1实现状态和现有可视化判读边界，DA3多场景准入及正式8卡baseline待完成 |
+| SAGE3D bbox审计 | `EXP-003` | `scripts/audit_sage3d_bboxes.py`、`docs/sage3d_bbox_audit.md`；H100运行产物在`results/wp2_sage_bbox_audit_v2/`（不进Git） | 384帧分层审计确认投影水平符号和可见性错误；含detector对照、水平镜像反事实和72例拼图 |
+| 项目进展记录 | `v14 (2026-09-08)` | 仓库根目录`PROGRESS.md` | 本文件；新增SAGE3D bbox审计失败、根因、准入阻断与NEXT-021修复计划 |

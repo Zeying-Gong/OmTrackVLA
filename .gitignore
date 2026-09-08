@@ -46,6 +46,7 @@ perf_data/
 /results/wp2_phase1_*_smoke/
 /results/wp2_phase1_smoke/
 /results/wp2_da3_probe/
+/results/wp2_sage_bbox_audit*/
 
 # Render/runtime leftovers
 *.log

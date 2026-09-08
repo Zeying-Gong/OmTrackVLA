@@ -119,6 +119,11 @@ def main() -> int:
         manifest_path,
         split="train",
         roots=roots,
+        datasets=tuple(
+            data_config.get(
+                "identity_datasets", ("sage3d_extracted", "tpt_bench_clean_v2")
+            )
+        ),
         image_size=int(data_config["image_size"]),
         history_size=int(data_config["history_size"]),
         max_units_per_dataset=max_units,

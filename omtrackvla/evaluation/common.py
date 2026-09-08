@@ -65,6 +65,11 @@ def build_datasets(
         manifest,
         split=split,
         roots=roots,
+        datasets=tuple(
+            data.get(
+                "identity_datasets", ("sage3d_extracted", "tpt_bench_clean_v2")
+            )
+        ),
         image_size=int(data["image_size"]),
         history_size=int(data["history_size"]),
         max_units_per_dataset=identity_limit_units,

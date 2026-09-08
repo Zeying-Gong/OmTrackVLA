@@ -9,6 +9,10 @@ data:
     intern_data_n1: /h100-2/vln_n1/traj_data
     sage3d_extracted: /data/nfs/share/OmTrackVLA/data/sage3d_extracted
     tpt_bench_clean_v2: /data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2
+  # SAGE3D bbox/visible is blocked by EXP-003 until NEXT-021 produces and
+  # admits a corrected, versioned sidecar. Keep the root for that audit/repair.
+  identity_datasets:
+    - tpt_bench_clean_v2
   image_size: 224
   history_size: 8
   geometry_maximum_gap: 8

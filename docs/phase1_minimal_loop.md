@@ -5,7 +5,7 @@ Phase 1 trains two isolated streams with one shared visual encoder. It does not 
 ## Data boundary
 
 - Geometry/dynamics uses InternData-N1 RGB pairs and pose-derived realized SE(2). Natural-language task fields are never loaded.
-- Identity uses SAGE3D and TpT. Only the first visible RGB+bbox is converted to an in-memory reference crop; later RGB frames carry bbox/visibility as labels only.
+- Identity currently uses TpT. SAGE3D was implemented in the adapter but its projected `bbox/visible` failed EXP-003 and is blocked by `data.identity_datasets` until NEXT-021 admits a corrected sidecar; see `docs/sage3d_bbox_audit.md`. Only the first visible RGB+bbox is converted to an in-memory reference crop; later RGB frames carry bbox/visibility as labels only.
 - The adapters never create target crops, caches, manifests, or other files under a source root.
 - SAGE3D episodes must be in the root index, contain `_ACCEPTED`, and have `quality.status=accepted`.
 - TpT uses video PTS only for chronological identity clips. Its ODOM/GT timing remains blocked from physical-motion supervision.
