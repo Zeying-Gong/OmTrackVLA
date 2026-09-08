@@ -15,10 +15,17 @@ import torch
 from PIL import Image
 from torch.utils.data import Dataset
 
+from omtrackvla.data.sage3d_sidecar import (
+    GENERATION_SPEC_ID as SAGE3D_GENERATION_SPEC_ID,
+    episode_sidecar_path,
+    load_admitted_sidecar,
+    sha256_file,
+    validate_episode_sidecar,
+)
 from omtrackvla.geometry.se2 import intern_pair_to_canonical_se2
 
 
-ADAPTER_VERSION = "phase1-readonly-v1"
+ADAPTER_VERSION = "phase1-readonly-v2"
 
 
 def _load_json(path: Path) -> object:
@@ -114,6 +121,7 @@ def _identity_record(
     target_track_id: str,
     source_record: Path,
     occlusion_state: str,
+    generation_spec_id: str | None = None,
 ) -> dict[str, object]:
     if len(history_paths) != len(history_timestamps_ns) or len(history_paths) < 2:
         raise ValueError("RGB history path/timestamp lengths are inconsistent")
@@ -174,7 +182,7 @@ def _identity_record(
             "source_record": source_relative,
             "transform_spec_id": None,
             "clock_spec_id": None,
-            "generation_spec_id": None,
+            "generation_spec_id": generation_spec_id,
         },
     }
 
@@ -212,6 +220,7 @@ class ContractIdentityDataset(Dataset):
         split: str,
         roots: Mapping[str, str | Path] | None = None,
         datasets: Sequence[str] = ("sage3d_extracted", "tpt_bench_clean_v2"),
+        sage3d_sidecar: str | Path | None = None,
         image_size: int = 224,
         history_size: int = 8,
         max_units_per_dataset: int | None = None,
@@ -225,6 +234,8 @@ class ContractIdentityDataset(Dataset):
         manifest_datasets = self.manifest["datasets"]
         self.roots = {}
         self.descriptors: list[dict[str, object]] = []
+        self.sage3d_sidecar: Path | None = None
+        self.sage3d_sidecar_manifest: dict[str, object] | None = None
         roots = dict(roots or {})
         for dataset_id in datasets:
             entry = manifest_datasets[dataset_id]
@@ -234,7 +245,21 @@ class ContractIdentityDataset(Dataset):
             if max_units_per_dataset is not None:
                 units = units[: int(max_units_per_dataset)]
             if dataset_id == "sage3d_extracted":
-                self.descriptors.extend(self._index_sage(root, set(units)))
+                if sage3d_sidecar is None:
+                    raise ValueError(
+                        "SAGE3D identity labels require a passed, versioned sidecar"
+                    )
+                sidecar_root = Path(sage3d_sidecar).expanduser().resolve(strict=True)
+                sidecar_manifest, _ = load_admitted_sidecar(sidecar_root)
+                if sidecar_manifest.get("source_index_sha256") != sha256_file(
+                    root / "index.json"
+                ):
+                    raise ValueError("SAGE3D sidecar does not match source index.json")
+                self.sage3d_sidecar = sidecar_root
+                self.sage3d_sidecar_manifest = sidecar_manifest
+                self.descriptors.extend(
+                    self._index_sage(root, set(units), sidecar_root, sidecar_manifest)
+                )
             elif dataset_id == "tpt_bench_clean_v2":
                 self.descriptors.extend(self._index_tpt(root, units))
             else:
@@ -250,8 +275,16 @@ class ContractIdentityDataset(Dataset):
             raise ValueError("identity sources contain no anchor frames")
 
     @staticmethod
-    def _index_sage(root: Path, runs: set[str]) -> list[dict[str, object]]:
+    def _index_sage(
+        root: Path,
+        runs: set[str],
+        sidecar_root: Path,
+        sidecar_manifest: Mapping[str, object],
+    ) -> list[dict[str, object]]:
         index = _load_json(root / "index.json")
+        sidecar_episodes = sidecar_manifest.get("episodes")
+        if not isinstance(sidecar_episodes, dict):
+            raise ValueError("SAGE3D sidecar manifest is missing its episode index")
         descriptors = []
         for entry in index["eps"]:
             run = str(entry["run"])
@@ -267,6 +300,14 @@ class ContractIdentityDataset(Dataset):
             quality = _load_json(quality_path)
             if not isinstance(quality, dict) or quality.get("status") != "accepted":
                 continue
+            sidecar_metadata = sidecar_episodes.get(relative)
+            if not isinstance(sidecar_metadata, dict):
+                raise ValueError(f"admitted SAGE3D sidecar is missing {relative}")
+            if int(sidecar_metadata.get("visible_steps", 0)) <= 0:
+                continue
+            sidecar_path = episode_sidecar_path(sidecar_root, relative)
+            if not sidecar_path.is_file():
+                raise FileNotFoundError(f"missing admitted SAGE3D label file: {sidecar_path}")
             descriptors.append(
                 {
                     "dataset_id": "sage3d_extracted",
@@ -275,6 +316,10 @@ class ContractIdentityDataset(Dataset):
                     "episode_id": f"{run}/{entry['mode']}/{entry['ep']}/{entry['cam']}",
                     "episode": episode,
                     "derived": derived_path,
+                    "camera_info": episode / "camera_info.json",
+                    "sidecar": sidecar_path,
+                    "sidecar_metadata": sidecar_metadata,
+                    "source_path": relative,
                     "frames": int(entry.get("steps", 0)),
                 }
             )
@@ -318,15 +363,49 @@ class ContractIdentityDataset(Dataset):
             raise ValueError(f"invalid SAGE3D derived record: {path}")
         return value
 
+    @lru_cache(maxsize=16)
+    def _sidecar(
+        self,
+        path: str,
+        source_path: str,
+        expected_sha256: str,
+        derived_path: str,
+        camera_info_path: str,
+    ) -> dict[str, object]:
+        sidecar_path = Path(path)
+        if sha256_file(sidecar_path) != expected_sha256:
+            raise ValueError(f"SAGE3D sidecar checksum mismatch: {source_path}")
+        value = validate_episode_sidecar(_load_json(sidecar_path), source_path)
+        if value.get("source_derived_sha256") != sha256_file(Path(derived_path)):
+            raise ValueError(f"SAGE3D sidecar derived checksum mismatch: {source_path}")
+        if value.get("source_camera_info_sha256") != sha256_file(Path(camera_info_path)):
+            raise ValueError(f"SAGE3D sidecar camera checksum mismatch: {source_path}")
+        return value
+
     @lru_cache(maxsize=8)
     def _table(self, path: str) -> dict[str, list[object]]:
         return pq.read_table(path).to_pydict()
 
     def _sage_record(self, descriptor: dict[str, object], requested_anchor: int) -> dict[str, object]:
         derived = self._derived(str(descriptor["derived"]))
+        metadata = descriptor["sidecar_metadata"]
+        labels = self._sidecar(
+            str(descriptor["sidecar"]),
+            str(descriptor["source_path"]),
+            str(metadata["sidecar_sha256"]),
+            str(descriptor["derived"]),
+            str(descriptor["camera_info"]),
+        )
         steps = derived["steps"]
+        label_steps = labels["steps"]
+        if len(steps) != len(label_steps):
+            raise ValueError(f"SAGE3D source/sidecar length mismatch: {descriptor['episode_id']}")
+        if any(int(source["step"]) != int(label["step"]) for source, label in zip(steps, label_steps)):
+            raise ValueError(f"SAGE3D source/sidecar frame mismatch: {descriptor['episode_id']}")
         visible_indices = [
-            index for index, step in enumerate(steps) if step.get("visible") and step.get("bbox")
+            index
+            for index, label in enumerate(label_steps)
+            if label.get("visible") and label.get("bbox_xyxy")
         ]
         if not visible_indices:
             raise ValueError(f"SAGE3D episode has no initialization bbox: {descriptor['episode_id']}")
@@ -341,11 +420,23 @@ class ContractIdentityDataset(Dataset):
             raise FileNotFoundError(f"missing SAGE3D RGB in {descriptor['episode_id']}")
         frame_period = 33_333_333
         timestamps = [int(steps[index]["step"]) * frame_period for index in history_indices]
-        init_bbox = _bbox_xyxy_norm(steps[initial]["bbox"], _image_size(str(paths[0])))
-        target_step = steps[anchor]
-        visible = bool(target_step.get("visible") and target_step.get("bbox"))
+        init_bbox = _bbox_xyxy_norm(
+            label_steps[initial]["bbox_xyxy"], _image_size(str(paths[0]))
+        )
+        target_label = label_steps[anchor]
+        visible = bool(target_label.get("visible") and target_label.get("bbox_xyxy"))
         target_bbox = (
-            _bbox_xyxy_norm(target_step["bbox"], _image_size(str(paths[-1]))) if visible else None
+            _bbox_xyxy_norm(target_label["bbox_xyxy"], _image_size(str(paths[-1])))
+            if visible
+            else None
+        )
+        visibility_reason = str(target_label["visibility_reason"])
+        occlusion_state = (
+            "visible"
+            if visible
+            else "occluded"
+            if visibility_reason == "occluded_by_nearer_surface"
+            else "out_of_view"
         )
         return _identity_record(
             dataset_id="sage3d_extracted",
@@ -360,7 +451,8 @@ class ContractIdentityDataset(Dataset):
             target_visible=visible,
             target_track_id=f"sage:{descriptor['episode_id']}",
             source_record=Path(descriptor["derived"]),
-            occlusion_state="visible" if visible else "out_of_view",
+            occlusion_state=occlusion_state,
+            generation_spec_id=SAGE3D_GENERATION_SPEC_ID,
         )
 
     def _tpt_record(self, descriptor: dict[str, object], requested_anchor: int) -> dict[str, object]:

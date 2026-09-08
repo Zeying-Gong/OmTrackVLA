@@ -70,6 +70,7 @@ def build_datasets(
                 "identity_datasets", ("sage3d_extracted", "tpt_bench_clean_v2")
             )
         ),
+        sage3d_sidecar=data.get("sage3d_sidecar"),
         image_size=int(data["image_size"]),
         history_size=int(data["history_size"]),
         max_units_per_dataset=identity_limit_units,

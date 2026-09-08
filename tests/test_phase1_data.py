@@ -10,6 +10,11 @@ from PIL import Image
 
 from omtrackvla.data.phase1 import ContractIdentityDataset, InternGeometryDataset
 from omtrackvla.data.phase1_manifest import build_phase1_manifest, write_phase1_manifest
+from omtrackvla.data.sage3d_sidecar import (
+    GENERATION_SPEC_ID,
+    episode_sidecar_path,
+    sha256_file,
+)
 from scripts.validate_data_contract import load_json, validate_contract, validate_sample
 
 
@@ -28,9 +33,11 @@ class Phase1DataTest(unittest.TestCase):
         base = Path(self.temporary.name)
         self.intern = base / "intern"
         self.sage = base / "sage"
+        self.sidecar = base / "sage-sidecar"
         self.tpt = base / "tpt"
         self._intern_fixture()
         self._sage_fixture()
+        self._sage_sidecar_fixture()
         self._tpt_fixture()
         self.roots = {
             "intern_data_n1": self.intern,
@@ -75,6 +82,7 @@ class Phase1DataTest(unittest.TestCase):
             {"step": 2, "visible": False, "bbox": None},
         ]
         (episode / "derived.json").write_text(json.dumps({"steps": steps}), encoding="utf-8")
+        (episode / "camera_info.json").write_text("{}", encoding="utf-8")
         for index in range(3):
             _image(episode / "rgb" / f"{index:05d}.jpg", (60 + index, 100, 180))
         self.sage.mkdir(exist_ok=True)
@@ -92,6 +100,53 @@ class Phase1DataTest(unittest.TestCase):
                         }
                     ]
                 }
+            ),
+            encoding="utf-8",
+        )
+
+    def _sage_sidecar_fixture(self):
+        source_path = "run-a/stt/0/camera"
+        episode = self.sage / source_path
+        boxes = ([10, 5, 40, 45], [12, 5, 42, 45], None)
+        labels = {
+            "schema_version": 1,
+            "dataset_id": "sage3d_extracted",
+            "generation_spec_id": GENERATION_SPEC_ID,
+            "source_path": source_path,
+            "source_derived_sha256": sha256_file(episode / "derived.json"),
+            "source_camera_info_sha256": sha256_file(episode / "camera_info.json"),
+            "steps": [
+                {
+                    "step": index,
+                    "visible": box is not None,
+                    "bbox_xyxy": box,
+                    "visibility_reason": "visible" if box is not None else "out_of_view",
+                }
+                for index, box in enumerate(boxes)
+            ],
+        }
+        label_path = episode_sidecar_path(self.sidecar, source_path)
+        label_path.parent.mkdir(parents=True)
+        label_path.write_text(json.dumps(labels), encoding="utf-8")
+        manifest = {
+            "schema_version": 1,
+            "dataset_id": "sage3d_extracted",
+            "generation_spec_id": GENERATION_SPEC_ID,
+            "selection": "full",
+            "source_index_sha256": sha256_file(self.sage / "index.json"),
+            "episodes": {
+                source_path: {
+                    "steps": 3,
+                    "visible_steps": 2,
+                    "sidecar_sha256": sha256_file(label_path),
+                }
+            },
+        }
+        manifest_path = self.sidecar / "manifest.json"
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        (self.sidecar / "admission.json").write_text(
+            json.dumps(
+                {"status": "passed", "manifest_sha256": sha256_file(manifest_path)}
             ),
             encoding="utf-8",
         )
@@ -118,6 +173,7 @@ class Phase1DataTest(unittest.TestCase):
             "test_locked",
             roots=self.roots,
             datasets=("sage3d_extracted",),
+            sage3d_sidecar=self.sidecar,
             image_size=32,
         )
         record = dataset.get_record(0)
@@ -129,6 +185,16 @@ class Phase1DataTest(unittest.TestCase):
         self.assertEqual(tuple(item["frame1"].shape), (3, 32, 32))
         self.assertEqual(tuple(item["history"].shape), (7, 3, 32, 32))
         self.assertTrue(item["history_mask"][-1])
+
+    def test_sage_identity_refuses_unadmitted_source_labels(self):
+        with self.assertRaises(ValueError):
+            ContractIdentityDataset(
+                self.manifest,
+                "test_locked",
+                roots=self.roots,
+                datasets=("sage3d_extracted",),
+                image_size=32,
+            )
 
     def test_tpt_identity_keeps_later_bbox_out_of_model_inputs(self):
         dataset = ContractIdentityDataset(

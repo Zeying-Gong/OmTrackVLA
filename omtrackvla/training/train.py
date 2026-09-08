@@ -124,6 +124,7 @@ def main() -> int:
                 "identity_datasets", ("sage3d_extracted", "tpt_bench_clean_v2")
             )
         ),
+        sage3d_sidecar=data_config.get("sage3d_sidecar"),
         image_size=int(data_config["image_size"]),
         history_size=int(data_config["history_size"]),
         max_units_per_dataset=max_units,
