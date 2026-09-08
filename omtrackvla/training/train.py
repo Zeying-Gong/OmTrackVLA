@@ -145,6 +145,7 @@ def main() -> int:
         geometry,
         samples_per_epoch=samples_per_epoch,
         identity_fraction=float(data_config["identity_fraction"]),
+        identity_sampling=str(data_config.get("identity_sampling", "proportional")),
         seed=seed,
     )
     sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=True, seed=seed)
@@ -204,7 +205,14 @@ def main() -> int:
                     tensor_batch["history"],
                     tensor_batch["history_mask"],
                 )
-                loss, losses = compute_phase1_loss(outputs, tensor_batch, loss_weights)
+                loss, losses = compute_phase1_loss(
+                    outputs,
+                    tensor_batch,
+                    loss_weights,
+                    visibility_negative_weight=float(
+                        training.get("visibility_negative_weight", 1.0)
+                    ),
+                )
             if not torch.isfinite(loss):
                 raise FloatingPointError(f"non-finite Phase 1 loss at step {global_step}")
             loss.backward()

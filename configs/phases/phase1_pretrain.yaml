@@ -19,6 +19,9 @@ data:
   history_size: 8
   geometry_maximum_gap: 8
   identity_fraction: 0.5
+  # Prevent the much larger SAGE3D frame count from suppressing TpT
+  # occlusion/out-of-view examples.
+  identity_sampling: uniform_by_dataset
   max_units_per_dataset: null
 
 model:
@@ -34,6 +37,9 @@ training:
   weight_decay: 0.0001
   gradient_clip_norm: 1.0
   bfloat16: true
+  # Equal-source sampling has about 9% absent identity frames in train;
+  # this balances their visibility contribution without changing bbox loss.
+  visibility_negative_weight: 10.0
   log_every_steps: 50
   loss_weights:
     identity_visibility: 1.0

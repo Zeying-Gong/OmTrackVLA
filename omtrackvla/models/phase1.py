@@ -145,6 +145,7 @@ def compute_phase1_loss(
     outputs: Mapping[str, torch.Tensor],
     batch: Mapping[str, torch.Tensor],
     weights: Mapping[str, float],
+    visibility_negative_weight: float = 1.0,
 ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
     task_id = batch["task_id"]
     identity = task_id == 0
@@ -154,8 +155,18 @@ def compute_phase1_loss(
     visibility_loss = zero
     bbox_loss = zero
     if identity.any():
+        if visibility_negative_weight <= 0.0:
+            raise ValueError("visibility_negative_weight must be positive")
+        visibility_targets = batch["target_visible"][identity]
+        visibility_weights = torch.where(
+            visibility_targets > 0.5,
+            torch.ones_like(visibility_targets),
+            torch.full_like(visibility_targets, float(visibility_negative_weight)),
+        )
         visibility_loss = F.binary_cross_entropy_with_logits(
-            outputs["visibility_logit"][identity], batch["target_visible"][identity]
+            outputs["visibility_logit"][identity],
+            visibility_targets,
+            weight=visibility_weights,
         )
         visible = identity & (batch["target_visible"] > 0.5)
         if visible.any():

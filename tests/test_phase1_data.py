@@ -184,7 +184,7 @@ class Phase1DataTest(unittest.TestCase):
         self.assertEqual(tuple(item["frame0"].shape), (3, 32, 32))
         self.assertEqual(tuple(item["frame1"].shape), (3, 32, 32))
         self.assertEqual(tuple(item["history"].shape), (7, 3, 32, 32))
-        self.assertTrue(item["history_mask"][-1])
+        self.assertFalse(item["history_mask"].any())
 
     def test_sage_identity_refuses_unadmitted_source_labels(self):
         with self.assertRaises(ValueError):
@@ -209,6 +209,28 @@ class Phase1DataTest(unittest.TestCase):
         self.assertNotIn("target_bbox", json.dumps(record["model_inputs"]))
         self.assertIsNotNone(record["supervision"]["auxiliary_labels"]["target_bbox_xyxy_norm"])
         self.assertFalse(any(self.tpt.rglob("_target_refs")))
+
+    def test_balanced_identity_index_alternates_sources(self):
+        dataset = ContractIdentityDataset(
+            self.manifest,
+            "test_locked",
+            roots=self.roots,
+            sage3d_sidecar=self.sidecar,
+            image_size=32,
+        )
+        sources = [
+            dataset.get_record(dataset.balanced_index(index))["source"]["dataset_id"]
+            for index in range(4)
+        ]
+        self.assertEqual(
+            sources,
+            [
+                "sage3d_extracted",
+                "tpt_bench_clean_v2",
+                "sage3d_extracted",
+                "tpt_bench_clean_v2",
+            ],
+        )
 
     def test_intern_geometry_pair_is_canonical(self):
         dataset = InternGeometryDataset(

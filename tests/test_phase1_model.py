@@ -31,6 +31,23 @@ class Phase1ModelTest(unittest.TestCase):
         })
         loss.backward()
 
+    def test_visibility_negative_weight_increases_absent_loss(self):
+        outputs = {
+            "visibility_logit": torch.tensor([2.0], requires_grad=True),
+            "bbox": torch.zeros(1, 4),
+            "motion": torch.zeros(1, 3, requires_grad=True),
+        }
+        batch = {
+            "task_id": torch.tensor([0]),
+            "target_visible": torch.tensor([0.0]),
+            "target_bbox": torch.zeros(1, 4),
+        }
+        unweighted, _ = compute_phase1_loss(outputs, batch, {})
+        weighted, _ = compute_phase1_loss(
+            outputs, batch, {}, visibility_negative_weight=10.0
+        )
+        self.assertAlmostEqual(float(weighted), float(unweighted) * 10.0, places=5)
+
 
 if __name__ == "__main__":
     unittest.main()

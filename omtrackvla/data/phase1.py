@@ -267,10 +267,20 @@ class ContractIdentityDataset(Dataset):
         if not self.descriptors:
             raise ValueError(f"no identity clips found for split={split}")
         self._ends = []
+        self._dataset_spans: dict[str, tuple[int, int]] = {}
         total = 0
         for descriptor in self.descriptors:
+            start = total
             total += max(0, int(descriptor["frames"]) - 1)
             self._ends.append(total)
+            dataset_id = str(descriptor["dataset_id"])
+            previous = self._dataset_spans.get(dataset_id)
+            if previous is not None and previous[1] != start:
+                raise ValueError(f"identity descriptors for {dataset_id} are not contiguous")
+            self._dataset_spans[dataset_id] = (
+                previous[0] if previous is not None else start,
+                total,
+            )
         if total <= 0:
             raise ValueError("identity sources contain no anchor frames")
 
@@ -346,6 +356,16 @@ class ContractIdentityDataset(Dataset):
 
     def __len__(self) -> int:
         return self._ends[-1]
+
+    def balanced_index(self, value: int) -> int:
+        """Map a uniform integer to an equal-probability identity source."""
+
+        if value < 0:
+            raise ValueError("balanced identity index must be non-negative")
+        dataset_ids = tuple(self._dataset_spans)
+        dataset_id = dataset_ids[value % len(dataset_ids)]
+        start, end = self._dataset_spans[dataset_id]
+        return start + (value // len(dataset_ids)) % (end - start)
 
     def _locate(self, index: int) -> tuple[dict[str, object], int]:
         if index < 0:
@@ -519,9 +539,12 @@ class ContractIdentityDataset(Dataset):
         initial_path = _safe_relative(root, visual["rgb_path"])
         labels = record["supervision"]["auxiliary_labels"]
         bbox = labels["target_bbox_xyxy_norm"]
+        # ``frame1`` is the current image.  Identity memory may consume only
+        # earlier observations; including frame1 here would let the current
+        # image alter the reference before its own visibility is predicted.
         temporal_paths = [
             _safe_relative(root, frame["rgb_path"])
-            for frame in record["model_inputs"]["rgb_history"][1:]
+            for frame in record["model_inputs"]["rgb_history"][1:-1]
         ]
         temporal = torch.zeros(self.history_size - 1, 3, self.image_size, self.image_size)
         temporal_mask = torch.zeros(self.history_size - 1, dtype=torch.bool)
@@ -639,6 +662,7 @@ class Phase1MultiTaskDataset(Dataset):
         geometry: InternGeometryDataset,
         samples_per_epoch: int,
         identity_fraction: float = 0.5,
+        identity_sampling: str = "proportional",
         seed: int = 20260907,
     ) -> None:
         if not 0.0 < identity_fraction < 1.0:
@@ -647,6 +671,9 @@ class Phase1MultiTaskDataset(Dataset):
         self.geometry = geometry
         self.samples_per_epoch = int(samples_per_epoch)
         self.identity_fraction = float(identity_fraction)
+        if identity_sampling not in {"proportional", "uniform_by_dataset"}:
+            raise ValueError(f"unsupported identity sampling mode: {identity_sampling}")
+        self.identity_sampling = identity_sampling
         self.seed = int(seed)
 
     def __len__(self) -> int:
@@ -657,5 +684,7 @@ class Phase1MultiTaskDataset(Dataset):
         value = int.from_bytes(digest[:8], "big") / float(2**64)
         mapped = int.from_bytes(digest[8:16], "big")
         if value < self.identity_fraction:
+            if self.identity_sampling == "uniform_by_dataset":
+                return self.identity[self.identity.balanced_index(mapped)]
             return self.identity[mapped % len(self.identity)]
         return self.geometry[mapped % len(self.geometry)]

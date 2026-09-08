@@ -485,6 +485,7 @@ on_error() {
 
 cleanup() {
   if [[ -n "$LOCK_DIR" && -d "$LOCK_DIR" ]]; then
+    rm -f -- "$LOCK_DIR/pid"
     rmdir "$LOCK_DIR" 2>/dev/null || true
   fi
 }

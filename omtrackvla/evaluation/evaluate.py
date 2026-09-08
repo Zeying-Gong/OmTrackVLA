@@ -220,6 +220,7 @@ def main() -> int:
                 "B1-ID": {
                     "sample_count": int(identity_count),
                     "visible_sample_count": int(visible_count),
+                    "invisible_sample_count": int(invisible_count),
                     "visibility_accuracy": float(identity_sums[1] / max(identity_count, 1.0)),
                     "bbox_iou_mean_visible": float(identity_sums[3] / max(visible_count, 1.0)),
                     "tracking_success_iou_0_5": float(identity_sums[4] / max(visible_count, 1.0)),
