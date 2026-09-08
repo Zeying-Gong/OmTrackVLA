@@ -2,7 +2,7 @@
 
 > 本文件用于持续记录已确认决策、数据状态、训练与实验尝试、失败原因、项目修改和下一步计划。
 > 原则：事实、提案和待确认事项必须分开；实验与失败记录尽量追加，不覆盖历史。
-> 最近更新：2026-09-07
+> 最近更新：2026-09-08
 
 ## 0. 当前快照
 
@@ -34,10 +34,10 @@
 
 | 路径/对象 | 实际状态 | 可直接用于什么 | 不能假设什么 |
 |---|---|---|---|
-| `scripts/run_pipeline_8xh100.sh` | 已实现编排、preflight、8进程启动、断点续跑、eval/render/gate和产物检查 | dry-run；后续统一启动入口 | 不代表训练模块已实现 |
+| `scripts/run_pipeline_8xh100.sh` | 已实现编排、preflight、8进程启动、断点续跑、eval/render/gate和产物检查；Phase 1已接入真实模块 | Phase 1正式入口及全Phase dry-run | 不代表Phase 2/3已经实现 |
 | `configs/pipeline/h100_8gpu.env` | 已实现，实际配置格式是Bash env，不是YAML | 集中定义模块、Phase配置、GPU和产物契约 | 不包含具体模型或数据schema |
-| `omtrackvla/` | 当前只有模块化oracle、障碍图和RGB人物感知等基线代码 | 仿真/oracle参考与可复用组件 | 不存在`omtrackvla.training.train`及新的端到端policy |
-| `configs/phases/`、`configs/benchmarks/`、`configs/gates/` | 尚不存在 | 协作者需要逐Phase补齐 | 不得用空配置或占位结果绕过gate |
+| `omtrackvla/` | 已包含原模块化oracle/感知代码，以及Phase 1的`data`、`geometry`、`models`、`training`和`evaluation`实现 | Phase 1双流baseline、train/eval/render/gate及后续可复用组件 | 当前baseline完成接口闭环，不代表正式规模效果或Phase 2/3 policy已完成 |
+| `configs/phases/`、`configs/benchmarks/`、`configs/gates/` | Phase 1各有1个配置并已接通；Phase 2/3共6个配置尚缺 | 当前可运行`--phase 1`；后续按Phase补齐 | 不得用空配置或占位结果绕过gate，也不得运行`--phase all`宣称完成 |
 | `data/datasets/track/{STT,DT,AT}/{train,val}/*.json.gz` | Git跟踪的6个episode文件；每类train 7,257、val 1,405，共25,986 episodes | 启动Habitat仿真、生成观测/rollout、建立固定episode划分 | 文件本身不含已录制RGB历史、逐帧bbox、UWB日志或expert future-waypoint张量 |
 | episode字段 | 已看到`scene_id`、机器人初始pose、`main_human_semantic_id`、humanoid名称与人物waypoint字段；还含`instruction` | 识别目标人物、构造仿真真值和生成样本 | `instruction`不得进入本项目模型输入；人物waypoint不自动等于机器人expert trajectory |
 | `data/scene_datasets` | 本机软链接到`/data/nas_ray/home/zeying.gong/datasets/scene_datasets`，目标存在；该链接不进Git | Habitat场景资产 | 新clone/H100会自动拥有同一路径 |
@@ -62,6 +62,19 @@
 - Phase 1所需4个Python入口和3个Phase/benchmark/gate配置已实现；Phase 2/3仍缺6个配置及相应实现，因此当前只允许`--phase 1`通过正式preflight，`--phase all`失败是预期行为。
 - 四种目标条件模式、canonical坐标/时间接口和最小样本schema已由WP-1冻结，但这不等于源适配已通过：SAGE3D策略使用仍须确认step时间、base/camera变换并验证投影bbox；TpT没有expert waypoint且物理时钟未解决；InternData-N1不是人物跟随数据。严格数据划分仍由NEXT-015冻结。
 - 当前没有真实UWB日志、设备标定或误差统计被纳入仓库；在获得这些数据前，只能验证接口和仿真UWB，不能完成产品级UWB鲁棒性结论。
+
+### 当前可视化与判读边界
+
+| 可视化 | 位置 | 现在可以检查什么 | 不能据此判断什么 |
+|---|---|---|---|
+| InternData-N1预览 | `example_datasets/samples/previews/intern_data_n1.jpg` | egocentric RGB连续性、视角与场景外观 | 无人物目标，不能检查身份跟踪或跟随效果 |
+| SAGE3D预览 | `example_datasets/samples/previews/sage3d_extracted.jpg` | 仿真人物外观、连续帧和GT投影bbox是否合理 | 黄框是离线GT，不是模型预测，也不是后续模型输入 |
+| TpT clean v2预览 | `example_datasets/samples/previews/tpt_bench_clean_v2.jpg` | 真实机器人鱼眼画面、人物尺度变化和GT bbox | 黄框是离线GT；不能证明时钟已对齐或模型已学会重识别 |
+| Phase 1 smoke视频 | H100共享工作副本的`results/wp2_phase1_memory_smoke/phase_1/visualizations/phase1_viz.mp4` | render链路、`PRED/GT`标识、身份/几何面板和视频编码是否工作 | 仅2-step开发smoke，正式gate预期失败，不是可报告的模型效果 |
+| Phase 1 smoke指标 | 同目录的`metrics.json`、`report.md`、`gate.json` | 指标字段、报告和失败原因是否完整 | 不能作为baseline数值或Phase 1验收结果 |
+| DA3单clip probe | `docs/da3_geometry_probe.md`及H100的`results/wp2_da3_probe/report.json` | 坐标转换、输出shape和单clip误差 | 同clip校准与评测，尚不能证明跨场景尺度/置信度准入 |
+
+正式Phase 1完成前，NEXT-010还必须产出多场景depth/confidence、预测/GT鸟瞰轨迹和误差曲线；正式8卡baseline必须另行产出固定`viz_val`视频，不能复用上述smoke视频充当验收。
 
 ## 1. 已确认决策
 
@@ -93,7 +106,7 @@
 | DEC-024 | 2026-09-07 | 每个Phase结束必须运行固定benchmark、生成指标报告和可视化，并通过冻结的gate后才能进入下一Phase | 训练loss不能证明身份保持、闭环跟随或恢复能力 | 已确认 |
 | DEC-025 | 2026-09-07 | 数据划分至少区分train、val、viz_val和locked test；频繁人工查看只使用viz_val | 防止反复查看测试案例导致人工过拟合 | 已确认 |
 | DEC-026 | 2026-09-07 | 首帧后的可视化bbox/heatmap只能是模型诊断输出或GT叠加，不得作为模型输入 | 保持“一次视觉初始化”的推理边界，同时让身份漂移可检查 | 已确认 |
-| DEC-027 | 2026-09-07 | GitHub版本提供8×H100一键流水线，逐Phase保存配置、数据manifest、代码版本、checkpoint、指标、失败案例和视频 | 让协作者可复现训练并快速定位阶段性问题 | 启动器已实现；训练入口待实现 |
+| DEC-027 | 2026-09-07 | GitHub版本提供8×H100一键流水线，逐Phase保存配置、数据manifest、代码版本、checkpoint、指标、失败案例和视频 | 让协作者可复现训练并快速定位阶段性问题 | 启动器及Phase 1入口已实现；Phase 2/3待实现 |
 | DEC-028 | 2026-09-07 | 以当前模块化精简后的OmTrackVLA状态为WAM开发基线，并使用独立`wam`分支 | 保留旧分支历史，同时让新方法从已验证的干净快照开始 | 已确认；已推送`origin/wam` |
 | DEC-029 | 2026-09-07 | 在GitHub发布三套正式数据各16个连续真实帧的微型样例，并保留目录结构、必要元数据/Parquet切片、RGB/depth和可直接浏览的预览 | 让协作者无需访问完整数据即可认识真实结构与外观；用户明确确认该用途 | 已确认；禁止将样例视为训练/评测划分，禁止上传视频、点云、crop/cache或绝对symlink |
 | DEC-030 | 2026-09-07 | WP-1统一使用anchor时刻底盘系（x前、y左、z上，米/弧度）、归一化xyxy bbox、含anchor的8点绝对局部XY轨迹和显式时间偏移；序列只在history index 0消费一次外部bbox，UWB tag ID仅作路由；所有缺失值用`null + valid/mask` | 消除不同源的坐标、时间、缺失值和输入/标签边界歧义，同时阻止未确认source semantics静默进入训练 | 已确认；SAGE3D policy、TpT physical clock、real UWB继续由机器可读gate阻断 |
@@ -414,6 +427,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | CHG-012 | 2026-09-07 | `docs/data_contract.md`、`configs/data_contract.json`、`scripts/validate_data_contract.py`、`docs/data_inventory.md`、测试 | 完成WP-1：冻结模型输入、路由元数据、policy/identity监督、坐标/时间、缺失值、四种条件模式、安全约束和source admission gate | loader和训练模块必须共享一个可执行边界，不能各自猜测bbox、UWB、waypoint或源时钟语义 | 契约自检、有效policy/identity样本、禁止后续bbox、UWB年龄/协方差、轨迹mask、RGB故障停车、路径越界/只读存在性及source gate测试；全仓122项unittest通过 | DEC-030；NEXT-002～004 |
 | CHG-013 | 2026-09-08 | `omtrackvla/{data,geometry,models,training,evaluation}`、Phase 1配置、manifest、脚本、文档和测试 | 实现WP-2首个可执行闭环：只读identity/geometry adapter、显式SE(2)转换、带GRU历史身份记忆的共享视觉双流baseline、分布式训练、B1评测、视频渲染和严格gate | 将流水线从dry-run推进到真实Phase 1，同时保持源准入和输入/标签边界 | 133项unittest；真实三源adapter smoke；单卡2-step和8×H100每卡1-batch DDP；B1-ID/B1-GEO/B1-PROBE；8帧MP4重读；正式gate预期失败；Phase 1 pipeline preflight通过 | DEC-031～032；EXP-001；NEXT-009～011、015～018 |
 | CHG-014 | 2026-09-08 | DA3隔离运行时/权重、`omtrackvla/geometry/se2.py`、probe脚本、测试和文档 | 部署固定DA3-SMALL并完成真实GPU probe；修复OpenCV/Habitat轴桥接和canonical基变换；报告scale、置信度和feature形状 | 单元合成测试未覆盖真实相机坐标约定，首次实际pose暴露轴向错误 | 固定权重SHA；4帧真实推理；四种变换对照；非单位相机外参回归；全仓测试 | DEC-033；EXP-002；FAIL-001～002；NEXT-009～010 |
+| CHG-015 | 2026-09-08 | `PROGRESS.md` | 同步协作者事实表与Phase 1最新实现状态，更新日期和DEC-027状态，并增加现有可视化位置及判读边界 | 消除“Phase 1已实现”与旧表“训练模块不存在”的内部矛盾，防止将数据预览或2-step smoke误判为正式模型结果 | 全文一致性检查、路径核对、135项测试和流水线dry-run | DEC-027、DEC-031～033；EXP-001～002 |
 
 ## 12. 下一步计划
 
@@ -459,4 +473,4 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | Phase 1最小闭环 | `baseline v1` | `omtrackvla/{data,geometry,models,training,evaluation}`及3个Phase 1配置 | 只读双流adapter、共享ResNet-18、B1-ID/B1-GEO/B1-PROBE、render和gate；正式训练待完成 |
 | Phase 1 smoke产物 | `EXP-001` | `results/wp2_phase1_memory_smoke/phase_1`（不进Git） | 带GRU history的2-step开发checkpoint、metrics、report、gate失败原因和8帧可视化；不得当作正式baseline |
 | DA3几何probe | 官方commit `3d835ec1...`；模型revision `e08cab65...` | `scripts/probe_da3_geometry.py`、`docs/da3_geometry_probe.md`；运行JSON在`results/wp2_da3_probe/`（不进Git） | 真实4帧H100输出已验证；修正后单clip scale/translation/yaw为2.07116/0.00496m/0.00519rad；多场景准入待完成 |
-| 项目进展记录 | `v12 (2026-09-08)` | 仓库根目录`PROGRESS.md` | 本文件；WP-2 Phase 1最小闭环和DA3真实接口probe已实现，DA3多场景准入及正式8卡baseline待完成 |
+| 项目进展记录 | `v13 (2026-09-08)` | 仓库根目录`PROGRESS.md` | 本文件；同步Phase 1实现状态和现有可视化判读边界，DA3多场景准入及正式8卡baseline待完成 |
