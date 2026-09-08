@@ -27,6 +27,10 @@ data:
 model:
   feature_dim: 128
   correlation_temperature: 0.1
+  # Fixed from train-split calibration (train FPR 0.074, FNR 0.106).
+  # The stricter operating point is stored in the checkpoint and is not
+  # selected on the validation/gate split.
+  visibility_probability_threshold: 0.999
 
 training:
   epochs: 8

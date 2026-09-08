@@ -11,5 +11,8 @@ probe_train_samples: 256
 probe_val_samples: 512
 probe_ridge_regularization: 0.001
 render_identity_frames: 32
+# Search this deterministic label-only candidate set so the short video
+# includes absent targets instead of almost exclusively visible frames.
+render_identity_candidate_samples: 4096
 render_geometry_frames: 32
 render_fps: 4

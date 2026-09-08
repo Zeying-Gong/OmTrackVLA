@@ -47,8 +47,37 @@ def _canvas(left: np.ndarray, middle: np.ndarray, title: str) -> np.ndarray:
     return canvas
 
 
-def _identity_frames(model, dataset, count: int, device: torch.device):
-    indices = np.linspace(0, len(dataset) - 1, min(count, len(dataset)), dtype=np.int64)
+def _identity_indices(dataset, count: int, candidate_count: int) -> list[int]:
+    """Choose a deterministic visible/absent mix without decoding candidate RGB."""
+
+    candidates = np.linspace(
+        0, len(dataset) - 1, min(candidate_count, len(dataset)), dtype=np.int64
+    ).tolist()
+    visible, absent = [], []
+    for index in candidates:
+        labels = dataset.get_record(index)["supervision"]["auxiliary_labels"]
+        (visible if labels["target_visible"] else absent).append(index)
+    absent_count = min(len(absent), max(1, count // 4))
+    visible_count = min(len(visible), count - absent_count)
+    absent_indices = (
+        np.linspace(0, len(absent) - 1, absent_count, dtype=np.int64).tolist()
+        if absent_count
+        else []
+    )
+    visible_indices = (
+        np.linspace(0, len(visible) - 1, visible_count, dtype=np.int64).tolist()
+        if visible_count
+        else []
+    )
+    selected = [visible[index] for index in visible_indices]
+    selected.extend(absent[index] for index in absent_indices)
+    return selected
+
+
+def _identity_frames(
+    model, dataset, count: int, candidate_count: int, device: torch.device
+):
+    indices = _identity_indices(dataset, count, candidate_count)
     for index in indices:
         item = dataset[int(index)]
         with torch.inference_mode():
@@ -61,14 +90,18 @@ def _identity_frames(model, dataset, count: int, device: torch.device):
         left = _image(item["frame0"])
         middle = _image(item["frame1"])
         predicted = output["bbox"][0].detach().cpu().tolist()
-        _box(middle, predicted, (0, 255, 0), "PRED")
+        confidence = float(torch.sigmoid(output["visibility_logit"])[0])
+        predicted_visible = confidence >= model.visibility_probability_threshold
+        if predicted_visible:
+            _box(middle, predicted, (0, 255, 0), "PRED")
         if float(item["target_visible"]) > 0.5:
             _box(middle, item["target_bbox"].tolist(), (0, 220, 255), "GT")
         canvas = _canvas(left, middle, "B1-ID: initialization crop | current RGB")
-        confidence = float(torch.sigmoid(output["visibility_logit"])[0])
         cv2.putText(canvas, f"identity confidence: {confidence:.3f}", (650, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.52, (255, 255, 255), 1, cv2.LINE_AA)
-        cv2.putText(canvas, f"GT visible: {bool(item['target_visible'])}", (650, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.52, (255, 255, 255), 1, cv2.LINE_AA)
-        cv2.putText(canvas, str(item["dataset_id"]), (650, 165), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (180, 180, 180), 1, cv2.LINE_AA)
+        cv2.putText(canvas, f"threshold: {model.visibility_probability_threshold:.3f}", (650, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.52, (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.putText(canvas, f"PRED visible: {predicted_visible}", (650, 156), cv2.FONT_HERSHEY_SIMPLEX, 0.52, (0, 255, 0), 1, cv2.LINE_AA)
+        cv2.putText(canvas, f"GT visible: {bool(item['target_visible'])}", (650, 184), cv2.FONT_HERSHEY_SIMPLEX, 0.52, (0, 220, 255), 1, cv2.LINE_AA)
+        cv2.putText(canvas, str(item["dataset_id"]), (650, 221), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (180, 180, 180), 1, cv2.LINE_AA)
         yield canvas
 
 
@@ -119,10 +152,15 @@ def main() -> int:
         frames = 0
         try:
             identity_frames = args.identity_frames or int(benchmark["render_identity_frames"])
+            identity_candidates = int(
+                benchmark.get("render_identity_candidate_samples", identity_frames)
+            )
             geometry_frames = args.geometry_frames or int(benchmark["render_geometry_frames"])
-            if identity_frames <= 0 or geometry_frames <= 0:
+            if identity_frames <= 0 or identity_candidates <= 0 or geometry_frames <= 0:
                 raise ValueError("render frame counts must be positive")
-            for frame in _identity_frames(model, identity, identity_frames, device):
+            for frame in _identity_frames(
+                model, identity, identity_frames, identity_candidates, device
+            ):
                 writer.write(frame)
                 frames += 1
             for frame in _geometry_frames(model, geometry, geometry_frames, device):

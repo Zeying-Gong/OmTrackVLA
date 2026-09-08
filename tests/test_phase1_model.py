@@ -6,6 +6,14 @@ from omtrackvla.models.phase1 import Phase1WorldIdentityModel, compute_phase1_lo
 
 
 class Phase1ModelTest(unittest.TestCase):
+    def test_visibility_threshold_is_checkpoint_model_configuration(self):
+        model = Phase1WorldIdentityModel(
+            feature_dim=16, visibility_probability_threshold=0.999
+        )
+        self.assertEqual(model.visibility_probability_threshold, 0.999)
+        with self.assertRaises(ValueError):
+            Phase1WorldIdentityModel(visibility_probability_threshold=1.0)
+
     def test_both_supervision_streams_are_finite(self):
         model = Phase1WorldIdentityModel(feature_dim=16)
         batch = {

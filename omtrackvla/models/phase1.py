@@ -43,10 +43,18 @@ class Phase1WorldIdentityModel(nn.Module):
     waypoint supervision in Phase 1.
     """
 
-    def __init__(self, feature_dim: int = 128, correlation_temperature: float = 0.1) -> None:
+    def __init__(
+        self,
+        feature_dim: int = 128,
+        correlation_temperature: float = 0.1,
+        visibility_probability_threshold: float = 0.5,
+    ) -> None:
         super().__init__()
         self.feature_dim = int(feature_dim)
         self.correlation_temperature = float(correlation_temperature)
+        self.visibility_probability_threshold = float(visibility_probability_threshold)
+        if not 0.0 < self.visibility_probability_threshold < 1.0:
+            raise ValueError("visibility_probability_threshold must be between zero and one")
         self.encoder = ResNetFeatureEncoder(self.feature_dim)
         self.identity_memory = nn.GRUCell(self.feature_dim, self.feature_dim)
         self.identity_size = nn.Sequential(

@@ -63,7 +63,10 @@ def _identity_metrics(model, dataset, indices, batch_size, device) -> torch.Tens
                 history=batch["history"].to(device),
                 history_mask=batch["history_mask"].to(device),
             )
-            predicted_visible = output["visibility_logit"] >= 0.0
+            predicted_visible = (
+                torch.sigmoid(output["visibility_logit"])
+                >= model.visibility_probability_threshold
+            )
             sums[0] += visible.numel()
             sums[1] += (predicted_visible == visible).sum()
             sums[2] += visible.sum()
@@ -133,6 +136,17 @@ def _ridge(train_x, train_y, val_x, val_y, regularization: float) -> float:
     return float(torch.mean((val_x @ weights - val_y) ** 2))
 
 
+def _standardize_features(
+    train_x: torch.Tensor, val_x: torch.Tensor
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Standardize a probe representation using train statistics only."""
+
+    mean = train_x.mean(dim=0)
+    scale = train_x.std(dim=0, unbiased=False)
+    scale = torch.where(scale > 1e-12, scale, torch.ones_like(scale))
+    return (train_x - mean) / scale, (val_x - mean) / scale
+
+
 def _probe_metrics(model, benchmark_path: Path, benchmark, device, maximum_units):
     repository = benchmark_path.resolve().parents[2]
     train_config = load_yaml(resolve(repository, benchmark["train_config"]))
@@ -159,6 +173,8 @@ def _probe_metrics(model, benchmark_path: Path, benchmark, device, maximum_units
     random_x, _ = _feature_matrix(random_model, train_set, train_count, device)
     random_val_x, _ = _feature_matrix(random_model, val_set, val_count, device)
     torch.random.set_rng_state(state)
+    trained_x, trained_val_x = _standardize_features(trained_x, trained_val_x)
+    random_x, random_val_x = _standardize_features(random_x, random_val_x)
     regularization = float(benchmark.get("probe_ridge_regularization", 1e-3))
     trained_mse = _ridge(trained_x, train_y, trained_val_x, val_y, regularization)
     random_mse = _ridge(random_x, train_y, random_val_x, val_y, regularization)
@@ -166,6 +182,7 @@ def _probe_metrics(model, benchmark_path: Path, benchmark, device, maximum_units
     return {
         "train_samples": train_count,
         "validation_samples": val_count,
+        "feature_standardization": "train_mean_std",
         "pretrained_probe_mse": trained_mse,
         "from_scratch_probe_mse": random_mse,
         "relative_improvement": improvement,
@@ -221,6 +238,7 @@ def main() -> int:
                     "sample_count": int(identity_count),
                     "visible_sample_count": int(visible_count),
                     "invisible_sample_count": int(invisible_count),
+                    "visibility_probability_threshold": model.visibility_probability_threshold,
                     "visibility_accuracy": float(identity_sums[1] / max(identity_count, 1.0)),
                     "bbox_iou_mean_visible": float(identity_sums[3] / max(visible_count, 1.0)),
                     "tracking_success_iou_0_5": float(identity_sums[4] / max(visible_count, 1.0)),
