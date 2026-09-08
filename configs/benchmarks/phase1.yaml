@@ -1,0 +1,15 @@
+schema_version: 1
+phase: 1
+benchmark_id: omtrackvla-phase1-b1-v1
+train_config: configs/phases/phase1_pretrain.yaml
+split: val
+seed: 20260907
+batch_size_per_device: 32
+identity_samples: 4096
+geometry_samples: 4096
+probe_train_samples: 256
+probe_val_samples: 512
+probe_ridge_regularization: 0.001
+render_identity_frames: 32
+render_geometry_frames: 32
+render_fps: 4

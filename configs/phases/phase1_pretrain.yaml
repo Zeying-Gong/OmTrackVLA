@@ -1,0 +1,37 @@
+schema_version: 1
+phase: 1
+name: identity_geometry_world_action_pretrain
+seed: 20260907
+
+data:
+  manifest: configs/manifests/phase1_v1.json
+  roots:
+    intern_data_n1: /h100-2/vln_n1/traj_data
+    sage3d_extracted: /data/nfs/share/OmTrackVLA/data/sage3d_extracted
+    tpt_bench_clean_v2: /data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2
+  image_size: 224
+  history_size: 8
+  geometry_maximum_gap: 8
+  identity_fraction: 0.5
+  max_units_per_dataset: null
+
+model:
+  feature_dim: 128
+  correlation_temperature: 0.1
+
+training:
+  epochs: 8
+  samples_per_epoch: 65536
+  batch_size_per_device: 16
+  num_workers: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  gradient_clip_norm: 1.0
+  bfloat16: true
+  log_every_steps: 50
+  loss_weights:
+    identity_visibility: 1.0
+    identity_bbox: 4.0
+    inverse_dynamics: 2.0
+    forward_dynamics: 0.25
+    action_free_next_state: 0.25

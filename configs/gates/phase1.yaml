@@ -1,0 +1,26 @@
+schema_version: 1
+phase: 1
+gate_id: omtrackvla-phase1-initial-gate-v1
+thresholds:
+  benchmarks.B1-ID.sample_count:
+    min: 1000
+  benchmarks.B1-ID.visibility_accuracy:
+    min: 0.70
+  benchmarks.B1-ID.tracking_success_iou_0_5:
+    min: 0.30
+  benchmarks.B1-ID.center_error_norm_mean:
+    max: 0.20
+  benchmarks.B1-ID.absent_false_positive_rate:
+    max: 0.30
+  benchmarks.B1-ID.finite_prediction_coverage:
+    min: 0.99
+  benchmarks.B1-GEO.sample_count:
+    min: 1000
+  benchmarks.B1-GEO.translation_rmse_m:
+    max: 0.50
+  benchmarks.B1-GEO.yaw_mae_rad:
+    max: 0.35
+  benchmarks.B1-GEO.finite_prediction_coverage:
+    min: 0.99
+  benchmarks.B1-PROBE.relative_improvement:
+    min: 0.0

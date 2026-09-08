@@ -11,7 +11,7 @@ venv/
 .vscode/
 
 # Model weights and caches
-models/
+/models/
 ckpt*/
 *.pt
 *.pth
@@ -43,6 +43,8 @@ outputs/
 logs/
 trackvla_vis/
 perf_data/
+/results/wp2_phase1_*_smoke/
+/results/wp2_phase1_smoke/
 
 # Render/runtime leftovers
 *.log
