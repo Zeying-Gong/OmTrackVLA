@@ -13,7 +13,7 @@
 - 主要观测：后续 egocentric RGB 历史。
 - 输出：机器人未来的局部 waypoint trajectory。
 - 明确不需要：自然语言描述、VQA、语义 CoT。
-- 当前状态：WP-0数据审计和WP-1统一数据契约均已完成；WP-2已实现Phase 1固定split、只读source adapter、共享视觉baseline、真实train/eval/render/gate入口和单卡小样本闭环。DA3-SMALL实际权重、隔离运行时和4帧GPU probe已跑通，并据真实结果修复OpenCV/Habitat轴桥接；SAGE3D的7,105个canonical accepted episode已生成2,131,500步只读修复侧车，完整性和384帧独立检测器审计均通过，Phase 1已仅通过该侧车重新启用SAGE3D身份流；TpT物理时钟、真实UWB、DA3多场景尺度/置信度准入及正式规模训练尚未完成，因此WP-2仍在进行中。
+- 当前状态：WP-0数据审计和WP-1统一数据契约均已完成；WP-2已实现Phase 1固定split、只读source adapter、共享视觉baseline、真实train/eval/render/gate入口和单卡小样本闭环。DA3-SMALL多场景审计已拒绝单一全局尺度，并以D435i/ZED分层尺度、冻结置信度阈值通过`viz_val`开发复核和唯一一次`test_locked`准入；SAGE3D的7,105个canonical accepted episode已生成2,131,500步只读修复侧车，完整性和384帧独立检测器审计均通过，Phase 1已仅通过该侧车重新启用SAGE3D身份流。下一项是包含Intern几何流、SAGE3D/TpT身份流的正式Phase 1 baseline和8×H100流水线；TpT物理时钟与真实UWB仍未完成，因此WP-2仍在进行中。
 - 集群入口：仓库内的`scripts/run_pipeline_8xh100.sh`已创建，可在已分配的单节点8×H100上直接bash启动，负责环境预检、三Phase衔接、断点续跑、eval/render/gate与产物管理；Phase 1模块和3个配置已接通并通过单卡preflight，Phase 2/3的6个配置与实现仍缺失，因此`--phase all`会明确失败。OmTrackVLA使用`wam`分支并通过GitHub `origin/wam`协作。
 - 当前方案：采用 3 个正式阶段——Phase 1身份与几何World-Action预训练、Phase 2目标人物跟随监督训练、Phase 3噪声与闭环恢复训练。
 - World-Action 路线：优先评估 DA3 等视觉几何基础模型。利用其从视频恢复的相机轨迹作为显式 pseudo ego-motion，而不是再学习 WALA 式 latent action；借鉴 FutureNav 的 forward/inverse dynamics 与单步 future-state prediction。普通无任务 ego 视频只训练几何与状态转移辅助能力，不直接提供 policy trajectory 监督。
@@ -52,7 +52,7 @@
 
 1. **WP-0：数据审计，已完成。** 正式外部数据范围固定为`/h100-2/vln_n1/traj_data`（InternData-N1）、`/data/nfs/share/OmTrackVLA/data/sage3d_extracted`和`/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2`。产物为`docs/data_inventory.md`、`configs/data_inventory.json`和`scripts/audit_data_inventory.py`；审计只读、检查全量元数据/路径并按group/mode-camera/sequence分层解码媒体，不生成target crop。另有`example_datasets/samples`保存每套16帧的可公开浏览微型真实样例，仅用于理解数据。
 2. **WP-1：冻结数据契约，已完成。** `docs/data_contract.md`和`configs/data_contract.json`已冻结一次性初始化事件、RGB历史、UWB与路由元数据、8点底盘系expert轨迹、辅助GT及`null + valid/mask`缺失值；`scripts/validate_data_contract.py`只读强制执行输入/标签隔离、四种条件模式、坐标/时钟不变量及源准入gate。逐帧bbox只能在label域，不能出现在model input域。
-3. **WP-2：打通Phase 1最小闭环，进行中。** 已确认InternData-N1可提供pose ego几何流，TpT可提供identity流；SAGE3D源bbox/visible仍被阻断，但完整修复侧车已通过独立审计并重新接入identity流。已实现真实的`omtrackvla.training.train`、`omtrackvla.evaluation.{evaluate,render,gate}`入口、3个Phase 1配置和单卡小样本闭环，能产出B1-ID、B1-GEO、B1-PROBE与固定`viz_val`视频。DA3-SMALL的固定源码、权重和隔离依赖已部署，真实probe已验证depth/confidence/pose/intrinsics/feature并修复坐标转换。下一项P0是用多场景held-out样本冻结DA3尺度/置信度过滤证据，然后运行正式规模baseline与8卡流水线。
+3. **WP-2：打通Phase 1最小闭环，进行中。** 已确认InternData-N1可提供pose ego几何流，TpT可提供identity流；SAGE3D源bbox/visible仍被阻断，但完整修复侧车已通过独立审计并重新接入identity流。已实现真实的`omtrackvla.training.train`、`omtrackvla.evaluation.{evaluate,render,gate}`入口、3个Phase 1配置和单卡小样本闭环，能产出B1-ID、B1-GEO、B1-PROBE与固定`viz_val`视频。DA3-SMALL的固定源码、权重和隔离依赖已部署；多场景审计冻结了D435i/ZED尺度2.074511/1.806175和置信度阈值2.947961，唯一一次32-clip `test_locked`以56.25% coverage、16.67% bad rate通过14项gate。下一项P0是运行正式规模Phase 1 baseline与8卡流水线。
 4. **WP-3：打通Phase 2基本跟随。** 从Habitat episode元数据实际渲染RGB并由oracle生成robot expert future waypoints，或接入经WP-0确认的现成expert数据；实现四种模态模式。没有真实UWB日志时，可从同步robot/target pose生成明确标记为`simulated_uwb`的数据，但不得声称已覆盖真实UWB误差。
 5. **WP-4：打通Phase 3恢复。** 先完成3A离线受控扰动，再验证仿真可从模型访问状态查询expert后实现3B DAgger。始终混入Phase 2干净专家数据，并用相同scene/seed对比Phase 2与Phase 3。
 6. **WP-5：每个工作包都回填。** 在第9～11节追加实验、失败和修改记录；写明命令、commit、数据manifest、checkpoint、指标和产物路径。失败也要记录，不覆盖历史，不只汇报总loss。
@@ -75,8 +75,9 @@
 | Phase 1 smoke视频 | H100共享工作副本的`results/wp2_phase1_memory_smoke/phase_1/visualizations/phase1_viz.mp4` | render链路、`PRED/GT`标识、身份/几何面板和视频编码是否工作 | 仅2-step开发smoke，正式gate预期失败，不是可报告的模型效果 |
 | Phase 1 smoke指标 | 同目录的`metrics.json`、`report.md`、`gate.json` | 指标字段、报告和失败原因是否完整 | 不能作为baseline数值或Phase 1验收结果 |
 | DA3单clip probe | `docs/da3_geometry_probe.md`及H100的`results/wp2_da3_probe/report.json` | 坐标转换、输出shape和单clip误差 | 同clip校准与评测，尚不能证明跨场景尺度/置信度准入 |
+| DA3多场景开发复核 | `docs/da3_multiscene_admission.md`及H100的`results/wp2_da3_multiscene_v2_viz/` | `viz_val`的depth/confidence、预测/GT鸟瞰轨迹、置信度—误差关系和时域误差曲线 | 只用于开发复核；不能查看或用来调参`test_locked`，也不能把DA3 pose称为专家控制动作 |
 
-正式Phase 1完成前，NEXT-010还必须产出多场景depth/confidence、预测/GT鸟瞰轨迹和误差曲线；正式8卡baseline必须另行产出固定`viz_val`视频，不能复用上述smoke视频充当验收。
+DA3的`test_locked`已唯一运行一次且未生成/查看图片，不得重跑或人工检查。正式8卡baseline必须另行产出固定`viz_val`视频，不能复用上述smoke或DA3审计图片充当验收。
 
 ## 1. 已确认决策
 
@@ -111,12 +112,13 @@
 | DEC-027 | 2026-09-07 | GitHub版本提供8×H100一键流水线，逐Phase保存配置、数据manifest、代码版本、checkpoint、指标、失败案例和视频 | 让协作者可复现训练并快速定位阶段性问题 | 启动器及Phase 1入口已实现；Phase 2/3待实现 |
 | DEC-028 | 2026-09-07 | 以当前模块化精简后的OmTrackVLA状态为WAM开发基线，并使用独立`wam`分支 | 保留旧分支历史，同时让新方法从已验证的干净快照开始 | 已确认；已推送`origin/wam` |
 | DEC-029 | 2026-09-07 | 在GitHub发布三套正式数据各16个连续真实帧的微型样例，并保留目录结构、必要元数据/Parquet切片、RGB/depth和可直接浏览的预览 | 让协作者无需访问完整数据即可认识真实结构与外观；用户明确确认该用途 | 已确认；禁止将样例视为训练/评测划分，禁止上传视频、点云、crop/cache或绝对symlink |
-| DEC-030 | 2026-09-07 | WP-1统一使用anchor时刻底盘系（x前、y左、z上，米/弧度）、归一化xyxy bbox、含anchor的8点绝对局部XY轨迹和显式时间偏移；序列只在history index 0消费一次外部bbox，UWB tag ID仅作路由；所有缺失值用`null + valid/mask` | 消除不同源的坐标、时间、缺失值和输入/标签边界歧义，同时阻止未确认source semantics静默进入训练 | 已确认；SAGE3D policy、TpT physical clock、real UWB继续由机器可读gate阻断 |
+| DEC-030 | 2026-09-07 | WP-1统一使用anchor时刻底盘系（x前、y左、z上，米/弧度）、归一化xyxy bbox、含anchor的8点绝对局部XY轨迹和显式时间偏移；序列只在history index 0消费一次外部bbox，UWB tag ID仅作路由；所有缺失值用`null + valid/mask` | 消除不同源的坐标、时间、缺失值和输入/标签边界歧义，同时阻止未确认source semantics静默进入训练 | 已确认；SAGE3D只允许准入侧车，TpT physical clock与real UWB继续由机器可读gate阻断 |
 | DEC-031 | 2026-09-08 | Phase 1固定按Intern `group/scene`、SAGE3D `run`、TpT `sequence`隔离划分，种子为20260907；训练adapter只能内存裁剪初始化目标，不得向源数据写crop/cache | 防止scene/人物/episode泄漏，并修复旧外部loader会在源目录生成`_target_crops/_target_refs`的问题 | 已实现；manifest只枚举split unit和必要元数据，不扫描全量媒体 |
-| DEC-032 | 2026-09-08 | Phase 1先以无下载权重的共享ResNet-18建立可执行双流baseline；DA3-SMALL作为Apache-2.0几何teacher候选，实际输出验证前不得生成pseudo label | 先验证数据、分布式训练和评测闭环，同时不把尚未安装/验证的DA3接口伪装成已完成 | baseline smoke与DA3单clip真实接口probe已完成；多场景pseudo-label准入仍未通过 |
-| DEC-033 | 2026-09-08 | DA3使用官方commit `3d835ec1...`和DA3-SMALL revision `e08cab65...`的独立源码、Python target目录和校验权重；pose必须经过OpenCV/Habitat相机轴桥接、Intern底盘外参、canonical基变换和显式metric scale | 不污染现有训练环境；真实probe证明直接混用OpenCV与Habitat外参会产生近90度平移和yaw符号错误 | 已确认；单clip修正后平移/yaw均值误差为0.00496m/0.00519rad，但同clip标定与评测不能用于正式准入 |
+| DEC-032 | 2026-09-08 | Phase 1先以无下载权重的共享ResNet-18建立可执行双流baseline；DA3-SMALL作为Apache-2.0几何teacher候选，实际输出验证前不得生成pseudo label | 先验证数据、分布式训练和评测闭环，同时不把尚未安装/验证的DA3接口伪装成已完成 | baseline smoke、DA3单clip接口probe和多场景pseudo-motion准入均已完成；正式规模训练待运行 |
+| DEC-033 | 2026-09-08 | DA3使用官方commit `3d835ec1...`和DA3-SMALL revision `e08cab65...`的独立源码、Python target目录和校验权重；pose必须经过OpenCV/Habitat相机轴桥接、Intern底盘外参、canonical基变换和显式metric scale | 不污染现有训练环境；真实probe证明直接混用OpenCV与Habitat外参会产生近90度平移和yaw符号错误 | 已确认；单clip坐标修正及后续多场景分相机尺度/置信度准入均已通过，具体冻结规则见DEC-036 |
 | DEC-034 | 2026-09-08 | SAGE3D源`bbox/visible`在修复侧车通过独立person detector、深度和人工拼图审计前，不得进入Phase 1身份loss或指标；修复与伪标注不得覆盖只读源，detector/ReID仅用于离线监督或审计，不构成后续推理bbox输入 | 384帧分层审计确认抽取器水平轴符号错误、画面外零面积框和未验证遮挡可见性；直接训练会把背景当目标并污染身份记忆 | 已确认；TpT身份流和Intern几何流不受影响，SAGE3D修复转NEXT-021 |
 | DEC-035 | 2026-09-08 | SAGE3D身份监督仅接受`selection=full`、7,105个episode完整、无生成失败、源metadata和episode SHA-256匹配且独立审计通过的`v1`侧车；person detector/DINO/ReID只验证而不替换目标身份 | 防止旧源框回退、部分侧车误用或多人场景generic detection串换身份，同时允许经证据验证的修复标签进入Phase 1 | 已确认；`sage3d-bbox-depth-v1`已准入并加入Phase 1 `identity_datasets` |
+| DEC-036 | 2026-09-08 | DA3 pseudo ego-motion仅接受policy `da3-small-intern-multiscene-v1`：在`val`冻结D435i/ZED分层metric scale和median depth confidence阈值，仅用`viz_val`开发复核，并只运行一次无可视化的`test_locked`正式准入；任何参数漂移须fail closed | 单一全局尺度在跨相机场景上以24% admitted bad rate超过20%上限；分相机尺度在开发集通过且唯一locked结果以56.25% coverage、16.67% bad rate通过14项gate | 已确认；原始DA3平移不得直接作metric label，confidence不是校准概率，pseudo motion不等于专家控制动作 |
 
 ## 2. 当前提案与待确认决策
 
@@ -387,6 +389,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | EXP-002 | 2026-09-08 | 实际验证DA3-SMALL的几何与feature接口，并检查DA3 pose到Intern canonical SE(2)的约定 | `4fa9143`加坐标修正工作树 | DA3官方commit `3d835ec1...`；模型revision `e08cab65...`；504px；4帧；feature layer 5/11 | Intern `3dfront_d435i/00154c06...` episode 0，indices 0/4/8/12 | 不适用 | depth/conf/pose/intrinsics及两层feature均有限；scale=2.07116；修正后translation mean=0.00496m、yaw mean=0.00519rad | GPU前向约0.68s；发现并修复OpenCV/Habitat轴混用和缺失canonical基变换；confidence中位4.3767 | NEXT-009接口验证完成；同clip用于尺度标定与误差计算，不能据此准入pseudo label，继续NEXT-010多场景held-out验证 |
 | EXP-003 | 2026-09-08 | 审计SAGE3D投影bbox/visible能否作为身份监督 | `0bc9075`加只读审计工作树 | 384帧、128 episodes、每episode首/中/末3帧、覆盖18个mode/camera分层；Faster R-CNN MobileNet person阈值0.30；IoU 0.50/0.20 | SAGE3D正式根只读；detector权重SHA-256 `907ea3f9...` | 20260908 | 5个源框裁剪后零面积；379个有效框中331帧检测到人；强一致176、部分86、冲突69；中位IoU 0.533 | 初始/中间/末帧冲突率分别1.87%/32.43%/27.43%；水平镜像后中位IoU 0.638、强一致247、冲突14；报告和72例拼图在`results/wp2_sage_bbox_audit_v2/` | 当前SAGE bbox/visible未准入；根因是左轴误作右轴并缺少画面相交/遮挡检查，转NEXT-021修复侧车 |
 | EXP-004 | 2026-09-08 | 不修改源数据地修复并重新准入SAGE3D bbox/visible身份监督 | 基于`e7ebaef`的NEXT-021工作树 | 正确image-right轴；完整相机平移；1.7m×0.5m人物包络；RGB对齐毫米depth；容差`max(0.30m,15%)`、support≥20%、near≤50%；32 workers；冻结384帧审计 | 7,105个canonical accepted episode、2,131,500 steps；manifest SHA-256 `f103f034...`；原检测记录SHA-256 `62fac918...` | 20260908 | 全量visible 2,111,385；out-of-view 6,919、depth-inconsistent 7,220、behind-camera 3,797、near-occluded 2,158、missing-depth 21；样本median IoU 0.6662、strong 82.21%、partial 15.34%、conflict 2.45%、rejected-strong 0 | 7,105/7,105完成、0失败；7项完整性和4项质量gate全通过，`admission.json`已生成；4张最差案例拼图位于`results/sage3d_bbox_sidecar_v1_audit/` | NEXT-021完成；Phase 1只从准入侧车读取SAGE3D身份标签，源bbox/visible继续禁用；残余冲突作为标签噪声风险保留 |
+| EXP-005 | 2026-09-08 | 用互斥Intern场景冻结DA3尺度与置信度过滤，并正式准入pseudo ego-motion | 基于`f825845`的NEXT-010工作树 | policy `da3-small-intern-multiscene-v1`；4帧0/4/8/12；504px；每group 3 clips；`val`标定、`viz_val`开发、唯一一次`test_locked`；D435i/ZED尺度2.074511/1.806175；confidence阈值2.947961 | `phase1_v1.json`；locked selection/report/admission/records SHA-256分别为`88a14504...`/`fce834f9...`/`093892c6...`/`5f414031...` | 20260908 | `viz_val` coverage 61.29%、bad 5.26%、translation median/P90 0.03785/0.09934m；locked coverage 56.25%、bad 16.67%、translation 0.044991/0.119449m、yaw 0.002505/0.012585rad、scale error 0.128413/0.393865 | 31个val、32个locked clips、12 groups、0推理失败；locked 14项gate全通过且`visualizations=[]`；开发图片位于`results/wp2_da3_multiscene_v2_viz/` | NEXT-010完成；只准入冻结分相机尺度与confidence gate，禁止重跑/查看locked；正式Phase 1 baseline可继续 |
 
 建议每个实验至少记录：
 
@@ -405,6 +408,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | FAIL-001 | EXP-001 | DA3实际推理尚不能在`omtrackvla`环境启动 | 导入DA3官方API所需运行时 | 官方仓库固定commit `3d835ec1...`；原环境缺`huggingface_hub`、`safetensors`及若干导出依赖，且本机没有模型权重 | 部署独立源码、Python target运行时和SHA-256固定的DA3-SMALL权重；不改原conda环境 | EXP-002已真实加载权重并完成GPU推理；历史失败保留，NEXT-009接口gate解除 | 固定源码/模型revision、权重hash和隔离路径；不得把可选`gsplat`警告误判为几何probe失败 |
 | FAIL-002 | EXP-002 | 首次真实DA3 pose转换出现近90度平移方向和yaw符号错误 | 直接将DA3 OpenCV w2c与Intern/Habitat相机外参组合 | 首次报告translation/yaw均值误差0.254m/0.171rad；四种变换数值对照仅“OpenCV/Habitat桥接+canonical基变换”同时恢复方向和符号 | 增加`diag(1,-1,-1,1)`相机轴桥接、`(right,forward)→(forward,left)`及非单位真实形态外参回归测试 | 同clip经robust scale后降至0.00496m/0.00519rad | 单位外参测试不足；后续坐标适配测试必须包含真实轴向、非零相机高度、平移和旋转 |
 | FAIL-003 | EXP-003、EXP-004 | SAGE3D中后段黄色GT框频繁落在人物另一侧的墙、门或窗上，另有`visible=true`但框在画面外 | Phase 1 smoke人工查看及384帧分层detector审计 | 抽取器定义`right=[-sin(yaw),cos(yaw)]`，实际为left，却使用`u=cx+fx*right/fwd`；水平镜像反事实将冲突69降至14；5个源框裁剪后零面积 | 以正确右轴和完整相机平移重投影，增加画面相交及RGB对齐depth的support/近遮挡判定，生成外置全量侧车并独立审计 | 源`bbox/visible`继续禁止；修复侧车7,105/7,105完成、0失败并通过准入，样本冲突率从原18.21%降至2.45% | 坐标投影测试必须覆盖非中心目标、左右两侧、出画、遮挡和多相机；adapter必须fail-closed校验完整性、准入和源/episode hash |
+| FAIL-004 | EXP-005 | DA3使用单一全局metric scale时，held-out admitted bad rate为24%，超过冻结上限20% | 31个`val`和31个互斥`viz_val` clips，global scale 1.879207、relative IQR 0.462809、confidence阈值2.024682 | D435i与ZED的相机族尺度分布不同；其余gate均通过，失败集中在`heldout_bad_rate`而非推理完整性 | 改为仅按manifest中已知相机族分层，在`val`分别冻结D435i/ZED尺度并重新拟合统一confidence阈值 | 分层规则在`viz_val`将bad rate降至5.26%，随后唯一locked结果16.67%并通过 | 禁止回退到global scale；policy固定`intern_camera_family`、两类尺度、split用途和所有阈值，CLI偏离即在推理前失败 |
 
 失败原因应区分：
 
@@ -437,10 +441,11 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | CHG-015 | 2026-09-08 | `PROGRESS.md` | 同步协作者事实表与Phase 1最新实现状态，更新日期和DEC-027状态，并增加现有可视化位置及判读边界 | 消除“Phase 1已实现”与旧表“训练模块不存在”的内部矛盾，防止将数据预览或2-step smoke误判为正式模型结果 | 全文一致性检查、路径核对、135项测试和流水线dry-run | DEC-027、DEC-031～033；EXP-001～002 |
 | CHG-016 | 2026-09-08 | `scripts/audit_sage3d_bboxes.py`、`docs/sage3d_bbox_audit.md`、测试和`PROGRESS.md` | 新增SAGE3D bbox只读分层审计、独立person detector对照、水平镜像反事实、时间/mode-camera统计及最差样本拼图；记录准入阻断和修复顺序 | 用户发现SAGE3D黄色GT疑似错位；正式训练前必须区分模型误差与源标签错误 | 384帧/128 episodes/18分层H100审计；5项单测；人工查看72个最差样本；源目录零写入 | DEC-034；EXP-003；FAIL-003；NEXT-021 |
 | CHG-017 | 2026-09-08 | `omtrackvla/data/sage3d_sidecar.py`、sidecar build/audit脚本、Phase 1 adapter/config、`.gitignore`、文档和测试 | 实现正确投影、深度可见性、原子/可恢复的外置侧车生成、完整性与质量准入；训练只读准入侧车并在任何缺失/hash不符时fail closed；重新启用SAGE3D identity流并忽略大型运行产物 | 修复FAIL-003且不覆盖只读源，阻止未完成、被篡改或意外提交的标签进入训练/Git | 全量7,105 episode/2,131,500 step、0失败；独立384帧gate通过；真实adapter读取2,990个单run anchor；算力机149项unittest通过；本地拼图人工复核 | DEC-034～035；EXP-004；FAIL-003；NEXT-021 |
+| CHG-018 | 2026-09-08 | `omtrackvla/geometry/da3_admission.py`、多场景审计脚本、冻结policy、文档和测试 | 实现确定性多场景选择、相机族尺度标定、退化/置信度过滤、held-out gate、开发可视化和locked admission；所有CLI值对policy fail closed并记录policy hash | 单clip同轨标定不能证明跨场景尺度；global scale实测超过bad-rate上限；正式pseudo label必须有不可回退的准入证据 | 真实31+31开发审计、人工`viz_val`复核、唯一31+32 locked审计；算力机159项unittest通过 | DEC-033、DEC-036；EXP-005；FAIL-004；NEXT-010 |
 
 ## 12. 下一步计划
 
-当前下一项P0是NEXT-010：先完成DA3多场景held-out尺度/置信度准入，再运行包含Intern几何流、SAGE3D/TpT身份流的正式Phase 1 baseline和8卡流水线。
+当前下一项P0是运行包含Intern几何流、SAGE3D/TpT身份流的正式Phase 1 baseline和8×H100流水线，并保存固定`viz_val`指标、视频、checkpoint和gate产物。DA3 `test_locked`已消费，不得重跑或查看。
 
 | 优先级 | ID | 工作项 | 依赖 | 预期产出 | 状态 |
 |---:|---|---|---|---|---|
@@ -449,8 +454,8 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | P0 | NEXT-003 | 设计一次视觉初始化与内部目标身份记忆的训练样本表示 | 输入数据格式 | 目标身份条件规范 | 已完成；初始化是history index 0的一次事件，后续bbox仅作label |
 | P0 | NEXT-004 | 定义 Phase 2 最小训练样本 schema | NEXT-001～003 | 样本字段与缺失值规则 | 已完成；schema v1及只读验证器已落库 |
 | P0 | NEXT-009 | 在候选几何backbone上验证camera pose、depth、confidence及中间feature接口 | 模型权重与视频样本 | backbone/pseudo-motion可用性报告 | 已完成接口探测；DA3-SMALL固定源码/权重和隔离运行时已在H100真实输出有限depth/conf/pose/intrinsics及layer 5/11 feature，见`docs/da3_geometry_probe.md`；pseudo-label准入转NEXT-010 |
-| P0 | NEXT-010 | 定义DA3 pose到统一SE(2) pseudo trajectory的转换、尺度校准和置信度过滤 | NEXT-002、NEXT-009 | 几何伪动作规范 | 进行中；OpenCV w2c→c2w→OpenCV/Habitat桥接→base→canonical SE(2)已由真实probe修正，单clip robust scale后误差0.00496m/0.00519rad；多场景held-out尺度、退化过滤和confidence阈值待冻结 |
-| P0 | NEXT-011 | 定义FutureNav式forward/inverse/单步next-state目标及feature teacher | NEXT-009～010 | World-Action辅助loss规范 | 首版已实现；inverse、motion-conditioned forward和action-free next-feature loss已进入Phase 1 baseline；DA3 layer 5/11 feature接口已确认，但teacher pseudo label仍受NEXT-010 gate阻断 |
+| P0 | NEXT-010 | 定义DA3 pose到统一SE(2) pseudo trajectory的转换、尺度校准和置信度过滤 | NEXT-002、NEXT-009 | 几何伪动作规范 | 已完成；global scale因24% bad rate被拒绝；D435i/ZED尺度2.074511/1.806175与confidence阈值2.947961已冻结，`viz_val`复核和唯一一次32-clip locked admission均通过，见`docs/da3_multiscene_admission.md` |
+| P0 | NEXT-011 | 定义FutureNav式forward/inverse/单步next-state目标及feature teacher | NEXT-009～010 | World-Action辅助loss规范 | 首版已实现；inverse、motion-conditioned forward和action-free next-feature loss已进入Phase 1 baseline；DA3 layer 5/11 feature接口及pseudo-motion准入已确认，正式训练中的teacher接入与消融待运行 |
 | P0 | NEXT-012 | 固定主流UWB产品适配接口并盘点实际设备字段、频率、延迟和LOS/NLOS能力 | UWB设备/SDK或日志 | UWB输入与标定规范 | 待开始 |
 | P0 | NEXT-013 | 定义UWB-only冷启动到自动视觉绑定的数据采集与标注协议 | NEXT-002～004、NEXT-012 | tag—track配对样本规范及歧义标签 | 待开始 |
 | P0 | NEXT-014 | 定义目标视觉失联、RGB故障、UWB失效及安全停车/恢复状态机的标签语义 | 控制与安全接口 | 失效模式和评测规范 | 待开始 |
@@ -484,7 +489,8 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | Phase 1固定划分 | `schema v1`, `254c7c6c...` | `configs/manifests/phase1_v1.json`、`scripts/build_phase1_manifest.py` | 按Intern scene、SAGE run、TpT sequence隔离train/val/viz_val/test_locked；不扫描媒体 |
 | Phase 1最小闭环 | `baseline v1` | `omtrackvla/{data,geometry,models,training,evaluation}`及3个Phase 1配置 | 只读双流adapter、共享ResNet-18、B1-ID/B1-GEO/B1-PROBE、render和gate；正式训练待完成 |
 | Phase 1 smoke产物 | `EXP-001` | `results/wp2_phase1_memory_smoke/phase_1`（不进Git） | 带GRU history的2-step开发checkpoint、metrics、report、gate失败原因和8帧可视化；不得当作正式baseline |
-| DA3几何probe | 官方commit `3d835ec1...`；模型revision `e08cab65...` | `scripts/probe_da3_geometry.py`、`docs/da3_geometry_probe.md`；运行JSON在`results/wp2_da3_probe/`（不进Git） | 真实4帧H100输出已验证；修正后单clip scale/translation/yaw为2.07116/0.00496m/0.00519rad；多场景准入待完成 |
+| DA3几何probe | 官方commit `3d835ec1...`；模型revision `e08cab65...` | `scripts/probe_da3_geometry.py`、`docs/da3_geometry_probe.md`；运行JSON在`results/wp2_da3_probe/`（不进Git） | 真实4帧H100输出已验证；修正后单clip scale/translation/yaw为2.07116/0.00496m/0.00519rad；正式准入证据见下一项 |
+| DA3多场景准入 | policy `da3-small-intern-multiscene-v1`，SHA-256 `b4bfbe49...` | `omtrackvla/geometry/da3_admission.py`、`scripts/audit_da3_multiscene.py`、`configs/gates/da3_multiscene_v1.json`、`docs/da3_multiscene_admission.md`；运行产物在`results/wp2_da3_multiscene_v2_{viz,locked}/`（不进Git） | global-scale负结果、D435i/ZED分层尺度、confidence gate、开发可视化和唯一locked准入；locked 14项通过且无图片，禁止重跑/查看 |
 | SAGE3D bbox审计 | `EXP-003` | `scripts/audit_sage3d_bboxes.py`、`docs/sage3d_bbox_audit.md`；H100运行产物在`results/wp2_sage_bbox_audit_v2/`（不进Git） | 384帧分层审计确认投影水平符号和可见性错误；含detector对照、水平镜像反事实和72例拼图 |
 | SAGE3D修复侧车 | `sage3d-bbox-depth-v1`、`EXP-004` | 代码见`omtrackvla/data/sage3d_sidecar.py`、`scripts/{build,audit}_sage3d_sidecar.py`和`docs/sage3d_bbox_sidecar.md`；H100全量/审计产物为`results/sage3d_bbox_sidecar_v1{,_audit}/`（不进Git） | 7,105 episode、2,131,500步外置标签；完整性/质量准入、SHA-256绑定和4张最差案例拼图；Phase 1 adapter只接受该准入版本 |
-| 项目进展记录 | `v15 (2026-09-08)` | 仓库根目录`PROGRESS.md` | 本文件；记录SAGE3D全量修复侧车、独立审计准入、Phase 1重新接入及下一P0回到DA3多场景验证 |
+| 项目进展记录 | `v16 (2026-09-08)` | 仓库根目录`PROGRESS.md` | 本文件；记录DA3 global-scale失败、分相机尺度与置信度冻结、唯一locked准入，并将下一P0推进到正式Phase 1 8卡baseline |

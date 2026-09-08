@@ -2,7 +2,7 @@
 
 ## Status
 
-The pinned DA3-SMALL API, local weights, GPU inference, and coordinate conversion have been exercised on one real InternData-N1 clip. The interface probe passes. Pseudo-label admission remains blocked until scale and confidence behavior are evaluated on multiple held-out scenes; the result below calibrates and evaluates scale on the same clip.
+The pinned DA3-SMALL API, local weights, GPU inference, and coordinate conversion were exercised on one real InternData-N1 clip. The interface probe passed, but this result calibrates and evaluates scale on the same clip and was not itself sufficient for pseudo-label admission. The later disjoint-scene evaluation completed admission; see `docs/da3_multiscene_admission.md`.
 
 ## Provenance
 
@@ -45,8 +45,8 @@ The corrected conversion is:
 
 For this clip, the metric scale is `2.071156`. After scale calibration, mean translation error is `0.004960 m` and mean yaw error is `0.005193 rad`. The last predicted canonical pose is `(0.48473, -0.04656, -0.16204)` versus ground truth `(0.48507, -0.04289, -0.17234)`.
 
-## Admission decision
+## Scope of this probe
 
 - Passed: local model loading; finite depth/confidence/pose; intrinsics and intermediate features; explicit OpenCV/Habitat/base/canonical conversion; one-clip scale recovery.
-- Still blocked: a scale rule that does not use the evaluated trajectory itself, representative multi-scene error distributions, motion/rotation degeneracy rejection, and a confidence threshold tied to held-out geometric error.
-- Therefore this probe does not generate or admit DA3 pseudo labels yet, and it is not evidence to start formal Phase 1 training with DA3 supervision.
+- Not established by this probe: a scale rule that does not use the evaluated trajectory itself, representative multi-scene error distributions, motion/rotation degeneracy rejection, or a confidence threshold tied to held-out geometric error.
+- Therefore this single-clip probe never independently generated or admitted DA3 pseudo labels. Those missing checks were subsequently completed under `da3-small-intern-multiscene-v1`; this historical result remains interface and coordinate evidence only.

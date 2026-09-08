@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "policy_id": "da3-small-intern-multiscene-v1",
+  "source_commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+  "model_revision": "e08cab65ca0ec38e7826075418411ab90cab4da3",
+  "selection": {
+    "calibration_split": "val",
+    "development_evaluation_split": "viz_val",
+    "admission_evaluation_split": "test_locked",
+    "clips_per_group": 3,
+    "maximum_units_per_group": 16,
+    "maximum_episodes_per_unit": 12,
+    "maximum_starts_per_episode": 16,
+    "offsets": [0, 4, 8, 12],
+    "minimum_motion_m": 0.2,
+    "seed": 20260908
+  },
+  "inference": {
+    "process_res": 504,
+    "reference_view_strategy": "middle"
+  },
+  "scale": {
+    "mode": "intern_camera_family",
+    "strata": ["d435i", "zed"],
+    "minimum_calibration_clips_per_stratum": 8,
+    "maximum_relative_iqr": 0.5
+  },
+  "confidence": {
+    "field": "median_depth_confidence",
+    "minimum_calibration_coverage": 0.5,
+    "maximum_calibration_bad_rate": 0.2
+  },
+  "quality_limits": {
+    "translation_error_m_mean": 0.12,
+    "yaw_error_rad_mean": 0.12,
+    "scale_relative_error_median": 0.35
+  },
+  "admission_gate": {
+    "minimum_selected_clips": 20,
+    "minimum_evaluation_coverage": 0.5,
+    "maximum_evaluation_bad_rate": 0.2,
+    "maximum_translation_median_m": 0.12,
+    "maximum_translation_p90_m": 0.25,
+    "maximum_yaw_median_rad": 0.12,
+    "maximum_yaw_p90_rad": 0.25,
+    "maximum_scale_error_median": 0.35,
+    "maximum_scale_error_p90": 0.75,
+    "require_no_inference_failures": true
+  }
+}

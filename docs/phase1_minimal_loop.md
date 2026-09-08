@@ -5,7 +5,7 @@ Phase 1 trains two isolated streams with one shared visual encoder. It does not 
 ## Data boundary
 
 - Geometry/dynamics uses InternData-N1 RGB pairs and pose-derived realized SE(2). Natural-language task fields are never loaded.
-- Identity currently uses TpT. SAGE3D was implemented in the adapter but its projected `bbox/visible` failed EXP-003 and is blocked by `data.identity_datasets` until NEXT-021 admits a corrected sidecar; see `docs/sage3d_bbox_audit.md`. Only the first visible RGB+bbox is converted to an in-memory reference crop; later RGB frames carry bbox/visibility as labels only.
+- Identity uses TpT plus the admitted SAGE3D repair sidecar. Raw SAGE3D `bbox/visible` remains permanently blocked after EXP-003; the adapter fails closed unless the external sidecar is complete, hash-matched, and admitted. See `docs/sage3d_bbox_audit.md` and `docs/sage3d_bbox_sidecar.md`. Only the first visible RGB+bbox is converted to an in-memory reference crop; later RGB frames carry bbox/visibility as labels only.
 - The adapters never create target crops, caches, manifests, or other files under a source root.
 - SAGE3D episodes must be in the root index, contain `_ACCEPTED`, and have `quality.status=accepted`.
 - TpT uses video PTS only for chronological identity clips. Its ODOM/GT timing remains blocked from physical-motion supervision.
@@ -28,7 +28,7 @@ The first executable baseline uses a shared ResNet-18 encoder without downloaded
 - motion-conditioned forward feature prediction;
 - action-free single-step next-feature prediction.
 
-This baseline exists to make the Phase 1 interfaces and benchmark executable. DA3 remains the preferred geometry teacher candidate; `scripts/probe_da3_geometry.py` verifies its depth, confidence, pose, intrinsics, intermediate features, w2c convention, and SE(2) error before its outputs are admitted as pseudo labels.
+This baseline exists to make the Phase 1 interfaces and benchmark executable. The pinned DA3-SMALL multi-scene policy has now passed admission as a geometry teacher candidate; `scripts/probe_da3_geometry.py` verifies its raw interface, while `scripts/audit_da3_multiscene.py` enforces the disjoint-scene scale, confidence, and quality gates before pseudo motion can be used.
 
 ## Pinned DA3-SMALL probe
 
@@ -50,7 +50,7 @@ CUDA_VISIBLE_DEVICES=0 PYTHONPATH="$DA3_RUNTIME:$DA3_SOURCE:." $PY \
   --output results/wp2_da3_probe/report.json
 ```
 
-The conversion is DA3 OpenCV w2c → c2w → OpenCV/Habitat camera bridge → Intern base → canonical x-forward/y-left. Translation is then calibrated with the median ratio of matched moving-pair displacement norms. The single-clip result in `docs/da3_geometry_probe.md` validates the interface and conversion, but it uses the same clip for scale calibration and error measurement; it does not yet admit DA3 outputs as pseudo labels or freeze a confidence threshold. The optional `gsplat` warning is irrelevant to this non-3DGS probe.
+The conversion is DA3 OpenCV w2c → c2w → OpenCV/Habitat camera bridge → Intern base → canonical x-forward/y-left. Translation is calibrated with the median ratio of matched moving-pair displacement norms. The original single-clip result in `docs/da3_geometry_probe.md` validated only the interface and conversion. The subsequent multi-scene audit froze separate D435i/ZED scales and a confidence threshold on `val`, passed manual `viz_val` review, and passed the single formal `test_locked` run; see `docs/da3_multiscene_admission.md` and `configs/gates/da3_multiscene_v1.json`. The optional `gsplat` warning is irrelevant to this non-3DGS probe.
 
 ## Development smoke test
 
