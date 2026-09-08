@@ -13,7 +13,7 @@
 - 主要观测：后续 egocentric RGB 历史。
 - 输出：机器人未来的局部 waypoint trajectory。
 - 明确不需要：自然语言描述、VQA、语义 CoT。
-- 当前状态：WP-0数据审计和WP-1统一数据契约均已完成；WP-2已实现Phase 1固定split、只读source adapter、共享视觉baseline、真实train/eval/render/gate入口和单卡小样本闭环。SAGE3D策略轨迹、TpT物理时钟和真实UWB仍受显式gate阻断；DA3实际权重/依赖探测及正式规模训练尚未完成，因此WP-2仍在进行中。
+- 当前状态：WP-0数据审计和WP-1统一数据契约均已完成；WP-2已实现Phase 1固定split、只读source adapter、共享视觉baseline、真实train/eval/render/gate入口和单卡小样本闭环。DA3-SMALL实际权重、隔离运行时和4帧GPU probe已跑通，并据真实结果修复OpenCV/Habitat轴桥接；SAGE3D策略轨迹、TpT物理时钟和真实UWB仍受显式gate阻断，DA3多场景尺度/置信度准入及正式规模训练尚未完成，因此WP-2仍在进行中。
 - 集群入口：仓库内的`scripts/run_pipeline_8xh100.sh`已创建，可在已分配的单节点8×H100上直接bash启动，负责环境预检、三Phase衔接、断点续跑、eval/render/gate与产物管理；Phase 1模块和3个配置已接通并通过单卡preflight，Phase 2/3的6个配置与实现仍缺失，因此`--phase all`会明确失败。OmTrackVLA使用`wam`分支并通过GitHub `origin/wam`协作。
 - 当前方案：采用 3 个正式阶段——Phase 1身份与几何World-Action预训练、Phase 2目标人物跟随监督训练、Phase 3噪声与闭环恢复训练。
 - World-Action 路线：优先评估 DA3 等视觉几何基础模型。利用其从视频恢复的相机轨迹作为显式 pseudo ego-motion，而不是再学习 WALA 式 latent action；借鉴 FutureNav 的 forward/inverse dynamics 与单步 future-state prediction。普通无任务 ego 视频只训练几何与状态转移辅助能力，不直接提供 policy trajectory 监督。
@@ -52,7 +52,7 @@
 
 1. **WP-0：数据审计，已完成。** 正式外部数据范围固定为`/h100-2/vln_n1/traj_data`（InternData-N1）、`/data/nfs/share/OmTrackVLA/data/sage3d_extracted`和`/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2`。产物为`docs/data_inventory.md`、`configs/data_inventory.json`和`scripts/audit_data_inventory.py`；审计只读、检查全量元数据/路径并按group/mode-camera/sequence分层解码媒体，不生成target crop。另有`example_datasets/samples`保存每套16帧的可公开浏览微型真实样例，仅用于理解数据。
 2. **WP-1：冻结数据契约，已完成。** `docs/data_contract.md`和`configs/data_contract.json`已冻结一次性初始化事件、RGB历史、UWB与路由元数据、8点底盘系expert轨迹、辅助GT及`null + valid/mask`缺失值；`scripts/validate_data_contract.py`只读强制执行输入/标签隔离、四种条件模式、坐标/时钟不变量及源准入gate。逐帧bbox只能在label域，不能出现在model input域。
-3. **WP-2：打通Phase 1最小闭环，进行中。** 已确认InternData-N1可提供pose ego几何流，SAGE3D/TpT可提供identity流；已实现真实的`omtrackvla.training.train`、`omtrackvla.evaluation.{evaluate,render,gate}`入口、3个Phase 1配置和单卡小样本闭环，能产出B1-ID、B1-GEO、B1-PROBE与固定`viz_val`视频。剩余工作是安装并实际探测DA3-SMALL、冻结置信度/尺度过滤证据，然后运行正式规模baseline与8卡流水线。
+3. **WP-2：打通Phase 1最小闭环，进行中。** 已确认InternData-N1可提供pose ego几何流，SAGE3D/TpT可提供identity流；已实现真实的`omtrackvla.training.train`、`omtrackvla.evaluation.{evaluate,render,gate}`入口、3个Phase 1配置和单卡小样本闭环，能产出B1-ID、B1-GEO、B1-PROBE与固定`viz_val`视频。DA3-SMALL的固定源码、权重和隔离依赖已部署，真实probe已验证depth/confidence/pose/intrinsics/feature并修复坐标转换。剩余工作是用多场景held-out样本冻结尺度/置信度过滤证据，然后运行正式规模baseline与8卡流水线。
 4. **WP-3：打通Phase 2基本跟随。** 从Habitat episode元数据实际渲染RGB并由oracle生成robot expert future waypoints，或接入经WP-0确认的现成expert数据；实现四种模态模式。没有真实UWB日志时，可从同步robot/target pose生成明确标记为`simulated_uwb`的数据，但不得声称已覆盖真实UWB误差。
 5. **WP-4：打通Phase 3恢复。** 先完成3A离线受控扰动，再验证仿真可从模型访问状态查询expert后实现3B DAgger。始终混入Phase 2干净专家数据，并用相同scene/seed对比Phase 2与Phase 3。
 6. **WP-5：每个工作包都回填。** 在第9～11节追加实验、失败和修改记录；写明命令、commit、数据manifest、checkpoint、指标和产物路径。失败也要记录，不覆盖历史，不只汇报总loss。
@@ -98,7 +98,8 @@
 | DEC-029 | 2026-09-07 | 在GitHub发布三套正式数据各16个连续真实帧的微型样例，并保留目录结构、必要元数据/Parquet切片、RGB/depth和可直接浏览的预览 | 让协作者无需访问完整数据即可认识真实结构与外观；用户明确确认该用途 | 已确认；禁止将样例视为训练/评测划分，禁止上传视频、点云、crop/cache或绝对symlink |
 | DEC-030 | 2026-09-07 | WP-1统一使用anchor时刻底盘系（x前、y左、z上，米/弧度）、归一化xyxy bbox、含anchor的8点绝对局部XY轨迹和显式时间偏移；序列只在history index 0消费一次外部bbox，UWB tag ID仅作路由；所有缺失值用`null + valid/mask` | 消除不同源的坐标、时间、缺失值和输入/标签边界歧义，同时阻止未确认source semantics静默进入训练 | 已确认；SAGE3D policy、TpT physical clock、real UWB继续由机器可读gate阻断 |
 | DEC-031 | 2026-09-08 | Phase 1固定按Intern `group/scene`、SAGE3D `run`、TpT `sequence`隔离划分，种子为20260907；训练adapter只能内存裁剪初始化目标，不得向源数据写crop/cache | 防止scene/人物/episode泄漏，并修复旧外部loader会在源目录生成`_target_crops/_target_refs`的问题 | 已实现；manifest只枚举split unit和必要元数据，不扫描全量媒体 |
-| DEC-032 | 2026-09-08 | Phase 1先以无下载权重的共享ResNet-18建立可执行双流baseline；DA3-SMALL作为Apache-2.0几何teacher候选，实际输出验证前不得生成pseudo label | 先验证数据、分布式训练和评测闭环，同时不把尚未安装/验证的DA3接口伪装成已完成 | baseline smoke已完成；DA3官方API/commit已核对，权重与运行依赖待部署 |
+| DEC-032 | 2026-09-08 | Phase 1先以无下载权重的共享ResNet-18建立可执行双流baseline；DA3-SMALL作为Apache-2.0几何teacher候选，实际输出验证前不得生成pseudo label | 先验证数据、分布式训练和评测闭环，同时不把尚未安装/验证的DA3接口伪装成已完成 | baseline smoke与DA3单clip真实接口probe已完成；多场景pseudo-label准入仍未通过 |
+| DEC-033 | 2026-09-08 | DA3使用官方commit `3d835ec1...`和DA3-SMALL revision `e08cab65...`的独立源码、Python target目录和校验权重；pose必须经过OpenCV/Habitat相机轴桥接、Intern底盘外参、canonical基变换和显式metric scale | 不污染现有训练环境；真实probe证明直接混用OpenCV与Habitat外参会产生近90度平移和yaw符号错误 | 已确认；单clip修正后平移/yaw均值误差为0.00496m/0.00519rad，但同clip标定与评测不能用于正式准入 |
 
 ## 2. 当前提案与待确认决策
 
@@ -366,6 +367,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 |---|---|---|---|---|---|---|---|---|---|
 | EXP-TEMPLATE | YYYY-MM-DD |  |  |  |  |  |  |  |  |
 | EXP-001 | 2026-09-08 | 验证Phase 1从真实source adapter、RGB历史身份记忆到train/eval/render/gate的最小闭环 | 基于`f487a13`的未提交WP-2实现 | `phase1_pretrain.yaml`；单卡每源1 split unit/2 step；8卡每卡1 batch；8+8 eval、8+8 probe | `phase1_v1.json`，SHA-256 `254c7c6c...`; Intern/SAGE/TpT正式根 | 20260907 | B1-ID visibility=0.5、IoU=0.193、success@0.5=0；B1-GEO translation RMSE=0.155m、yaw MAE=0.116rad；B1-PROBE相对改善=0.156 | 带GRU history的checkpoint、三类指标、report和8帧960×380 MP4均生成；8×H100 DDP/NCCL及rank-0 checkpoint通过；正式gate按预期未通过 | 接口、历史记忆、单卡/8卡反向传播闭环成立；2-step结果不代表正式能力，必须保留gate失败并继续正式训练 |
+| EXP-002 | 2026-09-08 | 实际验证DA3-SMALL的几何与feature接口，并检查DA3 pose到Intern canonical SE(2)的约定 | `4fa9143`加坐标修正工作树 | DA3官方commit `3d835ec1...`；模型revision `e08cab65...`；504px；4帧；feature layer 5/11 | Intern `3dfront_d435i/00154c06...` episode 0，indices 0/4/8/12 | 不适用 | depth/conf/pose/intrinsics及两层feature均有限；scale=2.07116；修正后translation mean=0.00496m、yaw mean=0.00519rad | GPU前向约0.68s；发现并修复OpenCV/Habitat轴混用和缺失canonical基变换；confidence中位4.3767 | NEXT-009接口验证完成；同clip用于尺度标定与误差计算，不能据此准入pseudo label，继续NEXT-010多场景held-out验证 |
 
 建议每个实验至少记录：
 
@@ -381,7 +383,8 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | FAIL-ID | 关联实验 | 现象 | 可复现条件 | 根因证据 | 已尝试修复 | 结果 | 防止重复方式 |
 |---|---|---|---|---|---|---|---|
 | FAIL-TEMPLATE | EXP-XXX |  |  |  |  |  |  |
-| FAIL-001 | EXP-001 | DA3实际推理尚不能在`omtrackvla`环境启动 | 导入DA3官方API所需运行时 | 官方仓库固定commit `3d835ec1...`；当前环境缺`huggingface_hub`、`safetensors`、`xformers`及若干导出依赖，且本机没有模型权重 | 已核对官方API、w2c输出、feature export和DA3-SMALL Apache-2.0模型卡；实现独立probe脚本 | 保持显式未完成状态，未生成伪DA3报告或pseudo label | 用隔离依赖目录和校验和固定的DA3-SMALL权重部署后再清除NEXT-009 gate |
+| FAIL-001 | EXP-001 | DA3实际推理尚不能在`omtrackvla`环境启动 | 导入DA3官方API所需运行时 | 官方仓库固定commit `3d835ec1...`；原环境缺`huggingface_hub`、`safetensors`及若干导出依赖，且本机没有模型权重 | 部署独立源码、Python target运行时和SHA-256固定的DA3-SMALL权重；不改原conda环境 | EXP-002已真实加载权重并完成GPU推理；历史失败保留，NEXT-009接口gate解除 | 固定源码/模型revision、权重hash和隔离路径；不得把可选`gsplat`警告误判为几何probe失败 |
+| FAIL-002 | EXP-002 | 首次真实DA3 pose转换出现近90度平移方向和yaw符号错误 | 直接将DA3 OpenCV w2c与Intern/Habitat相机外参组合 | 首次报告translation/yaw均值误差0.254m/0.171rad；四种变换数值对照仅“OpenCV/Habitat桥接+canonical基变换”同时恢复方向和符号 | 增加`diag(1,-1,-1,1)`相机轴桥接、`(right,forward)→(forward,left)`及非单位真实形态外参回归测试 | 同clip经robust scale后降至0.00496m/0.00519rad | 单位外参测试不足；后续坐标适配测试必须包含真实轴向、非零相机高度、平移和旋转 |
 
 失败原因应区分：
 
@@ -410,6 +413,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | CHG-011 | 2026-09-07 | `example_datasets/`、`scripts/export_example_datasets.py`、`.gitignore`、测试 | 按用户确认改为发布可审计微型真实子集：三套数据各16连续帧，含必要结构/元数据切片和GitHub预览；增加校验和与数据声明 | 协作者需要直接认识真实数据外观和结构，而不是只看schema文档 | 5,854,999字节/99文件；98文件SHA-256通过；48 RGB、32 depth、3 preview和2 Parquet全部重读；无symlink/嵌套仓库/凭据特征/禁入派生文件；预览人工核对 | DEC-029 |
 | CHG-012 | 2026-09-07 | `docs/data_contract.md`、`configs/data_contract.json`、`scripts/validate_data_contract.py`、`docs/data_inventory.md`、测试 | 完成WP-1：冻结模型输入、路由元数据、policy/identity监督、坐标/时间、缺失值、四种条件模式、安全约束和source admission gate | loader和训练模块必须共享一个可执行边界，不能各自猜测bbox、UWB、waypoint或源时钟语义 | 契约自检、有效policy/identity样本、禁止后续bbox、UWB年龄/协方差、轨迹mask、RGB故障停车、路径越界/只读存在性及source gate测试；全仓122项unittest通过 | DEC-030；NEXT-002～004 |
 | CHG-013 | 2026-09-08 | `omtrackvla/{data,geometry,models,training,evaluation}`、Phase 1配置、manifest、脚本、文档和测试 | 实现WP-2首个可执行闭环：只读identity/geometry adapter、显式SE(2)转换、带GRU历史身份记忆的共享视觉双流baseline、分布式训练、B1评测、视频渲染和严格gate | 将流水线从dry-run推进到真实Phase 1，同时保持源准入和输入/标签边界 | 133项unittest；真实三源adapter smoke；单卡2-step和8×H100每卡1-batch DDP；B1-ID/B1-GEO/B1-PROBE；8帧MP4重读；正式gate预期失败；Phase 1 pipeline preflight通过 | DEC-031～032；EXP-001；NEXT-009～011、015～018 |
+| CHG-014 | 2026-09-08 | DA3隔离运行时/权重、`omtrackvla/geometry/se2.py`、probe脚本、测试和文档 | 部署固定DA3-SMALL并完成真实GPU probe；修复OpenCV/Habitat轴桥接和canonical基变换；报告scale、置信度和feature形状 | 单元合成测试未覆盖真实相机坐标约定，首次实际pose暴露轴向错误 | 固定权重SHA；4帧真实推理；四种变换对照；非单位相机外参回归；全仓测试 | DEC-033；EXP-002；FAIL-001～002；NEXT-009～010 |
 
 ## 12. 下一步计划
 
@@ -419,9 +423,9 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | P0 | NEXT-002 | 将已选变换约定落成robot、target、UWB和waypoint坐标系规范 | 传感器/仿真接口 | 含公式、单位和时间语义的坐标系规范 | 已完成；见`docs/data_contract.md`，具体source adapter仍须逐gate确认 |
 | P0 | NEXT-003 | 设计一次视觉初始化与内部目标身份记忆的训练样本表示 | 输入数据格式 | 目标身份条件规范 | 已完成；初始化是history index 0的一次事件，后续bbox仅作label |
 | P0 | NEXT-004 | 定义 Phase 2 最小训练样本 schema | NEXT-001～003 | 样本字段与缺失值规则 | 已完成；schema v1及只读验证器已落库 |
-| P0 | NEXT-009 | 在候选几何backbone上验证camera pose、depth、confidence及中间feature接口 | 模型权重与视频样本 | backbone/pseudo-motion可用性报告 | 进行中；DA3官方API/commit、输出字段和feature export已核对，probe脚本已实现；本机权重/隔离依赖与实际报告待完成 |
-| P0 | NEXT-010 | 定义DA3 pose到统一SE(2) pseudo trajectory的转换、尺度校准和置信度过滤 | NEXT-002、NEXT-009 | 几何伪动作规范 | 进行中；w2c→c2w→camera/base→canonical SE(2)与robust metric scale已实现/测试，真实DA3置信度阈值待报告冻结 |
-| P0 | NEXT-011 | 定义FutureNav式forward/inverse/单步next-state目标及feature teacher | NEXT-009～010 | World-Action辅助loss规范 | 首版已实现；inverse、motion-conditioned forward和action-free next-feature loss已进入Phase 1 baseline，DA3 feature teacher待NEXT-009完成 |
+| P0 | NEXT-009 | 在候选几何backbone上验证camera pose、depth、confidence及中间feature接口 | 模型权重与视频样本 | backbone/pseudo-motion可用性报告 | 已完成接口探测；DA3-SMALL固定源码/权重和隔离运行时已在H100真实输出有限depth/conf/pose/intrinsics及layer 5/11 feature，见`docs/da3_geometry_probe.md`；pseudo-label准入转NEXT-010 |
+| P0 | NEXT-010 | 定义DA3 pose到统一SE(2) pseudo trajectory的转换、尺度校准和置信度过滤 | NEXT-002、NEXT-009 | 几何伪动作规范 | 进行中；OpenCV w2c→c2w→OpenCV/Habitat桥接→base→canonical SE(2)已由真实probe修正，单clip robust scale后误差0.00496m/0.00519rad；多场景held-out尺度、退化过滤和confidence阈值待冻结 |
+| P0 | NEXT-011 | 定义FutureNav式forward/inverse/单步next-state目标及feature teacher | NEXT-009～010 | World-Action辅助loss规范 | 首版已实现；inverse、motion-conditioned forward和action-free next-feature loss已进入Phase 1 baseline；DA3 layer 5/11 feature接口已确认，但teacher pseudo label仍受NEXT-010 gate阻断 |
 | P0 | NEXT-012 | 固定主流UWB产品适配接口并盘点实际设备字段、频率、延迟和LOS/NLOS能力 | UWB设备/SDK或日志 | UWB输入与标定规范 | 待开始 |
 | P0 | NEXT-013 | 定义UWB-only冷启动到自动视觉绑定的数据采集与标注协议 | NEXT-002～004、NEXT-012 | tag—track配对样本规范及歧义标签 | 待开始 |
 | P0 | NEXT-014 | 定义目标视觉失联、RGB故障、UWB失效及安全停车/恢复状态机的标签语义 | 控制与安全接口 | 失效模式和评测规范 | 待开始 |
@@ -454,5 +458,5 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | Phase 1固定划分 | `schema v1`, `254c7c6c...` | `configs/manifests/phase1_v1.json`、`scripts/build_phase1_manifest.py` | 按Intern scene、SAGE run、TpT sequence隔离train/val/viz_val/test_locked；不扫描媒体 |
 | Phase 1最小闭环 | `baseline v1` | `omtrackvla/{data,geometry,models,training,evaluation}`及3个Phase 1配置 | 只读双流adapter、共享ResNet-18、B1-ID/B1-GEO/B1-PROBE、render和gate；正式训练待完成 |
 | Phase 1 smoke产物 | `EXP-001` | `results/wp2_phase1_memory_smoke/phase_1`（不进Git） | 带GRU history的2-step开发checkpoint、metrics、report、gate失败原因和8帧可视化；不得当作正式baseline |
-| DA3几何probe | 官方commit `3d835ec1...` | `scripts/probe_da3_geometry.py` | 已固定官方API与w2c转换；权重/依赖和实际报告待完成 |
-| 项目进展记录 | `v11 (2026-09-08)` | 仓库根目录`PROGRESS.md` | 本文件；WP-2 Phase 1最小闭环已实现，DA3实际probe与正式8卡baseline待完成 |
+| DA3几何probe | 官方commit `3d835ec1...`；模型revision `e08cab65...` | `scripts/probe_da3_geometry.py`、`docs/da3_geometry_probe.md`；运行JSON在`results/wp2_da3_probe/`（不进Git） | 真实4帧H100输出已验证；修正后单clip scale/translation/yaw为2.07116/0.00496m/0.00519rad；多场景准入待完成 |
+| 项目进展记录 | `v12 (2026-09-08)` | 仓库根目录`PROGRESS.md` | 本文件；WP-2 Phase 1最小闭环和DA3真实接口probe已实现，DA3多场景准入及正式8卡baseline待完成 |

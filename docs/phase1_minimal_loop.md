@@ -30,6 +30,28 @@ The first executable baseline uses a shared ResNet-18 encoder without downloaded
 
 This baseline exists to make the Phase 1 interfaces and benchmark executable. DA3 remains the preferred geometry teacher candidate; `scripts/probe_da3_geometry.py` verifies its depth, confidence, pose, intrinsics, intermediate features, w2c convention, and SE(2) error before its outputs are admitted as pseudo labels.
 
+## Pinned DA3-SMALL probe
+
+The first real probe uses the Apache-2.0 DA3-SMALL model with separately versioned source, runtime dependencies, and weights. It does not modify the `omtrackvla` conda environment:
+
+```bash
+PY=/data/nfs/share/gzy/miniconda3/envs/omtrackvla/bin/python
+DA3_SOURCE=/data/nfs/share/gzy/third_party/depth-anything-3/3d835ec1a5802d64a8b8b15f817a1ab54809bfe4/src
+DA3_RUNTIME=/data/nfs/share/gzy/third_party/depth-anything-3/runtime-py39-v1
+DA3_MODEL=/data/nfs/share/gzy/models/DA3-SMALL/e08cab65ca0ec38e7826075418411ab90cab4da3
+
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH="$DA3_RUNTIME:$DA3_SOURCE:." $PY \
+  scripts/probe_da3_geometry.py \
+  --model "$DA3_MODEL" \
+  --model-revision e08cab65ca0ec38e7826075418411ab90cab4da3 \
+  --intern-parquet /path/to/episode.parquet \
+  --rgb-dir /path/to/observation.images.rgb \
+  --indices 0 4 8 12 \
+  --output results/wp2_da3_probe/report.json
+```
+
+The conversion is DA3 OpenCV w2c → c2w → OpenCV/Habitat camera bridge → Intern base → canonical x-forward/y-left. Translation is then calibrated with the median ratio of matched moving-pair displacement norms. The single-clip result in `docs/da3_geometry_probe.md` validates the interface and conversion, but it uses the same clip for scale calibration and error measurement; it does not yet admit DA3 outputs as pseudo labels or freeze a confidence threshold. The optional `gsplat` warning is irrelevant to this non-3DGS probe.
+
 ## Development smoke test
 
 Use one GPU and a small number of split units first:

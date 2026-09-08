@@ -11,6 +11,12 @@ from typing import Iterable
 import numpy as np
 
 
+# Habitat camera coordinates are x-right/y-up/z-backward, whereas DA3 emits
+# OpenCV camera coordinates x-right/y-down/z-forward.  This is a proper 180
+# degree rotation about camera x (not a reflection).
+OPENCV_FROM_HABITAT_CAMERA = np.diag([1.0, -1.0, -1.0, 1.0])
+
+
 def _matrix4(value: np.ndarray | Iterable[float], name: str) -> np.ndarray:
     matrix = np.asarray(value, dtype=np.float64)
     if matrix.size != 16:
@@ -34,27 +40,47 @@ def _se2_from_relative(relative: np.ndarray) -> np.ndarray:
     )
 
 
+def _habitat_planar_to_canonical(relative: np.ndarray) -> np.ndarray:
+    """Convert Habitat's planar (right, forward) basis to (forward, left)."""
+
+    old = _se2_from_relative(relative)
+    return np.asarray([old[1], -old[0], old[2]], dtype=np.float32)
+
+
 def relative_w2c_to_base_se2(
     anchor_world_to_camera: np.ndarray | Iterable[float],
     target_world_to_camera: np.ndarray | Iterable[float],
-    camera_from_base: np.ndarray | Iterable[float],
+    base_from_habitat_camera: np.ndarray | Iterable[float],
 ) -> np.ndarray:
     """Convert two OpenCV-style w2c poses into canonical base-frame SE(2).
 
-    ``camera_from_base`` is ``^C T_B``. DA3 emits ``^C_t T_W``. The
-    conversion therefore follows the frozen convention exactly::
+    InternData-N1 stores ``base_from_habitat_camera`` as ``^B T_C_h``.
+    DA3 emits ``^C_cv_t T_W`` in OpenCV coordinates, so the fixed optical
+    convention bridge must be applied before the camera/base extrinsic::
 
-        ^W T_C_t = inverse(^C_t T_W)
-        ^W T_B_t = ^W T_C_t @ ^C T_B
+        ^C_cv T_B = ^C_cv T_C_h @ inverse(^B T_C_h)
+        ^W T_C_cv_t = inverse(^C_cv_t T_W)
+        ^W T_B_t = ^W T_C_cv_t @ ^C_cv T_B
         ^B_t T_B_u = inverse(^W T_B_t) @ ^W T_B_u
+
+    The resulting Habitat planar translation is finally changed from
+    ``(right, forward)`` to canonical ``(forward, left)``.  Omitting either
+    step produces the characteristic 90-degree translation and yaw-sign
+    errors observed by the real DA3 probe.
     """
 
     anchor_w2c = _matrix4(anchor_world_to_camera, "anchor_world_to_camera")
     target_w2c = _matrix4(target_world_to_camera, "target_world_to_camera")
-    camera_base = _matrix4(camera_from_base, "camera_from_base")
-    world_base_anchor = np.linalg.inv(anchor_w2c) @ camera_base
-    world_base_target = np.linalg.inv(target_w2c) @ camera_base
-    return _se2_from_relative(np.linalg.inv(world_base_anchor) @ world_base_target)
+    base_habitat_camera = _matrix4(
+        base_from_habitat_camera, "base_from_habitat_camera"
+    )
+    opencv_camera_from_base = OPENCV_FROM_HABITAT_CAMERA @ np.linalg.inv(
+        base_habitat_camera
+    )
+    world_base_anchor = np.linalg.inv(anchor_w2c) @ opencv_camera_from_base
+    world_base_target = np.linalg.inv(target_w2c) @ opencv_camera_from_base
+    relative = np.linalg.inv(world_base_anchor) @ world_base_target
+    return _habitat_planar_to_canonical(relative)
 
 
 def intern_pair_to_canonical_se2(
@@ -78,8 +104,7 @@ def intern_pair_to_canonical_se2(
     world_base_anchor = world_camera_anchor @ np.linalg.inv(base_camera)
     world_base_target = world_camera_target @ np.linalg.inv(base_camera)
     relative = np.linalg.inv(world_base_anchor) @ world_base_target
-    old = _se2_from_relative(relative)
-    return np.asarray([old[1], -old[0], old[2]], dtype=np.float32)
+    return _habitat_planar_to_canonical(relative)
 
 
 def robust_translation_scale(

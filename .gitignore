@@ -45,6 +45,7 @@ trackvla_vis/
 perf_data/
 /results/wp2_phase1_*_smoke/
 /results/wp2_phase1_smoke/
+/results/wp2_da3_probe/
 
 # Render/runtime leftovers
 *.log
