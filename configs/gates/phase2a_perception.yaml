@@ -1,0 +1,21 @@
+schema_version: 1
+gate_id: omtrackvla-phase2a-perception-v1
+split: viz_val
+expected_sequences:
+  - "0005"
+  - "0032"
+expected_counts:
+  evaluated_frames: 5928
+  gt_visible_frames: 3741
+  gt_absent_frames: 2187
+thresholds:
+  end_to_end_absolute_improvement:
+    min: 0.02
+  output_precision_iou_0_5:
+    min: 0.88
+  absent_false_positive_rate:
+    max: 0.05
+  wrong_target_frames_iou_below_0_2:
+    max: 60
+  reappearance_success_rate:
+    min: 0.3333333333333333

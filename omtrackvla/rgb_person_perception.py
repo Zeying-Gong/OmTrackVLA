@@ -430,6 +430,20 @@ class RGBPersonPerception:
         self._last_candidate_features = features
         self.last_identity_margin = 0.0
         self.last_candidate_diagnostics = []
+        recent_goal = list(getattr(self, "_recent_goal_similarities", ()))
+        recent_goal_mean = float(np.mean(recent_goal)) if recent_goal else 0.0
+        recent_goal_min = float(np.min(recent_goal)) if recent_goal else 0.0
+        temporal_context = {
+            "candidate_count": len(features),
+            "confirmed_track_steps": int(
+                getattr(self, "_confirmed_track_steps", 0)
+            ),
+            "previous_association_score": float(
+                getattr(self, "last_association_score", 0.0)
+            ),
+            "recent_goal_mean": recent_goal_mean,
+            "recent_goal_min": recent_goal_min,
+        }
         for candidate_index, (box, detector_score, hist, embedding) in enumerate(features):
             appearance_scores = self._appearance_scores(embedding)
             goal_histogram = 0.0
@@ -456,6 +470,7 @@ class RGBPersonPerception:
                 "global_search": float(self._bbox is None),
                 "fusion_score": None,
                 "selected": False,
+                **temporal_context,
             })
         if self._bbox is None:
             if self._reference_hist is not None or self._goal_embedding is not None:

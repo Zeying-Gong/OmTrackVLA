@@ -9,7 +9,7 @@ from typing import Mapping, Sequence
 import numpy as np
 
 
-FEATURE_NAMES = (
+LEGACY_FEATURE_NAMES = (
     "detector_score",
     "anchor_reid",
     "gallery_reid",
@@ -25,13 +25,41 @@ FEATURE_NAMES = (
 )
 
 
-def feature_vector(diagnostic: Mapping[str, object]) -> np.ndarray:
+# The detector and OSNet stay frozen.  These extra scalars expose state that
+# the tracker already computes, allowing the lightweight fusion head to learn
+# continuity and reacquisition without adding privileged labels at inference.
+FEATURE_NAMES = LEGACY_FEATURE_NAMES[:-2] + (
+    "association_score",
+    "identity_score",
+    "previous_association_score",
+    "recent_goal_mean",
+    "recent_goal_min",
+    "log1p_candidate_count",
+    "log1p_confirmed_track_steps",
+) + LEGACY_FEATURE_NAMES[-2:]
+
+SUPPORTED_FEATURE_CONTRACTS = (LEGACY_FEATURE_NAMES, FEATURE_NAMES)
+
+
+def feature_vector(
+    diagnostic: Mapping[str, object],
+    feature_names: Sequence[str] = FEATURE_NAMES,
+) -> np.ndarray:
     values = dict(diagnostic)
     values["log1p_missed_steps"] = math.log1p(
         max(0.0, float(values.get("missed_steps", 0.0)))
     )
+    values["log1p_candidate_count"] = math.log1p(
+        max(0.0, float(values.get("candidate_count", 0.0)))
+    )
+    values["log1p_confirmed_track_steps"] = math.log1p(
+        max(0.0, float(values.get("confirmed_track_steps", 0.0)))
+    )
+    names = tuple(feature_names)
+    if names not in SUPPORTED_FEATURE_CONTRACTS:
+        raise ValueError("unsupported candidate fusion feature contract")
     return np.asarray(
-        [float(values.get(name, 0.0)) for name in FEATURE_NAMES],
+        [float(values.get(name, 0.0)) for name in names],
         dtype=np.float32,
     )
 
@@ -40,7 +68,8 @@ class CandidateFusionModel:
     """Numpy inference for a two-layer candidate classifier saved as JSON."""
 
     def __init__(self, payload: Mapping[str, object]) -> None:
-        if tuple(payload.get("feature_names", ())) != FEATURE_NAMES:
+        self.feature_names = tuple(payload.get("feature_names", ()))
+        if self.feature_names not in SUPPORTED_FEATURE_CONTRACTS:
             raise ValueError("candidate fusion feature contract mismatch")
         self.mean = np.asarray(payload["feature_mean"], dtype=np.float32)
         self.scale = np.asarray(payload["feature_scale"], dtype=np.float32)
@@ -74,9 +103,9 @@ class CandidateFusionModel:
                 "score_threshold": score_threshold,
                 "margin_threshold": margin_threshold,
             }
-        if self.mean.shape != (len(FEATURE_NAMES),) or self.scale.shape != self.mean.shape:
+        if self.mean.shape != (len(self.feature_names),) or self.scale.shape != self.mean.shape:
             raise ValueError("candidate fusion normalization shape mismatch")
-        if self.weight1.shape[1] != len(FEATURE_NAMES):
+        if self.weight1.shape[1] != len(self.feature_names):
             raise ValueError("candidate fusion first-layer shape mismatch")
         if self.bias1.shape != (self.weight1.shape[0],):
             raise ValueError("candidate fusion first-layer bias shape mismatch")
@@ -89,7 +118,9 @@ class CandidateFusionModel:
         return cls(json.loads(Path(path).read_text(encoding="utf-8")))
 
     def predict(self, diagnostic: Mapping[str, object]) -> float:
-        features = (feature_vector(diagnostic) - self.mean) / self.scale
+        features = (
+            feature_vector(diagnostic, self.feature_names) - self.mean
+        ) / self.scale
         hidden = np.maximum(self.weight1 @ features + self.bias1, 0.0)
         logit = float(np.dot(self.weight2, hidden) + self.bias2)
         if logit >= 0.0:

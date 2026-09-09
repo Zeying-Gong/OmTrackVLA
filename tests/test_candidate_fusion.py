@@ -4,6 +4,7 @@ import numpy as np
 
 from omtrackvla.models.candidate_fusion import (
     FEATURE_NAMES,
+    LEGACY_FEATURE_NAMES,
     CandidateFusionModel,
     feature_vector,
 )
@@ -24,6 +25,48 @@ class CandidateFusionTest(unittest.TestCase):
         self.assertAlmostEqual(vector[0], 0.9)
         self.assertAlmostEqual(vector[-2], np.log(4.0))
         self.assertEqual(vector[-1], 1.0)
+
+    def test_feature_contract_exposes_temporal_tracker_state(self):
+        vector = feature_vector(
+            {
+                "association_score": 0.7,
+                "identity_score": 0.8,
+                "candidate_count": 4,
+                "confirmed_track_steps": 7,
+            }
+        )
+
+        self.assertAlmostEqual(
+            vector[FEATURE_NAMES.index("association_score")], 0.7
+        )
+        self.assertAlmostEqual(
+            vector[FEATURE_NAMES.index("identity_score")], 0.8
+        )
+        self.assertAlmostEqual(
+            vector[FEATURE_NAMES.index("log1p_candidate_count")], np.log(5.0)
+        )
+        self.assertAlmostEqual(
+            vector[FEATURE_NAMES.index("log1p_confirmed_track_steps")],
+            np.log(8.0),
+        )
+
+    def test_legacy_fusion_payload_remains_loadable(self):
+        payload = {
+            "feature_names": list(LEGACY_FEATURE_NAMES),
+            "feature_mean": [0.0] * len(LEGACY_FEATURE_NAMES),
+            "feature_scale": [1.0] * len(LEGACY_FEATURE_NAMES),
+            "weight1": [[0.0] * len(LEGACY_FEATURE_NAMES)],
+            "bias1": [0.0],
+            "weight2": [0.0],
+            "bias2": 0.0,
+            "score_threshold": 0.5,
+            "margin_threshold": 0.0,
+        }
+
+        model = CandidateFusionModel(payload)
+
+        self.assertEqual(model.feature_names, LEGACY_FEATURE_NAMES)
+        self.assertEqual(model.predict({"detector_score": 1.0}), 0.5)
 
     def test_numpy_fusion_model_predicts_probability(self):
         hidden = 2
