@@ -10,15 +10,18 @@ DATA_ROOT="/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2"
 DETECTOR_WEIGHTS="models/torchvision/fasterrcnn_resnet50_fpn_v2_coco-dd69338a.pth"
 BASELINE_FUSION="configs/models/candidate_fusion_resnet50_tpt_train37_dualop_v3.json"
 BASELINE_VIZ_METRICS="outputs/evaluation/pretrained_identity_v4_resnet50_fusion_dualop_viz/comparison_metrics.json"
-RUN_ID="${PHASE2A_RUN_ID:-phase2a_temporal_fusion_v4}"
+RUN_ID="${PHASE2A_RUN_ID:-phase2a_temporal_fusion_v5}"
 TRAIN_ROOT="outputs/training/$RUN_ID"
 ROLLOUT_ROOT="${PHASE2A_BASELINE_ROLLOUT_ROOT:-outputs/evaluation/${RUN_ID}_baseline_rollouts}"
+EXTRA_TRAIN_FUSION="${PHASE2A_EXTRA_TRAIN_FUSION:-}"
+EXTRA_TRAIN_ROOT="${PHASE2A_EXTRA_TRAIN_ROOT:-outputs/evaluation/${RUN_ID}_onpolicy_rollouts}"
 VAL_ROOT="outputs/evaluation/${RUN_ID}_val"
 VIZ_ROOT="outputs/evaluation/${RUN_ID}_viz"
 FUSION_WEIGHTS="$TRAIN_ROOT/fusion.json"
 FUSION_REPORT="$TRAIN_ROOT/train_report.json"
 GPU_CSV="${PHASE2A_GPUS:-1,2,3,4,5,6,7}"
 TRAIN_STRIDE="${PHASE2A_TRAIN_STRIDE:-1}"
+TRAIN_EPOCHS="${PHASE2A_EPOCHS:-24}"
 
 IFS=',' read -r -a GPUS <<<"$GPU_CSV"
 if ((${#GPUS[@]} == 0)); then
@@ -34,6 +37,14 @@ done
 if [[ ! "$TRAIN_STRIDE" =~ ^[1-9][0-9]*$ ]]; then
   echo "PHASE2A_TRAIN_STRIDE must be a positive integer: $TRAIN_STRIDE" >&2
   exit 64
+fi
+if [[ ! "$TRAIN_EPOCHS" =~ ^[1-9][0-9]*$ ]]; then
+  echo "PHASE2A_EPOCHS must be a positive integer: $TRAIN_EPOCHS" >&2
+  exit 64
+fi
+if [[ -n "$EXTRA_TRAIN_FUSION" && ! -s "$EXTRA_TRAIN_FUSION" ]]; then
+  echo "PHASE2A_EXTRA_TRAIN_FUSION does not exist: $EXTRA_TRAIN_FUSION" >&2
+  exit 66
 fi
 
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
@@ -159,18 +170,25 @@ echo "[$(date -Is)] generating current-policy train and val records"
 generate_rollouts train "$TRAIN_STRIDE" "$ROLLOUT_ROOT/train" "$BASELINE_FUSION"
 generate_rollouts val 1 "$ROLLOUT_ROOT/val" "$BASELINE_FUSION"
 aggregate_runs "$ROLLOUT_ROOT/val" val "$ROLLOUT_ROOT/val/aggregate.json"
+TRAIN_RECORDS=("$ROLLOUT_ROOT/train/records")
+if [[ -n "$EXTRA_TRAIN_FUSION" ]]; then
+  echo "[$(date -Is)] generating on-policy train records for dataset aggregation"
+  generate_rollouts \
+    train "$TRAIN_STRIDE" "$EXTRA_TRAIN_ROOT/train" "$EXTRA_TRAIN_FUSION"
+  TRAIN_RECORDS+=("$EXTRA_TRAIN_ROOT/train/records")
+fi
 
 echo "[$(date -Is)] training temporal hard-negative fusion"
 CUDA_VISIBLE_DEVICES="${GPUS[0]}" "$PYTHON_BIN" \
   -m omtrackvla.training.train_temporal_candidate_fusion \
-  --records "$ROLLOUT_ROOT/train/records" \
+  --records "${TRAIN_RECORDS[@]}" \
   --validation-records "$ROLLOUT_ROOT/val/records" \
   --initial-weights "$BASELINE_FUSION" \
   --train-new-features-only \
   --operating-point-source inherited \
   --output "$FUSION_WEIGHTS" \
   --report "$FUSION_REPORT" \
-  --epochs 24 \
+  --epochs "$TRAIN_EPOCHS" \
   --hidden-dim 32 \
   --learning-rate 1e-4 \
   --weight-decay 1e-5 \
