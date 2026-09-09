@@ -1,4 +1,4 @@
-"""Render a fixed Phase 1 viz_val video with PRED/GT provenance labels."""
+"""Render fixed OmTrackVLA validation visualizations."""
 from __future__ import annotations
 
 import argparse
@@ -23,6 +23,9 @@ def _arguments() -> argparse.Namespace:
     parser.add_argument("--max-units-per-dataset", type=int)
     parser.add_argument("--identity-frames", type=int)
     parser.add_argument("--geometry-frames", type=int)
+    parser.add_argument("--frames-per-mode", type=int)
+    parser.add_argument("--perception-cache", type=Path)
+    parser.add_argument("--allow-partial-cache", action="store_true")
     return parser.parse_args()
 
 
@@ -131,6 +134,10 @@ def _geometry_frames(model, dataset, count: int, device: torch.device):
 
 def main() -> int:
     args = _arguments()
+    if args.phase == 2:
+        from omtrackvla.evaluation.phase2_render import run
+
+        return run(args, distributed_device)
     if args.phase != 1 or args.split != "viz_val":
         raise ValueError("Phase 1 renderer requires --phase 1 --split viz_val")
     world_size, rank, device = distributed_device()

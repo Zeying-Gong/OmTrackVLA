@@ -1,4 +1,4 @@
-"""Enforce frozen Phase 1 thresholds against metrics.json."""
+"""Enforce frozen per-phase thresholds against metrics.json."""
 from __future__ import annotations
 
 import argparse
@@ -48,8 +48,9 @@ def evaluate_thresholds(metrics: dict[str, object], config: dict[str, object]) -
         passed = passed and ok
     return {
         "schema_version": 1,
-        "phase": 1,
+        "phase": int(config.get("phase", metrics.get("phase", 1))),
         "gate_id": config["gate_id"],
+        "gate_scope": config.get("gate_scope", "phase_exit"),
         "passed": passed,
         "checks": checks,
     }
@@ -57,12 +58,14 @@ def evaluate_thresholds(metrics: dict[str, object], config: dict[str, object]) -
 
 def main() -> int:
     args = _arguments()
-    if args.phase != 1:
-        raise ValueError("this gate currently implements Phase 1 only")
+    if args.phase not in (1, 2):
+        raise ValueError("this gate currently implements Phase 1 and Phase 2 only")
     with args.config.open("r", encoding="utf-8") as handle:
         config = yaml.safe_load(handle)
     with args.metrics.open("r", encoding="utf-8") as handle:
         metrics = json.load(handle)
+    if config.get("phase") != args.phase or metrics.get("phase") != args.phase:
+        raise ValueError("gate, metrics, and --phase do not match")
     result = evaluate_thresholds(metrics, config)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")

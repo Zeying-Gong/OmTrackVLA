@@ -1,4 +1,4 @@
-"""Run B1-ID, B1-GEO, and B1-PROBE for a Phase 1 checkpoint."""
+"""Evaluate OmTrackVLA phase checkpoints."""
 from __future__ import annotations
 
 import argparse
@@ -38,6 +38,9 @@ def _arguments() -> argparse.Namespace:
     parser.add_argument("--geometry-samples", type=int)
     parser.add_argument("--probe-train-samples", type=int)
     parser.add_argument("--probe-val-samples", type=int)
+    parser.add_argument("--samples-per-mode", type=int)
+    parser.add_argument("--perception-cache", type=Path)
+    parser.add_argument("--allow-partial-cache", action="store_true")
     return parser.parse_args()
 
 
@@ -191,8 +194,12 @@ def _probe_metrics(model, benchmark_path: Path, benchmark, device, maximum_units
 
 def main() -> int:
     args = _arguments()
+    if args.phase == 2:
+        from omtrackvla.evaluation.phase2_evaluate import run
+
+        return run(args, distributed_device)
     if args.phase != 1:
-        raise ValueError("this evaluator currently implements Phase 1 only")
+        raise ValueError("this evaluator currently implements Phase 1 and Phase 2 only")
     world_size, rank, device = distributed_device()
     model, checkpoint = load_model(args.checkpoint, device)
     benchmark_header = load_yaml(args.config)

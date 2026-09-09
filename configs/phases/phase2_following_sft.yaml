@@ -1,0 +1,33 @@
+schema_version: 1
+phase: 2
+name: frozen_identity_frontend_waypoint_sft
+seed: 20260909
+
+data:
+  manifest: configs/manifests/phase1_v1.json
+  root: /data/nfs/share/OmTrackVLA/data/sage3d_extracted
+  sidecar_root: /data/nfs/share/wam_tracking/OmTrackVLA/results/sage3d_bbox_sidecar_v1
+  policy_admission: /data/nfs/share/wam_tracking/OmTrackVLA/results/sage3d_policy_v1_audit/admission.json
+  perception_caches:
+    train: outputs/perception/sage3d_phase2_frozen_frontend_v1/train
+    val: outputs/perception/sage3d_phase2_frozen_frontend_v1/val
+    viz_val: outputs/perception/sage3d_phase2_frozen_frontend_v1/viz_val
+  image_size: 224
+  history_size: 8
+  max_units_per_dataset: null
+
+model:
+  hidden_dim: 256
+  mode_dim: 32
+  horizon: 8
+
+training:
+  epochs: 8
+  samples_per_epoch: 262144
+  batch_size_per_device: 256
+  num_workers: 8
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  gradient_clip_norm: 1.0
+  bfloat16: true
+  log_every_steps: 50

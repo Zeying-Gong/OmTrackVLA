@@ -1,7 +1,10 @@
 """Canonical SAGE3D person-follow policy geometry and timing helpers."""
 from __future__ import annotations
 
+import hashlib
+import json
 import math
+from pathlib import Path
 from typing import Mapping, Sequence
 
 import numpy as np
@@ -14,6 +17,33 @@ SIMULATION_SPEC_ID = "sage3d-pose-derived-noiseless-uwb-v1"
 CONTROL_HZ = 30.0
 WAYPOINT_HORIZON = 8
 WAYPOINT_STRIDE_STEPS = 3
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def load_policy_admission(path: Path, source_root: Path) -> dict[str, object]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict) or value.get("status") != "passed":
+        raise ValueError("SAGE3D policy admission has not passed")
+    expected = {
+        "policy_spec_id": POLICY_SPEC_ID,
+        "transform_spec_id": TRANSFORM_SPEC_ID,
+        "clock_spec_id": CLOCK_SPEC_ID,
+    }
+    for key, expected_value in expected.items():
+        if value.get(key) != expected_value:
+            raise ValueError(f"SAGE3D policy admission {key} mismatch")
+    if value.get("selection", {}).get("test_locked_used") is not False:
+        raise ValueError("SAGE3D policy admission must not consume test_locked")
+    if value.get("source_index_sha256") != sha256_file(source_root / "index.json"):
+        raise ValueError("SAGE3D policy admission source index mismatch")
+    return value
 
 
 def _planar_pose(step: Mapping[str, object], key: str) -> np.ndarray:

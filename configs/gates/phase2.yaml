@@ -1,0 +1,31 @@
+schema_version: 1
+phase: 2
+gate_id: omtrackvla-phase2-open-loop-development-gate-v1
+gate_scope: open_loop_development
+thresholds:
+  benchmarks.B2-OPEN.sample_count:
+    min: 3000
+  benchmarks.B2-OPEN.finite_prediction_coverage:
+    min: 0.999
+  benchmarks.B2-OPEN.waypoint_ade_m:
+    max: 0.75
+  benchmarks.B2-OPEN.waypoint_fde_m:
+    max: 1.50
+  benchmarks.B2-OPEN.modes.visual_uwb.sample_count:
+    min: 1000
+  benchmarks.B2-OPEN.modes.visual_uwb.waypoint_ade_m:
+    max: 0.60
+  benchmarks.B2-OPEN.modes.visual_only.sample_count:
+    min: 1000
+  benchmarks.B2-OPEN.modes.visual_only.waypoint_ade_m:
+    max: 0.90
+  benchmarks.B2-OPEN.modes.uwb_only.sample_count:
+    min: 1000
+  benchmarks.B2-OPEN.modes.uwb_only.waypoint_ade_m:
+    max: 0.60
+  benchmarks.B2-SAFETY.sample_count:
+    min: 1000
+  benchmarks.B2-SAFETY.exact_stop_rate:
+    min: 1.0
+  benchmarks.B2-SAFETY.finite_prediction_coverage:
+    min: 1.0

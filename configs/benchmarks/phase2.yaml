@@ -1,0 +1,10 @@
+schema_version: 1
+phase: 2
+benchmark_id: omtrackvla-phase2-open-loop-v1
+train_config: configs/phases/phase2_following_sft.yaml
+split: val
+seed: 20260909
+batch_size_per_device: 512
+samples_per_mode: 4096
+render_frames_per_mode: 16
+render_fps: 4

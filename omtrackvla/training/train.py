@@ -1,4 +1,4 @@
-"""Distributed Phase 1 trainer for identity memory and ego dynamics."""
+"""Distributed trainers for OmTrackVLA phases."""
 from __future__ import annotations
 
 import argparse
@@ -31,6 +31,9 @@ def _arguments() -> argparse.Namespace:
     parser.add_argument("--max-steps", type=int)
     parser.add_argument("--max-units-per-dataset", type=int)
     parser.add_argument("--num-workers", type=int)
+    parser.add_argument("--batch-size-per-device", type=int)
+    parser.add_argument("--perception-cache", type=Path)
+    parser.add_argument("--allow-partial-cache", action="store_true")
     return parser.parse_args()
 
 
@@ -47,7 +50,7 @@ def _distributed() -> tuple[int, int, int, torch.device]:
     rank = int(os.environ.get("RANK", "0"))
     local_rank = int(os.environ.get("LOCAL_RANK", "0"))
     if not torch.cuda.is_available():
-        raise RuntimeError("Phase 1 training requires CUDA")
+        raise RuntimeError("OmTrackVLA training requires CUDA")
     torch.cuda.set_device(local_rank)
     if world_size > 1 and not dist.is_initialized():
         dist.init_process_group(backend="nccl")
@@ -97,8 +100,14 @@ def _save_checkpoint(path: Path, payload: dict[str, object]) -> None:
 
 def main() -> int:
     args = _arguments()
+    if args.phase == 2:
+        from omtrackvla.training.phase2 import run
+
+        if not args.run_manifest.is_file():
+            raise FileNotFoundError(f"run manifest not found: {args.run_manifest}")
+        return run(args, _distributed)
     if args.phase != 1:
-        raise ValueError("this entry point currently implements Phase 1 only")
+        raise ValueError("this entry point currently implements Phase 1 and Phase 2 only")
     if not args.run_manifest.is_file():
         raise FileNotFoundError(f"run manifest not found: {args.run_manifest}")
     config = _load_config(args.config)
@@ -152,7 +161,7 @@ def main() -> int:
     workers = int(args.num_workers if args.num_workers is not None else training["num_workers"])
     loader = DataLoader(
         dataset,
-        batch_size=int(training["batch_size_per_device"]),
+        batch_size=int(args.batch_size_per_device or training["batch_size_per_device"]),
         sampler=sampler,
         num_workers=workers,
         pin_memory=True,
