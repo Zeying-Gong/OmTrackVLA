@@ -13,7 +13,7 @@
 - 主要观测：后续 egocentric RGB 历史。
 - 输出：机器人未来的局部 waypoint trajectory。
 - 明确不需要：自然语言描述、VQA、语义 CoT。
-- 当前状态：WP-0数据审计、WP-1统一数据契约和WP-2 Phase 1闭环均已完成。正式8×H100 `phase1_baseline_v3_5103f88`通过B1-ID/B1-GEO/B1-PROBE全部12项gate；同一TpT `viz_val`严格协议下，Phase 1身份头E2E仅2.59%，冻结Faster R-CNN/OSNet/双运行点融合为46.30%，故WP-3先执行Phase 2A。v1排序退化、v2阈值退化均在val拒绝。v3只训练新增时序列且继承旧运行点，在val把E2E从42.80%提高到51.13%，但固定viz E2E从46.30%降至44.88%、wrong-target从60增至101，正式gate拒绝。审计发现v3 train rollout为stride 4，而val/viz为stride 1，新增时序特征存在时钟分布偏移；v4将以stride 1重新生成train记录，模型和阈值策略不变。始终未访问`test_locked`，旧Phase 2 cache继续作废。
+- 当前状态：WP-0数据审计、WP-1统一数据契约和WP-2 Phase 1闭环均已完成。同一TpT `viz_val`严格协议下，Phase 1身份头E2E仅2.59%，冻结Faster R-CNN/OSNet/双运行点融合为46.30%，故WP-3先执行Phase 2A。v1排序退化、v2阈值退化均在val拒绝；v3在val提升但固定viz的E2E/wrong-target失败。v4以部署一致的stride 1训练，离线val top候选从6,266提高到6,374，但在线val E2E从42.80%降至40.06%，证明逐帧离线排序不能覆盖策略变化后访问的新状态。v5改为一次on-policy dataset aggregation：用v4策略在train重新rollout，与冻结基线train状态合并训练；仍冻结detector/OSNet/legacy fusion，只更新新增时序列。始终未访问`test_locked`，旧Phase 2 cache继续作废。
 - 集群入口：`scripts/run_pipeline_8xh100.sh`现已接通Phase 1和Phase 2的同一套train/eval/render/gate入口；Phase 2的8×H100 preflight已通过，冻结感知全量预计算由`scripts/run_sage3d_perception_cache_8gpu.sh`先行完成。Phase 3的3个配置和实现仍缺，因此`--phase all`仍会明确失败。OmTrackVLA使用`wam`分支并通过GitHub `origin/wam`协作。
 - 当前方案：采用 3 个正式阶段——Phase 1身份与几何World-Action预训练、Phase 2目标人物跟随监督训练、Phase 3噪声与闭环恢复训练。
 - World-Action 路线：优先评估 DA3 等视觉几何基础模型。利用其从视频恢复的相机轨迹作为显式 pseudo ego-motion，而不是再学习 WALA 式 latent action；借鉴 FutureNav 的 forward/inverse dynamics 与单步 future-state prediction。普通无任务 ego 视频只训练几何与状态转移辅助能力，不直接提供 policy trajectory 监督。
@@ -132,6 +132,7 @@ DA3的`test_locked`已唯一运行一次且未生成/查看图片，不得重跑
 | DEC-044 | 2026-09-09 | Phase 2A时序融合适配必须从既有双运行点fusion精确展开初始化，新特征初始权重为零；只训练当前冻结前端产生的on-policy候选。epoch 0也参与`val`候选排序选模，故离线排序若无改善则保留原模型，不允许随机新头覆盖强基线 | `phase2a_temporal_fusion_v1`虽降低误跟，但从随机头训练且混入缺少新增时序字段的旧记录，`val`候选排序precision仅49.35%，最终E2E从42.80%降到24.99% | 已确认；阈值仍只由train calibration拟合，`val`只选epoch，`viz_val`只在val safeguard通过后运行 |
 | DEC-045 | 2026-09-09 | Phase 2A v3冻结旧fusion的legacy列、hidden bias和输出层，只允许新增时序列产生梯度；运行点继承旧模型已由train-only冻结的tracking 0.92/0.02与reacquisition 0.95/0.06，不在新on-policy rollout上做反事实阈值重拟合 | v2正确选择epoch 0、离线排序与旧fusion一致，但固定策略记录上的反事实校准选出tracking margin 0.30并把在线val E2E从42.80%降至13.47%，证明权重防退化不足以约束阈值防退化 | 已确认；val仍只用于模型版本准入，未搜索阈值；若新增列无排序改善则epoch 0保持全系统等价并应在val以“不提升”被拒绝 |
 | DEC-046 | 2026-09-09 | 所有包含时序状态特征的Phase 2A正式train rollout必须使用与val/viz/部署相同的frame stride 1；stride 4记录保留为失败消融，不得与正式时序适配混用 | v3在stride 4 train上获得val提升但viz退化；`missed_steps`、`confirmed_track_steps`和最近相似度窗口均按调用次数演化，stride变化会改变其物理时间语义 | 已确认；v4重新生成独立on-policy root，禁止复用v1～v3的stride 4 train记录，仍不得访问`test_locked` |
+| DEC-047 | 2026-09-09 | Phase 2A离线候选排序改善但在线val退化时，下一迭代必须做train-only on-policy dataset aggregation：用失败候选策略重新rollout train并与冻结基线状态合并；不得通过反复查看viz或放宽gate解决 | v4的val离线top候选增加108帧，但在线成功帧减少300，说明候选动作改变tracker状态后出现covariate shift，固定基线记录上的监督无法覆盖 | 已确认；v5只增加一次v4-policy train rollout，模型选择仍用val，viz只在val通过后运行，`test_locked`禁止访问 |
 
 ## 2. 当前提案与待确认决策
 
@@ -416,6 +417,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | EXP-015 | 2026-09-09 | Phase 2A首个时序hard-negative融合适配 | `2506da0`；`phase2a_temporal_fusion_v1` | TpT train 37序列stride 4；val 5序列全12,457帧；冻结Faster R-CNN/OSNet；48 epoch；train-only calibration；禁止`viz_val/test_locked`直到val通过 | 旧no-fusion与新on-policy train记录；随机初始化19维融合头；123,202 hard pairs | 20260909 | val基线/候选：E2E 42.80%→24.99%，precision 72.60%→98.06%，absent FPR 17.31%→0.72%，reappearance 30.77%→14.79%，wrong-target 1,377→26；候选排序precision 49.35%，选中epoch 2 | val safety的precision/FPR通过，E2E improvement失败；流水线退出码非零，未生成`PHASE2A_COMPLETE`，未运行`viz_val` | 失败保留；模型过度拒绝且排序弱于基线，按DEC-044改为基线精确初始化、on-policy-only及含epoch 0的排序选模 |
 | EXP-016 | 2026-09-09 | Phase 2A基线精确初始化与epoch 0防退化验证 | `ae9c7a8`；`phase2a_temporal_fusion_v2` | 复用EXP-015 on-policy train/val记录；24 epoch；hidden 32；LR 1e-4；val候选F0.5选模；禁止`viz_val/test_locked`直到val通过 | 旧双运行点fusion精确展开到19维；新增列初始为零；on-policy-only | 20260909 | epoch 0以val F0.5 53.46%、TP 6,266胜过所有训练epoch并被正确选回；但train calibration重拟合为tracking 0.97/margin 0.30、reacquisition 0.98/0.06；在线val E2E 42.80%→13.47%，precision 72.60%→94.18%，absent FPR 17.31%→0.92%，reappearance 30.77%→14.79% | E2E safeguard失败并退出；未生成`PHASE2A_COMPLETE`，未运行`viz_val` | 失败保留；确认权重防退化有效、反事实阈值校准失效；按DEC-045继承旧运行点并只训练新增列 |
 | EXP-017 | 2026-09-09 | Phase 2A仅新增时序列适配并继承旧运行点 | `a48026f`；`phase2a_temporal_fusion_v3` | 复用stride 4 train记录；24 epoch；仅7个新增列更新；val F0.5选模；旧双运行点不变 | 旧fusion精确初始化；on-policy-only；epoch 0全系统防退化 | 20260909 | val基线/候选：E2E 42.80%→51.13%、precision 72.60%→80.61%、FPR 17.31%→12.07%、reappearance 30.77%→35.50%、wrong 1,377→972；选中epoch 2。viz基线/候选：E2E 46.30%→44.88%、precision 90.68%→89.31%、FPR 4.16%→3.48%、reappearance 33.33%→34.48%、wrong 60→101 | val safeguard通过后首次运行固定viz；正式gate的precision/FPR/reappearance及计数通过，E2E提升与wrong-target失败；未生成`PHASE2A_COMPLETE` | 失败保留；不调viz阈值，按DEC-046修复train/部署stride 4→1分布偏移后重训 |
+| EXP-018 | 2026-09-09 | Phase 2A同节拍stride 1时序适配 | `3075db4`；`phase2a_temporal_fusion_v4` | 37 train序列stride 1；5 val序列12,457帧；24 epoch；仅新增列更新；继承旧运行点 | 1,333,572个model-train候选；246,505 hard pairs；旧fusion精确初始化 | 20260909 | val离线top候选TP 6,266→6,374，选中epoch 8；在线val基线/候选：E2E 42.80%→40.06%、precision 72.60%→77.84%、FPR 17.31%→9.05%、reappearance 30.77%→24.26%、wrong 1,377→998 | E2E safeguard失败；未运行viz、未生成`PHASE2A_COMPLETE` | 失败保留；stride对齐必要但不足，离线排序与闭环状态分布不一致，按DEC-047做一次聚合 |
 
 建议每个实验至少记录：
 
@@ -482,6 +484,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | CHG-026 | 2026-09-09 | Phase 2A训练器、独立gate、时序feature contract及7卡流水线 | 冻结detector/OSNet；加入hard-negative排序、sequence-balanced BCE、train-only双阈值、val选模及固定viz gate；补充跨rollout帧隔离、空hard-pair与precision fail-closed | 建立感知适配与waypoint训练之间的可执行边界，并防止数据泄漏或弱模型静默进入2B | 算力机198项unittest；合成权重写入/重载smoke；v1正式val按预期拒绝 | DEC-043～044；EXP-015；NEXT-023 |
 | CHG-027 | 2026-09-09 | Phase 2A基线保持式初始化、val排序选模、新列梯度掩码及运行点来源配置 | 将legacy融合函数精确映射到新归一化空间；epoch 0参与选模；支持只更新新时序列及继承既有双运行点 | v1排序退化、v2阈值退化分别暴露两种独立回归路径，需同时约束 | 算力机199项测试通过v2初始化；新增测试验证legacy logits等价及legacy参数训练不变 | DEC-044～045；EXP-016；NEXT-023 |
 | CHG-028 | 2026-09-09 | Phase 2A 7卡流水线的正式train时钟与rollout隔离 | train stride由4改为1并校验正整数；默认每个run使用独立baseline rollout root，防止误复用旧stride记录 | 新增时序状态以tracker调用步演化，训练与评测stride不一致会形成隐含时钟偏移 | shell语法、全仓测试及新v4独立输出root检查 | DEC-046；EXP-017；NEXT-023 |
+| CHG-029 | 2026-09-09 | Phase 2A train-only on-policy dataset aggregation流水线 | 支持以候选fusion额外生成同stride train rollout，将多个独立record root合并训练；显式校验权重路径与epoch参数 | v4证明固定基线状态上的离线排序改善不能保证在线跟踪改善 | shell语法、跨root帧键隔离测试、全仓测试；v5输出root独立 | DEC-047；EXP-018；NEXT-023 |
 
 ## 12. 下一步计划
 
@@ -507,7 +510,7 @@ WP-2已由正式Phase 1 v3 gate关闭。WP-3当前先执行Phase 2A感知适配�
 | P0 | NEXT-020 | 将`PROGRESS.md`纳入仓库并建立协作者顺序工作包 | 当前项目事实与数据初盘 | GitHub可见的单一协作入口 | 已完成 |
 | P0 | NEXT-021 | 修复并重新准入SAGE3D bbox/visible身份监督 | EXP-003、相机外参、RGB对齐depth、模块化person detector/ReID | 不改源数据的版本化修复侧车、投影/遮挡测试、独立审计报告和Phase 1 admission gate | 已完成；7,105/7,105 episode、2,131,500步、0失败，完整性与冻结384帧质量gate通过；Phase 1仅通过准入侧车重新启用SAGE3D，源bbox/visible保持阻断 |
 | P0 | NEXT-022 | 生成Phase 2B全量冻结感知cache并运行正式open-loop waypoint训练 | DEC-042～043、EXP-013～014、NEXT-023、8×H100 | 完整train/val/viz cache、正式checkpoint/metrics/report/PNG+MP4和open-loop gate | 阻塞于NEXT-023；旧fusion v3的`v1` cache作废，正式任务不得消费`test_locked` |
-| P0 | NEXT-023 | 训练并准入Phase 2A目标身份时序融合前端 | DEC-039～040、DEC-043～046、EXP-009～011/014～017 | 冻结detector/OSNet的可复现训练配置、checkpoint、train/val/viz指标、失败案例和准入JSON | 进行中；v1/v2在val拒绝，v3在viz因E2E/wrong-target拒绝；v4改用与部署一致的stride 1 train rollout |
+| P0 | NEXT-023 | 训练并准入Phase 2A目标身份时序融合前端 | DEC-039～040、DEC-043～047、EXP-009～011/014～018 | 冻结detector/OSNet的可复现训练配置、checkpoint、train/val/viz指标、失败案例和准入JSON | 进行中；v4同stride仍因在线val退化拒绝；v5用v4-policy train状态做一次dataset aggregation，仍只更新新增列 |
 | P1 | NEXT-005 | 收集真实UWB误差、偏置、漂移、延迟、丢包和置信度校准统计 | 定位模块日志 | 噪声模型报告 | 待开始 |
 | P1 | NEXT-006 | 定义 Phase 3 噪声矩阵和难度课程 | NEXT-005 | 扰动配置规范 | 待开始 |
 | P1 | NEXT-007 | 验证仿真是否支持任意访问状态的 expert relabel | 仿真环境 | DAgger 可行性结论 | 待开始 |
@@ -544,4 +547,5 @@ WP-2已由正式Phase 1 v3 gate关闭。WP-3当前先执行Phase 2A感知适配�
 | Phase 2A首轮失败迭代 | `EXP-015` | H100 `outputs/training/phase2a_temporal_fusion_v1/`及`outputs/evaluation/phase2a_temporal_fusion_v1_val/aggregate.json` | val误跟大降但E2E/重获退化，已fail closed；未运行viz、未进入2B |
 | Phase 2A权重防退化/阈值失败迭代 | `EXP-016` | H100 `outputs/training/phase2a_temporal_fusion_v2/`及`outputs/evaluation/phase2a_temporal_fusion_v2_val/aggregate.json` | epoch 0权重正确保留但阈值重拟合过严，val再次fail closed；未运行viz、未进入2B |
 | Phase 2A新增列/固定运行点失败迭代 | `EXP-017` | H100 `outputs/training/phase2a_temporal_fusion_v3/`、`outputs/evaluation/phase2a_temporal_fusion_v3_{val,viz}/` | val显著提升但viz E2E与wrong-target gate失败；定位为train stride 4与部署stride 1时钟偏移候选原因 |
-| 项目进展记录 | `v24 (2026-09-09)` | 仓库根目录`PROGRESS.md` | 本文件；补记v3完整val/viz量化并将正式时序train stride冻结为1；closed-loop仍明确阻断 |
+| Phase 2A同stride离线/在线偏移迭代 | `EXP-018` | H100 `outputs/training/phase2a_temporal_fusion_v4/`、`outputs/evaluation/phase2a_temporal_fusion_v4_{baseline_rollouts,val}/` | 离线排序改善但在线val退化，触发train-only dataset aggregation；未运行viz、未进入2B |
+| 项目进展记录 | `v25 (2026-09-09)` | 仓库根目录`PROGRESS.md` | 本文件；补记v4并将v5定义为一次train-only on-policy状态聚合；closed-loop仍明确阻断 |
