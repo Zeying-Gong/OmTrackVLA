@@ -10,14 +10,15 @@ DATA_ROOT="/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2"
 DETECTOR_WEIGHTS="models/torchvision/fasterrcnn_resnet50_fpn_v2_coco-dd69338a.pth"
 BASELINE_FUSION="configs/models/candidate_fusion_resnet50_tpt_train37_dualop_v3.json"
 BASELINE_VIZ_METRICS="outputs/evaluation/pretrained_identity_v4_resnet50_fusion_dualop_viz/comparison_metrics.json"
-RUN_ID="${PHASE2A_RUN_ID:-phase2a_temporal_fusion_v3}"
+RUN_ID="${PHASE2A_RUN_ID:-phase2a_temporal_fusion_v4}"
 TRAIN_ROOT="outputs/training/$RUN_ID"
-ROLLOUT_ROOT="${PHASE2A_BASELINE_ROLLOUT_ROOT:-outputs/evaluation/phase2a_temporal_fusion_v1_baseline_rollouts}"
+ROLLOUT_ROOT="${PHASE2A_BASELINE_ROLLOUT_ROOT:-outputs/evaluation/${RUN_ID}_baseline_rollouts}"
 VAL_ROOT="outputs/evaluation/${RUN_ID}_val"
 VIZ_ROOT="outputs/evaluation/${RUN_ID}_viz"
 FUSION_WEIGHTS="$TRAIN_ROOT/fusion.json"
 FUSION_REPORT="$TRAIN_ROOT/train_report.json"
 GPU_CSV="${PHASE2A_GPUS:-1,2,3,4,5,6,7}"
+TRAIN_STRIDE="${PHASE2A_TRAIN_STRIDE:-1}"
 
 IFS=',' read -r -a GPUS <<<"$GPU_CSV"
 if ((${#GPUS[@]} == 0)); then
@@ -30,6 +31,10 @@ for gpu in "${GPUS[@]}"; do
     exit 64
   fi
 done
+if [[ ! "$TRAIN_STRIDE" =~ ^[1-9][0-9]*$ ]]; then
+  echo "PHASE2A_TRAIN_STRIDE must be a positive integer: $TRAIN_STRIDE" >&2
+  exit 64
+fi
 
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
 export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
@@ -151,7 +156,7 @@ PY
 }
 
 echo "[$(date -Is)] generating current-policy train and val records"
-generate_rollouts train 4 "$ROLLOUT_ROOT/train" "$BASELINE_FUSION"
+generate_rollouts train "$TRAIN_STRIDE" "$ROLLOUT_ROOT/train" "$BASELINE_FUSION"
 generate_rollouts val 1 "$ROLLOUT_ROOT/val" "$BASELINE_FUSION"
 aggregate_runs "$ROLLOUT_ROOT/val" val "$ROLLOUT_ROOT/val/aggregate.json"
 
