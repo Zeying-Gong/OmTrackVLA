@@ -21,6 +21,7 @@ from omtrackvla.oracle_modular_follow import (
 from omtrackvla.oracle_modular_follow_v6 import OracleNavmeshFollowerV6
 from omtrackvla.rgb_person_perception import (
     RGBPersonPerception,
+    TargetAppearanceMemory,
     bbox_depth_to_relative,
     bbox_iou,
     color_histogram,
@@ -419,6 +420,70 @@ class OracleModularFollowTest(unittest.TestCase):
             ],
         )
         np.testing.assert_array_equal(selected[0], (40, 0, 80, 40))
+
+    def test_target_memory_retains_anchor_and_adds_novel_view(self):
+        memory = TargetAppearanceMemory(
+            np.array((1.0, 0.0), dtype=np.float32),
+            max_positive_embeddings=2,
+        )
+
+        self.assertTrue(memory.add_positive(np.array((0.0, 1.0), dtype=np.float32)))
+        scores = memory.scores(np.array((0.0, 1.0), dtype=np.float32))
+
+        np.testing.assert_array_equal(
+            memory.anchor_embedding, np.array((1.0, 0.0), dtype=np.float32)
+        )
+        self.assertAlmostEqual(scores["anchor"], 0.5)
+        self.assertGreater(scores["identity"], 0.8)
+
+    def test_target_memory_rejects_duplicate_and_caps_gallery(self):
+        memory = TargetAppearanceMemory(
+            np.array((1.0, 0.0, 0.0), dtype=np.float32),
+            max_positive_embeddings=2,
+        )
+
+        self.assertTrue(memory.add_positive(np.array((0.0, 1.0, 0.0), dtype=np.float32)))
+        self.assertFalse(memory.add_positive(np.array((0.0, 1.0, 0.0), dtype=np.float32)))
+        self.assertTrue(memory.add_positive(np.array((0.0, 0.0, 1.0), dtype=np.float32)))
+        self.assertTrue(memory.add_positive(np.array((0.0, -1.0, 0.0), dtype=np.float32)))
+        self.assertEqual(len(memory.positive_embeddings), 2)
+
+    def test_dynamic_memory_requires_high_confidence_match(self):
+        perception = RGBPersonPerception.__new__(RGBPersonPerception)
+        perception._goal_embedding = np.array((1.0, 0.0), dtype=np.float32)
+        perception._appearance_memory = TargetAppearanceMemory(perception._goal_embedding)
+        perception._track_embedding = perception._goal_embedding.copy()
+        perception._track_hist = None
+        perception._last_candidate_features = []
+        perception._confirmed_track_steps = 3
+        perception.last_identity_margin = 0.10
+
+        rejected = perception._update_appearance_memory(
+            np.array((0, 0, 10, 20), dtype=np.float32),
+            detector_score=0.50,
+            hist=None,
+            embedding=np.array((0.8, 0.6), dtype=np.float32),
+            association=0.90,
+            identity_similarity=0.90,
+            anchor_similarity=0.90,
+            previous_bbox=np.array((0, 0, 10, 20), dtype=np.float32),
+            missed_before_selection=0,
+        )
+        accepted = perception._update_appearance_memory(
+            np.array((0, 0, 10, 20), dtype=np.float32),
+            detector_score=0.95,
+            hist=None,
+            embedding=np.array((0.8, 0.6), dtype=np.float32),
+            association=0.90,
+            identity_similarity=0.90,
+            anchor_similarity=0.90,
+            previous_bbox=np.array((0, 0, 10, 20), dtype=np.float32),
+            missed_before_selection=0,
+        )
+
+        self.assertFalse(rejected)
+        self.assertTrue(accepted)
+        self.assertEqual(len(perception._appearance_memory.positive_embeddings), 1)
 
     def test_tracker_rejects_abrupt_large_occluder(self):
         image = np.zeros((100, 100, 3), dtype=np.uint8)
