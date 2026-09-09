@@ -9,11 +9,10 @@ MANIFEST="configs/manifests/phase1_v1.json"
 DATA_ROOT="/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2"
 DETECTOR_WEIGHTS="models/torchvision/fasterrcnn_resnet50_fpn_v2_coco-dd69338a.pth"
 BASELINE_FUSION="configs/models/candidate_fusion_resnet50_tpt_train37_dualop_v3.json"
-BASELINE_TRAIN_RECORDS="outputs/evaluation/candidate_fusion_resnet50_tpt_train37_v2_records/records"
 BASELINE_VIZ_METRICS="outputs/evaluation/pretrained_identity_v4_resnet50_fusion_dualop_viz/comparison_metrics.json"
-RUN_ID="phase2a_temporal_fusion_v1"
+RUN_ID="${PHASE2A_RUN_ID:-phase2a_temporal_fusion_v2}"
 TRAIN_ROOT="outputs/training/$RUN_ID"
-ROLLOUT_ROOT="outputs/evaluation/${RUN_ID}_baseline_rollouts"
+ROLLOUT_ROOT="${PHASE2A_BASELINE_ROLLOUT_ROOT:-outputs/evaluation/phase2a_temporal_fusion_v1_baseline_rollouts}"
 VAL_ROOT="outputs/evaluation/${RUN_ID}_val"
 VIZ_ROOT="outputs/evaluation/${RUN_ID}_viz"
 FUSION_WEIGHTS="$TRAIN_ROOT/fusion.json"
@@ -159,10 +158,16 @@ aggregate_runs "$ROLLOUT_ROOT/val" val "$ROLLOUT_ROOT/val/aggregate.json"
 echo "[$(date -Is)] training temporal hard-negative fusion"
 CUDA_VISIBLE_DEVICES="${GPUS[0]}" "$PYTHON_BIN" \
   -m omtrackvla.training.train_temporal_candidate_fusion \
-  --records "$BASELINE_TRAIN_RECORDS" "$ROLLOUT_ROOT/train/records" \
+  --records "$ROLLOUT_ROOT/train/records" \
   --validation-records "$ROLLOUT_ROOT/val/records" \
+  --initial-weights "$BASELINE_FUSION" \
   --output "$FUSION_WEIGHTS" \
   --report "$FUSION_REPORT" \
+  --epochs 24 \
+  --hidden-dim 32 \
+  --learning-rate 1e-4 \
+  --weight-decay 1e-5 \
+  --pairwise-weight 0.25 \
   --device cuda \
   >"$TRAIN_ROOT/train.log" 2>&1
 

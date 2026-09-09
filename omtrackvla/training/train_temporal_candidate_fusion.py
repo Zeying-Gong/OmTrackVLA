@@ -8,7 +8,7 @@ import json
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Sequence
+from typing import Mapping, Optional, Sequence
 
 import numpy as np
 import torch
@@ -44,6 +44,7 @@ def _arguments() -> argparse.Namespace:
     )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--initial-weights", type=Path)
     parser.add_argument("--epochs", type=int, default=48)
     parser.add_argument("--hidden-dim", type=int, default=96)
     parser.add_argument("--batch-size", type=int, default=4096)
@@ -137,6 +138,56 @@ class _FusionNetwork(nn.Module):
 
     def forward(self, value: torch.Tensor) -> torch.Tensor:
         return self.layer2(torch.relu(self.layer1(value))).squeeze(1)
+
+
+def _initialize_from_fusion(
+    model: _FusionNetwork,
+    payload: Mapping[str, object],
+    target_mean: np.ndarray,
+    target_scale: np.ndarray,
+) -> None:
+    """Expand a legacy fusion head while preserving its exact logits."""
+    source_names = tuple(str(value) for value in payload["feature_names"])
+    if not set(source_names).issubset(FEATURE_NAMES):
+        raise ValueError("initial fusion contains unsupported features")
+    source_mean = np.asarray(payload["feature_mean"], dtype=np.float32)
+    source_scale = np.asarray(payload["feature_scale"], dtype=np.float32)
+    source_weight1 = np.asarray(payload["weight1"], dtype=np.float32)
+    source_bias1 = np.asarray(payload["bias1"], dtype=np.float32)
+    source_weight2 = np.asarray(payload["weight2"], dtype=np.float32)
+    source_bias2 = float(payload["bias2"])
+    if source_mean.shape != (len(source_names),):
+        raise ValueError("initial fusion normalization shape mismatch")
+    if source_scale.shape != source_mean.shape or np.any(source_scale <= 1e-6):
+        raise ValueError("initial fusion scale is invalid")
+    if source_weight1.shape != (model.layer1.out_features, len(source_names)):
+        raise ValueError("initial fusion hidden dimension mismatch")
+    if source_bias1.shape != (model.layer1.out_features,):
+        raise ValueError("initial fusion first-layer bias mismatch")
+    if source_weight2.shape != (model.layer1.out_features,):
+        raise ValueError("initial fusion output-layer shape mismatch")
+
+    expanded_weight1 = np.zeros(
+        (model.layer1.out_features, len(FEATURE_NAMES)), dtype=np.float32
+    )
+    source_offsets = np.zeros(len(source_names), dtype=np.float32)
+    for source_index, name in enumerate(source_names):
+        target_index = FEATURE_NAMES.index(name)
+        expanded_weight1[:, target_index] = (
+            source_weight1[:, source_index]
+            * target_scale[target_index]
+            / source_scale[source_index]
+        )
+        source_offsets[source_index] = (
+            target_mean[target_index] - source_mean[source_index]
+        ) / source_scale[source_index]
+    expanded_bias1 = source_bias1 + source_weight1 @ source_offsets
+
+    with torch.no_grad():
+        model.layer1.weight.copy_(torch.from_numpy(expanded_weight1))
+        model.layer1.bias.copy_(torch.from_numpy(expanded_bias1))
+        model.layer2.weight.copy_(torch.from_numpy(source_weight2[None, :]))
+        model.layer2.bias.fill_(source_bias2)
 
 
 def _next_batch(iterator, loader):
@@ -316,6 +367,11 @@ def main() -> int:
     validation_lookup = {
         row_index: offset for offset, row_index in enumerate(validation_indices)
     }
+    validation_frame_rows = [
+        [validation_lookup[index] for index in indices]
+        for indices in validation_frames.values()
+        if indices
+    ]
 
     candidate_dataset = TensorDataset(
         torch.from_numpy(train_x),
@@ -346,6 +402,10 @@ def main() -> int:
     )
 
     model = _FusionNetwork(len(FEATURE_NAMES), args.hidden_dim).to(device)
+    initial_payload = None
+    if args.initial_weights is not None:
+        initial_payload = json.loads(args.initial_weights.read_text(encoding="utf-8"))
+        _initialize_from_fusion(model, initial_payload, mean, scale)
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=args.learning_rate,
@@ -355,7 +415,56 @@ def main() -> int:
     positive_weight = min(20.0, (len(train_y) - positives) / max(1.0, positives))
     best_loss = float("inf")
     best_state = None
+    best_key = None
+    best_epoch = None
     history = []
+
+    def consider_checkpoint(epoch: int, train_loss: Optional[float]) -> None:
+        nonlocal best_epoch, best_key, best_loss, best_state
+        validation_loss = _validation_loss(
+            model,
+            validation_x,
+            validation_y,
+            validation_w,
+            validation_pairs,
+            validation_lookup,
+            device,
+            args.batch_size,
+            positive_weight,
+            args.pairwise_weight,
+            args.pairwise_margin,
+        )
+        probabilities = _predict_probabilities(
+            model, validation_x, device, args.batch_size
+        )
+        ranking = _selection_metrics(
+            probabilities,
+            validation_y,
+            validation_frame_rows,
+            score_threshold=0.0,
+            margin_threshold=0.0,
+        )
+        history.append(
+            {
+                "epoch": epoch,
+                "train_loss": train_loss,
+                "validation_loss": validation_loss,
+                "validation_candidate_ranking": ranking,
+            }
+        )
+        key = (
+            float(ranking["f0_5"]),
+            int(ranking["true_positive"]),
+            -validation_loss,
+        )
+        if best_key is None or key > best_key:
+            best_key = key
+            best_loss = validation_loss
+            best_epoch = epoch
+            best_state = copy.deepcopy(model.state_dict())
+
+    if initial_payload is not None:
+        consider_checkpoint(epoch=0, train_loss=None)
     for epoch in range(args.epochs):
         model.train()
         candidate_iterator = iter(candidate_loader)
@@ -391,29 +500,10 @@ def main() -> int:
             optimizer.step()
             total_loss += float(loss.detach())
 
-        validation_loss = _validation_loss(
-            model,
-            validation_x,
-            validation_y,
-            validation_w,
-            validation_pairs,
-            validation_lookup,
-            device,
-            args.batch_size,
-            positive_weight,
-            args.pairwise_weight,
-            args.pairwise_margin,
+        consider_checkpoint(
+            epoch=epoch + 1,
+            train_loss=total_loss / max(1, steps),
         )
-        history.append(
-            {
-                "epoch": epoch + 1,
-                "train_loss": total_loss / max(1, steps),
-                "validation_loss": validation_loss,
-            }
-        )
-        if validation_loss < best_loss:
-            best_loss = validation_loss
-            best_state = copy.deepcopy(model.state_dict())
 
     if best_state is None:
         raise RuntimeError("candidate fusion did not produce a checkpoint")
@@ -468,11 +558,6 @@ def main() -> int:
     validation_probabilities = _predict_probabilities(
         model, validation_x, device, args.batch_size
     )
-    validation_frame_rows = [
-        [validation_lookup[index] for index in indices]
-        for indices in validation_frames.values()
-        if indices
-    ]
     validation_ranking = _selection_metrics(
         validation_probabilities,
         validation_y,
@@ -498,9 +583,18 @@ def main() -> int:
         "training": {
             "seed": args.seed,
             "epochs": args.epochs,
-            "selected_epoch": int(np.argmin([x["validation_loss"] for x in history])) + 1,
+            "selected_epoch": best_epoch,
+            "model_selection_metric": "val_candidate_ranking_f0_5",
             "model_selection_split": "val",
             "threshold_calibration_split": "train",
+            "initial_weights": (
+                {
+                    "path": str(args.initial_weights.resolve()),
+                    "sha256": _sha256(args.initial_weights.resolve()),
+                }
+                if args.initial_weights is not None
+                else None
+            ),
             "model_train_sequences": sorted(model_sequences),
             "calibration_sequences": sorted(calibration_sequences),
             "validation_sequences": sorted(validation_sequences),
@@ -521,6 +615,9 @@ def main() -> int:
         "schema_version": 3,
         "model_id": payload["model_id"],
         "best_validation_loss": best_loss,
+        "minimum_validation_loss": min(
+            float(item["validation_loss"]) for item in history
+        ),
         "validation_candidate_ranking": validation_ranking,
         "operating_points": operating_points,
         "history": history,

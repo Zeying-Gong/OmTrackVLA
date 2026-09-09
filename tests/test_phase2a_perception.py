@@ -4,13 +4,16 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import numpy as np
+import torch
 
 from omtrackvla.evaluation.phase2a_perception_gate import evaluate_gate
 from omtrackvla.evaluation.pretrained_identity import IdentitySequenceMetrics, _aggregate
-from omtrackvla.models.candidate_fusion import FEATURE_NAMES
+from omtrackvla.models.candidate_fusion import FEATURE_NAMES, LEGACY_FEATURE_NAMES
 from omtrackvla.training.train_temporal_candidate_fusion import (
+    _FusionNetwork,
     _calibrate_or_raise,
     _hard_pairs,
+    _initialize_from_fusion,
     _load_rows,
 )
 
@@ -101,6 +104,50 @@ class Phase2APerceptionTest(unittest.TestCase):
                 precision_floor=0.9,
                 beta=0.5,
             )
+
+    def test_legacy_initialization_preserves_logits_after_renormalization(self):
+        rng = np.random.default_rng(7)
+        hidden_dim = 3
+        source_mean = rng.normal(size=len(LEGACY_FEATURE_NAMES)).astype(np.float32)
+        source_scale = rng.uniform(0.5, 2.0, size=len(LEGACY_FEATURE_NAMES)).astype(
+            np.float32
+        )
+        source_weight1 = rng.normal(
+            size=(hidden_dim, len(LEGACY_FEATURE_NAMES))
+        ).astype(np.float32)
+        source_bias1 = rng.normal(size=hidden_dim).astype(np.float32)
+        source_weight2 = rng.normal(size=hidden_dim).astype(np.float32)
+        source_bias2 = 0.25
+        payload = {
+            "feature_names": list(LEGACY_FEATURE_NAMES),
+            "feature_mean": source_mean.tolist(),
+            "feature_scale": source_scale.tolist(),
+            "weight1": source_weight1.tolist(),
+            "bias1": source_bias1.tolist(),
+            "weight2": source_weight2.tolist(),
+            "bias2": source_bias2,
+        }
+        target_mean = rng.normal(size=len(FEATURE_NAMES)).astype(np.float32)
+        target_scale = rng.uniform(0.5, 2.0, size=len(FEATURE_NAMES)).astype(
+            np.float32
+        )
+        raw = rng.normal(size=len(FEATURE_NAMES)).astype(np.float32)
+        model = _FusionNetwork(len(FEATURE_NAMES), hidden_dim)
+
+        _initialize_from_fusion(model, payload, target_mean, target_scale)
+        with torch.inference_mode():
+            actual = float(
+                model(torch.from_numpy(((raw - target_mean) / target_scale)[None]))
+            )
+        legacy_raw = raw[[FEATURE_NAMES.index(name) for name in LEGACY_FEATURE_NAMES]]
+        hidden = np.maximum(
+            source_weight1 @ ((legacy_raw - source_mean) / source_scale)
+            + source_bias1,
+            0.0,
+        )
+        expected = float(source_weight2 @ hidden + source_bias2)
+
+        self.assertAlmostEqual(actual, expected, places=5)
 
     def test_gate_requires_improvement_and_safety(self):
         target = (0.0, 0.0, 10.0, 20.0)
