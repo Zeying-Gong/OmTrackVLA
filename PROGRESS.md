@@ -13,7 +13,7 @@
 - 主要观测：后续 egocentric RGB 历史。
 - 输出：机器人未来的局部 waypoint trajectory。
 - 明确不需要：自然语言描述、VQA、语义 CoT。
-- 当前状态：WP-0数据审计、WP-1统一数据契约和WP-2 Phase 1闭环均已完成。正式8×H100 `phase1_baseline_v3_5103f88`通过B1-ID/B1-GEO/B1-PROBE全部12项gate；但在同一TpT `viz_val`完整序列、同一5,928帧严格协议下，Phase 1身份头E2E IoU≥0.5仅2.59%，冻结Faster R-CNN/OSNet/双运行点融合为46.30%。因此WP-3改为先完成Phase 2A感知适配：冻结detector/OSNet基础权重，训练并准入目标身份时序融合，再以通过gate的新权重生成Phase 2B waypoint cache。旧`v1`全量cache绑定较弱融合权重，明确作废且不得启动正式waypoint训练。Habitat closed-loop benchmark仍缺，因此WP-3未关闭。DA3-SMALL规则保持冻结，禁止重跑或查看已消费的`test_locked`；TpT物理时钟与真实UWB仍未完成。
+- 当前状态：WP-0数据审计、WP-1统一数据契约和WP-2 Phase 1闭环均已完成。正式8×H100 `phase1_baseline_v3_5103f88`通过B1-ID/B1-GEO/B1-PROBE全部12项gate；但在同一TpT `viz_val`完整序列、同一5,928帧严格协议下，Phase 1身份头E2E IoU≥0.5仅2.59%，冻结Faster R-CNN/OSNet/双运行点融合为46.30%。因此WP-3先执行Phase 2A感知适配。首个从随机扩展头训练的`phase2a_temporal_fusion_v1`在`val`把precision提高至98.06%、absent FPR降至0.72%，但E2E降至24.99%，已按fail-closed规则停止且未访问`viz_val`。下一迭代从既有融合头精确初始化、只使用on-policy记录并以`val`候选排序选模（包含epoch 0防退化）。旧Phase 2 cache继续作废。Habitat closed-loop benchmark仍缺，因此WP-3未关闭；`test_locked`仍禁止访问。
 - 集群入口：`scripts/run_pipeline_8xh100.sh`现已接通Phase 1和Phase 2的同一套train/eval/render/gate入口；Phase 2的8×H100 preflight已通过，冻结感知全量预计算由`scripts/run_sage3d_perception_cache_8gpu.sh`先行完成。Phase 3的3个配置和实现仍缺，因此`--phase all`仍会明确失败。OmTrackVLA使用`wam`分支并通过GitHub `origin/wam`协作。
 - 当前方案：采用 3 个正式阶段——Phase 1身份与几何World-Action预训练、Phase 2目标人物跟随监督训练、Phase 3噪声与闭环恢复训练。
 - World-Action 路线：优先评估 DA3 等视觉几何基础模型。利用其从视频恢复的相机轨迹作为显式 pseudo ego-motion，而不是再学习 WALA 式 latent action；借鉴 FutureNav 的 forward/inverse dynamics 与单步 future-state prediction。普通无任务 ego 视频只训练几何与状态转移辅助能力，不直接提供 policy trajectory 监督。
@@ -129,6 +129,7 @@ DA3的`test_locked`已唯一运行一次且未生成/查看图片，不得重跑
 | DEC-041 | 2026-09-09 | SAGE3D Phase 2 expert waypoint不得直接读取源`waypoints_ego`，而须从robot pose按当前base帧重算控制步`0,+3,…,+21`；控制频率冻结为30 Hz，target pose只能生成显式无噪声`simulated_uwb` | 源extractor实际保存`+1,+4,…,+22`，不满足WP-1第0点为`[0,0]`；真实记录目标移动速度与30 Hz命令速度比例提供独立时钟证据 | 已确认；spec `sage3d-policy-se2-30hz-v1`，256个非locked episode的11项gate全通过，真实UWB继续阻断 |
 | DEC-042 | 2026-09-09 | Phase 2将冻结Faster R-CNN/OSNet/融合跟踪器作为端到端系统内的固定感知前端，离线cache其身份关联与depth相对位置，只训练waypoint decoder；cache必须绑定前端、sidecar、policy admission、source index和split manifest哈希，非视觉模式须同时屏蔽视觉XY/confidence/valid | 复用现成通用检测/ReID避免从零训练；严格哈希和partial标记防止旧cache、开发子集或标签漂移静默进入正式训练；smoke发现只屏蔽XY/valid仍会泄漏confidence | 已确认；safe-stop由模型接口硬归零，当前B2 gate仅为open-loop开发gate，closed-loop退出条件仍未完成 |
 | DEC-043 | 2026-09-09 | Phase 2 waypoint训练前新增2A感知适配gate：冻结Faster R-CNN与OSNet基础权重，训练候选融合/时序身份保持/重获；训练和阈值只用TpT `train`，模型选择用`val`，既有`viz_val`仅作确定性开发对照，禁止访问`test_locked`。2A须相对冻结基线E2E至少提升2个百分点，同时output precision≥88%、absent FPR≤5%、wrong-target帧≤60且reappearance≥33.33%，否则不得生成2B正式cache | 同口径5,928帧对照证明冻结前端显著优于Phase 1身份头，但现有冻结前端仍只有46.30% E2E、58.47%候选选择率和33.33%重获率，身份关联仍是进入waypoint前的主要瓶颈 | 已确认；旧`v1` cache绑定融合SHA-256 `03a78884...`，只保留作负基线/消融，不得用于正式2B |
+| DEC-044 | 2026-09-09 | Phase 2A时序融合适配必须从既有双运行点fusion精确展开初始化，新特征初始权重为零；只训练当前冻结前端产生的on-policy候选。epoch 0也参与`val`候选排序选模，故离线排序若无改善则保留原模型，不允许随机新头覆盖强基线 | `phase2a_temporal_fusion_v1`虽降低误跟，但从随机头训练且混入缺少新增时序字段的旧记录，`val`候选排序precision仅49.35%，最终E2E从42.80%降到24.99% | 已确认；阈值仍只由train calibration拟合，`val`只选epoch，`viz_val`只在val safeguard通过后运行 |
 
 ## 2. 当前提案与待确认决策
 
@@ -410,6 +411,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | EXP-013 | 2026-09-09 | 验证冻结身份前端cache到Phase 2四模式waypoint训练、评测、渲染和gate的最小闭环 | `7d42bae`后的WP-3工作树 | train/val/viz_val各1个非locked episode；record stride 12；单卡20 steps、batch 16；四模式各24个val样本和4张图 | SAGE3D只读源；冻结ResNet50/OSNet/双运行点融合；partial cache显式标记并仅以`--allow-partial-cache`开发加载 | 20260909 | 正常三模式ADE 0.22561m、FDE 0.38741m；visual+UWB/visual-only/UWB-only ADE分别0.23059/0.22692/0.21933m；safe-stop 24/24精确全零；冻结前端诊断IoU 0.78950 | 20-step checkpoint、metrics/report、16张PNG和16帧MP4均生成并完整解码；smoke gate仅5个样本数项失败，8个数值/安全项通过；2-shard真实cache/merge另以2 episode验证 | 最小open-loop闭环成立；修复非视觉模式confidence泄漏；数值不可作为正式效果，仍需全量cache/训练和closed-loop benchmark |
 
 | EXP-014 | 2026-09-09 | 在完全相同的TpT连续序列协议下比较Phase 1身份头与冻结detector/ReID/fusion，决定Phase 2前端 | `71547b9`；一次性只读评测 | `viz_val`序列0005/0032；5,928帧；首个可见框初始化；缺失输出按IoU 0计；未访问`test_locked` | Phase 1正式v3 checkpoint step 4,096；冻结ResNet50/OSNet/双运行点fusion v3 | 20260907/20260908 | Phase 1：E2E 2.59%、precision 9.33%、visible recall 19.19%、absent FPR 14.72%、reappearance 10.34%、wrong-target 470；冻结前端：E2E 46.30%、precision 90.68%、visible recall 48.62%、absent FPR 4.16%、reappearance 33.33%、wrong-target 60 | Phase 1同协议97个成功帧，冻结前端1,732个；评测帧及visible/absent计数严格一致为5,928/3,741/2,187；Phase 1结果写入`outputs/evaluation/phase1_v3_tpt_viz_same_protocol/metrics.json` | 冻结前端明确胜出，但46.30%仍不足以直接冻结进入waypoint；先执行DEC-043的2A训练与gate |
+| EXP-015 | 2026-09-09 | Phase 2A首个时序hard-negative融合适配 | `2506da0`；`phase2a_temporal_fusion_v1` | TpT train 37序列stride 4；val 5序列全12,457帧；冻结Faster R-CNN/OSNet；48 epoch；train-only calibration；禁止`viz_val/test_locked`直到val通过 | 旧no-fusion与新on-policy train记录；随机初始化19维融合头；123,202 hard pairs | 20260909 | val基线/候选：E2E 42.80%→24.99%，precision 72.60%→98.06%，absent FPR 17.31%→0.72%，reappearance 30.77%→14.79%，wrong-target 1,377→26；候选排序precision 49.35%，选中epoch 2 | val safety的precision/FPR通过，E2E improvement失败；流水线退出码非零，未生成`PHASE2A_COMPLETE`，未运行`viz_val` | 失败保留；模型过度拒绝且排序弱于基线，按DEC-044改为基线精确初始化、on-policy-only及含epoch 0的排序选模 |
 
 建议每个实验至少记录：
 
@@ -473,6 +475,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | CHG-024 | 2026-09-09 | Phase 2 data/model/train/eval/render/gate、3个配置、冻结感知cache及8卡分片/merge脚本 | 接通四模式SAGE3D policy；冻结前端cache绑定全部准入哈希并拒绝partial误用；safe-stop硬归零；输出ADE/FDE/分模式/安全指标及逐张PNG+MP4 | 复用现成检测/ReID后仍需可训练的waypoint闭环，并防止bbox标签、非视觉confidence或旧cache泄漏进policy | 算力机192项unittest；Phase 2 8×H100 preflight；train/val/viz 1-episode smoke；2 GPU真实分片和manifest merge；16 PNG/MP4解码及人工抽查 | DEC-042；EXP-013；WP-3 |
 
 | CHG-025 | 2026-09-09 | `PROGRESS.md` | 记录Phase 1与冻结感知前端的同协议连续跟踪对照，将Phase 2拆为2A感知适配与2B waypoint SFT，并使旧fusion v3 cache失效 | 用户要求先训练感知以提高跟踪准确率，再进入下一阶段；现有46.30% E2E尚有明确提升空间 | 文档事实、实验计数、非locked边界和准入门槛一致性检查 | DEC-043；EXP-014；NEXT-022～023 |
+| CHG-026 | 2026-09-09 | Phase 2A训练器、独立gate、时序feature contract及7卡流水线 | 冻结detector/OSNet；加入hard-negative排序、sequence-balanced BCE、train-only双阈值、val选模及固定viz gate；补充跨rollout帧隔离、空hard-pair与precision fail-closed | 建立感知适配与waypoint训练之间的可执行边界，并防止数据泄漏或弱模型静默进入2B | 算力机198项unittest；合成权重写入/重载smoke；v1正式val按预期拒绝 | DEC-043～044；EXP-015；NEXT-023 |
 
 ## 12. 下一步计划
 
@@ -498,7 +501,7 @@ WP-2已由正式Phase 1 v3 gate关闭。WP-3当前先执行Phase 2A感知适配�
 | P0 | NEXT-020 | 将`PROGRESS.md`纳入仓库并建立协作者顺序工作包 | 当前项目事实与数据初盘 | GitHub可见的单一协作入口 | 已完成 |
 | P0 | NEXT-021 | 修复并重新准入SAGE3D bbox/visible身份监督 | EXP-003、相机外参、RGB对齐depth、模块化person detector/ReID | 不改源数据的版本化修复侧车、投影/遮挡测试、独立审计报告和Phase 1 admission gate | 已完成；7,105/7,105 episode、2,131,500步、0失败，完整性与冻结384帧质量gate通过；Phase 1仅通过准入侧车重新启用SAGE3D，源bbox/visible保持阻断 |
 | P0 | NEXT-022 | 生成Phase 2B全量冻结感知cache并运行正式open-loop waypoint训练 | DEC-042～043、EXP-013～014、NEXT-023、8×H100 | 完整train/val/viz cache、正式checkpoint/metrics/report/PNG+MP4和open-loop gate | 阻塞于NEXT-023；旧fusion v3的`v1` cache作废，正式任务不得消费`test_locked` |
-| P0 | NEXT-023 | 训练并准入Phase 2A目标身份时序融合前端 | DEC-039～040、DEC-043、EXP-009～011/014 | 冻结detector/OSNet的可复现训练配置、checkpoint、train/val/viz指标、失败案例和准入JSON | 进行中；基线为TpT `viz_val` 5,928帧E2E 46.30%，只允许train拟合、val选模、viz固定对照 |
+| P0 | NEXT-023 | 训练并准入Phase 2A目标身份时序融合前端 | DEC-039～040、DEC-043～044、EXP-009～011/014～015 | 冻结detector/OSNet的可复现训练配置、checkpoint、train/val/viz指标、失败案例和准入JSON | 进行中；v1因val E2E退化已拒绝且未运行viz；v2改为基线精确初始化、on-policy-only和含epoch 0的val排序选模 |
 | P1 | NEXT-005 | 收集真实UWB误差、偏置、漂移、延迟、丢包和置信度校准统计 | 定位模块日志 | 噪声模型报告 | 待开始 |
 | P1 | NEXT-006 | 定义 Phase 3 噪声矩阵和难度课程 | NEXT-005 | 扰动配置规范 | 待开始 |
 | P1 | NEXT-007 | 验证仿真是否支持任意访问状态的 expert relabel | 仿真环境 | DAgger 可行性结论 | 待开始 |
@@ -532,4 +535,5 @@ WP-2已由正式Phase 1 v3 gate关闭。WP-3当前先执行Phase 2A感知适配�
 | SAGE3D Phase 2 policy准入 | `sage3d-policy-se2-30hz-v1`；报告SHA-256 `ec90f757...` | `omtrackvla/data/sage3d_policy.py`、`scripts/audit_sage3d_policy.py`、`configs/gates/sage3d_policy_v1.json`、`docs/sage3d_policy_admission.md`；H100报告`results/sage3d_policy_v1_audit/admission.json` | 256个非locked episode、13分层、11/11 gate；源waypoint偏移一帧，训练必须按`0,+3,…,+21`重算 |
 | Phase 2 open-loop smoke | `EXP-013` | H100 `outputs/training/phase2_frozen_frontend_smoke/phase_2/`；本地逐帧复核`Desktop/OmTrackVLA_visual_review/phase2_frozen_frontend_smoke/` | 20-step开发checkpoint；正常模式ADE/FDE 0.22561/0.38741m；safe-stop 100%；16张四模式PNG和MP4；partial gate按预期仅样本量失败 |
 | Phase 1与冻结前端同协议对照 | `EXP-014` | H100 `outputs/evaluation/phase1_v3_tpt_viz_same_protocol/metrics.json`及`outputs/evaluation/pretrained_identity_v4_resnet50_fusion_dualop_viz/comparison_metrics.json` | 5,928帧E2E分别为2.59%与46.30%；只使用`viz_val`开发对照，未访问`test_locked` |
-| 项目进展记录 | `v21 (2026-09-09)` | 仓库根目录`PROGRESS.md` | 本文件；新增Phase 2A感知适配、同协议基线和独立gate，旧fusion v3 cache不再准入2B；closed-loop仍明确阻断 |
+| Phase 2A首轮失败迭代 | `EXP-015` | H100 `outputs/training/phase2a_temporal_fusion_v1/`及`outputs/evaluation/phase2a_temporal_fusion_v1_val/aggregate.json` | val误跟大降但E2E/重获退化，已fail closed；未运行viz、未进入2B |
+| 项目进展记录 | `v22 (2026-09-09)` | 仓库根目录`PROGRESS.md` | 本文件；补记Phase 2A v1失败量化及v2精确初始化防退化方案；closed-loop仍明确阻断 |
