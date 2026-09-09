@@ -344,10 +344,12 @@ resolve_initial_checkpoint() {
   local phase="$1"
   local is_first="$2"
   local checkpoint=""
+  local use_previous
+  use_previous="$(phase_value "$phase" USE_PREVIOUS_CHECKPOINT)"
 
   if [[ "$is_first" == 1 && -n "$FROM_CHECKPOINT" ]]; then
     checkpoint="$FROM_CHECKPOINT"
-  elif ((phase > 1)); then
+  elif ((phase > 1)) && [[ "$use_previous" == 1 ]]; then
     checkpoint="$RUN_DIR/phase_$((phase - 1))/$PIPELINE_BEST_CHECKPOINT_REL"
   else
     checkpoint="$(phase_value "$phase" INIT_CHECKPOINT)"

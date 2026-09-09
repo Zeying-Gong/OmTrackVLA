@@ -109,7 +109,11 @@ def run(args, distributed_context) -> int:
     else:
         training_dataset = dataset
     sampler = DistributedSampler(
-        training_dataset, num_replicas=world_size, rank=rank, shuffle=True, seed=seed
+        training_dataset,
+        num_replicas=world_size,
+        rank=rank,
+        shuffle=bool(training.get("shuffle_samples", False)),
+        seed=seed,
     )
     workers = int(args.num_workers if args.num_workers is not None else training["num_workers"])
     loader = DataLoader(

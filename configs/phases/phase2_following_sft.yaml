@@ -31,3 +31,6 @@ training:
   gradient_clip_norm: 1.0
   bfloat16: true
   log_every_steps: 50
+  # Preserve episode locality in the JSON cache. Distributed ranks still see
+  # disjoint samples, while random global order would thrash NFS metadata.
+  shuffle_samples: false
