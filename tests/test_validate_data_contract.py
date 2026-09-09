@@ -146,6 +146,27 @@ class DataContractValidationTest(unittest.TestCase):
         with self.assertRaisesRegex(ContractViolation, "not admitted"):
             validate_sample(sample, CONTRACT)
 
+    def test_sage3d_policy_is_admitted_with_explicit_simulation_provenance(self):
+        sample = policy_sample()
+        sample["source"].update(
+            {
+                "dataset_id": "sage3d_extracted",
+                "split_unit_id": "run-1",
+                "episode_id": "run-1/stt/0/camera",
+                "adapter_version": "sage3d-policy-v1",
+            }
+        )
+        sample["provenance"].update(
+            {
+                "transform_spec_id": "sage3d-habitat-world-to-base-se2-v1",
+                "clock_spec_id": "sage3d-control-step-30hz-v1",
+                "generation_spec_id": "sage3d-pose-derived-noiseless-uwb-v1",
+            }
+        )
+        result = validate_sample(sample, CONTRACT)
+        self.assertEqual(result["dataset_id"], "sage3d_extracted")
+        self.assertEqual(result["sample_role"], "policy")
+
     def test_later_bbox_cannot_enter_model_inputs(self):
         sample = policy_sample()
         sample["model_inputs"]["rgb_history"][1]["target_bbox"] = [0.1, 0.1, 0.2, 0.2]

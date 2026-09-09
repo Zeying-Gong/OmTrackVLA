@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "policy_spec_id": "sage3d-policy-se2-30hz-v1",
+  "allowed_splits": ["train", "val", "viz_val"],
+  "minimum_audited_episodes": 128,
+  "minimum_strata": 6,
+  "maximum_invalid_episodes": 0,
+  "maximum_noncontiguous_step_episodes": 0,
+  "maximum_target_local_error_m": 0.001,
+  "maximum_source_waypoint_error_m": 0.001,
+  "maximum_contract_anchor_error_m": 1e-09,
+  "minimum_median_speed_ratio": 0.85,
+  "maximum_median_speed_ratio": 1.15,
+  "minimum_speed_ratio_coverage": 0.9,
+  "maximum_contract_horizon_displacement_m": 3.0
+}

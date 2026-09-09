@@ -13,7 +13,7 @@
 - 主要观测：后续 egocentric RGB 历史。
 - 输出：机器人未来的局部 waypoint trajectory。
 - 明确不需要：自然语言描述、VQA、语义 CoT。
-- 当前状态：WP-0数据审计、WP-1统一数据契约和WP-2 Phase 1闭环均已完成。正式8×H100 `phase1_baseline_v3_5103f88`在Intern几何流及SAGE3D/TpT身份流上完成4,096步训练，B1-ID/B1-GEO/B1-PROBE共12项gate全部通过；v1、v2失败产物和原因均保留。WP-3所需视觉身份前端已有冻结Faster R-CNN ResNet50-FPN-v2、冻结OSNet、不可覆盖首帧anchor、谨慎动态图库和train-only双运行点融合头；TpT `viz_val`端到端成功率46.30%、输出正确率90.68%、absent FPR 4.16%，但尚未接入完整Phase 2 waypoint policy。DA3-SMALL仅按已准入规则使用，禁止重跑或查看已消费的`test_locked`；TpT物理时钟与真实UWB仍未完成。
+- 当前状态：WP-0数据审计、WP-1统一数据契约和WP-2 Phase 1闭环均已完成。正式8×H100 `phase1_baseline_v3_5103f88`通过B1-ID/B1-GEO/B1-PROBE全部12项gate；冻结Faster R-CNN/OSNet和train-only双运行点融合头已作为WP-3视觉身份前端。SAGE3D Phase 2轨迹以256个`val/viz_val` episode通过`se2-30hz-v1`准入；源`waypoints_ego`存在一帧偏移，必须从robot pose重算`0,+3,…,+21`，仅可生成明确标记的无噪声`simulated_uwb`。完整Phase 2 waypoint policy仍待接通。DA3-SMALL规则保持冻结，禁止重跑或查看已消费的`test_locked`；TpT物理时钟与真实UWB仍未完成。
 - 集群入口：仓库内的`scripts/run_pipeline_8xh100.sh`已创建，可在已分配的单节点8×H100上直接bash启动，负责环境预检、三Phase衔接、断点续跑、eval/render/gate与产物管理；Phase 1模块和3个配置已接通并通过单卡preflight，Phase 2/3的6个配置与实现仍缺失，因此`--phase all`会明确失败。OmTrackVLA使用`wam`分支并通过GitHub `origin/wam`协作。
 - 当前方案：采用 3 个正式阶段——Phase 1身份与几何World-Action预训练、Phase 2目标人物跟随监督训练、Phase 3噪声与闭环恢复训练。
 - World-Action 路线：优先评估 DA3 等视觉几何基础模型。利用其从视频恢复的相机轨迹作为显式 pseudo ego-motion，而不是再学习 WALA 式 latent action；借鉴 FutureNav 的 forward/inverse dynamics 与单步 future-state prediction。普通无任务 ego 视频只训练几何与状态转移辅助能力，不直接提供 policy trajectory 监督。
@@ -125,6 +125,7 @@ DA3的`test_locked`已唯一运行一次且未生成/查看图片，不得重跑
 | DEC-038 | 2026-09-08 | B1-PROBE对预训练与随机编码器分别使用各自train feature的均值/标准差标准化，再以相同ridge配置评测val | 未标准化的固定绝对正则会把特征幅值/条件数误当表示质量；v2原始probe为-127.20%，标准化后为提升69.46% | 已确认；只使用train统计，不读取val统计，不降低probe gate |
 | DEC-039 | 2026-09-09 | 目标人物感知复用冻结COCO person detector与冻结MSMT17 OSNet，不从零训练检测/ReID；只训练候选融合，并以不可覆盖首帧身份anchor、谨慎正样本图库和干扰负样本图库维持身份 | 现成模型已提供通用人体定位和重识别能力；从零训练会重复造轮子且增加身份漂移风险 | 已确认；权重大文件不进Git，融合头及特征契约可版本化 |
 | DEC-040 | 2026-09-09 | 候选融合使用train-calibration冻结的双运行点：连续跟踪偏召回，丢失后的全局重获偏精度；旧单阈值权重继续向后兼容 | 单一严格阈值虽降低误跟，却会因一次拒绝进入更难的全局搜索并持续漏检；全局误重获的代价又高于连续跟踪短时误差 | 已确认；tracking为score 0.92/margin 0.02，reacquisition为0.95/0.06，`viz_val`只评测不搜索阈值，禁止使用`test_locked` |
+| DEC-041 | 2026-09-09 | SAGE3D Phase 2 expert waypoint不得直接读取源`waypoints_ego`，而须从robot pose按当前base帧重算控制步`0,+3,…,+21`；控制频率冻结为30 Hz，target pose只能生成显式无噪声`simulated_uwb` | 源extractor实际保存`+1,+4,…,+22`，不满足WP-1第0点为`[0,0]`；真实记录目标移动速度与30 Hz命令速度比例提供独立时钟证据 | 已确认；spec `sage3d-policy-se2-30hz-v1`，256个非locked episode的11项gate全通过，真实UWB继续阻断 |
 
 ## 2. 当前提案与待确认决策
 
@@ -327,7 +328,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | DATA-006 | Git内`data/datasets/track/{STT,DT,AT}` | 需运行仿真生成 | 当前文件无预计算bbox | 有`main_human_semantic_id`和人物配置，逐帧框需渲染/生成 | 只有episode初始robot pose及场景配置 | 有人物起点/waypoint元数据，无UWB日志 | 无预计算robot expert future waypoints | 无 | 仿真样本生成；Phase 2/3 benchmark基础 | 6个文件、共25,986 episodes；必须验证episode语义、生成器和scene隔离后再做manifest |
 | DATA-007 | 4090本地Habitat资产：`data/scene_datasets`、`data/humanoids`、`data/versioned_data` | 资产可渲染 | 可由仿真GT生成 | 可由semantic ID生成 | 仿真可得 | 仿真可得 | 需oracle生成 | 可生成 | Phase 1～3仿真数据生产 | 被Git忽略；H100需独立挂载/软链接，路径不能写死为4090绝对路径 |
 | DATA-008 | InternData-N1：`/h100-2/vln_n1/traj_data` | 有RGB+depth | 无人物bbox | 无人物ID/bbox | 有逐帧pose矩阵和离散action | 有导航goal，无人物target pose/UWB | 可由pose/action构造导航轨迹监督 | 已展开episode | Phase 1A几何/动态预训练 | 12 group、196,536 episodes、3,725个正式scene；5个仅含未索引depth的目录已排除；旧85,124统计漏扫；自然语言task不得输入；按group/scene隔离 |
-| DATA-009 | Sage3D：`/data/nfs/share/OmTrackVLA/data/sage3d_extracted` | 有，2,132,276帧，另有等量depth | 可从首个可见投影bbox构造 | 有逐帧投影bbox/visible标签；源episode含目标语义信息 | 有逐帧robot pose/yaw | 有逐帧target pose/target_local；无真实UWB | 有8点ego waypoint；1,975,856帧有效 | 已抽取仿真run | Phase 1B、Phase 2、Phase 3A | 约160 GiB；7,110个索引episode中7,105个canonical accepted、5个rejected；2个accepted与源`success`不一致；按run隔离 |
+| DATA-009 | Sage3D：`/data/nfs/share/OmTrackVLA/data/sage3d_extracted` | 有，2,132,276帧，另有等量depth | 从首个侧车visible bbox构造 | Phase 1/2只读准入侧车，源bbox/visible禁用 | 有逐帧robot pose/yaw | 有逐帧target pose/target_local；仅可派生无噪声`simulated_uwb` | 从robot pose重算8点`0,+3,…,+21`，源`waypoints_ego`禁用 | 已抽取仿真run | Phase 1B、Phase 2、Phase 3A | 7,105个canonical accepted；256个非locked episode验证30 Hz、x-forward/y-left和轨迹；按run隔离 |
 | DATA-010 | TpT clean v2：`/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2` | 有，141,326帧 | 可用每序列首个可见bbox构造 | 有逐帧bbox、is_exist、玻璃遮挡标签；无显式跨序列person ID | 有ODOM position/quaternion | 无target pose/UWB | 无 | 47条真实跟踪序列 | Phase 1B；Phase 2/3身份辅助 | 约17 GiB；RGB/parquet无缺帧；视频时钟与GT/ODOM时钟约差4.48倍；必须按sequence隔离 |
 
 ### 6.1 2026-09-07容量与规模基线
@@ -402,6 +403,7 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | EXP-009 | 2026-09-09 | 审计现成detector/ReID能否直接成为端到端感知组件，并定位检测与身份关联瓶颈 | 基于`d677ff7`的感知工作树 | 冻结Faster R-CNN MobileNet/ResNet50-FPN-v2、冻结OSNet x0.25 MSMT17；adaptive/anchor-only；320/640/默认分辨率 | TpT `viz_val`序列0005/0032，共5,928评测帧；未运行locked test | 20260908 | MobileNet320 candidate recall 51.22%、selection 53.08%、E2E 27.19%；MobileNet640为68.94%/37.42%/25.80%；ResNet50无融合为79.10%/32.14%/25.47% | 动态图库相对anchor-only将E2E从16.92%提升到27.19%；升分辨率/换强检测器提高候选召回，但更多干扰候选使手工关联退化 | 冻结现成组件方向成立；主要瓶颈已从检测召回转为候选身份融合，不微调OSNet |
 | EXP-010 | 2026-09-09 | 用全部TpT train序列训练小型候选融合头，并验证单一高精度阈值 | 感知融合v2工作树 | 37个train序列、stride 4、8×H100；399,247候选；32维隐藏层；单阈值score 0.95/margin 0.06 | `phase1_v1.json`的37个TpT train序列；评测仅0005/0032 `viz_val` | 20260908 | candidate recall 79.10%、selection 41.94%、E2E 33.20%、visibility recall 36.30%、output precision 88.97%、absent FPR 1.74%、wrong-target 111 | 误跟显著下降，但单一严格阈值过度保守；相对8序列融合的E2E 51.27%明显回落 | 保留为负结果；必须拆分连续跟踪与全局重获运行点 |
 | EXP-011 | 2026-09-09 | 验证train-only双运行点能否同时恢复召回并保持低误跟 | 感知融合v3工作树 | 与EXP-010相同权重训练；train-calibration按`global_search`分区，tracking precision floor 0.67/F1，reacquisition floor 0.70/F0.5 | 与EXP-010相同；未运行或查看`test_locked` | 20260908 | 阈值0.92/0.02与0.95/0.06；candidate recall 79.10%、selection 58.47%、E2E 46.30%、visibility recall 48.62%、output precision 90.68%、absent FPR 4.16%、wrong-target 60、reappearance 33.33% | 相对单严格阈值E2E +13.10pp、召回 +12.32pp、wrong-target 111→60且precision反升；80张五类图片全部解码 | 双运行点优于单严格阈值并作为当前开发基线；仍低于8序列高误报版本的51.27% E2E，下一步接入Phase 2并补连续tracklet/重获确认消融 |
+| EXP-012 | 2026-09-09 | 准入SAGE3D Phase 2 waypoint坐标、时间与模拟UWB语义 | `aa32bd4`后的WP-3工作树 | 固定seed 20260909；`val`/`viz_val`各128 episode；13个mode/camera分层；30 Hz；8点stride 3；禁止`test_locked` | SAGE3D只读源；phase1 v1 split manifest；bbox sidecar既有准入 | 不适用 | 256/256有效且step连续；target-local/source重建最大误差均0.00005m；0.7s最大位移1.7370m；速度证据coverage 98.44%、ratio中位1.0124/P10 0.9044/P90 1.0701 | 11/11 gate通过；报告SHA-256 `ec90f757...` | SAGE3D policy标签准入；必须重算`0,+3,…,+21`，不得直读源`+1,+4,…,+22`；只声明无噪声模拟UWB |
 
 建议每个实验至少记录：
 
@@ -461,10 +463,11 @@ GitHub只保存代码、配置、环境锁定文件、数据manifest和已审计
 | CHG-020 | 2026-09-08 | Phase 1模型配置、B1评测与`viz_val`渲染 | 将train-only校准的0.999 visibility运行点写入checkpoint；linear probe使用各自train feature统计标准化；视频固定包含8个absent案例并显示PRED/GT可见性 | 修复v2阈值失配、probe尺度偏置和短视频几乎看不到absent案例 | 提交`5103f88`；163项unittest；v3正式12/12 gate；64帧960×380 MP4完整解码并人工抽查absent帧 | DEC-037～038；EXP-008；FAIL-005～006 |
 | CHG-021 | 2026-09-08 | `PROGRESS.md` | 追加正式Phase 1 v1/v2失败与v3通过记录，更新当前状态、下一工作包、可视化和产物索引 | 保留负结果并让协作者从单一文档获得最新接手点 | Markdown/diff检查；指标、commit、checksum和运行目录与算力机产物逐项核对 | EXP-006～008；WP-2 |
 | CHG-022 | 2026-09-09 | `rgb_person_perception.py`、候选融合模型/训练/连续序列评测、overnight脚本、融合权重、测试和`PROGRESS.md` | 接入冻结Faster R-CNN与OSNet，增加不可覆盖anchor、正/负图库、候选诊断、train-only小型融合头、跟踪/重获双运行点及TpT完整序列指标/五类可视化 | 避免从零训练检测/ReID，并用可分解指标定位“检测不到”与“候选中选错”；修复单阈值过保守 | 37 train序列、399,247候选；5,928帧`viz_val`；174项unittest；评测JSON显式记录双运行点；80张图片零解码失败；融合JSON SHA-256 `03a78884675b20c09ab8c6a7c5bd945355678e74bd057804a6bd823e45db06f7` | DEC-039～040；EXP-009～011；FAIL-007 |
+| CHG-023 | 2026-09-09 | SAGE3D Phase 2 policy几何/时钟helper、只读审计、gate、数据契约、说明和测试 | 固化world到base x-forward/y-left变换、30 Hz、8点`0,+3,…,+21`重算及源waypoint禁用；将SAGE3D policy角色从blocked改为条件准入 | Phase 2必须先证明expert轨迹坐标与时间，且发现源waypoint与WP-1 anchor约定偏移一帧 | 256个`val/viz_val` episode、13分层、11/11 gate；未运行/查看locked；报告SHA-256 `ec90f757...` | DEC-041；EXP-012；WP-3 |
 
 ## 12. 下一步计划
 
-WP-2已由正式Phase 1 v3 gate关闭。WP-3的视觉身份前端开发基线已推进到冻结detector/ReID+双运行点融合头；下一步将它接入Phase 2 waypoint policy，盘点可用Habitat rollout/expert监督与UWB字段，并落成Phase 2 manifest、训练/benchmark/gate配置和最小真实闭环。没有真实UWB日志时只允许明确标记的`simulated_uwb`，不得宣称覆盖真实设备误差。DA3 `test_locked`已消费，仍不得重跑或查看。
+WP-2已由正式Phase 1 v3 gate关闭。WP-3的视觉身份前端和SAGE3D policy监督现均已准入；下一步生成冻结前端的SAGE3D内部感知记录，并接入Phase 2 waypoint decoder、四模态数据、benchmark/gate和最小闭环。真实UWB适配仍等待设备日志；当前只允许`simulated_uwb`。DA3 `test_locked`已消费，仍不得重跑或查看。
 
 | 优先级 | ID | 工作项 | 依赖 | 预期产出 | 状态 |
 |---:|---|---|---|---|---|
@@ -515,4 +518,5 @@ WP-2已由正式Phase 1 v3 gate关闭。WP-3的视觉身份前端开发基线已
 | SAGE3D bbox审计 | `EXP-003` | `scripts/audit_sage3d_bboxes.py`、`docs/sage3d_bbox_audit.md`；H100运行产物在`results/wp2_sage_bbox_audit_v2/`（不进Git） | 384帧分层审计确认投影水平符号和可见性错误；含detector对照、水平镜像反事实和72例拼图 |
 | SAGE3D修复侧车 | `sage3d-bbox-depth-v1`、`EXP-004` | 代码见`omtrackvla/data/sage3d_sidecar.py`、`scripts/{build,audit}_sage3d_sidecar.py`和`docs/sage3d_bbox_sidecar.md`；H100全量/审计产物为`results/sage3d_bbox_sidecar_v1{,_audit}/`（不进Git） | 7,105 episode、2,131,500步外置标签；完整性/质量准入、SHA-256绑定和4张最差案例拼图；Phase 1 adapter只接受该准入版本 |
 | 冻结检测/ReID双运行点融合 | `EXP-009～011`；融合SHA-256 `03a78884...` | `omtrackvla/rgb_person_perception.py`、`omtrackvla/models/candidate_fusion.py`、`omtrackvla/training/train_candidate_fusion.py`、`configs/models/candidate_fusion_resnet50_tpt_train37_dualop_v3.json`；H100评测位于`outputs/evaluation/pretrained_identity_v4_resnet50_fusion_dualop_viz/` | 37序列train-only融合；TpT完整`viz_val` E2E 46.30%、precision 90.68%、absent FPR 4.16%、wrong-target 60；五类各16张验收图 |
-| 项目进展记录 | `v18 (2026-09-09)` | 仓库根目录`PROGRESS.md` | 本文件；新增冻结detector/ReID、候选融合、单阈值负结果、双运行点改进和可视化，并保持下一工作包为WP-3 Phase 2闭环 |
+| SAGE3D Phase 2 policy准入 | `sage3d-policy-se2-30hz-v1`；报告SHA-256 `ec90f757...` | `omtrackvla/data/sage3d_policy.py`、`scripts/audit_sage3d_policy.py`、`configs/gates/sage3d_policy_v1.json`、`docs/sage3d_policy_admission.md`；H100报告`results/sage3d_policy_v1_audit/admission.json` | 256个非locked episode、13分层、11/11 gate；源waypoint偏移一帧，训练必须按`0,+3,…,+21`重算 |
+| 项目进展记录 | `v19 (2026-09-09)` | 仓库根目录`PROGRESS.md` | 本文件；新增SAGE3D Phase 2轨迹/时钟准入、源waypoint偏移修正和无噪声模拟UWB边界，继续推进WP-3 policy闭环 |

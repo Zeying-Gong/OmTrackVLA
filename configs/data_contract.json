@@ -115,16 +115,15 @@
       "reason": "geometry/dynamics only; no target identity or person-follow expert trajectory"
     },
     "sage3d_extracted": {
-      "eligible_roles": ["identity_auxiliary"],
-      "status": "policy_blocked_pending_clock_transform_and_bbox_validation",
+      "eligible_roles": ["identity_auxiliary", "policy"],
+      "status": "policy_admitted_with_recomputed_waypoints_and_simulated_uwb_only",
       "split_unit": "run",
       "bbox_conversion": "pixel xyxy -> clipped normalized xyxy",
-      "waypoint_candidate": "8 absolute ego-frame xy points at source step offsets 0,3,...,21",
-      "required_policy_gates": [
-        "confirm simulator step interval and waypoint sampling time",
-        "confirm base axes/yaw sign and robot-to-camera transform",
-        "validate projected bboxes on the frozen subset"
-      ]
+      "waypoint_conversion": "recompute from robot poses at source offsets 0,3,...,21; never consume source waypoints_ego at +1,+4,...,+22",
+      "clock_spec_id": "sage3d-control-step-30hz-v1",
+      "transform_spec_id": "sage3d-habitat-world-to-base-se2-v1",
+      "required_admission": "results/sage3d_policy_v1_audit/admission.json status=passed and source index hash match",
+      "uwb_limit": "robot/target pose may generate only explicitly marked noiseless simulated_uwb; no real-UWB claim"
     },
     "tpt_bench_clean_v2": {
       "eligible_roles": ["identity_auxiliary"],
@@ -151,6 +150,6 @@
     "split_manifests": "NEXT-015; not part of WP-1",
     "real_uwb_coverage": "blocked until device logs, calibration, latency, and LOS/NLOS semantics are recorded",
     "tpt_motion_or_velocity": "blocked until clock-domain mapping is resolved",
-    "sage3d_policy_waypoints": "blocked until timing, transform, and bbox gates are cleared"
+    "sage3d_policy_waypoints": "admitted by sage3d-policy-se2-30hz-v1; source waypoints_ego remains prohibited and must be recomputed from robot poses"
   }
 }

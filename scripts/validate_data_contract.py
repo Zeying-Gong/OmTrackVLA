@@ -302,7 +302,7 @@ def validate_contract(contract: Any) -> dict[str, Any]:
             raise ContractViolation(f"invalid eligible_roles for {dataset_id}")
     mandatory_admission = {
         "intern_data_n1": [],
-        "sage3d_extracted": ["identity_auxiliary"],
+        "sage3d_extracted": ["identity_auxiliary", "policy"],
         "tpt_bench_clean_v2": ["identity_auxiliary"],
         "habitat_sim": ["policy", "identity_auxiliary"],
         "real_robot": ["policy", "identity_auxiliary"],
