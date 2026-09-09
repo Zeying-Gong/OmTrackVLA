@@ -10,7 +10,7 @@ DATA_ROOT="/data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2"
 DETECTOR_WEIGHTS="models/torchvision/fasterrcnn_resnet50_fpn_v2_coco-dd69338a.pth"
 BASELINE_FUSION="configs/models/candidate_fusion_resnet50_tpt_train37_dualop_v3.json"
 BASELINE_VIZ_METRICS="outputs/evaluation/pretrained_identity_v4_resnet50_fusion_dualop_viz/comparison_metrics.json"
-RUN_ID="${PHASE2A_RUN_ID:-phase2a_temporal_fusion_v2}"
+RUN_ID="${PHASE2A_RUN_ID:-phase2a_temporal_fusion_v3}"
 TRAIN_ROOT="outputs/training/$RUN_ID"
 ROLLOUT_ROOT="${PHASE2A_BASELINE_ROLLOUT_ROOT:-outputs/evaluation/phase2a_temporal_fusion_v1_baseline_rollouts}"
 VAL_ROOT="outputs/evaluation/${RUN_ID}_val"
@@ -161,6 +161,8 @@ CUDA_VISIBLE_DEVICES="${GPUS[0]}" "$PYTHON_BIN" \
   --records "$ROLLOUT_ROOT/train/records" \
   --validation-records "$ROLLOUT_ROOT/val/records" \
   --initial-weights "$BASELINE_FUSION" \
+  --train-new-features-only \
+  --operating-point-source inherited \
   --output "$FUSION_WEIGHTS" \
   --report "$FUSION_REPORT" \
   --epochs 24 \

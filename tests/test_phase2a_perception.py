@@ -15,6 +15,7 @@ from omtrackvla.training.train_temporal_candidate_fusion import (
     _hard_pairs,
     _initialize_from_fusion,
     _load_rows,
+    _new_feature_only_parameters,
 )
 
 
@@ -148,6 +149,39 @@ class Phase2APerceptionTest(unittest.TestCase):
         expected = float(source_weight2 @ hidden + source_bias2)
 
         self.assertAlmostEqual(actual, expected, places=5)
+
+    def test_new_feature_only_training_keeps_legacy_head_fixed(self):
+        model = _FusionNetwork(len(FEATURE_NAMES), 2)
+        with torch.no_grad():
+            model.layer1.weight.fill_(0.1)
+            model.layer1.bias.fill_(1.0)
+            model.layer2.weight.fill_(1.0)
+            model.layer2.bias.fill_(0.2)
+        before_weight = model.layer1.weight.detach().clone()
+        before_bias1 = model.layer1.bias.detach().clone()
+        before_weight2 = model.layer2.weight.detach().clone()
+        before_bias2 = model.layer2.bias.detach().clone()
+        parameters = _new_feature_only_parameters(model, LEGACY_FEATURE_NAMES)
+        optimizer = torch.optim.SGD(parameters, lr=0.1)
+
+        optimizer.zero_grad(set_to_none=True)
+        model(torch.ones((2, len(FEATURE_NAMES)))).sum().backward()
+        optimizer.step()
+
+        legacy_indices = [FEATURE_NAMES.index(name) for name in LEGACY_FEATURE_NAMES]
+        new_indices = [
+            index for index, name in enumerate(FEATURE_NAMES)
+            if name not in LEGACY_FEATURE_NAMES
+        ]
+        self.assertTrue(
+            torch.equal(model.layer1.weight[:, legacy_indices], before_weight[:, legacy_indices])
+        )
+        self.assertFalse(
+            torch.equal(model.layer1.weight[:, new_indices], before_weight[:, new_indices])
+        )
+        self.assertTrue(torch.equal(model.layer1.bias, before_bias1))
+        self.assertTrue(torch.equal(model.layer2.weight, before_weight2))
+        self.assertTrue(torch.equal(model.layer2.bias, before_bias2))
 
     def test_gate_requires_improvement_and_safety(self):
         target = (0.0, 0.0, 10.0, 20.0)

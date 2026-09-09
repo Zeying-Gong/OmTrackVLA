@@ -45,6 +45,12 @@ def _arguments() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--initial-weights", type=Path)
+    parser.add_argument("--train-new-features-only", action="store_true")
+    parser.add_argument(
+        "--operating-point-source",
+        choices=("calibrated", "inherited"),
+        default="calibrated",
+    )
     parser.add_argument("--epochs", type=int, default=48)
     parser.add_argument("--hidden-dim", type=int, default=96)
     parser.add_argument("--batch-size", type=int, default=4096)
@@ -190,6 +196,24 @@ def _initialize_from_fusion(
         model.layer2.bias.fill_(source_bias2)
 
 
+def _new_feature_only_parameters(
+    model: _FusionNetwork, source_feature_names: Sequence[str]
+) -> list[nn.Parameter]:
+    new_indices = [
+        index for index, name in enumerate(FEATURE_NAMES)
+        if name not in set(source_feature_names)
+    ]
+    if not new_indices:
+        raise ValueError("initial fusion leaves no new features to train")
+    mask = torch.zeros_like(model.layer1.weight)
+    mask[:, new_indices] = 1.0
+    model.layer1.weight.register_hook(lambda gradient: gradient * mask)
+    model.layer1.bias.requires_grad_(False)
+    model.layer2.weight.requires_grad_(False)
+    model.layer2.bias.requires_grad_(False)
+    return [model.layer1.weight]
+
+
 def _next_batch(iterator, loader):
     try:
         return next(iterator), iterator
@@ -306,6 +330,14 @@ def main() -> int:
     args = _arguments()
     if args.epochs <= 0 or args.hard_negatives_per_frame <= 0:
         raise ValueError("epochs and hard-negatives-per-frame must be positive")
+    if (
+        args.train_new_features_only
+        or args.operating_point_source == "inherited"
+    ) and args.initial_weights is None:
+        raise ValueError(
+            "new-feature-only training and inherited operating points require "
+            "--initial-weights"
+        )
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     device = torch.device(
@@ -406,10 +438,19 @@ def main() -> int:
     if args.initial_weights is not None:
         initial_payload = json.loads(args.initial_weights.read_text(encoding="utf-8"))
         _initialize_from_fusion(model, initial_payload, mean, scale)
+    optimizer_parameters = list(model.parameters())
+    optimizer_weight_decay = args.weight_decay
+    if args.train_new_features_only:
+        optimizer_parameters = _new_feature_only_parameters(
+            model, initial_payload["feature_names"]
+        )
+        # Decoupled weight decay would also move the frozen columns because
+        # they share one parameter tensor with the new columns.
+        optimizer_weight_decay = 0.0
     optimizer = torch.optim.AdamW(
-        model.parameters(),
+        optimizer_parameters,
         lr=args.learning_rate,
-        weight_decay=args.weight_decay,
+        weight_decay=optimizer_weight_decay,
     )
     positives = float(train_y.sum())
     positive_weight = min(20.0, (len(train_y) - positives) / max(1.0, positives))
@@ -538,17 +579,41 @@ def main() -> int:
     }
     operating_points = {}
     for mode, policy in policies.items():
-        score, margin, metrics = _calibrate_or_raise(
-            calibration_probabilities,
-            calibration_y,
-            calibration_partitions[mode],
-            mode,
-            policy["precision_floor"],
-            policy["beta"],
-        )
+        if args.operating_point_source == "inherited":
+            raw_point = initial_payload.get("operating_points", {}).get(mode, {})
+            score = float(
+                raw_point.get("score_threshold", initial_payload["score_threshold"])
+            )
+            margin = float(
+                raw_point.get("margin_threshold", initial_payload["margin_threshold"])
+            )
+            metrics = _selection_metrics(
+                calibration_probabilities,
+                calibration_y,
+                calibration_partitions[mode],
+                score_threshold=score,
+                margin_threshold=margin,
+            )
+            metrics.update(
+                precision_floor=float(policy["precision_floor"]),
+                precision_floor_met=bool(
+                    metrics["precision"] >= policy["precision_floor"]
+                ),
+                inherited=True,
+            )
+        else:
+            score, margin, metrics = _calibrate_or_raise(
+                calibration_probabilities,
+                calibration_y,
+                calibration_partitions[mode],
+                mode,
+                policy["precision_floor"],
+                policy["beta"],
+            )
         operating_points[mode] = {
             "score_threshold": score,
             "margin_threshold": margin,
+            "source": args.operating_point_source,
             "precision_floor": policy["precision_floor"],
             "beta": policy["beta"],
             "calibration_frame_count": len(calibration_partitions[mode]),
@@ -587,6 +652,8 @@ def main() -> int:
             "model_selection_metric": "val_candidate_ranking_f0_5",
             "model_selection_split": "val",
             "threshold_calibration_split": "train",
+            "train_new_features_only": args.train_new_features_only,
+            "operating_point_source": args.operating_point_source,
             "initial_weights": (
                 {
                     "path": str(args.initial_weights.resolve()),
