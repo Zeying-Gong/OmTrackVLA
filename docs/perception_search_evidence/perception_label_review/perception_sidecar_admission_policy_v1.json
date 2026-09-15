@@ -1,0 +1,28 @@
+{
+  "stage": "train4_perception_sidecar_admission_policy_v1",
+  "declared_before_collection": true,
+  "required_source_count": 4,
+  "required_observation_count": 370,
+  "required_original_prefix_sample_count": 19,
+  "required_source_status": "sidecar_collected_pending_independent_admission",
+  "require_all_original_sources_no_substitution": true,
+  "require_zero_alignment_failures": true,
+  "require_exact_reset_and_natural_terminal": true,
+  "require_original_source_and_plan_hashes": true,
+  "require_all_saved_rgb_and_panoptic_file_hashes": true,
+  "require_labels_recomputed_from_saved_raw_panoptic": true,
+  "require_all_original_prefix_rgb_pixels_and_world_times": true,
+  "require_distinct_counted_original_samples": true,
+  "require_monotonic_observed_world_time": true,
+  "permanent_validation_sources_allowed": false,
+  "original_manifest_and_samples_may_be_modified": false,
+  "partial_admission_allowed": false,
+  "grantable_scope": "verified_development_perception_labels_pending_loader_integration",
+  "optimizer_input_automatically_allowed": false,
+  "formal_training_eligible": false,
+  "product_acceptance_evidence": false,
+  "unavailable_supervision": [
+    "stop", "motion_permission", "calibrated_visual_identity_prediction",
+    "binding", "ego_motion", "occluded_vs_out_of_view"
+  ]
+}

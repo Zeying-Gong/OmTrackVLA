@@ -1,0 +1,1718 @@
+{
+  "baseline_checkpoint": {
+    "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/ablations/next026_abl08_converged_v1/teacher_on/gru_curriculum_4k/checkpoints/best.ckpt",
+    "sha256": "32c8f2f73277cfab8c3c7c22a53994061f7178498cfa003e1635b9576641bc9c"
+  },
+  "case_denominator": 4,
+  "configuration_snapshot": {
+    "bytes": 114581,
+    "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\perception_label_review\\source_config_inventory.json",
+    "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_label_collection_v1/source_config_inventory.json",
+    "sha256": "3a5f559e4c604f749a673af490845c3980463954e8110a4a83c88f1857ad2a8e"
+  },
+  "cpu_adapter": {
+    "cpu_mock_backend_only": true,
+    "new_val_manifest_without_rewriting_label_bytes": true,
+    "path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\perception_validation_review\\val_collection_adapter.py",
+    "real_val_collection_available": false,
+    "sha256": "2e9b1067cf281fcce975a21a8b30beb34226f9d3fdd28cff51b5a22184a2afdd"
+  },
+  "declaration_timing": "original_val4_closed_loop_results_already_known; declared_before_new_val_raw_labels_or_perception_candidate_outputs",
+  "entries": [
+    {
+      "action_count": 90,
+      "annotated_video_frames_are_policy_inputs": false,
+      "assigned_humanoid_semantic_ids": {
+        "0": 1046,
+        "2": 2002,
+        "3": 2003,
+        "4": 2004,
+        "5": 2005,
+        "6": 2006,
+        "7": 2007,
+        "8": 2008
+      },
+      "canonical_scene_id": "gjhyih4upq9",
+      "case_id": "dt_1300_episode3",
+      "dataset_index": 1300,
+      "episode_id": "3",
+      "initialization": {
+        "bbox_xyxy": [
+          238,
+          61,
+          307,
+          303
+        ],
+        "bbox_xyxy_norm": [
+          0.6197916666666666,
+          0.15885416666666666,
+          0.7994791666666666,
+          0.7890625
+        ],
+        "environment_step": 0,
+        "robot_action_before_initialization": "fixed_zero_hold",
+        "source": "first_frame_panoptic_mask",
+        "used_frames": [
+          0
+        ]
+      },
+      "observation_count": 91,
+      "old_short_prefix_sample": {
+        "reason": "different_original_rollout_not_assumed_identical",
+        "reference": {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/recovery_sequence_batch8_measured_fullprefix_v2/dt_1300_anchor009/sample/sample.json",
+          "sha256": "f27906b1215e0fb37faf977826275d8b0c01209697964c1ba2acdde2f2d49d1d"
+        },
+        "use_for_new_label_pixel_matching": false
+      },
+      "optimizer_input_allowed": false,
+      "permanent_partition_role": "val",
+      "prediction_count": 90,
+      "saved_actions": [
+        [
+          0.30000001192092896,
+          -0.027099609375,
+          -0.06407973170280457
+        ],
+        [
+          0.51171875,
+          0.01116943359375,
+          0.016367867588996887
+        ],
+        [
+          0.51171875,
+          0.037841796875,
+          0.05536201596260071
+        ],
+        [
+          0.0,
+          0.0751953125,
+          0.12078038603067398
+        ],
+        [
+          0.0,
+          0.007568359375,
+          0.010529197752475739
+        ],
+        [
+          0.0,
+          -0.00103759765625,
+          -0.0020644376054406166
+        ],
+        [
+          0.0,
+          -0.0009765625,
+          -0.00203803856857121
+        ],
+        [
+          0.0,
+          0.16796875,
+          0.2979619801044464
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "saved_actions_sha256": "0bb228a64cb81eaa23aa213dda0d589a985d56ca4e5ce29f938ded271d0898df",
+      "scene_id": "data/scene_datasets/hm3d/train/00560-gjhYih4upQ9/gjhYih4upQ9.basis.glb",
+      "sim_artifacts": [
+        {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/data/datasets/track/DT/train/train.json.gz",
+          "sha256": "676cd4350367ae2d43a6431aa9a7ef2956058e72bd937fab4f1292ee1af721eb"
+        },
+        {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/habitat-lab/habitat/config/benchmark/nav/track/track_train_dt.yaml",
+          "sha256": "b5baaf2a2068022558cf4b368ad943d35a0ef61d99f6769af65af00bd302489a"
+        }
+      ],
+      "source_arm": "phase2_baseline",
+      "source_artifacts": {
+        "artifact_manifest.json": {
+          "bytes": 14308,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1300_episode3\\artifact_manifest.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1300_episode3/artifact_manifest.json",
+          "sha256": "07a7c5d7b5135e3c84088820f9d82752bbd2b70a2b3c6cd068880cd91b448f55"
+        },
+        "execution_status.json": {
+          "bytes": 1199,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1300_episode3\\execution_status.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1300_episode3/execution_status.json",
+          "sha256": "02709cad513be4989203e3810268d54d6f5fabaf095f19663612a55879144532"
+        },
+        "launch_contract.json": {
+          "bytes": 3652,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1300_episode3\\launch_contract.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1300_episode3/launch_contract.json",
+          "sha256": "27a742b4fa0b1b9da268555a1a87de51eebaf1b155d66a550b68445ec88e2830"
+        },
+        "result.json": {
+          "bytes": 472928,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1300_episode3\\result.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1300_episode3/result.json",
+          "sha256": "f57142c24170525d72d3026af9ad3ee0c0d1e09daf32ee047a42e3f6bb43a3d5"
+        },
+        "timing.json": {
+          "bytes": 155373,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1300_episode3\\timing.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1300_episode3/timing.json",
+          "sha256": "3793bbadffa746d5f011bfcf87be53f16e84ae4a74b2e39b4e8aa9691df1128b"
+        }
+      },
+      "source_dataset_split": "train",
+      "task": "dt"
+    },
+    {
+      "action_count": 46,
+      "annotated_video_frames_are_policy_inputs": false,
+      "assigned_humanoid_semantic_ids": {
+        "0": 1091,
+        "2": 2002,
+        "3": 2003,
+        "4": 2004,
+        "5": 2005,
+        "6": 2006,
+        "7": 2007,
+        "8": 2008
+      },
+      "canonical_scene_id": "ayhkzj2fehp",
+      "case_id": "at_1700_episode0",
+      "dataset_index": 1700,
+      "episode_id": "0",
+      "initialization": {
+        "bbox_xyxy": [
+          93,
+          58,
+          283,
+          301
+        ],
+        "bbox_xyxy_norm": [
+          0.2421875,
+          0.15104166666666666,
+          0.7369791666666666,
+          0.7838541666666666
+        ],
+        "environment_step": 0,
+        "robot_action_before_initialization": "fixed_zero_hold",
+        "source": "first_frame_panoptic_mask",
+        "used_frames": [
+          0
+        ]
+      },
+      "observation_count": 47,
+      "old_short_prefix_sample": {
+        "reason": "different_original_rollout_not_assumed_identical",
+        "reference": {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/recovery_sequence_batch8_measured_fullprefix_v2/at_1700_anchor009/sample/sample.json",
+          "sha256": "d7faf24e24e18c99ba28ede75ecf9af2387eab19d6af51c3d29cd27dffa1fb7f"
+        },
+        "use_for_new_label_pixel_matching": false
+      },
+      "optimizer_input_allowed": false,
+      "permanent_partition_role": "val",
+      "prediction_count": 46,
+      "saved_actions": [
+        [
+          0.30000001192092896,
+          -0.0120849609375,
+          -0.024807125329971313
+        ],
+        [
+          0.58203125,
+          -0.000244140625,
+          -0.0003145970404148102
+        ],
+        [
+          0.5546875,
+          0.0439453125,
+          0.0592951625585556
+        ],
+        [
+          0.0,
+          0.08056640625,
+          0.15557396411895752
+        ],
+        [
+          0.0,
+          0.006439208984375,
+          0.008958473801612854
+        ],
+        [
+          0.0,
+          -0.011474609375,
+          -0.024335376918315887
+        ],
+        [
+          0.0,
+          -0.013427734375,
+          -0.02741464599967003
+        ],
+        [
+          0.0,
+          -0.003662109375,
+          -0.008626919239759445
+        ],
+        [
+          0.0,
+          -0.035400390625,
+          -0.06550323218107224
+        ],
+        [
+          0.0,
+          -0.015869140625,
+          -0.03123193234205246
+        ],
+        [
+          0.0,
+          -0.0068359375,
+          -0.013814225792884827
+        ],
+        [
+          0.0,
+          0.04248046875,
+          0.09713290631771088
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.06396484375,
+          0.15050861239433289
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.30000001192092896,
+          -0.0087890625,
+          -0.01854017935693264
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "saved_actions_sha256": "91163e08ecf5b5d69b28c63b3d1c6c5abfe64559d85a831075c642517da402b5",
+      "scene_id": "data/scene_datasets/hm3d/train/00742-aYhkzj2fEhP/aYhkzj2fEhP.basis.glb",
+      "sim_artifacts": [
+        {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/data/datasets/track/AT/train/train.json.gz",
+          "sha256": "60cf04535a7c187572a4e6455a25a1703e22a5fb98b3e3828ca8b7400cf9e967"
+        },
+        {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/habitat-lab/habitat/config/benchmark/nav/track/track_train_at.yaml",
+          "sha256": "00a78af24bab2b1198e72af4613e7e0c08fcc517026d7bde1ca564a1fcd775fd"
+        }
+      ],
+      "source_arm": "phase2_baseline",
+      "source_artifacts": {
+        "artifact_manifest.json": {
+          "bytes": 7882,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\at_1700_episode0\\artifact_manifest.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/at_1700_episode0/artifact_manifest.json",
+          "sha256": "33b26c1b4317fc0918f97920478e6330a01febb1a2a61cadec64fd7898fbcb18"
+        },
+        "execution_status.json": {
+          "bytes": 1209,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\at_1700_episode0\\execution_status.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/at_1700_episode0/execution_status.json",
+          "sha256": "106d5fe0ba924fc7bcd54341a0ab159aa046d2b40450cc3c9208653584b3679c"
+        },
+        "launch_contract.json": {
+          "bytes": 3651,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\at_1700_episode0\\launch_contract.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/at_1700_episode0/launch_contract.json",
+          "sha256": "0a2346c97f8d52b26bc9accfb0a793f50e50e9403c85baccb5451f7a34d9a614"
+        },
+        "result.json": {
+          "bytes": 244862,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\at_1700_episode0\\result.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/at_1700_episode0/result.json",
+          "sha256": "1cdd9c48d569a2750fac0b0a16343f9d1525e68a42c66bd30c58d0d922ed6a2f"
+        },
+        "timing.json": {
+          "bytes": 87047,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\at_1700_episode0\\timing.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/at_1700_episode0/timing.json",
+          "sha256": "aec70077e239063552b7a2f4af95bdaa99e48323d181a1dd9075e51b43507f5c"
+        }
+      },
+      "source_dataset_split": "train",
+      "task": "at"
+    },
+    {
+      "action_count": 45,
+      "annotated_video_frames_are_policy_inputs": false,
+      "assigned_humanoid_semantic_ids": {
+        "0": 1022,
+        "2": 2002,
+        "3": 2003,
+        "4": 2004,
+        "5": 2005,
+        "6": 2006,
+        "7": 2007,
+        "8": 2008
+      },
+      "canonical_scene_id": "ayhkzj2fehp",
+      "case_id": "dt_1700_episode0",
+      "dataset_index": 1700,
+      "episode_id": "0",
+      "initialization": {
+        "bbox_xyxy": [
+          244,
+          105,
+          281,
+          260
+        ],
+        "bbox_xyxy_norm": [
+          0.6354166666666666,
+          0.2734375,
+          0.7317708333333334,
+          0.6770833333333334
+        ],
+        "environment_step": 0,
+        "robot_action_before_initialization": "fixed_zero_hold",
+        "source": "first_frame_panoptic_mask",
+        "used_frames": [
+          0
+        ]
+      },
+      "observation_count": 46,
+      "old_short_prefix_sample": {
+        "reason": "different_original_rollout_not_assumed_identical",
+        "reference": {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/recovery_sequence_batch8_measured_fullprefix_v2/dt_1700_anchor009/sample/sample.json",
+          "sha256": "3327ad17432d227eab5d6d3d4ad928a48e54e26ddc8b852c5c01bebabe06c312"
+        },
+        "use_for_new_label_pixel_matching": false
+      },
+      "optimizer_input_allowed": false,
+      "permanent_partition_role": "val",
+      "prediction_count": 45,
+      "saved_actions": [
+        [
+          0.30000001192092896,
+          -0.0146484375,
+          -0.03123193420469761
+        ],
+        [
+          0.57421875,
+          -0.0081787109375,
+          -0.010681675747036934
+        ],
+        [
+          0.578125,
+          0.0390625,
+          0.05059877038002014
+        ],
+        [
+          0.0,
+          0.0810546875,
+          0.14300867915153503
+        ],
+        [
+          0.0,
+          -0.0145263671875,
+          -0.020205706357955933
+        ],
+        [
+          0.0,
+          -0.0050048828125,
+          -0.009107964113354683
+        ],
+        [
+          0.0,
+          -0.00732421875,
+          -0.013265126384794712
+        ],
+        [
+          0.30000001192092896,
+          -0.01171875,
+          -0.021422743797302246
+        ],
+        [
+          0.0,
+          0.020263671875,
+          0.024930715560913086
+        ],
+        [
+          0.0,
+          0.0244140625,
+          0.049271102994680405
+        ],
+        [
+          0.0,
+          0.0498046875,
+          0.10218554735183716
+        ],
+        [
+          0.0,
+          0.07763671875,
+          0.18263065814971924
+        ],
+        [
+          0.0,
+          0.0771484375,
+          0.14141584932804108
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "saved_actions_sha256": "dc7b64ad59cb384d7f7505aea6989b2676a7076391f688261713ca0bdd1d62ba",
+      "scene_id": "data/scene_datasets/hm3d/train/00742-aYhkzj2fEhP/aYhkzj2fEhP.basis.glb",
+      "sim_artifacts": [
+        {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/data/datasets/track/DT/train/train.json.gz",
+          "sha256": "676cd4350367ae2d43a6431aa9a7ef2956058e72bd937fab4f1292ee1af721eb"
+        },
+        {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/habitat-lab/habitat/config/benchmark/nav/track/track_train_dt.yaml",
+          "sha256": "b5baaf2a2068022558cf4b368ad943d35a0ef61d99f6769af65af00bd302489a"
+        }
+      ],
+      "source_arm": "phase2_baseline",
+      "source_artifacts": {
+        "artifact_manifest.json": {
+          "bytes": 7736,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1700_episode0\\artifact_manifest.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1700_episode0/artifact_manifest.json",
+          "sha256": "f5534c6c229dd51d91570fb4d57f9f5c0e858687a2e98edadd48c3bbf6636aab"
+        },
+        "execution_status.json": {
+          "bytes": 1196,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1700_episode0\\execution_status.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1700_episode0/execution_status.json",
+          "sha256": "e24882377202dd57f9ef379547816a3bc41b87f5a2adf113ffc62260037e61fc"
+        },
+        "launch_contract.json": {
+          "bytes": 3652,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1700_episode0\\launch_contract.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1700_episode0/launch_contract.json",
+          "sha256": "c09b9cb21d02d5bf70bdbf33c178d669c482909d97fb0946fc0bca24f4b152bf"
+        },
+        "result.json": {
+          "bytes": 239367,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1700_episode0\\result.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1700_episode0/result.json",
+          "sha256": "f782d24bbabc062a60fbe201277146ac3ac1f3aed8d6c4ddaadd4578f2128cfd"
+        },
+        "timing.json": {
+          "bytes": 85612,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\dt_1700_episode0\\timing.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/dt_1700_episode0/timing.json",
+          "sha256": "29ddbe3898868f4f185900c0d886128dac13858e94e41b69ef317a29dbd821b7"
+        }
+      },
+      "source_dataset_split": "train",
+      "task": "dt"
+    },
+    {
+      "action_count": 44,
+      "annotated_video_frames_are_policy_inputs": false,
+      "assigned_humanoid_semantic_ids": {
+        "0": 1001,
+        "2": 2002,
+        "3": 2003,
+        "4": 2004,
+        "5": 2005,
+        "6": 2006,
+        "7": 2007,
+        "8": 2008
+      },
+      "canonical_scene_id": "ayhkzj2fehp",
+      "case_id": "stt_1700_episode0",
+      "dataset_index": 1700,
+      "episode_id": "0",
+      "initialization": {
+        "bbox_xyxy": [
+          245,
+          107,
+          280,
+          261
+        ],
+        "bbox_xyxy_norm": [
+          0.6380208333333334,
+          0.2786458333333333,
+          0.7291666666666666,
+          0.6796875
+        ],
+        "environment_step": 0,
+        "robot_action_before_initialization": "fixed_zero_hold",
+        "source": "first_frame_panoptic_mask",
+        "used_frames": [
+          0
+        ]
+      },
+      "observation_count": 45,
+      "old_short_prefix_sample": {
+        "reason": "different_original_rollout_not_assumed_identical",
+        "reference": {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/recovery_sequence_batch8_measured_fullprefix_v2/stt_1700_anchor009/sample/sample.json",
+          "sha256": "e2ac6bf5d265c189d85b583481035b83fe3bfb47599440cdad42b9236c8e6b20"
+        },
+        "use_for_new_label_pixel_matching": false
+      },
+      "optimizer_input_allowed": false,
+      "permanent_partition_role": "val",
+      "prediction_count": 44,
+      "saved_actions": [
+        [
+          0.30000001192092896,
+          -0.007080078125,
+          -0.01677960716187954
+        ],
+        [
+          0.51171875,
+          0.00421142578125,
+          0.006172331050038338
+        ],
+        [
+          0.58984375,
+          0.00286865234375,
+          0.003647529287263751
+        ],
+        [
+          0.484375,
+          0.052734375,
+          0.08133289217948914
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "saved_actions_sha256": "f1849184fc822773771ccdd846a284a5f9c5a6400bec926d83e9ccbf83ce1aa9",
+      "scene_id": "data/scene_datasets/hm3d/train/00742-aYhkzj2fEhP/aYhkzj2fEhP.basis.glb",
+      "sim_artifacts": [
+        {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/data/datasets/track/STT/train/train.json.gz",
+          "sha256": "294fe412890f9ec55a82e44388efbec49ec0bb8826255d351a469aad40ac385d"
+        },
+        {
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/habitat-lab/habitat/config/benchmark/nav/track/track_train_stt.yaml",
+          "sha256": "64d6fe04236ea0edbb243f709bff6e1100d4faa731d67bdbbbb4c1df92078f23"
+        }
+      ],
+      "source_arm": "phase2_baseline",
+      "source_artifacts": {
+        "artifact_manifest.json": {
+          "bytes": 7590,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\stt_1700_episode0\\artifact_manifest.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/stt_1700_episode0/artifact_manifest.json",
+          "sha256": "125753a204085c42af475e451fff2c195a4a79bec5324c9fabf7418e6299e947"
+        },
+        "execution_status.json": {
+          "bytes": 1195,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\stt_1700_episode0\\execution_status.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/stt_1700_episode0/execution_status.json",
+          "sha256": "f16804535dcf61167457fdd0d7e126afc0af37717b77905c5b20eb67f08db833"
+        },
+        "launch_contract.json": {
+          "bytes": 3661,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\stt_1700_episode0\\launch_contract.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/stt_1700_episode0/launch_contract.json",
+          "sha256": "3f2db8df501257b89c6f3e0b4eb502b86f01bc26c81dce2bbbe73b491a75400e"
+        },
+        "result.json": {
+          "bytes": 233262,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\stt_1700_episode0\\result.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/stt_1700_episode0/result.json",
+          "sha256": "83deab6342c4df5a396fbf7c3dfafb8e0ba488317877ab3b000eeec5b0625783"
+        },
+        "timing.json": {
+          "bytes": 84038,
+          "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\stt_1700_episode0\\timing.json",
+          "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/stt_1700_episode0/timing.json",
+          "sha256": "3f2c93ef66801adcace971de36deea6fbfd65447ca276687df2fe73486a5e636"
+        }
+      },
+      "source_dataset_split": "train",
+      "task": "stt"
+    }
+  ],
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "3",
+    "MAGNUM_CUDA_DEVICE": "0",
+    "MKL_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OPENCV_FOR_THREADS_NUM": "1"
+  },
+  "formal_training_eligible": false,
+  "generator_code_sha256": "68b6d736cf0567c9059f913ab43b4531e6c54eae0940a90f7ba836cc2492ae52",
+  "gpu_collection_started": false,
+  "gpu_launch_available_in_this_generator": false,
+  "immutable_train_template_refs": {
+    "collect_perception_sidecar.py": {
+      "bytes": 20225,
+      "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\perception_label_review\\collect_perception_sidecar.py",
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_label_collection_v1/collect_perception_sidecar.py",
+      "sha256": "49ec85f007255a4e6cbf25757372ac9d418a205349883262052a69aab1169d32"
+    },
+    "collection_contract.py": {
+      "bytes": 21300,
+      "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\perception_label_review\\collection_contract.py",
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_label_collection_v1/collection_contract.py",
+      "sha256": "a4b28343113c1e57d039957b1b1e4454013e330e2a201f1bded819d0ab8284bd"
+    },
+    "freeze_perception_plan.py": {
+      "bytes": 11922,
+      "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\perception_label_review\\freeze_perception_plan.py",
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_label_collection_v1/freeze_perception_plan.py",
+      "sha256": "f81cc14fdaf7f19b0673117945122d4a39da2ccccd54ca008976d2225d8ca639"
+    },
+    "semantic_labels.py": {
+      "bytes": 5053,
+      "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\perception_label_review\\semantic_labels.py",
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_label_collection_v1/semantic_labels.py",
+      "sha256": "a7a92dad408506f85b9c652daef05b2f903a61ef4155856d0209f061a1210658"
+    }
+  },
+  "label_collection": {
+    "actions": "all_original_Phase2_actions_unchanged",
+    "all_four_and_229_observations_required": true,
+    "new_capture_worldtime_strictly_monotonic": true,
+    "no_substitution_retry_or_overwrite": true,
+    "observations": "reset_0_through_exact_natural_terminal_N",
+    "original_unannotated_pixel_reference_available": false,
+    "partial_admission_allowed": false,
+    "raw_arrays_preserved": true,
+    "replay_geometry_tolerance": 0.0001,
+    "rgb_statistics_tolerance_0_255": 1e-05,
+    "same_render_rgb_panoptic": true,
+    "source_checks": [
+      "identity",
+      "initialization",
+      "assigned_IDs",
+      "camera",
+      "GT_distance",
+      "GT_anypixel_visibility",
+      "input_RGB_mean_std_temporal_for_k_less_than_N"
+    ],
+    "source_worldtime_available": false,
+    "world_time_tolerance_s": 1e-08
+  },
+  "label_independent_admission_scope": "verified_permanent_val_perception_labels_evaluation_only",
+  "label_observation_denominator": 229,
+  "label_output_root": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/perception_label_sidecar_permanent_val4_v1",
+  "maximum_parallel_collectors": 1,
+  "metric_spec": {
+    "automatic_checkpoint_promotion": false,
+    "bbox_convention": "continuous_area_on_inclusive_pixel_extrema_divided_by_width_height; no_plus_one_after_normalization",
+    "bbox_iou_thresholds": [
+      0.5,
+      0.75
+    ],
+    "bbox_population": "all_GT_visible_and_bbox_label_valid_nonterminal_observations; do_not_filter_by_prediction_visibility",
+    "calibration_bins": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "duplicate_or_extra_prediction_index": "protocol_failure; never_select_first_or_best",
+    "ece_definition": "sum_valid_bin_weight_times_abs_mean_probability_minus_positive_frequency",
+    "ece_scope": "valid_probabilities_only; always_report_coverage_and_invalid_count",
+    "invalid_predicted_bbox_iou": 0.0,
+    "invalid_probability_brier_penalty": 1.0,
+    "invalid_probability_log_loss_penalty": "-log(epsilon)",
+    "log_loss_clip_epsilon": 1e-06,
+    "missing_prediction": "invalid_probability_and_bbox; kept_in_original_denominators",
+    "predicted_bbox_clipping": false,
+    "primary_visibility_threshold": 0.9,
+    "probability_domain": "finite_numeric_0_to_1; bool_is_invalid",
+    "report_aggregation": "each_case; pooled_micro; equal_weight_case_macro_with_defined_case_count",
+    "secondary_visibility_threshold": 0.5,
+    "terminal_observation_is_scored_prediction": false,
+    "visible_is_identity_accuracy": false,
+    "world_time_match_tolerance_s": 1e-08
+  },
+  "metrics_code_sha256": "f55078d1d68ac5d96d4304570efe906ceaf966fb6b534a142a7f8b262cc63cf2",
+  "model_config": {
+    "mtime_ns": 1789134074391032993,
+    "path": "/data/nfs/share/wam_tracking/OmTrackVLA/configs/phases/phase2_end_to_end_v1_phase1_init_formal.yaml",
+    "sha256": "292861591ba0cd289e4ec79e128d95a76b5b25fd6bbc01a4aba81782d0490fb1"
+  },
+  "optimizer_input_allowed": false,
+  "permanent_manifest": {
+    "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/recovery_pilot_scene_split_v2/manifest.json",
+    "sha256": "9268ac7bf53a8392ab58a05112e8bd4db662889fa560708973e8afb807ca1e4e"
+  },
+  "physical_gpu": 3,
+  "prediction_contract": {
+    "candidate_actions_not_executed": true,
+    "candidate_checkpoint_hash_fixed_before_evaluation": true,
+    "case_reset_hidden_and_target_memory": true,
+    "common_new_raw_RGB_dataset_for_baseline_and_candidates": true,
+    "deterministic_eval_seed_precision_resize_and_code_pins_required": true,
+    "gate_unchanged": true,
+    "initial_RGB_bbox_once_only": true,
+    "later_GT_bbox_panoptic_semantic_IDs_not_model_inputs": true,
+    "missing_UWB_condition_kept": true,
+    "old_logged_Phase2_predictions_are_diagnostic_only_until_same_input_verified": true,
+    "prediction_fields": [
+      "observation_environment_step",
+      "source_rgb_array_sha256",
+      "source_world_time_s",
+      "visibility_probability",
+      "predicted_bbox_xyxy_norm"
+    ],
+    "replay_every_causal_policy_call": true,
+    "terminal_has_no_prediction": true
+  },
+  "prediction_denominator": 225,
+  "product_acceptance_evidence": false,
+  "protocol_sha256": "632381d9a1948583ce661698b36f63e2d17b13edb51ace1cbf25a33ab97e88fb",
+  "schema_version": 1,
+  "source_protocol": {
+    "bytes": 12462,
+    "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\phase2_val4_baseline_protocol_v3.json",
+    "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/closed_loop_val4_review_v3/phase2_val4_baseline_protocol_v3.json",
+    "sha256": "61a1cfdf949964541f96c7489183c01d88e88f199efeda0e195af3c3b176b8d6"
+  },
+  "source_suite": {
+    "bytes": 5880,
+    "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\SUITE_RESULT.json",
+    "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/SUITE_RESULT.json",
+    "sha256": "3b5293b7b0fa3274744f93753b308c2b0795a01a721e5a895a848a21f4cf6009"
+  },
+  "source_suite_inventory": {
+    "bytes": 42864,
+    "local_review_path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\closed_loop_val4_review\\evidence\\outputs\\takeover\\permanent_val4_closed_loop_v1\\phase2_baseline\\SUITE_ARTIFACTS.json",
+    "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/permanent_val4_closed_loop_v1/phase2_baseline/SUITE_ARTIFACTS.json",
+    "sha256": "1dd749aa5a28102ff0649d39178ae507271505c64987845d720a48f0a664936b"
+  },
+  "stage": "permanent_val4_perception_protocol_v1",
+  "status": "frozen_design_pending_val_collector_and_remote_asset_preflight",
+  "task_resolved_config_sha256": {
+    "at": "5d555785181bc0d09bccb8d4b8e8d1bfcbec157aa87ffddbe80f280adf2f63c2",
+    "dt": "eece98b075e315257369e4dc4897a1ebc730d29bf97a54510e4f05294d39cf5d",
+    "stt": "4e0b3a3338e997cc4d6787e09b68aa6fa9fdb24eb2c49a2333288c42e2eb0ac7"
+  },
+  "training_boundary": {
+    "automatic_model_or_gate_promotion": false,
+    "calibration_temperature_or_threshold_fit_on_val": false,
+    "permanent_val4_never_optimizer_input": true,
+    "source_split_train_does_not_override_permanent_val_role": true,
+    "test_locked_read": false,
+    "train4_only_for_training_or_training_development": true
+  }
+}

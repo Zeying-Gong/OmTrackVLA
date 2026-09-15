@@ -1,0 +1,156 @@
+{
+  "status": "independent_admission_run_complete",
+  "verifier_exit_code": 0,
+  "stdout": "{\"status\": \"verified_development_perception_labels_pending_loader_integration\", \"report\": \"/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/perception_sidecar_independent_admission_v1/verification.json\"}\n",
+  "stderr": "",
+  "tests": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "test_duplicate_sample_alias_cannot_satisfy_nineteen (test_verify_collected_sidecars.BatchAdmissionTests) ... ok\ntest_full_success_grants_only_pending_loader_scope (test_verify_collected_sidecars.BatchAdmissionTests) ... ok\ntest_missing_terminal_count_cannot_satisfy_370 (test_verify_collected_sidecars.BatchAdmissionTests) ... ok\ntest_partial_success_retains_four_results_and_admits_zero (test_verify_collected_sidecars.BatchAdmissionTests) ... ok\ntest_validation_source_is_rejected (test_verify_collected_sidecars.BatchAdmissionTests) ... ok\ntest_camera_stability_recomputed_from_original_matrices (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_causal_policy_index_shift_is_rejected (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_cli_rejection_is_saved_without_changing_input (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_forged_semantic_label_rejected_even_with_rebound_worker_hashes (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_nonmonotonic_measured_clock_rejected_even_if_report_says_passed (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_observation_filename_swap_is_rejected (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_original_source_mutation_is_rejected (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_raw_panoptic_change_not_hidden_by_rebound_file_and_array_hash (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_raw_recomputation_passes_and_limits_scope (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_raw_shape_identity_and_squeezed_hash_are_distinct (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_same_statistics_different_prefix_pixels_cannot_pass (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_tampered_rgb_file_fails_file_hash (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_terminal_without_next_policy_is_not_relabelled_nonterminal (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\ntest_unavailable_motion_supervision_cannot_be_granted (test_verify_collected_sidecars.RawSidecarVerifierTests) ... ok\n\n----------------------------------------------------------------------\nRan 19 tests in 0.126s\n\nOK\n"
+  },
+  "artifacts": [
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_sidecar_verification_v1/verify_collected_sidecars.py",
+      "sha256": "eccb37b2ef5dfa1d887dde0ad59a9283d884eb7ef43389a23b9382a4a011b199",
+      "bytes": 20204
+    },
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_sidecar_verification_v1/tests/test_verify_collected_sidecars.py",
+      "sha256": "0030d92872e0b96213f9b00bff156448c75f535c2737f86c4499d3dd96d0f63f",
+      "bytes": 14567
+    },
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_sidecar_verification_v1/semantic_labels.py",
+      "sha256": "a7a92dad408506f85b9c652daef05b2f903a61ef4155856d0209f061a1210658",
+      "bytes": 5053
+    },
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_sidecar_verification_v1/collection_contract.py",
+      "sha256": "a4b28343113c1e57d039957b1b1e4454013e330e2a201f1bded819d0ab8284bd",
+      "bytes": 21300
+    },
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_sidecar_verification_v1/collect_perception_sidecar.py",
+      "sha256": "49ec85f007255a4e6cbf25757372ac9d418a205349883262052a69aab1169d32",
+      "bytes": 20225
+    },
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/perception_sidecar_verification_v1/perception_sidecar_admission_policy_v1.json",
+      "sha256": "4da01fd3ef238e46db9620948e8f1ca767576c37db648e0f83f5a3d12cce60b7",
+      "bytes": 1310
+    }
+  ],
+  "report_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/perception_sidecar_independent_admission_v1/verification.json",
+  "report_sha256": "aec0690b2d2a3727d7e3ba80afce07670876568e49ed2028e48d6545d70cfc5d",
+  "report": {
+    "admission_policy_sha256": "4da01fd3ef238e46db9620948e8f1ca767576c37db648e0f83f5a3d12cce60b7",
+    "admitted_observation_count": 370,
+    "batch_status_sha256": "9c25d7cdcfeec8b990c739eae37b8388351400683ea5dff2d74fa8f08b96dcd6",
+    "batch_summary_valid": true,
+    "distinct_original_sample_paths": [
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/at_0401_128steps__anchor032/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/at_0401_128steps__anchor041/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/at_0401_128steps__anchor064/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor014/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor015/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor019/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor032/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor064/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor026/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor027/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor031/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor032/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor007/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor012/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor032/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor036/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor037/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor041/sample/sample.json",
+      "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor064/sample/sample.json"
+    ],
+    "expected_observation_count": 370,
+    "formal_training_eligible": false,
+    "gt_training_inputs_generated": false,
+    "independently_verified_coverage": {
+      "nonterminal_observations_without_original_prefix_pixels": 138,
+      "observations_verified": 370,
+      "original_prefix_observations_verified": 645,
+      "original_prefix_unique_observations_verified": 228,
+      "saved_frame_files_verified": 740,
+      "terminal_observations_without_source_policy_rgb_statistics": 4
+    },
+    "limitations": [
+      "Stored simulator measurements are checked for consistency with frozen source and prefix evidence; raw pixels alone cannot independently prove physical time or geometry.",
+      "GT anypixel is not an occlusion category, visible fraction, or calibrated same-identity prediction.",
+      "No stop/motion-permission/binding/ego/identity-prediction supervision or optimizer admission is granted."
+    ],
+    "method": "Re-read saved RGB/raw npy; verify file/array hashes; rederive all semantic fields; independently recompute checks and compare every original prefix pixel/time.",
+    "model_loaded": false,
+    "optimizer_input_allowed": false,
+    "original_inputs_unchanged": true,
+    "partial_admission_allowed": false,
+    "plan_file_sha256": "dd9fcd6b00249a802410f1638216f56a64af51ef998fd1fc9d6566317e080780",
+    "plan_sha256": "789c1e4b5a668a1017e29d56aea174721ba08352921df22193877f9b96bd5697",
+    "product_acceptance_evidence": false,
+    "replay_started": false,
+    "required_distinct_original_samples": 19,
+    "source_count": 4,
+    "source_files_modified": false,
+    "sources": [
+      {
+        "checks_recomputed": 999,
+        "distinct_original_samples": 3,
+        "labels_sha256": "2d2541ce55c96876bf893d8d1716bc67defd8a69d035261e048c03ef537bda5d",
+        "nonterminal_observations_without_original_prefix_pixels": 20,
+        "observations_verified": 86,
+        "original_prefix_observations_verified": 140,
+        "original_prefix_unique_observations_verified": 65,
+        "run_id": "at_0401_128steps",
+        "saved_frame_files_verified": 172,
+        "status": "independently_verified",
+        "terminal_observations_without_source_policy_rgb_statistics": 1
+      },
+      {
+        "checks_recomputed": 1200,
+        "distinct_original_samples": 5,
+        "labels_sha256": "897c0823c588ac75f8d5c179b45b3d6b857b7021655a449b3d50a4ee183905bd",
+        "nonterminal_observations_without_original_prefix_pixels": 39,
+        "observations_verified": 105,
+        "original_prefix_observations_verified": 149,
+        "original_prefix_unique_observations_verified": 65,
+        "run_id": "dt_0200_128steps",
+        "saved_frame_files_verified": 210,
+        "status": "independently_verified",
+        "terminal_observations_without_source_policy_rgb_statistics": 1
+      },
+      {
+        "checks_recomputed": 979,
+        "distinct_original_samples": 5,
+        "labels_sha256": "090ad52f8dc0133e1826af5cfc26c69aae11c5fd12db28fe261b67767d462c3b",
+        "nonterminal_observations_without_original_prefix_pixels": 51,
+        "observations_verified": 85,
+        "original_prefix_observations_verified": 128,
+        "original_prefix_unique_observations_verified": 33,
+        "run_id": "stt_0000_128steps",
+        "saved_frame_files_verified": 170,
+        "status": "independently_verified",
+        "terminal_observations_without_source_policy_rgb_statistics": 1
+      },
+      {
+        "checks_recomputed": 1170,
+        "distinct_original_samples": 6,
+        "labels_sha256": "9db0dd8492ae6f59f30062d690705c8fd0386900e7fd2308f1e1b57627f7ccd8",
+        "nonterminal_observations_without_original_prefix_pixels": 28,
+        "observations_verified": 94,
+        "original_prefix_observations_verified": 228,
+        "original_prefix_unique_observations_verified": 65,
+        "run_id": "stt_3100_128steps",
+        "saved_frame_files_verified": 188,
+        "status": "independently_verified",
+        "terminal_observations_without_source_policy_rgb_statistics": 1
+      }
+    ],
+    "status": "verified_development_perception_labels_pending_loader_integration",
+    "verifier_sha256": "eccb37b2ef5dfa1d887dde0ad59a9283d884eb7ef43389a23b9382a4a011b199"
+  }
+}

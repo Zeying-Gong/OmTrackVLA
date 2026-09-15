@@ -1,0 +1,7 @@
+{
+  "omtrackvla/data/perception_sidecar.py": "c893a2f15ef7f7069d4f8436528f99428c7ed807f2cb313507534ded0ea898de",
+  "omtrackvla/training/sequence_training.py": "f936822e2c2cce861726741fdeb27d560b43ce3c2ba6231b37f86c9a8c361934",
+  "tests/test_perception_sidecar.py": "08a5eb66fe85f9f79649935f947a2a17ac1ffcf7a508fe638b695d1535008025",
+  "tests/test_sequence_perception_loss.py": "18c58297708280b1548cf3a7a209d9f71d4ec58bfff1d264aec37f81c1a56ed4",
+  "scripts/preflight_perception_supervision.py": "d17b3ed830bd30822ee0eff8b46247c5a559d489ef9325f65aa63b0fd7910551"
+}

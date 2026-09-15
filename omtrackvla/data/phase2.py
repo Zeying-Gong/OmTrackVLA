@@ -101,6 +101,17 @@ def validate_perception_cache_manifest(
         raise ValueError("frozen perception cache contains no episodes")
     if int(selection.get("cached_episodes", -1)) != len(episodes):
         raise ValueError("frozen perception cache episode count mismatch")
+    skipped = value.get("skipped")
+    if "requested_episodes" in selection or skipped is not None:
+        if not isinstance(skipped, list):
+            raise ValueError("frozen perception cache skipped episode records are missing")
+        if int(selection.get("requested_episodes", -1)) != len(episodes) + len(skipped):
+            raise ValueError("frozen perception cache requested episode count mismatch")
+        if (
+            "skipped_episodes" in selection
+            and int(selection["skipped_episodes"]) != len(skipped)
+        ):
+            raise ValueError("frozen perception cache skipped episode count mismatch")
     return value
 
 

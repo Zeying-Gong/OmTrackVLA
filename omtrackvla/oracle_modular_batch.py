@@ -337,6 +337,8 @@ def evaluate_episode(
     perception_correct_steps = 0
     perception_target_ious = []
     perception_gt_visible_steps = 0
+    perception_memory_updates = 0
+    perception_correct_memory_updates = 0
     goal_crop_wait_steps = 0
     goal_crop_initialized = not defer_goal_crop
     records = []
@@ -453,6 +455,13 @@ def evaluate_episode(
             perception_detected_steps += int(target.visible)
             target_selection_correct = bool(target.visible and target_iou >= 0.3)
             perception_correct_steps += int(target_selection_correct)
+            memory_updated = bool(
+                getattr(perception, "last_memory_updated", False)
+            )
+            perception_memory_updates += int(memory_updated)
+            perception_correct_memory_updates += int(
+                memory_updated and target_selection_correct
+            )
             candidate_records = []
             for candidate in (
                 getattr(perception, "last_candidate_diagnostics", None) or []
@@ -653,7 +662,23 @@ def evaluate_episode(
                     "perception_goal_similarity": getattr(
                         perception, "last_goal_similarity", None
                     ),
+                    "perception_anchor_similarity": getattr(
+                        perception, "last_anchor_similarity", None
+                    ),
+                    "perception_identity_margin": getattr(
+                        perception, "last_identity_margin", None
+                    ),
+                    "perception_memory_updated": memory_updated,
                     "perception_candidates": candidate_records,
+                    # These labels describe the same pre-action RGB frame as
+                    # the perception fields above.  ``visible`` below is the
+                    # post-action task observation and must not be used as the
+                    # denominator for frame-level perception recall.
+                    "perception_gt_visible": current_gt_bbox is not None,
+                    "perception_gt_bbox_xyxy": (
+                        [float(value) for value in current_gt_bbox]
+                        if current_gt_bbox is not None else None
+                    ),
                     "target_bbox_iou": target_iou,
                     "target_selection_correct": target_selection_correct,
                     "mode": decision.mode,
@@ -750,6 +775,17 @@ def evaluate_episode(
         "perception_mean_target_iou": (
             float(np.mean(perception_target_ious)) if perception_target_ious else 0.0
         ),
+        "perception_memory_updates": perception_memory_updates,
+        "perception_memory_update_precision": (
+            perception_correct_memory_updates / perception_memory_updates
+            if perception_memory_updates else None
+        ),
+        "perception_detected_steps": perception_detected_steps,
+        "perception_correct_steps": perception_correct_steps,
+        "perception_gt_visible_steps": perception_gt_visible_steps,
+        "perception_target_iou_count": len(perception_target_ious),
+        "perception_target_iou_sum": float(sum(perception_target_ious)),
+        "perception_correct_memory_updates": perception_correct_memory_updates,
         "goal_crop_deferred": bool(defer_goal_crop),
         "goal_crop_wait_steps": goal_crop_wait_steps,
         "goal_crop_initialized": goal_crop_initialized,
@@ -849,8 +885,49 @@ def main():
     parser.add_argument("--map-robot-radius", type=float, default=0.30)
     parser.add_argument("--map-min-static-hits", type=int, default=2)
     parser.add_argument("--person-detector-weights", default=str(DEFAULT_WEIGHTS))
+    parser.add_argument(
+        "--person-detector-architecture",
+        choices=(
+            "fasterrcnn_mobilenet_v3_large_320_fpn",
+            "fasterrcnn_resnet50_fpn_v2",
+        ),
+        default="fasterrcnn_mobilenet_v3_large_320_fpn",
+    )
     parser.add_argument("--person-reid-weights", default=str(DEFAULT_REID_WEIGHTS))
+    parser.add_argument("--person-reid-backend", choices=("osnet", "kpr"), default="osnet")
+    parser.add_argument("--person-kpr-source")
+    parser.add_argument("--person-fusion-weights")
     parser.add_argument("--person-score-threshold", type=float, default=0.30)
+    parser.add_argument("--person-reid-threshold", type=float, default=0.55)
+    parser.add_argument("--person-tracklet-identity-floor", type=float)
+    parser.add_argument(
+        "--person-short-reacquisition-identity-threshold", type=float, default=0.81
+    )
+    parser.add_argument("--person-global-identity-threshold", type=float, default=0.67)
+    parser.add_argument(
+        "--person-global-single-identity-threshold", type=float, default=0.72
+    )
+    parser.add_argument("--person-global-identity-margin", type=float, default=0.01)
+    parser.add_argument("--person-reacquisition-confirm-frames", type=int, default=1)
+    parser.add_argument(
+        "--person-reacquisition-consistency-reid", type=float, default=0.0
+    )
+    parser.add_argument(
+        "--person-memory-update-detector-threshold", type=float, default=0.70
+    )
+    parser.add_argument(
+        "--person-memory-update-identity-threshold", type=float, default=0.82
+    )
+    parser.add_argument(
+        "--person-memory-update-anchor-threshold", type=float, default=0.72
+    )
+    parser.add_argument(
+        "--person-memory-update-association-threshold", type=float, default=0.65
+    )
+    parser.add_argument("--person-memory-update-margin", type=float, default=0.04)
+    parser.add_argument(
+        "--person-memory-update-min-confirmed-steps", type=int, default=2
+    )
     parser.add_argument("--perception-device", default="cuda")
     parser.add_argument(
         "--target-initialization",
@@ -1127,7 +1204,7 @@ def main():
         # Habitat must establish its EGL context before Torch initializes CUDA;
         # doing this in the opposite order produces black jaw-camera frames.
         perception = None
-        perception_name = RGBPersonPerceptionWorker.name
+        perception_name = f"{RGBPersonPerceptionWorker.name}-{args.person_reid_backend}"
     counts = {
         "completed": 0, "skipped": 0, "errors": 0,
         "unsuccessful": 0, "exhausted": 0,
@@ -1145,6 +1222,12 @@ def main():
         "selected_episodes": len(indexed),
         "remaining_episodes": remaining_episodes,
         "config": config_path,
+        "max_steps": (
+            args.max_steps
+            if args.max_steps is not None
+            else int(config.habitat.environment.max_episode_steps)
+        ),
+        "save_steps": bool(args.save_steps),
         "controller": args.controller,
         "target_mode": target_mode,
         "navmesh_calibration": args.navmesh_calibration,
@@ -1162,6 +1245,39 @@ def main():
             else "target-observation"
         ),
         "perception": perception_name,
+        "person_detector_architecture": args.person_detector_architecture,
+        "person_reid_backend": args.person_reid_backend,
+        "person_fusion_weights": args.person_fusion_weights,
+        "person_reid_threshold": args.person_reid_threshold,
+        "person_tracklet_identity_floor": args.person_tracklet_identity_floor,
+        "person_short_reacquisition_identity_threshold": (
+            args.person_short_reacquisition_identity_threshold
+        ),
+        "person_global_identity_threshold": args.person_global_identity_threshold,
+        "person_global_single_identity_threshold": (
+            args.person_global_single_identity_threshold
+        ),
+        "person_global_identity_margin": args.person_global_identity_margin,
+        "person_reacquisition_confirm_frames": args.person_reacquisition_confirm_frames,
+        "person_reacquisition_consistency_reid": (
+            args.person_reacquisition_consistency_reid
+        ),
+        "person_memory_update_detector_threshold": (
+            args.person_memory_update_detector_threshold
+        ),
+        "person_memory_update_identity_threshold": (
+            args.person_memory_update_identity_threshold
+        ),
+        "person_memory_update_anchor_threshold": (
+            args.person_memory_update_anchor_threshold
+        ),
+        "person_memory_update_association_threshold": (
+            args.person_memory_update_association_threshold
+        ),
+        "person_memory_update_margin": args.person_memory_update_margin,
+        "person_memory_update_min_confirmed_steps": (
+            args.person_memory_update_min_confirmed_steps
+        ),
         "person_score_threshold": args.person_score_threshold,
         "target_initialization": target_initialization,
         "lost_target_policy": lost_target_policy,
@@ -1202,9 +1318,45 @@ def main():
                 # Force Habitat's first RGB render before the detector worker
                 # establishes a CUDA context on the same physical GPU.
                 perception = RGBPersonPerceptionWorker(
-                weights_path=args.person_detector_weights,
-                reid_weights_path=args.person_reid_weights,
+                    weights_path=args.person_detector_weights,
+                    detector_architecture=args.person_detector_architecture,
+                    reid_weights_path=args.person_reid_weights,
+                    reid_backend=args.person_reid_backend,
+                    kpr_source_path=args.person_kpr_source,
+                    fusion_weights_path=args.person_fusion_weights,
                     score_threshold=args.person_score_threshold,
+                    reid_threshold=args.person_reid_threshold,
+                    tracklet_identity_floor=args.person_tracklet_identity_floor,
+                    short_reacquisition_identity_threshold=(
+                        args.person_short_reacquisition_identity_threshold
+                    ),
+                    global_identity_threshold=args.person_global_identity_threshold,
+                    global_single_identity_threshold=(
+                        args.person_global_single_identity_threshold
+                    ),
+                    global_identity_margin=args.person_global_identity_margin,
+                    reacquisition_confirm_frames=(
+                        args.person_reacquisition_confirm_frames
+                    ),
+                    reacquisition_consistency_reid=(
+                        args.person_reacquisition_consistency_reid
+                    ),
+                    memory_update_detector_threshold=(
+                        args.person_memory_update_detector_threshold
+                    ),
+                    memory_update_identity_threshold=(
+                        args.person_memory_update_identity_threshold
+                    ),
+                    memory_update_anchor_threshold=(
+                        args.person_memory_update_anchor_threshold
+                    ),
+                    memory_update_association_threshold=(
+                        args.person_memory_update_association_threshold
+                    ),
+                    memory_update_margin=args.person_memory_update_margin,
+                    memory_update_min_confirmed_steps=(
+                        args.person_memory_update_min_confirmed_steps
+                    ),
                     device=args.perception_device,
                 )
             episode = env.current_episode

@@ -23,6 +23,8 @@ def _manifest(index: int):
             "unit_count": 10,
             "requested_episodes": 1,
             "cached_episodes": 1,
+            "skipped_episodes": 0,
+            "canonically_rejected_episodes": 0,
             "record_stride": 3,
             "max_units": None,
             "max_episodes": None,
@@ -48,6 +50,8 @@ class MergePhase2CacheTest(unittest.TestCase):
             ["shards/shard-000-of-002", "shards/shard-001-of-002"],
         )
         self.assertEqual(merged["selection"]["cached_episodes"], 2)
+        self.assertEqual(merged["selection"]["requested_episodes"], 2)
+        self.assertEqual(merged["selection"]["skipped_episodes"], 0)
         self.assertEqual(merged["selection"]["merged_from_shards"], 2)
         self.assertEqual(
             merged["episodes"]["run-1/mode/0/camera"]["cache_path"],
@@ -64,6 +68,29 @@ class MergePhase2CacheTest(unittest.TestCase):
         second["selection"]["max_episodes"] = 1
         with self.assertRaisesRegex(ValueError, "development-limited"):
             merge_manifests([_manifest(0), second], ["a", "b"])
+
+    def test_merge_preserves_explicit_rejections_and_rejects_missing_accounting(self):
+        first = _manifest(0)
+        first["selection"]["requested_episodes"] = 2
+        first["selection"]["skipped_episodes"] = 1
+        first["selection"]["canonically_rejected_episodes"] = 1
+        first["skipped"] = [
+            {
+                "path": "run-rejected/mode/0/camera",
+                "reason": "source_not_canonically_accepted",
+                "quality_status": "rejected",
+            }
+        ]
+        merged = merge_manifests([first, _manifest(1)], ["a", "b"])
+        self.assertEqual(merged["selection"]["requested_episodes"], 3)
+        self.assertEqual(merged["selection"]["cached_episodes"], 2)
+        self.assertEqual(merged["selection"]["skipped_episodes"], 1)
+        self.assertEqual(merged["selection"]["canonically_rejected_episodes"], 1)
+
+        broken = _manifest(0)
+        broken["selection"]["requested_episodes"] = 2
+        with self.assertRaisesRegex(ValueError, "requested episode count"):
+            merge_manifests([broken, _manifest(1)], ["a", "b"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,585 @@
+{
+  "auditor_reference": {
+    "bytes": 18503,
+    "path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\simulation_sota_review\\semantic_renderer_probe_v8\\verify_probe_remote.py",
+    "sha256": "d1dd0f49dfabd08e1cf303ed9f1b3f261ac4629ef0a2a8037c76a38ee2ddf85f"
+  },
+  "cases": [
+    {
+      "actors": [
+        {
+          "actor": 0,
+          "original_rendered_pixels": {
+            "1063": 2506
+          },
+          "template_rendered_pixels": {
+            "1063": 2506
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 2,
+          "original_rendered_pixels": {
+            "1010": 2507
+          },
+          "template_rendered_pixels": {
+            "2002": 2507
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 3,
+          "original_rendered_pixels": {
+            "1032": 2512
+          },
+          "template_rendered_pixels": {
+            "2003": 2512
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 4,
+          "original_rendered_pixels": {
+            "1007": 2508
+          },
+          "template_rendered_pixels": {
+            "2004": 2508
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 5,
+          "original_rendered_pixels": {
+            "1007": 2508
+          },
+          "template_rendered_pixels": {
+            "2005": 2508
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 6,
+          "original_rendered_pixels": {
+            "1007": 2508
+          },
+          "template_rendered_pixels": {
+            "2006": 2508
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 7,
+          "original_rendered_pixels": {
+            "1007": 2508
+          },
+          "template_rendered_pixels": {
+            "2007": 2508
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 8,
+          "original_rendered_pixels": {
+            "1007": 2508
+          },
+          "template_rendered_pixels": {
+            "2008": 2508
+          },
+          "unique_attribution_verified": true
+        }
+      ],
+      "cross_environment_geometry": {
+        "actual_cameras_exact": true,
+        "actual_source_urdf_and_nonsemantic_creation_attributes_equal": true,
+        "all_silhouettes_exact": true,
+        "baseline_rgb": {
+          "rgb_changed_pixel_fraction": 0.0,
+          "rgb_changed_pixels": 0,
+          "rgb_exact": true,
+          "rgb_max_channel_absdiff": 0,
+          "rgb_mean_channel_absdiff": 0.0
+        },
+        "empty_background_exact": true,
+        "object_ids_permitted_to_differ": true,
+        "physical_state_maxdiff": 0.0,
+        "solo_rgb": [
+          {
+            "actor": 0,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 2,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 3,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 4,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 5,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 6,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 7,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 8,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          }
+        ]
+      },
+      "factory_scope_journal": {
+        "active": false,
+        "initial_actor_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "replacement_actor_indices": [
+          0,
+          2,
+          3
+        ]
+      },
+      "restoration": [
+        {
+          "kind": "original_environment",
+          "restoration_checks_verified": 18,
+          "restoration_rgb_max_changed_pixels": 4,
+          "restoration_rgb_max_channel_absdiff": 48,
+          "restoration_rgb_max_mean_channel_absdiff": 0.00025770399305555556,
+          "restored_pose_maxdiff": 3.5762786865234375e-07
+        },
+        {
+          "kind": "template_environment",
+          "restoration_checks_verified": 18,
+          "restoration_rgb_max_changed_pixels": 4,
+          "restoration_rgb_max_channel_absdiff": 48,
+          "restoration_rgb_max_mean_channel_absdiff": 0.00025770399305555556,
+          "restored_pose_maxdiff": 3.5762786865234375e-07
+        }
+      ],
+      "sample_id": "clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98",
+      "supervisor_sha256": "1bd0f6de45c28aa6aaa5af69732c49c6f49b86a17879068f6a2b154a4fd8852f",
+      "task": "DT"
+    },
+    {
+      "actors": [
+        {
+          "actor": 0,
+          "original_rendered_pixels": {
+            "1075": 5948
+          },
+          "template_rendered_pixels": {
+            "1075": 5948
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 2,
+          "original_rendered_pixels": {
+            "1075": 5948
+          },
+          "template_rendered_pixels": {
+            "2002": 5948
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 3,
+          "original_rendered_pixels": {
+            "1075": 5948
+          },
+          "template_rendered_pixels": {
+            "2003": 5948
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 4,
+          "original_rendered_pixels": {
+            "1075": 5948
+          },
+          "template_rendered_pixels": {
+            "2004": 5948
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 5,
+          "original_rendered_pixels": {
+            "1075": 5948
+          },
+          "template_rendered_pixels": {
+            "2005": 5948
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 6,
+          "original_rendered_pixels": {
+            "1075": 5948
+          },
+          "template_rendered_pixels": {
+            "2006": 5948
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 7,
+          "original_rendered_pixels": {
+            "1075": 5948
+          },
+          "template_rendered_pixels": {
+            "2007": 5948
+          },
+          "unique_attribution_verified": true
+        },
+        {
+          "actor": 8,
+          "original_rendered_pixels": {
+            "1075": 5948
+          },
+          "template_rendered_pixels": {
+            "2008": 5948
+          },
+          "unique_attribution_verified": true
+        }
+      ],
+      "cross_environment_geometry": {
+        "actual_cameras_exact": true,
+        "actual_source_urdf_and_nonsemantic_creation_attributes_equal": true,
+        "all_silhouettes_exact": true,
+        "baseline_rgb": {
+          "rgb_changed_pixel_fraction": 0.0,
+          "rgb_changed_pixels": 0,
+          "rgb_exact": true,
+          "rgb_max_channel_absdiff": 0,
+          "rgb_mean_channel_absdiff": 0.0
+        },
+        "empty_background_exact": true,
+        "object_ids_permitted_to_differ": true,
+        "physical_state_maxdiff": 0.0,
+        "solo_rgb": [
+          {
+            "actor": 0,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 2,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 3,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 4,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 5,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 6,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 7,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          },
+          {
+            "actor": 8,
+            "rgb_changed_pixel_fraction": 0.0,
+            "rgb_changed_pixels": 0,
+            "rgb_exact": true,
+            "rgb_max_channel_absdiff": 0,
+            "rgb_mean_channel_absdiff": 0.0
+          }
+        ]
+      },
+      "factory_scope_journal": {
+        "active": false,
+        "initial_actor_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "replacement_actor_indices": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "restoration": [
+        {
+          "kind": "original_environment",
+          "restoration_checks_verified": 18,
+          "restoration_rgb_max_changed_pixels": 7,
+          "restoration_rgb_max_channel_absdiff": 1,
+          "restoration_rgb_max_mean_channel_absdiff": 2.2605613425925925e-05,
+          "restored_pose_maxdiff": 5.960464477539062e-07
+        },
+        {
+          "kind": "template_environment",
+          "restoration_checks_verified": 18,
+          "restoration_rgb_max_changed_pixels": 7,
+          "restoration_rgb_max_channel_absdiff": 1,
+          "restoration_rgb_max_mean_channel_absdiff": 2.2605613425925925e-05,
+          "restored_pose_maxdiff": 5.960464477539062e-07
+        }
+      ],
+      "sample_id": "clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927",
+      "supervisor_sha256": "bb5080ce4389542ae770a175ba672ae2aed859fc200a3d6a68e049ab83d5298f",
+      "task": "AT"
+    }
+  ],
+  "collection_freeze_authorized": true,
+  "collection_launch_authorized": false,
+  "environment_steps": 0,
+  "evidence_references": [
+    {
+      "bytes": 6946,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/semantic_renderer_probe_v8/prepared.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/semantic_renderer_probe_v8/prepared.json",
+      "sha256": "786faec3e0f3900cc8eb6d29fa4c191589389cf5625c36f72c420410cebad268"
+    },
+    {
+      "bytes": 2099,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/semantic_renderer_probe_v8/source_manifest.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/semantic_renderer_probe_v8/source_manifest.json",
+      "sha256": "618791bbc2340e6cf8e08b3b30b5fa109e72b0c66b1ef61f512ba3bc7e848daf"
+    },
+    {
+      "bytes": 8458,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/semantic_renderer_probe_v8/ao_template_semantics.py",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/semantic_renderer_probe_v8/ao_template_semantics.py",
+      "sha256": "f8f1c4b52a475b2728325e4f400fe65817ee9e93e7ad9865bb96f0e6788fc383"
+    },
+    {
+      "bytes": 2582,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/semantic_renderer_probe_v8/ao_template_scope.py",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/.codex_upload/semantic_renderer_probe_v8/ao_template_scope.py",
+      "sha256": "ae7d43a201bfdad566a7858d06ad4b05954a489efa5b821319a03a9ed18ce4bc"
+    },
+    {
+      "bytes": 119054,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/supervisor_result.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/supervisor_result.json",
+      "sha256": "1bd0f6de45c28aa6aaa5af69732c49c6f49b86a17879068f6a2b154a4fd8852f"
+    },
+    {
+      "bytes": 6075,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/cross_environment_geometry.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/cross_environment_geometry.json",
+      "sha256": "21beb6e3c36cec5e71d39899c1fb3ae977de9c72a4c37bb27de789f67b6f6a9d"
+    },
+    {
+      "bytes": 169,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/template_environment/factory_scope_journal.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/template_environment/factory_scope_journal.json",
+      "sha256": "534013edf99f68ce64ef683952a9e4e7fc48241134126e279e9bbfe305f159ff"
+    },
+    {
+      "bytes": 14088,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/original_environment/environment_result.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/original_environment/environment_result.json",
+      "sha256": "b47788b587e1444185bf0e6ee6874eb7b226a76a2ea2e83748882acf3c2ca1a7"
+    },
+    {
+      "bytes": 37431,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/template_environment/environment_result.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/template_environment/environment_result.json",
+      "sha256": "22cd9615498ef73053db7988a2445b2d98259f097e86b723269fd3d79461f95c"
+    },
+    {
+      "bytes": 119477,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/supervisor_result.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/supervisor_result.json",
+      "sha256": "bb5080ce4389542ae770a175ba672ae2aed859fc200a3d6a68e049ab83d5298f"
+    },
+    {
+      "bytes": 6075,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/cross_environment_geometry.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/cross_environment_geometry.json",
+      "sha256": "054966d312821d15508e8ad769e9b520876edd8c45a678f29cf0c85065d45845"
+    },
+    {
+      "bytes": 204,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/template_environment/factory_scope_journal.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/template_environment/factory_scope_journal.json",
+      "sha256": "840bd2217cb9cfeb14106f1f011ed297528f8e4ca6672e7828942025ecb8d6cc"
+    },
+    {
+      "bytes": 14248,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/original_environment/environment_result.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/original_environment/environment_result.json",
+      "sha256": "33e74ceecb7c77ca8cdcf7c537cdc51a29f6e57f37ea4d458489b8adf8ba8829"
+    },
+    {
+      "bytes": 37651,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/template_environment/environment_result.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/template_environment/environment_result.json",
+      "sha256": "ece011b8c907f209950071c08f2bf8161968e5ec0d8a39c03c3beb70cce5c038"
+    }
+  ],
+  "factory_sha256": "ae7d43a201bfdad566a7858d06ad4b05954a489efa5b821319a03a9ed18ce4bc",
+  "helper_sha256": "f8f1c4b52a475b2728325e4f400fe65817ee9e93e7ad9865bb96f0e6788fc383",
+  "independent_audit_reference": {
+    "bytes": 127630,
+    "path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\simulation_sota_review\\semantic_renderer_probe_v8\\independent_review_v1\\verification.json",
+    "sha256": "b918f505a366060e9ab70f85dcec9f70864a4974a4e785a29241ab2447e7127c"
+  },
+  "limitations": [
+    "No physics or policy steps were executed; dynamic teacher and tracking quality remain separate acceptance tasks.",
+    "Shared IDs in original AT are established by independent controlled actor placement; the original reset itself showed only the main actor contributing target-ID pixels."
+  ],
+  "method": "private_AO_template_shared_assets_force_URDF_reload",
+  "optimizer_input_allowed": false,
+  "original_action_source_unchanged": true,
+  "original_file_download_receipt_reference": {
+    "bytes": 6459,
+    "path": "C:\\Users\\59783\\Desktop\\OmTrackVLA_project_audit\\simulation_sota_review\\semantic_renderer_probe_v8\\selected_original_raw_v1\\receipts.json",
+    "sha256": "ab8154bc763cd471dfc18051a24a7a57ceaec03e4889cab06baf6bee5dcff45e"
+  },
+  "panoptic_restoration_exact": true,
+  "physical_state_atol": 1e-06,
+  "prepared_sha256": "786faec3e0f3900cc8eb6d29fa4c191589389cf5625c36f72c420410cebad268",
+  "production_source_modified": false,
+  "qualification_candidate_sha256": "3daec95473aa2e6689404f215587e8deaeb629ab56e7631e4c709a51af189eda",
+  "qualified_panoptic_semantic_target": "SemanticSensorTarget.SEMANTIC_ID",
+  "recommended_status": "qualified",
+  "reviewed_at_utc": "2026-09-14T11:10:24.847116+00:00",
+  "reviewed_by": "root",
+  "rgb_restoration_bounds": {
+    "max_changed_pixel_fraction": 0.001,
+    "max_mean_absolute_channel_difference": 0.01,
+    "units": "uint8 channels 0..255"
+  },
+  "root_review": "Accepted exact helper/factory after independent raw instance attribution and same-state geometry/camera/RGB checks. This qualifies renderer construction only; per-run data, dynamic teacher quality and optimizer admission remain separate.",
+  "scene_node_semantic_setters_used": false,
+  "schema_version": 1,
+  "scope": "renderer instance identity on the two original frozen DT/AT train cases, all eight humanoid actors, initial placeholders and original episode replacements",
+  "seed": 100,
+  "sensor_target_evidence_references": [
+    {
+      "bytes": 226193,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/original_environment/captures/attribution/baseline/frame.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/original_environment/captures/attribution/baseline/frame.json",
+      "sha256": "7c0589f018c42d3b1a22b0fd8cb118aaa4b0f8b4f391507ca3237369b4730b01"
+    },
+    {
+      "bytes": 226193,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/template_environment/captures/attribution/baseline/frame.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_dt_ikchnydhtrf_idx01021_b68859963b98/template_environment/captures/attribution/baseline/frame.json",
+      "sha256": "3c65cff6d1bc60cfeec0473952c5a5f9ef9d6e9fc6eeeea73c992f386996d283"
+    },
+    {
+      "bytes": 225324,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/original_environment/captures/attribution/baseline/frame.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/original_environment/captures/attribution/baseline/frame.json",
+      "sha256": "51e01c7418376c0bca83c4323bc07d6f02ac5b9a6ba431e02dd9595394b59822"
+    },
+    {
+      "bytes": 225324,
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/template_environment/captures/attribution/baseline/frame.json",
+      "resolved_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/semantic_renderer_probe_v8/clean_train_v1_at_dtzywo8hppu_idx05183_71b3bb7df927/template_environment/captures/attribution/baseline/frame.json",
+      "sha256": "51e01c7418376c0bca83c4323bc07d6f02ac5b9a6ba431e02dd9595394b59822"
+    }
+  ],
+  "shared_source_assets_unchanged": true,
+  "status": "qualified",
+  "teacher_quality_qualified": false,
+  "totals": {
+    "executed_source_files": 14,
+    "raw_captures": 144,
+    "restoration_checks": 72,
+    "sealed_bytes": 139979974,
+    "sealed_files": 542
+  }
+}

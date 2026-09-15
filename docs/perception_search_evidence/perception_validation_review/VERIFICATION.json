@@ -1,0 +1,68 @@
+{
+  "artifacts": {
+    "PERMANENT_VAL4_PERCEPTION_PROTOCOL.md": {
+      "bytes": 10268,
+      "sha256": "6c84debfbf1d13154ece6c9097a026a039036c59627e4c802d467fca9dbdbd24"
+    },
+    "cpu_tests.log": {
+      "bytes": 3447,
+      "sha256": "4559e3ce2e67b37e6bcc2a6a313f83286dcf78a44e96af31620538d42deab699"
+    },
+    "freeze_cpu_verification.py": {
+      "bytes": 2861,
+      "sha256": "e305381c038117ddbb9813ee46f481a1f055bc7ac274a92a36d62d5a45798970"
+    },
+    "generate_val4_protocol.py": {
+      "bytes": 15680,
+      "sha256": "68b6d736cf0567c9059f913ab43b4531e6c54eae0940a90f7ba836cc2492ae52"
+    },
+    "perception_metrics.py": {
+      "bytes": 12110,
+      "sha256": "f55078d1d68ac5d96d4304570efe906ceaf966fb6b534a142a7f8b262cc63cf2"
+    },
+    "permanent_val4_perception_protocol_v1.json": {
+      "bytes": 47455,
+      "sha256": "abb976b18701c4d97d3e667759a92b591135d86b610a93364f9c6b7ba57a6542"
+    },
+    "test_perception_protocol.py": {
+      "bytes": 11109,
+      "sha256": "9c0c5e8a7432d19cdc8b5adea54a392463ddf7f35b4c28ca44789034fc5f693f"
+    },
+    "test_val_collection_adapter.py": {
+      "bytes": 8515,
+      "sha256": "0d32d9df72730924713ae5f3d7f9c658e2e2ac340ad667c041894b6d49e3d0d4"
+    },
+    "val_collection_adapter.py": {
+      "bytes": 10245,
+      "sha256": "2e9b1067cf281fcce975a21a8b30beb34226f9d3fdd28cff51b5a22184a2afdd"
+    }
+  },
+  "case_denominator": 4,
+  "created_at_utc": "2026-09-14T05:13:24.430543+00:00",
+  "formal_training_eligible": false,
+  "frozen_train_bundle_modified": false,
+  "gpu_collection_started": false,
+  "independent_raw_val_admission": false,
+  "label_observation_denominator": 229,
+  "optimizer_input_allowed": false,
+  "optimizer_started": false,
+  "prediction_denominator": 225,
+  "protocol_file_sha256": "abb976b18701c4d97d3e667759a92b591135d86b610a93364f9c6b7ba57a6542",
+  "protocol_sha256": "632381d9a1948583ce661698b36f63e2d17b13edb51ace1cbf25a33ab97e88fb",
+  "python": "D:\\Users\\59783\\miniconda3\\python.exe",
+  "python39_ast_checked_files": [
+    "freeze_cpu_verification.py",
+    "generate_val4_protocol.py",
+    "perception_metrics.py",
+    "test_perception_protocol.py",
+    "test_val_collection_adapter.py",
+    "val_collection_adapter.py"
+  ],
+  "python_version": "3.11.5 | packaged by Anaconda, Inc. | (main, Sep 11 2023, 13:26:23) [MSC v.1916 64 bit (AMD64)]",
+  "real_val_labels_generated": false,
+  "stage": "permanent_val4_perception_design_cpu_verification_v1",
+  "status": "passed_cpu_design_tests_pending_remote_preflight_and_real_val_collector",
+  "test_count": 21,
+  "test_exit_code": 0,
+  "test_locked_read": false
+}

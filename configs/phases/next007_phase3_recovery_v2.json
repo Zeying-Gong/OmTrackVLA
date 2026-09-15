@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "phase": 3,
+  "method": "architecture_v1_end_to_end",
+  "stage": "next007_phase3_recovery_regularized_v2",
+  "formal_training": true,
+  "test_locked_used": false,
+  "seed": 20260914,
+  "base_model_config": "configs/phases/phase2_end_to_end_v1_phase1_init_formal.yaml",
+  "parent_checkpoint": "outputs/ablations/next026_abl08_converged_v1/teacher_on/gru_curriculum_4k/checkpoints/best.ckpt",
+  "recovery_manifest": "outputs/training/next007_phase3_recovery_pilot_v1/recovery_manifest_frozen.json",
+  "training": {
+    "max_steps": 256,
+    "clean_batch_size_per_device": 4,
+    "recovery_batch_size_per_device": 2,
+    "clean_waypoint_weight": 1.0,
+    "recovery_waypoint_weight": 0.5,
+    "clean_loss_weights": {
+      "waypoint": 1.0,
+      "stop": 0.5,
+      "bbox": 0.5,
+      "visibility": 0.5,
+      "identity_or_binding": 0.1,
+      "ego": 0.1,
+      "world_action": 0.0,
+      "inverse": 0.0
+    },
+    "recovery_distillation_weights": {
+      "bbox": 1.0,
+      "visibility": 0.5,
+      "binding": 0.1,
+      "ego": 0.1,
+      "stop": 0.5
+    },
+    "policy_learning_rate": 0.00001,
+    "gru_learning_rate": 0.00003,
+    "adapter_learning_rate": 0.000001,
+    "weight_decay": 0.0001,
+    "warmup_steps": 32,
+    "gradient_clip_norm": 1.0,
+    "bfloat16": true,
+    "log_every_steps": 10,
+    "checkpoint_every_steps": 64
+  },
+  "excluded": [
+    "evt_bench_waypoint_training",
+    "test_locked",
+    "flow",
+    "multi_scale_da3_fusion",
+    "part_tokens",
+    "memory_bank",
+    "occupancy_decoder",
+    "depth_decoder"
+  ]
+}

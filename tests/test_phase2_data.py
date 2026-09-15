@@ -67,7 +67,9 @@ def _cache_manifest():
         "split_manifest_sha256": HASH,
         "front_end": _front_end(),
         "selection": {
+            "requested_episodes": 1,
             "cached_episodes": 1,
+            "skipped_episodes": 0,
             "max_units": None,
             "max_episodes": None,
             "test_locked_used": False,
@@ -79,6 +81,7 @@ def _cache_manifest():
                 "anchors": [1],
             }
         },
+        "skipped": [],
     }
 
 

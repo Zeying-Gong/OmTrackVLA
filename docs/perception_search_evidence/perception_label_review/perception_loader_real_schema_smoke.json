@@ -1,0 +1,65 @@
+{
+  "candidate_sha256": "c893a2f15ef7f7069d4f8436528f99428c7ed807f2cb313507534ded0ea898de",
+  "original_runtime_module_sha256_before": null,
+  "gpu_started": false,
+  "model_loaded": false,
+  "optimizer_created": false,
+  "status": "real_numpy_schema_smoke_passed",
+  "admitted_sample_count": 19,
+  "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor027/sample/sample.json",
+  "sample_sha256": "1acc470f54d66780225d33da030411f224660dc12965bbb881fca3629a0ac6c7",
+  "sequence_length": 28,
+  "learning_start": 24,
+  "labels_sha256": "090ad52f8dc0133e1826af5cfc26c69aae11c5fd12db28fe261b67767d462c3b",
+  "suffix": {
+    "target_visible": [
+      1.0,
+      1.0,
+      1.0,
+      0.0
+    ],
+    "target_bbox": [
+      [
+        0.0,
+        0.3072916567325592,
+        0.0833333358168602,
+        0.6328125
+      ],
+      [
+        0.0,
+        0.3619791567325592,
+        0.0859375,
+        0.6328125
+      ],
+      [
+        0.0,
+        0.5598958134651184,
+        0.046875,
+        0.6276041865348816
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "visibility_label_valid": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "bbox_label_valid": [
+      true,
+      true,
+      true,
+      false
+    ]
+  },
+  "original_prefix_labels_invalid": true,
+  "optimizer_access_rejected": true,
+  "torch_imported": false,
+  "original_runtime_module_sha256_after": null,
+  "original_runtime_module_unchanged": true
+}

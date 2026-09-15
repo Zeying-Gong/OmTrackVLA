@@ -1,0 +1,41 @@
+{
+  "revision": "826dc5fbfa37afa8293d2e336d329b6ffc0bfb64",
+  "weights_downloaded": false,
+  "results": [
+    {
+      "path": "HF_MODEL_CARD.md",
+      "source": "https://huggingface.co/LightOriginsHQ/LightNav-0/resolve/826dc5fbfa37afa8293d2e336d329b6ffc0bfb64/README.md",
+      "status": "read",
+      "bytes": 3867,
+      "sha256": "43cc7b6f2ac5e57fd2ce68d9527feeb719eb769a1dcb6d9651a939b598be4e0f"
+    },
+    {
+      "path": "HF_CONFIG.json",
+      "source": "https://huggingface.co/LightOriginsHQ/LightNav-0/resolve/826dc5fbfa37afa8293d2e336d329b6ffc0bfb64/config.json",
+      "status": "read",
+      "bytes": 1844,
+      "sha256": "0e047b5e9ae7981cf0066e74d8b655a2f49d7d7965c25fca386f9eea80b63e58"
+    },
+    {
+      "path": "HF_EVAL_CONFIG.json",
+      "source": "https://huggingface.co/LightOriginsHQ/LightNav-0/resolve/826dc5fbfa37afa8293d2e336d329b6ffc0bfb64/eval_config.json",
+      "status": "read",
+      "bytes": 2597,
+      "sha256": "7f475edbef4a13d2db99fa12eff5e9dedf48916969ec777f75e6e85e2a492b57"
+    },
+    {
+      "path": "HF_ACTION_TOKENIZER_MANIFEST.json",
+      "source": "https://huggingface.co/LightOriginsHQ/LightNav-0/resolve/826dc5fbfa37afa8293d2e336d329b6ffc0bfb64/action_tokenizer/manifest.json",
+      "status": "read",
+      "bytes": 1003,
+      "sha256": "00d77ae028edf59e0ce68b49122dd0a60da527f48508f5ee335a580993a12864"
+    },
+    {
+      "path": "HF_WEIGHT_INDEX.json",
+      "source": "https://huggingface.co/LightOriginsHQ/LightNav-0/resolve/826dc5fbfa37afa8293d2e336d329b6ffc0bfb64/model.safetensors.index.json",
+      "status": "read",
+      "bytes": 64799,
+      "sha256": "d725f1a587bde70cdf16ae5e1e672ff13cada2740c11baf13fbcff49dd7e00b1"
+    }
+  ]
+}

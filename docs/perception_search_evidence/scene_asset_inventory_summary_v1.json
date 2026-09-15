@@ -1,0 +1,40 @@
+{
+  "status": "asset_metadata_inventory_only",
+  "asset_root_resolved": "/data/nfs/share/evt_bench",
+  "asset_directory_count": 990,
+  "unique_canonical_name_count": 990,
+  "by_family_and_source_split": {
+    "hm3d/train": 800,
+    "hm3d/val": 100,
+    "mp3d/None": 90
+  },
+  "missing_geometry": 0,
+  "bad_glb_magic": 0,
+  "missing_or_empty_navmesh": 0,
+  "duplicate_canonical_names": {},
+  "known_permanent_roles": {
+    "16tymptm7us": "train",
+    "gjhyih4upq9": "val",
+    "ayhkzj2fehp": "val",
+    "xxbs57z6pdu": "train",
+    "qxwfvs8mq67": "train",
+    "9hjwm8k7gka": "train"
+  },
+  "permanent_manifest_sha256": "9268ac7bf53a8392ab58a05112e8bd4db662889fa560708973e8afb807ca1e4e",
+  "source_code_sha256": "fab3f1841f915bf9eab03c1f8dfd48065399b4a8e1ae7ca3cdce9424a4b136e5",
+  "geometry_content_hashes_checked": false,
+  "gpu_or_environment_load_performed": false,
+  "episode_or_locked_test_labels_read": false,
+  "cross_dataset_physical_place_deduplication_verified": false,
+  "real2sim_source_licenses_verified": false,
+  "accepted_formal_environment_count": null,
+  "original_1000_environment_requirement_met": false,
+  "scope": "Only the currently linked scene asset root was inventoried; other storage roots were not searched.",
+  "next_steps": [
+    "verify source provenance and licenses",
+    "deduplicate physical places",
+    "freeze scene partition roles",
+    "verify environment loading and navigability",
+    "add independently sourced environments to reach the original required count"
+  ]
+}

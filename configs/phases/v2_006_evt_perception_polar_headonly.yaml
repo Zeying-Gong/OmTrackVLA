@@ -1,0 +1,82 @@
+schema_version: 1
+phase: evt_perception_polar
+method: architecture_v2_evt_perception_polar
+stage: v2_006_evt_perception_polar_headonly_smoke
+formal_training: false
+test_locked_used: false
+seed: 20260915
+
+da3_model: /data/nfs/share/gzy/models/DA3-SMALL/e08cab65ca0ec38e7826075418411ab90cab4da3
+da3_source: /data/nfs/share/gzy/third_party/depth-anything-3/3d835ec1a5802d64a8b8b15f817a1ab54809bfe4/src
+da3_runtime: /data/nfs/share/gzy/third_party/depth-anything-3/runtime-py39-v1
+
+architecture:
+  image_height: 280
+  image_width: 504
+  history_size: 8
+  patch_size: 14
+  backbone_dim: 768
+  policy_dim: 256
+  attention_heads: 8
+  horizon: 8
+  roi_size: 3
+  adapter_layers: 2
+  adapter_bottleneck: 64
+  uwb_age_limit_s: 1.0
+  uwb_age_decay_s: 0.5
+  target_motion_sigma_m_s: 0.5
+  tag_height_mean_m: 1.0
+  tag_height_sigma_m: 0.35
+  calibration_sigma_px: 2.0
+
+decoder:
+  policy_dim: 256
+  attention_heads: 8
+  grid_height: 20
+  grid_width: 36
+  history_size: 8
+  history_stride_raw: 3
+  scene_latents: 16
+  fusion_layers: 2
+  trajectory_layers: 2
+  feedforward_ratio: 4
+  horizon: 8
+  max_segment_m: 0.30
+  max_forward_m_s: 3.75
+  max_lateral_m_s: 2.50
+  max_yaw_rad_s: 1.5707963267948966
+  max_yaw_segment_rad: 0.5235987755982988
+  predict_se2_yaw: true
+  predict_target_diagnostics: true
+  predict_target_polar: true
+
+data:
+  train_audit: outputs/takeover/corrected48_combined_audit_v3/final_20260915T084707377504Z/summary.json
+  dev_audit: outputs/takeover/permanent_dev4_semantic_fixed_independent_audit_v1/final_20260915T090214238498Z/summary.json
+  history_interval_s: 0.1
+  user_authorized_perception_training: true
+
+training:
+  max_steps: 512
+  batch_size_per_device: 1
+  num_workers: 2
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  warmup_steps: 32
+  gradient_clip_norm: 1.0
+  bfloat16: true
+  log_every_steps: 10
+  checkpoint_every_steps: 128
+  loss_weights:
+    bbox: 2.0
+    visibility: 1.0
+    angle: 1.0
+    distance: 1.0
+
+evaluation:
+  batch_size: 2
+  num_workers: 2
+  fixed_dev_only: true
+  official_evt_validation: false
+  test_locked_used: false
+

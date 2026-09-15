@@ -1,0 +1,103 @@
+schema_version: 1
+phase: 3
+method: architecture_v2_evt_perception_polar
+stage: v2_010_phase3_model_visited_pilot
+formal_training: false
+formal_large_scale_training: false
+test_locked_used: false
+seed: 20260915
+
+da3_model: /data/nfs/share/gzy/models/DA3-SMALL/e08cab65ca0ec38e7826075418411ab90cab4da3
+da3_source: /data/nfs/share/gzy/third_party/depth-anything-3/3d835ec1a5802d64a8b8b15f817a1ab54809bfe4/src
+da3_runtime: /data/nfs/share/gzy/third_party/depth-anything-3/runtime-py39-v1
+parent_checkpoint: outputs/training/v2_006b_evt_polar_only/checkpoints/best.ckpt
+recovery_manifest: outputs/evaluation/v2_009_phase3_relabel_smoke/MANIFEST.json
+
+architecture:
+  image_height: 280
+  image_width: 504
+  history_size: 8
+  patch_size: 14
+  backbone_dim: 768
+  policy_dim: 256
+  attention_heads: 8
+  horizon: 8
+  roi_size: 3
+  adapter_layers: 2
+  adapter_bottleneck: 64
+  uwb_age_limit_s: 1.0
+  uwb_age_decay_s: 0.5
+  target_motion_sigma_m_s: 0.5
+  tag_height_mean_m: 1.0
+  tag_height_sigma_m: 0.35
+  calibration_sigma_px: 2.0
+
+decoder:
+  policy_dim: 256
+  attention_heads: 8
+  grid_height: 20
+  grid_width: 36
+  history_size: 8
+  history_stride_raw: 3
+  scene_latents: 16
+  fusion_layers: 2
+  trajectory_layers: 2
+  feedforward_ratio: 4
+  horizon: 8
+  max_segment_m: 0.30
+  max_forward_m_s: 3.75
+  max_lateral_m_s: 2.50
+  max_yaw_rad_s: 1.5707963267948966
+  max_yaw_segment_rad: 0.5235987755982988
+  predict_se2_yaw: true
+  predict_target_diagnostics: true
+  predict_target_polar: true
+
+data:
+  sequence_index: outputs/indexes/architecture_v2_sage3d_sequences_v1.json
+  clean_condition_modes: [visual_uwb, visual_only, uwb_only, safe_stop]
+  clean_validation_samples: 32
+
+training:
+  max_steps: 128
+  policy_learning_rate: 0.00003
+  polar_learning_rate: 0.00003
+  adapter_learning_rate: 0.000001
+  weight_decay: 0.0001
+  warmup_steps: 16
+  gradient_clip_norm: 1.0
+  bfloat16: true
+  log_every_steps: 8
+  checkpoint_every_steps: 64
+  clean_weight: 1.0
+  recovery_weight: 1.0
+  clean_loss_weights:
+    waypoint: 1.0
+    waypoint_delta: 0.5
+    waypoint_terminal: 0.25
+    waypoint_yaw: 0.1
+    waypoint_yaw_delta: 0.1
+    action: 0.25
+    stop: 0.1
+    bbox: 0.05
+    visibility: 0.05
+  recovery_loss_weights:
+    waypoint: 1.0
+    bbox: 0.1
+    visibility: 0.1
+    angle: 0.1
+    distance: 0.1
+
+selection_gate:
+  minimum_recovery_ade_relative_improvement: 0.05
+  maximum_clean_ade_relative_regression: 0.10
+  maximum_clean_ade_absolute_slack_m: 0.01
+
+excluded:
+  - test_locked
+  - flow
+  - multi_scale_da3_fusion
+  - part_tokens
+  - memory_bank
+  - occupancy_decoder
+  - depth_decoder

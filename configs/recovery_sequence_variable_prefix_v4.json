@@ -1,0 +1,52 @@
+{
+  "base_model_config": "configs/phases/phase2_end_to_end_v1_phase1_init_formal.yaml",
+  "formal_training": false,
+  "hypothesis": "Use complete actual variable-length prefixes and the last at most four learning calls; preserve v3 safe-stop times8, 64-step budget, LR/loss weights, Phase2 parent, fixed SAGE val and clean gates.",
+  "limitations": [
+    "Source runs are development data and do not establish complete loss-and-reacquisition coverage.",
+    "Only each real final anchor has actual-time waypoint supervision; recovery auxiliary labels remain unavailable.",
+    "Independent scene validation is a development selection gate, not product acceptance or formal success-rate evidence.",
+    "RNG and optimizer state are restored; bitwise CUDA replay is not promised when deterministic algorithms are disabled."
+  ],
+  "method": "architecture_v1_end_to_end",
+  "parent_checkpoint": "outputs/ablations/next026_abl08_converged_v1/teacher_on/gru_curriculum_4k/checkpoints/best.ckpt",
+  "parent_checkpoint_sha256": "32c8f2f73277cfab8c3c7c22a53994061f7178498cfa003e1635b9576641bc9c",
+  "prior_decision": "outputs/takeover/RECOVERY_PILOT_V3_DECISION.json",
+  "recovery_manifest": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_admission_v2/manifest.json",
+  "schema_version": 1,
+  "seed": 20260914,
+  "stage": "recovery_sequence_variable_prefix_development_v4",
+  "test_locked_used": false,
+  "training": {
+    "adapter_learning_rate": 1e-06,
+    "bfloat16": true,
+    "burn_in_rule": "max(0, sequence_length - 4)",
+    "checkpoint_every_steps": 16,
+    "clean_samples_per_mode": 1,
+    "clean_sequence_steps": 2,
+    "clean_weight": 1.0,
+    "deterministic_algorithms": false,
+    "gradient_clip_norm": 1.0,
+    "gru_learning_rate": 1e-05,
+    "learning_policy_calls": 4,
+    "maximum_steps": 64,
+    "num_workers": 0,
+    "policy_learning_rate": 1e-05,
+    "recovery_batch_size": 1,
+    "recovery_weight": 0.25,
+    "safe_stop_waypoint_multiplier": 8,
+    "validation_every_steps": 16,
+    "warmup_steps": 8,
+    "weight_decay": 0.0001
+  },
+  "training_readiness": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_admission_v2/training_readiness.json",
+  "training_readiness_sha256": "d65104298d80ed5948963a8ebe517548587db422a0ea2f5f512c28cdb1cc6cfb",
+  "validation": {
+    "automatic_promotion": false,
+    "clean_absolute_tolerance": 0.0001,
+    "clean_relative_tolerance": 0.05,
+    "sage_index_seed": 48031,
+    "sage_samples_per_mode": 4,
+    "selection_metric": "recovery_val_ade_m"
+  }
+}

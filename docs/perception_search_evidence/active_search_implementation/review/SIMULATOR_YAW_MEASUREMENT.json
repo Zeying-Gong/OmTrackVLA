@@ -1,0 +1,118 @@
+{
+  "status": "offline_measurement_complete_not_a_controller",
+  "frozen_plan_file_sha256": "dd9fcd6b00249a802410f1638216f56a64af51ef998fd1fc9d6566317e080780",
+  "source_count": 4,
+  "observation_count": 370,
+  "sources": [
+    {
+      "run_id": "at_0401_128steps",
+      "labels_sha256": "2d2541ce55c96876bf893d8d1716bc67defd8a69d035261e048c03ef537bda5d",
+      "action_count": 85,
+      "yaw_samples_above_1e_minus_4": 69,
+      "observed_world_dt_s_min": 0.0479999999999996,
+      "observed_world_dt_s_median": 0.04800000000000004,
+      "observed_world_dt_s_max": 0.05600000000000005,
+      "observed_world_dt_histogram": {
+        "0.048": 78,
+        "0.056": 7
+      },
+      "expected_radians_per_action_per_normalized_yaw": 0.157,
+      "fitted_radians_per_action_per_normalized_yaw": 0.15699984659391197,
+      "fitted_radians_per_world_second_per_normalized_yaw": 3.2655175946190327,
+      "maximum_abs_error_against_configured_per_action_yaw_rad": 5.447915094637656e-07,
+      "normalized_yaw_min": -0.11639144271612167,
+      "normalized_yaw_max": 0.75,
+      "command_vector_order": [
+        "forward",
+        "lateral",
+        "yaw"
+      ],
+      "pure_yaw_action_count": 0,
+      "audit_only": true,
+      "control_input_allowed": false
+    },
+    {
+      "run_id": "dt_0200_128steps",
+      "labels_sha256": "897c0823c588ac75f8d5c179b45b3d6b857b7021655a449b3d50a4ee183905bd",
+      "action_count": 104,
+      "yaw_samples_above_1e_minus_4": 15,
+      "observed_world_dt_s_min": 0.0479999999999996,
+      "observed_world_dt_s_median": 0.04800000000000004,
+      "observed_world_dt_s_max": 0.05600000000000005,
+      "observed_world_dt_histogram": {
+        "0.048": 96,
+        "0.056": 8
+      },
+      "expected_radians_per_action_per_normalized_yaw": 0.157,
+      "fitted_radians_per_action_per_normalized_yaw": 0.15700072840372492,
+      "fitted_radians_per_world_second_per_normalized_yaw": 3.2491698628636,
+      "maximum_abs_error_against_configured_per_action_yaw_rad": 1.1580061191093609e-06,
+      "normalized_yaw_min": -0.15538139641284943,
+      "normalized_yaw_max": 0.5924614071846008,
+      "command_vector_order": [
+        "forward",
+        "lateral",
+        "yaw"
+      ],
+      "pure_yaw_action_count": 0,
+      "audit_only": true,
+      "control_input_allowed": false
+    },
+    {
+      "run_id": "stt_0000_128steps",
+      "labels_sha256": "090ad52f8dc0133e1826af5cfc26c69aae11c5fd12db28fe261b67767d462c3b",
+      "action_count": 84,
+      "yaw_samples_above_1e_minus_4": 13,
+      "observed_world_dt_s_min": 0.0479999999999996,
+      "observed_world_dt_s_median": 0.04800000000000004,
+      "observed_world_dt_s_max": 0.05600000000000005,
+      "observed_world_dt_histogram": {
+        "0.048": 77,
+        "0.056": 7
+      },
+      "expected_radians_per_action_per_normalized_yaw": 0.157,
+      "fitted_radians_per_action_per_normalized_yaw": 0.15699966733971854,
+      "fitted_radians_per_world_second_per_normalized_yaw": 3.1789777827285675,
+      "maximum_abs_error_against_configured_per_action_yaw_rad": 4.541061076855646e-07,
+      "normalized_yaw_min": -0.08552634716033936,
+      "normalized_yaw_max": 0.09397080540657043,
+      "command_vector_order": [
+        "forward",
+        "lateral",
+        "yaw"
+      ],
+      "pure_yaw_action_count": 0,
+      "audit_only": true,
+      "control_input_allowed": false
+    },
+    {
+      "run_id": "stt_3100_128steps",
+      "labels_sha256": "9db0dd8492ae6f59f30062d690705c8fd0386900e7fd2308f1e1b57627f7ccd8",
+      "action_count": 93,
+      "yaw_samples_above_1e_minus_4": 24,
+      "observed_world_dt_s_min": 0.0479999999999996,
+      "observed_world_dt_s_median": 0.04800000000000004,
+      "observed_world_dt_s_max": 0.05600000000000005,
+      "observed_world_dt_histogram": {
+        "0.048": 86,
+        "0.056": 7
+      },
+      "expected_radians_per_action_per_normalized_yaw": 0.157,
+      "fitted_radians_per_action_per_normalized_yaw": 0.15700009478747903,
+      "fitted_radians_per_world_second_per_normalized_yaw": 3.239463249174345,
+      "maximum_abs_error_against_configured_per_action_yaw_rad": 4.057397016699049e-07,
+      "normalized_yaw_min": -0.04222412034869194,
+      "normalized_yaw_max": 0.75,
+      "command_vector_order": [
+        "forward",
+        "lateral",
+        "yaw"
+      ],
+      "pure_yaw_action_count": 0,
+      "audit_only": true,
+      "control_input_allowed": false
+    }
+  ],
+  "no_gpu_environment_created": true,
+  "no_gt_used_for_control": true
+}

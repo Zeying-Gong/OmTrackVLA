@@ -1,0 +1,13 @@
+{
+  "commit": "c6f40e3220edbf7011e4f17eaf2c865416737d4d",
+  "verified_source_files": 205,
+  "source_sha256_mismatches": [],
+  "report_sha256": "3f6df89f7e312f4096a040b92733115dbb04947aca20f1111828daa394612933",
+  "hf_revision": "826dc5fbfa37afa8293d2e336d329b6ffc0bfb64",
+  "hf_gated": false,
+  "model_card_license_declaration": "apache-2.0",
+  "verified_hf_small_files": 5,
+  "weights_downloaded": false,
+  "repository_code_executed": false,
+  "prior_verification_preserved": "history_before_hf_metadata/REVIEW_VERIFICATION.json"
+}

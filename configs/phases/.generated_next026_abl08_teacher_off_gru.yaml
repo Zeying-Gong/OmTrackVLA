@@ -1,0 +1,77 @@
+schema_version: 1
+phase: 2
+method: architecture_v1_end_to_end
+stage: next026_abl08_teacher_off_gru_curriculum_4k
+formal_training: true
+test_locked_used: false
+seed: 20260911
+da3_model: /data/nfs/share/gzy/models/DA3-SMALL/e08cab65ca0ec38e7826075418411ab90cab4da3
+da3_source: /data/nfs/share/gzy/third_party/depth-anything-3/3d835ec1a5802d64a8b8b15f817a1ab54809bfe4/src
+da3_runtime: /data/nfs/share/gzy/third_party/depth-anything-3/runtime-py39-v1
+architecture:
+  image_height: 280
+  image_width: 504
+  history_size: 4
+  patch_size: 14
+  backbone_dim: 768
+  policy_dim: 256
+  attention_heads: 8
+  horizon: 8
+  roi_size: 3
+  adapter_layers: 2
+  adapter_bottleneck: 64
+  uwb_age_limit_s: 1.0
+  uwb_age_decay_s: 0.5
+  target_motion_sigma_m_s: 0.5
+  tag_height_mean_m: 1.0
+  tag_height_sigma_m: 0.35
+  calibration_sigma_px: 2.0
+data:
+  sequence_index: outputs/indexes/architecture_v1_sage3d_sequences_v1.json
+  split: train
+  condition_modes:
+  - visual_uwb
+  - visual_only
+  - uwb_only
+  - safe_stop
+  waypoint_target: sage3d_canonical_0_plus_3_to_plus_21
+  uwb_measurement: simulated_uwb
+  perception_cache: false
+training:
+  epochs: 1
+  samples_per_epoch: 131072
+  batch_size_per_device: 4
+  num_workers: 4
+  policy_learning_rate: 3.0e-05
+  adapter_learning_rate: 3.0e-06
+  weight_decay: 0.0001
+  warmup_steps: 200
+  gradient_clip_norm: 1.0
+  bfloat16: true
+  log_every_steps: 10
+  checkpoint_every_steps: 500
+  loss_weights:
+    waypoint: 1.0
+    stop: 0.5
+    bbox: 0.5
+    visibility: 0.5
+    identity_or_binding: 0.1
+    ego: 0.1
+    world_action: 0.0
+    inverse: 0.0
+  gru_learning_rate: 0.0003
+  gru_initialization_after_checkpoint: near_identity
+excluded:
+- old_resnet18_checkpoint_migration
+- perception_cache
+- external_later_bbox
+- gt_target_pose_input
+- gt_depth_input
+- flow_waypoint_decoder
+- multi_scale_da3_fusion
+- part_tokens
+- memory_bank
+- occupancy_decoder
+- depth_decoder
+ablation:
+  temporal_fusion: gru

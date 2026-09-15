@@ -1,0 +1,58 @@
+{
+  "format_version": 1,
+  "method": "rvq",
+  "horizon": 10,
+  "representation": "se2_diff",
+  "objective": "ade_v1",
+  "encode": {
+    "type": "ade",
+    "heading_weight": 0.3
+  },
+  "levels": [
+    256,
+    256,
+    256
+  ],
+  "feature_dim": 30,
+  "feature_space": "weighted_diff",
+  "codebook_files": [
+    "codebook_l0.npy",
+    "codebook_l1.npy",
+    "codebook_l2.npy"
+  ],
+  "distance_files": [
+    "distance_l0.npy",
+    "distance_l1.npy",
+    "distance_l2.npy"
+  ],
+  "distance_metric": "weighted_diff_euclid",
+  "jacobian_weights_file": "jacobian_weights.npy",
+  "alpha_file": "alpha_per_source.json",
+  "alpha_mode": "none",
+  "vocab_layout": {
+    "token_format": "<act_l{level}_{code}>",
+    "segments": [
+      {
+        "level": 0,
+        "size": 256
+      },
+      {
+        "level": 1,
+        "size": 256
+      },
+      {
+        "level": 2,
+        "size": 256
+      }
+    ],
+    "total_rows": 768
+  },
+  "stop": {
+    "l0": 6,
+    "codes": [
+      6,
+      122,
+      174
+    ]
+  }
+}

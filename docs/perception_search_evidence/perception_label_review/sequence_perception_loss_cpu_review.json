@@ -1,0 +1,18 @@
+{
+  "status": "cpu_tests_passed",
+  "tests_run": 23,
+  "failures": 0,
+  "errors": 0,
+  "output": "test_explicit_false_masks_do_not_fall_back_to_true_identity (focused_perception.SequencePerceptionLossTests) ... ok\ntest_fractional_mask_and_wrong_shape_are_rejected (focused_perception.SequencePerceptionLossTests) ... ok\ntest_invalid_bbox_nan_values_have_exact_zero_gradient (focused_perception.SequencePerceptionLossTests) ... ok\ntest_invalid_nan_visibility_labels_are_excluded_before_bce (focused_perception.SequencePerceptionLossTests) ... ok\ntest_invisible_target_has_no_bbox_supervision (focused_perception.SequencePerceptionLossTests) ... ok\ntest_legacy_clean_loss_and_gradients_match_previous_formula (focused_perception.SequencePerceptionLossTests) ... ok\ntest_legacy_label_only_default_still_supervises_visibility (focused_perception.SequencePerceptionLossTests) ... ok\ntest_missing_waypoint_labels_are_not_invented (focused_perception.SequencePerceptionLossTests) ... ok\ntest_nan_validity_masks_are_rejected_instead_of_cast_true (focused_perception.SequencePerceptionLossTests) ... ok\ntest_new_bbox_mask_is_independent_of_identity_and_visibility_mask (focused_perception.SequencePerceptionLossTests) ... ok\ntest_new_visibility_mask_is_independent_of_identity (focused_perception.SequencePerceptionLossTests) ... ok\ntest_single_pixel_visible_target_supervises_only_visibility (focused_perception.SequencePerceptionLossTests) ... ok\ntest_supervision_mask_still_excludes_unselected_perception_steps (focused_perception.SequencePerceptionLossTests) ... ok\ntest_unknown_binding_and_stop_do_not_become_negative_labels (focused_perception.SequencePerceptionLossTests) ... ok\ntest_valid_bbox_cannot_infer_visibility_from_nan (focused_perception.SequencePerceptionLossTests) ... ok\ntest_bfloat16_ego_cosine_is_nonnegative_and_keeps_gradient (legacy_sequence.SequenceTrainingTest) ... ok\ntest_bfloat16_positive_logits_keep_bce_gradient_outside_autocast (legacy_sequence.SequenceTrainingTest) ... ok\ntest_burnin_reconstructs_state_but_has_no_prefix_gradient (legacy_sequence.SequenceTrainingTest) ... ok\ntest_final_anchor_loss_reaches_earlier_observations (legacy_sequence.SequenceTrainingTest) ... ok\ntest_four_frame_anchor_is_not_a_policy_sequence (legacy_sequence.SequenceTrainingTest) ... ok\ntest_matches_existing_sequence_and_chunk_continuation (legacy_sequence.SequenceTrainingTest) ... ok\ntest_only_real_anchor_label_contributes (legacy_sequence.SequenceTrainingTest) ... ok\ntest_tbptt_cuts_all_recurrent_gradient_paths (legacy_sequence.SequenceTrainingTest) ... ok\n\n----------------------------------------------------------------------\nRan 23 tests in 0.136s\n\nOK\n",
+  "python": "3.9.23 (main, Jun  5 2025, 13:40:20) \n[GCC 11.2.0]",
+  "torch": "2.6.0+cu124",
+  "cuda_visible_devices": "",
+  "cuda_available": false,
+  "cpu_threads": 1,
+  "candidate_sha256": "f936822e2c2cce861726741fdeb27d560b43ce3c2ba6231b37f86c9a8c361934",
+  "test_sha256": "18c58297708280b1548cf3a7a209d9f71d4ec58bfff1d264aec37f81c1a56ed4",
+  "original_remote_source_sha256_before": "8311c10a163d6d7c97d8c85a7f115537af62bd307e4ea79d02effa161c32f667",
+  "original_remote_source_sha256_after": "8311c10a163d6d7c97d8c85a7f115537af62bd307e4ea79d02effa161c32f667",
+  "original_remote_source_unchanged": true,
+  "optimizer_called": false
+}

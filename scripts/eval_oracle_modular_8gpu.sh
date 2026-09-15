@@ -57,6 +57,7 @@ MAX_EPISODES_PER_SHARD="${MAX_EPISODES_PER_SHARD:-}"
 EXCLUDE_DATASET_INDICES="${EXCLUDE_DATASET_INDICES:-}"
 CONTINUE_ON_ERROR="${CONTINUE_ON_ERROR:-1}"
 SAVE_VIDEO="${SAVE_VIDEO:-1}"
+SAVE_STEPS="${SAVE_STEPS:-0}"
 VIDEO_FPS="${VIDEO_FPS:-8}"
 RENDER_BACKEND="${RENDER_BACKEND:-egl}"
 REQUIRE_100_SUCCESS="${REQUIRE_100_SUCCESS:-0}"
@@ -78,8 +79,26 @@ MAP_CAMERA_PITCH_DEG="${MAP_CAMERA_PITCH_DEG:-5.0}"
 MAP_ROBOT_RADIUS="${MAP_ROBOT_RADIUS:-0.30}"
 MAP_MIN_STATIC_HITS="${MAP_MIN_STATIC_HITS:-2}"
 PERSON_DETECTOR_WEIGHTS="${PERSON_DETECTOR_WEIGHTS:-$ROOT/models/torchvision/fasterrcnn_mobilenet_v3_large_320_fpn-907ea3f9.pth}"
+PERSON_DETECTOR_ARCHITECTURE="${PERSON_DETECTOR_ARCHITECTURE:-fasterrcnn_mobilenet_v3_large_320_fpn}"
 PERSON_REID_WEIGHTS="${PERSON_REID_WEIGHTS:-$ROOT/models/reid/osnet_x0_25_msmt17.pt}"
+PERSON_REID_BACKEND="${PERSON_REID_BACKEND:-osnet}"
+PERSON_KPR_SOURCE="${PERSON_KPR_SOURCE:-}"
+PERSON_FUSION_WEIGHTS="${PERSON_FUSION_WEIGHTS:-}"
 PERSON_SCORE_THRESHOLD="${PERSON_SCORE_THRESHOLD:-0.30}"
+PERSON_REID_THRESHOLD="${PERSON_REID_THRESHOLD:-0.55}"
+PERSON_TRACKLET_IDENTITY_FLOOR="${PERSON_TRACKLET_IDENTITY_FLOOR:-}"
+PERSON_SHORT_REACQUISITION_IDENTITY_THRESHOLD="${PERSON_SHORT_REACQUISITION_IDENTITY_THRESHOLD:-0.81}"
+PERSON_GLOBAL_IDENTITY_THRESHOLD="${PERSON_GLOBAL_IDENTITY_THRESHOLD:-0.67}"
+PERSON_GLOBAL_SINGLE_IDENTITY_THRESHOLD="${PERSON_GLOBAL_SINGLE_IDENTITY_THRESHOLD:-0.72}"
+PERSON_GLOBAL_IDENTITY_MARGIN="${PERSON_GLOBAL_IDENTITY_MARGIN:-0.01}"
+PERSON_REACQUISITION_CONFIRM_FRAMES="${PERSON_REACQUISITION_CONFIRM_FRAMES:-1}"
+PERSON_REACQUISITION_CONSISTENCY_REID="${PERSON_REACQUISITION_CONSISTENCY_REID:-0.0}"
+PERSON_MEMORY_UPDATE_DETECTOR_THRESHOLD="${PERSON_MEMORY_UPDATE_DETECTOR_THRESHOLD:-0.70}"
+PERSON_MEMORY_UPDATE_IDENTITY_THRESHOLD="${PERSON_MEMORY_UPDATE_IDENTITY_THRESHOLD:-0.82}"
+PERSON_MEMORY_UPDATE_ANCHOR_THRESHOLD="${PERSON_MEMORY_UPDATE_ANCHOR_THRESHOLD:-0.72}"
+PERSON_MEMORY_UPDATE_ASSOCIATION_THRESHOLD="${PERSON_MEMORY_UPDATE_ASSOCIATION_THRESHOLD:-0.65}"
+PERSON_MEMORY_UPDATE_MARGIN="${PERSON_MEMORY_UPDATE_MARGIN:-0.04}"
+PERSON_MEMORY_UPDATE_MIN_CONFIRMED_STEPS="${PERSON_MEMORY_UPDATE_MIN_CONFIRMED_STEPS:-2}"
 TARGET_INITIALIZATION="${TARGET_INITIALIZATION:-auto}"
 LOST_TARGET_POLICY="${LOST_TARGET_POLICY:-auto}"
 LOST_BRAKE_STEPS="${LOST_BRAKE_STEPS:-2}"
@@ -91,6 +110,14 @@ LOST_COAST_MAX_TRANSLATION="${LOST_COAST_MAX_TRANSLATION:-0.35}"
 
 if [[ "$RENDER_BACKEND" != "egl" ]]; then
   echo "[oracle-8gpu] ERROR: the managed environment supports headless EGL only" >&2
+  exit 2
+fi
+if [[ "$PERSON_REID_BACKEND" != "osnet" && "$PERSON_REID_BACKEND" != "kpr" ]]; then
+  echo "[oracle-8gpu] ERROR: PERSON_REID_BACKEND must be osnet or kpr" >&2
+  exit 2
+fi
+if [[ "$PERSON_REID_BACKEND" == "kpr" && -z "$PERSON_KPR_SOURCE" ]]; then
+  echo "[oracle-8gpu] ERROR: PERSON_KPR_SOURCE is required for KPR" >&2
   exit 2
 fi
 RENDER_RUNNER="$ROOT/scripts/run_egl.sh"
@@ -178,13 +205,47 @@ if [[ "$SAVE_VIDEO" == "1" ]]; then
 else
   extra_args+=(--no-save-video)
 fi
+if [[ "$SAVE_STEPS" == "1" ]]; then
+  extra_args+=(--save-steps)
+fi
 if [[ "$REQUIRE_100_SUCCESS" == "1" ]]; then
   extra_args+=(--require-success --max-success-attempts "$MAX_SUCCESS_ATTEMPTS")
+fi
+
+person_args=(
+  --person-detector-weights "$PERSON_DETECTOR_WEIGHTS"
+  --person-detector-architecture "$PERSON_DETECTOR_ARCHITECTURE"
+  --person-reid-weights "$PERSON_REID_WEIGHTS"
+  --person-reid-backend "$PERSON_REID_BACKEND"
+  --person-score-threshold "$PERSON_SCORE_THRESHOLD"
+  --person-reid-threshold "$PERSON_REID_THRESHOLD"
+  --person-short-reacquisition-identity-threshold "$PERSON_SHORT_REACQUISITION_IDENTITY_THRESHOLD"
+  --person-global-identity-threshold "$PERSON_GLOBAL_IDENTITY_THRESHOLD"
+  --person-global-single-identity-threshold "$PERSON_GLOBAL_SINGLE_IDENTITY_THRESHOLD"
+  --person-global-identity-margin "$PERSON_GLOBAL_IDENTITY_MARGIN"
+  --person-reacquisition-confirm-frames "$PERSON_REACQUISITION_CONFIRM_FRAMES"
+  --person-reacquisition-consistency-reid "$PERSON_REACQUISITION_CONSISTENCY_REID"
+  --person-memory-update-detector-threshold "$PERSON_MEMORY_UPDATE_DETECTOR_THRESHOLD"
+  --person-memory-update-identity-threshold "$PERSON_MEMORY_UPDATE_IDENTITY_THRESHOLD"
+  --person-memory-update-anchor-threshold "$PERSON_MEMORY_UPDATE_ANCHOR_THRESHOLD"
+  --person-memory-update-association-threshold "$PERSON_MEMORY_UPDATE_ASSOCIATION_THRESHOLD"
+  --person-memory-update-margin "$PERSON_MEMORY_UPDATE_MARGIN"
+  --person-memory-update-min-confirmed-steps "$PERSON_MEMORY_UPDATE_MIN_CONFIRMED_STEPS"
+)
+if [[ -n "$PERSON_TRACKLET_IDENTITY_FLOOR" ]]; then
+  person_args+=(--person-tracklet-identity-floor "$PERSON_TRACKLET_IDENTITY_FLOOR")
+fi
+if [[ -n "$PERSON_KPR_SOURCE" ]]; then
+  person_args+=(--person-kpr-source "$PERSON_KPR_SOURCE")
+fi
+if [[ -n "$PERSON_FUSION_WEIGHTS" ]]; then
+  person_args+=(--person-fusion-weights "$PERSON_FUSION_WEIGHTS")
 fi
 
 echo "[oracle-8gpu] tasks=$TASKS splits=$SPLITS shards=$NUM_SHARDS gpus=$GPU_LIST workers_per_gpu=$NUM_WORKERS worker_slots=${#GPUS[@]} backend=$RENDER_BACKEND"
 echo "[oracle-8gpu] controller_version=${ORACLE_CONTROLLER_VERSION:-5}"
 echo "[oracle-8gpu] perception=$PERCEPTION"
+echo "[oracle-8gpu] detector=$PERSON_DETECTOR_ARCHITECTURE reid=$PERSON_REID_BACKEND save_steps=$SAVE_STEPS"
 echo "[oracle-8gpu] controller=$CONTROLLER"
 echo "[oracle-8gpu] output=$OUTPUT_ROOT logs=$LOG_ROOT"
 echo "[oracle-8gpu] progress_interval=${PROGRESS_INTERVAL}s resume=enabled"
@@ -223,9 +284,7 @@ run_shard() {
         --map-camera-pitch-deg "$MAP_CAMERA_PITCH_DEG" \
         --map-robot-radius "$MAP_ROBOT_RADIUS" \
         --map-min-static-hits "$MAP_MIN_STATIC_HITS" \
-        --person-detector-weights "$PERSON_DETECTOR_WEIGHTS" \
-        --person-reid-weights "$PERSON_REID_WEIGHTS" \
-        --person-score-threshold "$PERSON_SCORE_THRESHOLD" \
+        "${person_args[@]}" \
         --target-initialization "$TARGET_INITIALIZATION" \
         --lost-target-policy "$LOST_TARGET_POLICY" \
         --lost-brake-steps "$LOST_BRAKE_STEPS" \

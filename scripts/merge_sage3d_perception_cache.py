@@ -70,11 +70,27 @@ def merge_manifests(
             != reference["selection"].get("max_episodes")
         ):
             raise ValueError("perception shard development limits mismatch")
+        shard_episodes = manifest.get("episodes")
+        shard_skipped = manifest.get("skipped")
+        if not isinstance(shard_episodes, Mapping) or not isinstance(shard_skipped, list):
+            raise ValueError("perception shard episode accounting is missing")
+        shard_cached = int(selection.get("cached_episodes", -1))
+        shard_requested = int(selection.get("requested_episodes", -1))
+        if shard_cached != len(shard_episodes):
+            raise ValueError("perception shard cached episode count mismatch")
+        if shard_requested != shard_cached + len(shard_skipped):
+            raise ValueError("perception shard requested episode count mismatch")
+        if (
+            "skipped_episodes" in selection
+            and int(selection["skipped_episodes"]) != len(shard_skipped)
+        ):
+            raise ValueError("perception shard skipped episode count mismatch")
 
     episodes = {}
     skipped = []
     requested = 0
     cached = 0
+    canonically_rejected = 0
     stride = None
     unit_count = None
     maximum_units = reference["selection"].get("max_units")
@@ -101,15 +117,25 @@ def merge_manifests(
             ).as_posix()
             episodes[str(source_path)] = merged_metadata
         for value in manifest.get("skipped", ()):
+            if not isinstance(value, Mapping) or not isinstance(value.get("path"), str):
+                raise ValueError("perception shard skipped episode record is invalid")
+            source_path = str(value["path"])
+            if source_path in episodes or any(item["path"] == source_path for item in skipped):
+                raise ValueError(f"duplicate episode across perception shards: {source_path}")
             skipped.append(dict(value))
+            canonically_rejected += value.get("reason") == "source_not_canonically_accepted"
     if cached != len(episodes) or not episodes:
         raise ValueError("merged perception episode count mismatch")
+    if requested != cached + len(skipped):
+        raise ValueError("merged perception requested episode count mismatch")
     return {
         **{key: reference[key] for key in INVARIANT_KEYS},
         "selection": {
             "unit_count": unit_count,
             "requested_episodes": requested,
             "cached_episodes": cached,
+            "skipped_episodes": len(skipped),
+            "canonically_rejected_episodes": canonically_rejected,
             "record_stride": stride,
             "max_units": maximum_units,
             "max_episodes": maximum_episodes,

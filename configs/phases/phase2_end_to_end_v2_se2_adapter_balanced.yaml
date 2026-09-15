@@ -1,0 +1,90 @@
+schema_version: 1
+phase: 2
+method: architecture_v2_dual_head
+stage: v2_005_se2_adapter_balanced_warmstart
+formal_training: false
+test_locked_used: false
+seed: 20260915
+
+da3_model: /data/nfs/share/gzy/models/DA3-SMALL/e08cab65ca0ec38e7826075418411ab90cab4da3
+da3_source: /data/nfs/share/gzy/third_party/depth-anything-3/3d835ec1a5802d64a8b8b15f817a1ab54809bfe4/src
+da3_runtime: /data/nfs/share/gzy/third_party/depth-anything-3/runtime-py39-v1
+
+architecture:
+  image_height: 280
+  image_width: 504
+  history_size: 8
+  patch_size: 14
+  backbone_dim: 768
+  policy_dim: 256
+  attention_heads: 8
+  horizon: 8
+  roi_size: 3
+  adapter_layers: 2
+  adapter_bottleneck: 64
+  uwb_age_limit_s: 1.0
+  uwb_age_decay_s: 0.5
+  target_motion_sigma_m_s: 0.5
+  tag_height_mean_m: 1.0
+  tag_height_sigma_m: 0.35
+  calibration_sigma_px: 2.0
+
+decoder:
+  policy_dim: 256
+  attention_heads: 8
+  grid_height: 20
+  grid_width: 36
+  history_size: 8
+  history_stride_raw: 3
+  scene_latents: 16
+  fusion_layers: 2
+  trajectory_layers: 2
+  feedforward_ratio: 4
+  horizon: 8
+  max_segment_m: 0.30
+  max_forward_m_s: 3.75
+  max_lateral_m_s: 2.50
+  max_yaw_rad_s: 1.5707963267948966
+  max_yaw_segment_rad: 0.5235987755982988
+  predict_se2_yaw: true
+  predict_target_diagnostics: true
+
+data:
+  sequence_index: outputs/indexes/architecture_v2_sage3d_sequences_v1.json
+  condition_modes: [visual_uwb, visual_only, uwb_only, safe_stop]
+  visibility_balance_index: outputs/training/v2_003_se2_visibility/TARGET_LABEL_AUDIT.json
+  visibility_negative_repeats: 32
+  small_bbox_repeats: 32
+
+training:
+  max_steps: 8192
+  batch_size_per_device: 1
+  num_workers: 2
+  learning_rate: 0.00005
+  weight_decay: 0.0001
+  warmup_steps: 100
+  gradient_clip_norm: 1.0
+  bfloat16: true
+  freeze_da3: false
+  log_every_steps: 20
+  checkpoint_every_steps: 1024
+  validation_samples: 512
+  loss_weights:
+    waypoint: 1.0
+    waypoint_delta: 1.0
+    waypoint_terminal: 1.0
+    waypoint_yaw: 0.5
+    waypoint_yaw_delta: 0.25
+    action: 1.0
+    stop: 0.5
+    bbox: 0.5
+    visibility: 1.0
+
+evaluation:
+  evt_split: train
+  test_locked_used: false
+  tasks: [stt, dt, at]
+  action_modes: [se2_waypoint]
+  episodes_per_task_mode: 4
+  max_steps_per_episode: 300
+

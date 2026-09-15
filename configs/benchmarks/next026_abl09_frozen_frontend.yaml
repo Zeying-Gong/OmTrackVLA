@@ -1,0 +1,11 @@
+schema_version: 1
+phase: 2
+benchmark_id: next026-abl09-frozen-frontend-v1
+train_config: configs/phases/next026_abl09_frozen_frontend_formal.yaml
+split: val
+seed: 20260911
+batch_size_per_device: 512
+samples_per_mode: 1024
+render_frames_per_mode: 16
+render_fps: 4
+test_locked_used: false

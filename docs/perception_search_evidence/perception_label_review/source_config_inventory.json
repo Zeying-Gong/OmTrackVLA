@@ -1,0 +1,3181 @@
+{
+  "configs": {
+    "at": {
+      "dataset": {
+        "content_scenes": [
+          "*"
+        ],
+        "data_path": "./data/datasets/track/AT/{split}/{split}.json.gz",
+        "scenes_dir": "data/scene_datasets",
+        "split": "train",
+        "type": "PointNav-v1"
+      },
+      "dataset_path": "/data/nfs/share/wam_tracking/OmTrackVLA/data/datasets/track/AT/train/train.json.gz",
+      "dataset_sha256": "60cf04535a7c187572a4e6455a25a1703e22a5fb98b3e3828ca8b7400cf9e967",
+      "entry_config_path": "/data/nfs/share/wam_tracking/OmTrackVLA/habitat-lab/habitat/config/benchmark/nav/track/track_train_at.yaml",
+      "entry_config_sha256": "00a78af24bab2b1198e72af4613e7e0c08fcc517026d7bde1ca564a1fcd775fd",
+      "environment": {
+        "iterator_options": {
+          "cycle": true,
+          "group_by_scene": true,
+          "max_scene_repeat_episodes": -1,
+          "max_scene_repeat_steps": 10000,
+          "num_episode_sample": -1,
+          "shuffle": true,
+          "step_repetition_range": 0.2
+        },
+        "max_episode_seconds": 10000000,
+        "max_episode_steps": 300
+      },
+      "resolved_config": {
+        "habitat": {
+          "dataset": {
+            "content_scenes": [
+              "*"
+            ],
+            "data_path": "./data/datasets/track/AT/{split}/{split}.json.gz",
+            "scenes_dir": "data/scene_datasets",
+            "split": "train",
+            "type": "PointNav-v1"
+          },
+          "env_task": "GymHabitatEnv",
+          "env_task_gym_dependencies": [],
+          "env_task_gym_id": "",
+          "environment": {
+            "iterator_options": {
+              "cycle": true,
+              "group_by_scene": true,
+              "max_scene_repeat_episodes": -1,
+              "max_scene_repeat_steps": 10000,
+              "num_episode_sample": -1,
+              "shuffle": true,
+              "step_repetition_range": 0.2
+            },
+            "max_episode_seconds": 10000000,
+            "max_episode_steps": 300
+          },
+          "gym": {
+            "achieved_goal_keys": [],
+            "action_keys": null,
+            "desired_goal_keys": [],
+            "obs_keys": [
+              "agent_0_third_rgb",
+              "agent_1_main_humanoid_detector_sensor",
+              "agent_1_other_humanoid_detector_sensor",
+              "agent_1_articulated_agent_jaw_rgb",
+              "agent_1_articulated_agent_jaw_depth",
+              "agent_1_articulated_agent_jaw_panoptic",
+              "agent_1_third_rgb",
+              "agent_1_localization_sensor"
+            ]
+          },
+          "seed": 100,
+          "simulator": {
+            "ac_freq_ratio": 4,
+            "additional_object_paths": [],
+            "agents": {
+              "agent_0": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_1": {
+                "articulated_agent_type": "SpotRobot",
+                "articulated_agent_urdf": "data/robots/hab_spot_arm/urdf/hab_spot_arm.urdf",
+                "grasp_managers": 1,
+                "height": 0.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "",
+                "radius": 0.5,
+                "sim_sensors": {
+                  "jaw_depth_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "max_depth": 10.0,
+                    "min_depth": 0.0,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "normalize_depth": true,
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimDepthSensor",
+                    "uuid": "articulated_agent_jaw_depth",
+                    "width": 384
+                  },
+                  "jaw_panoptic_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimSemanticSensor",
+                    "uuid": "articulated_agent_jaw_panoptic",
+                    "width": 384
+                  },
+                  "jaw_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "articulated_agent_jaw_rgb",
+                    "width": 384
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_2": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_3": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_4": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_5": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_6": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_7": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_8": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              }
+            },
+            "agents_order": [
+              "agent_0",
+              "agent_1",
+              "agent_2",
+              "agent_3",
+              "agent_4",
+              "agent_5",
+              "agent_6",
+              "agent_7",
+              "agent_8"
+            ],
+            "auto_sleep": true,
+            "concur_render": false,
+            "create_renderer": false,
+            "ctrl_freq": 40.0,
+            "debug_render": false,
+            "debug_render_articulated_agent": false,
+            "debug_render_goal": true,
+            "default_agent_id": 0,
+            "default_agent_navmesh": true,
+            "ep_info": null,
+            "forward_step_size": 0.25,
+            "grasp_impulse": 10000.0,
+            "habitat_sim_v0": {
+              "allow_sliding": true,
+              "enable_gfx_replay_save": false,
+              "enable_hbao": false,
+              "enable_physics": true,
+              "frustum_culling": true,
+              "gpu_device_id": 0,
+              "gpu_gpu": false,
+              "leave_context_with_background_renderer": false,
+              "physics_config_file": "./data/default.physics_config.json"
+            },
+            "hold_thresh": 0.15,
+            "kinematic_mode": false,
+            "load_objs": true,
+            "navmesh_include_static_objects": true,
+            "needs_markers": true,
+            "object_ids_start": 100,
+            "renderer": {
+              "classic_replay_renderer": false,
+              "composite_files": null,
+              "enable_batch_renderer": false
+            },
+            "requires_textures": true,
+            "robot_joint_start_noise": 0.0,
+            "scene": "data/scene_datasets/habitat-test-scenes/van-gogh-room.glb",
+            "scene_dataset": "data/scene_datasets/hm3d/hm3d_annotated_basis.scene_dataset_config.json",
+            "seed": 100,
+            "should_setup_semantic_ids": true,
+            "step_physics": true,
+            "turn_angle": 10,
+            "type": "RearrangeSim-v2",
+            "update_articulated_agent": true
+          },
+          "task": {
+            "actions": {
+              "agent_0_humanoid_navigate_action": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.5,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": -1.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": -1.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavCoordActionObstacleForMainHuman"
+              },
+              "agent_1_base_velocity": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 6.28,
+                "collision_threshold": 1e-05,
+                "enable_lateral_move": true,
+                "enable_rotation_check_for_dyn_slide": false,
+                "lateral_lin_speed": 5.0,
+                "lin_speed": 10.0,
+                "longitudinal_lin_speed": 15.0,
+                "navmesh_offset": [
+                  [
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.25,
+                    0.0
+                  ],
+                  [
+                    -0.25,
+                    0.0
+                  ]
+                ],
+                "type": "BaseVelNonCylinderAction"
+              },
+              "agent_1_oracle_follow_action": {
+                "allow_back": true,
+                "allow_dyn_slide": false,
+                "ang_speed": 10.0,
+                "collision_threshold": 1e-05,
+                "dist_thresh": 1.5,
+                "enable_lateral_move": false,
+                "enable_rotation_check_for_dyn_slide": true,
+                "lateral_lin_speed": 10.0,
+                "lin_speed": 10.0,
+                "longitudinal_lin_speed": 10.0,
+                "max_forward_speed": 3.75,
+                "max_tangent_speed": 1.25,
+                "max_yaw_speed": 3.75,
+                "navmesh_offset": null,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": -1.0,
+                "turn_thresh": 0.1,
+                "type": "OracleNavCoordinateActionForRobot"
+              },
+              "agent_2_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_3_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_4_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_5_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_6_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_7_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_8_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              }
+            },
+            "art_succ_thresh": 0.15,
+            "base_angle_noise": 0.523599,
+            "base_noise": 0.05,
+            "cache_robot_init": false,
+            "constraint_violation_drops_object": false,
+            "constraint_violation_ends_episode": true,
+            "count_obj_collisions": true,
+            "desired_resting_position": [
+              0.5,
+              0.0,
+              1.0
+            ],
+            "ee_exclude_region": 0.0,
+            "ee_sample_factor": 0.2,
+            "enable_safe_drop": false,
+            "end_on_success": false,
+            "filter_colliding_states": true,
+            "force_regenerate": false,
+            "goal_sensor_uuid": "pointgoal",
+            "joint_max_impulse": -1.0,
+            "lab_sensors": {
+              "agent_1_main_humanoid_detector_sensor": {
+                "human_id": 100,
+                "human_pixel_threshold": 10000,
+                "is_return_image_bbox": false,
+                "return_image": false,
+                "type": "MainHumanoidDetectorSensor"
+              },
+              "agent_1_other_humanoid_detector_sensor": {
+                "human_id": 100,
+                "human_pixel_threshold": 10000,
+                "is_return_image_bbox": false,
+                "return_image": false,
+                "type": "OtherHumanoidDetectorSensor"
+              }
+            },
+            "measurements": {
+              "did_multi_agents_collide": {
+                "type": "DidMultiAgentsCollide"
+              },
+              "distance_to_leader": {
+                "type": "DistanceToLeader"
+              },
+              "human_collision": {
+                "type": "HumanCollision"
+              },
+              "human_distance_to_goal": {
+                "type": "HumanDistanceToGoal"
+              },
+              "human_following": {
+                "success_distance": 3.0,
+                "type": "HumanFollowing"
+              },
+              "human_following_success": {
+                "max_episode_steps": 300,
+                "success_following_distance_lower": 1.0,
+                "success_following_distance_upper": 3.0,
+                "type": "HumanFollowingSuccess"
+              }
+            },
+            "min_distance_start_agents": -1.0,
+            "min_start_distance": 3.0,
+            "num_spawn_attempts": 200,
+            "obj_succ_thresh": 0.3,
+            "object_in_hand_sample_prob": 0.167,
+            "pddl_domain_def": "replica_cad",
+            "physics_target_sps": 60.0,
+            "rank0_env0_measure_names": [
+              "habitat_perf"
+            ],
+            "rank0_measure_names": [],
+            "recep_place_shrink_factor": 0.8,
+            "render_target": true,
+            "reward_measure": null,
+            "robot_at_thresh": 2.0,
+            "settle_steps": 5,
+            "should_enforce_target_within_reach": false,
+            "should_save_to_cache": false,
+            "slack_reward": -0.01,
+            "spawn_max_dist_to_obj": 2.0,
+            "spawn_max_dist_to_obj_delta": 0.02,
+            "spawn_region_scale": 0.2,
+            "success_measure": null,
+            "success_reward": 2.5,
+            "success_state": 0.0,
+            "task_spec": "",
+            "task_spec_base_path": "habitat/task/rearrange/pddl/",
+            "type": "MultiHumanTrackingTask-v0",
+            "use_marker_t": true
+          }
+        }
+      },
+      "resolved_config_sha256": "5d555785181bc0d09bccb8d4b8e8d1bfcbec157aa87ffddbe80f280adf2f63c2",
+      "seed": 100
+    },
+    "dt": {
+      "dataset": {
+        "content_scenes": [
+          "*"
+        ],
+        "data_path": "./data/datasets/track/DT/{split}/{split}.json.gz",
+        "scenes_dir": "data/scene_datasets",
+        "split": "train",
+        "type": "PointNav-v1"
+      },
+      "dataset_path": "/data/nfs/share/wam_tracking/OmTrackVLA/data/datasets/track/DT/train/train.json.gz",
+      "dataset_sha256": "676cd4350367ae2d43a6431aa9a7ef2956058e72bd937fab4f1292ee1af721eb",
+      "entry_config_path": "/data/nfs/share/wam_tracking/OmTrackVLA/habitat-lab/habitat/config/benchmark/nav/track/track_train_dt.yaml",
+      "entry_config_sha256": "b5baaf2a2068022558cf4b368ad943d35a0ef61d99f6769af65af00bd302489a",
+      "environment": {
+        "iterator_options": {
+          "cycle": true,
+          "group_by_scene": true,
+          "max_scene_repeat_episodes": -1,
+          "max_scene_repeat_steps": 10000,
+          "num_episode_sample": -1,
+          "shuffle": true,
+          "step_repetition_range": 0.2
+        },
+        "max_episode_seconds": 10000000,
+        "max_episode_steps": 300
+      },
+      "resolved_config": {
+        "habitat": {
+          "dataset": {
+            "content_scenes": [
+              "*"
+            ],
+            "data_path": "./data/datasets/track/DT/{split}/{split}.json.gz",
+            "scenes_dir": "data/scene_datasets",
+            "split": "train",
+            "type": "PointNav-v1"
+          },
+          "env_task": "GymHabitatEnv",
+          "env_task_gym_dependencies": [],
+          "env_task_gym_id": "",
+          "environment": {
+            "iterator_options": {
+              "cycle": true,
+              "group_by_scene": true,
+              "max_scene_repeat_episodes": -1,
+              "max_scene_repeat_steps": 10000,
+              "num_episode_sample": -1,
+              "shuffle": true,
+              "step_repetition_range": 0.2
+            },
+            "max_episode_seconds": 10000000,
+            "max_episode_steps": 300
+          },
+          "gym": {
+            "achieved_goal_keys": [],
+            "action_keys": null,
+            "desired_goal_keys": [],
+            "obs_keys": [
+              "agent_0_third_rgb",
+              "agent_1_main_humanoid_detector_sensor",
+              "agent_1_other_humanoid_detector_sensor",
+              "agent_1_articulated_agent_jaw_rgb",
+              "agent_1_articulated_agent_jaw_depth",
+              "agent_1_articulated_agent_jaw_panoptic",
+              "agent_1_third_rgb",
+              "agent_1_localization_sensor"
+            ]
+          },
+          "seed": 100,
+          "simulator": {
+            "ac_freq_ratio": 4,
+            "additional_object_paths": [],
+            "agents": {
+              "agent_0": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_1": {
+                "articulated_agent_type": "SpotRobot",
+                "articulated_agent_urdf": "data/robots/hab_spot_arm/urdf/hab_spot_arm.urdf",
+                "grasp_managers": 1,
+                "height": 0.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "",
+                "radius": 0.5,
+                "sim_sensors": {
+                  "jaw_depth_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "max_depth": 10.0,
+                    "min_depth": 0.0,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "normalize_depth": true,
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimDepthSensor",
+                    "uuid": "articulated_agent_jaw_depth",
+                    "width": 384
+                  },
+                  "jaw_panoptic_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimSemanticSensor",
+                    "uuid": "articulated_agent_jaw_panoptic",
+                    "width": 384
+                  },
+                  "jaw_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "articulated_agent_jaw_rgb",
+                    "width": 384
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_2": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_3": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_4": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_5": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_6": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_7": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_8": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              }
+            },
+            "agents_order": [
+              "agent_0",
+              "agent_1",
+              "agent_2",
+              "agent_3",
+              "agent_4",
+              "agent_5",
+              "agent_6",
+              "agent_7",
+              "agent_8"
+            ],
+            "auto_sleep": true,
+            "concur_render": false,
+            "create_renderer": false,
+            "ctrl_freq": 40.0,
+            "debug_render": false,
+            "debug_render_articulated_agent": false,
+            "debug_render_goal": true,
+            "default_agent_id": 0,
+            "default_agent_navmesh": true,
+            "ep_info": null,
+            "forward_step_size": 0.25,
+            "grasp_impulse": 10000.0,
+            "habitat_sim_v0": {
+              "allow_sliding": true,
+              "enable_gfx_replay_save": false,
+              "enable_hbao": false,
+              "enable_physics": true,
+              "frustum_culling": true,
+              "gpu_device_id": 0,
+              "gpu_gpu": false,
+              "leave_context_with_background_renderer": false,
+              "physics_config_file": "./data/default.physics_config.json"
+            },
+            "hold_thresh": 0.15,
+            "kinematic_mode": false,
+            "load_objs": true,
+            "navmesh_include_static_objects": true,
+            "needs_markers": true,
+            "object_ids_start": 100,
+            "renderer": {
+              "classic_replay_renderer": false,
+              "composite_files": null,
+              "enable_batch_renderer": false
+            },
+            "requires_textures": true,
+            "robot_joint_start_noise": 0.0,
+            "scene": "data/scene_datasets/habitat-test-scenes/van-gogh-room.glb",
+            "scene_dataset": "data/scene_datasets/hm3d/hm3d_annotated_basis.scene_dataset_config.json",
+            "seed": 100,
+            "should_setup_semantic_ids": true,
+            "step_physics": true,
+            "turn_angle": 10,
+            "type": "RearrangeSim-v2",
+            "update_articulated_agent": true
+          },
+          "task": {
+            "actions": {
+              "agent_0_humanoid_navigate_action": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.5,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": -1.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": -1.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavCoordActionObstacleForMainHuman"
+              },
+              "agent_1_base_velocity": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 6.28,
+                "collision_threshold": 1e-05,
+                "enable_lateral_move": true,
+                "enable_rotation_check_for_dyn_slide": false,
+                "lateral_lin_speed": 10.0,
+                "lin_speed": 10.0,
+                "longitudinal_lin_speed": 15.0,
+                "navmesh_offset": [
+                  [
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.25,
+                    0.0
+                  ],
+                  [
+                    -0.25,
+                    0.0
+                  ]
+                ],
+                "type": "BaseVelNonCylinderAction"
+              },
+              "agent_1_oracle_follow_action": {
+                "allow_back": true,
+                "allow_dyn_slide": false,
+                "ang_speed": 10.0,
+                "collision_threshold": 1e-05,
+                "dist_thresh": 1.5,
+                "enable_lateral_move": false,
+                "enable_rotation_check_for_dyn_slide": true,
+                "lateral_lin_speed": 10.0,
+                "lin_speed": 10.0,
+                "longitudinal_lin_speed": 10.0,
+                "max_forward_speed": 3.75,
+                "max_tangent_speed": 1.25,
+                "max_yaw_speed": 3.75,
+                "navmesh_offset": null,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": -1.0,
+                "turn_thresh": 0.1,
+                "type": "OracleNavCoordinateActionForRobot"
+              },
+              "agent_2_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_3_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_4_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_5_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_6_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_7_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_8_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              }
+            },
+            "art_succ_thresh": 0.15,
+            "base_angle_noise": 0.523599,
+            "base_noise": 0.05,
+            "cache_robot_init": false,
+            "constraint_violation_drops_object": false,
+            "constraint_violation_ends_episode": true,
+            "count_obj_collisions": true,
+            "desired_resting_position": [
+              0.5,
+              0.0,
+              1.0
+            ],
+            "ee_exclude_region": 0.0,
+            "ee_sample_factor": 0.2,
+            "enable_safe_drop": false,
+            "end_on_success": false,
+            "filter_colliding_states": true,
+            "force_regenerate": false,
+            "goal_sensor_uuid": "pointgoal",
+            "joint_max_impulse": -1.0,
+            "lab_sensors": {
+              "agent_1_main_humanoid_detector_sensor": {
+                "human_id": 100,
+                "human_pixel_threshold": 10000,
+                "is_return_image_bbox": false,
+                "return_image": false,
+                "type": "MainHumanoidDetectorSensor"
+              },
+              "agent_1_other_humanoid_detector_sensor": {
+                "human_id": 100,
+                "human_pixel_threshold": 10000,
+                "is_return_image_bbox": false,
+                "return_image": false,
+                "type": "OtherHumanoidDetectorSensor"
+              }
+            },
+            "measurements": {
+              "did_multi_agents_collide": {
+                "type": "DidMultiAgentsCollide"
+              },
+              "distance_to_leader": {
+                "type": "DistanceToLeader"
+              },
+              "human_collision": {
+                "type": "HumanCollision"
+              },
+              "human_distance_to_goal": {
+                "type": "HumanDistanceToGoal"
+              },
+              "human_following": {
+                "success_distance": 3.0,
+                "type": "HumanFollowing"
+              },
+              "human_following_success": {
+                "max_episode_steps": 300,
+                "success_following_distance_lower": 1.0,
+                "success_following_distance_upper": 3.0,
+                "type": "HumanFollowingSuccess"
+              }
+            },
+            "min_distance_start_agents": -1.0,
+            "min_start_distance": 3.0,
+            "num_spawn_attempts": 200,
+            "obj_succ_thresh": 0.3,
+            "object_in_hand_sample_prob": 0.167,
+            "pddl_domain_def": "replica_cad",
+            "physics_target_sps": 60.0,
+            "rank0_env0_measure_names": [
+              "habitat_perf"
+            ],
+            "rank0_measure_names": [],
+            "recep_place_shrink_factor": 0.8,
+            "render_target": true,
+            "reward_measure": null,
+            "robot_at_thresh": 2.0,
+            "settle_steps": 5,
+            "should_enforce_target_within_reach": false,
+            "should_save_to_cache": false,
+            "slack_reward": -0.01,
+            "spawn_max_dist_to_obj": 2.0,
+            "spawn_max_dist_to_obj_delta": 0.02,
+            "spawn_region_scale": 0.2,
+            "success_measure": null,
+            "success_reward": 2.5,
+            "success_state": 0.0,
+            "task_spec": "",
+            "task_spec_base_path": "habitat/task/rearrange/pddl/",
+            "type": "MultiHumanTrackingTask-v0",
+            "use_marker_t": true
+          }
+        }
+      },
+      "resolved_config_sha256": "eece98b075e315257369e4dc4897a1ebc730d29bf97a54510e4f05294d39cf5d",
+      "seed": 100
+    },
+    "stt": {
+      "dataset": {
+        "content_scenes": [
+          "*"
+        ],
+        "data_path": "./data/datasets/track/STT/{split}/{split}.json.gz",
+        "scenes_dir": "data/scene_datasets",
+        "split": "train",
+        "type": "PointNav-v1"
+      },
+      "dataset_path": "/data/nfs/share/wam_tracking/OmTrackVLA/data/datasets/track/STT/train/train.json.gz",
+      "dataset_sha256": "294fe412890f9ec55a82e44388efbec49ec0bb8826255d351a469aad40ac385d",
+      "entry_config_path": "/data/nfs/share/wam_tracking/OmTrackVLA/habitat-lab/habitat/config/benchmark/nav/track/track_train_stt.yaml",
+      "entry_config_sha256": "64d6fe04236ea0edbb243f709bff6e1100d4faa731d67bdbbbb4c1df92078f23",
+      "environment": {
+        "iterator_options": {
+          "cycle": true,
+          "group_by_scene": true,
+          "max_scene_repeat_episodes": -1,
+          "max_scene_repeat_steps": 10000,
+          "num_episode_sample": -1,
+          "shuffle": true,
+          "step_repetition_range": 0.2
+        },
+        "max_episode_seconds": 10000000,
+        "max_episode_steps": 300
+      },
+      "resolved_config": {
+        "habitat": {
+          "dataset": {
+            "content_scenes": [
+              "*"
+            ],
+            "data_path": "./data/datasets/track/STT/{split}/{split}.json.gz",
+            "scenes_dir": "data/scene_datasets",
+            "split": "train",
+            "type": "PointNav-v1"
+          },
+          "env_task": "GymHabitatEnv",
+          "env_task_gym_dependencies": [],
+          "env_task_gym_id": "",
+          "environment": {
+            "iterator_options": {
+              "cycle": true,
+              "group_by_scene": true,
+              "max_scene_repeat_episodes": -1,
+              "max_scene_repeat_steps": 10000,
+              "num_episode_sample": -1,
+              "shuffle": true,
+              "step_repetition_range": 0.2
+            },
+            "max_episode_seconds": 10000000,
+            "max_episode_steps": 300
+          },
+          "gym": {
+            "achieved_goal_keys": [],
+            "action_keys": null,
+            "desired_goal_keys": [],
+            "obs_keys": [
+              "agent_0_third_rgb",
+              "agent_1_main_humanoid_detector_sensor",
+              "agent_1_other_humanoid_detector_sensor",
+              "agent_1_articulated_agent_jaw_rgb",
+              "agent_1_articulated_agent_jaw_depth",
+              "agent_1_articulated_agent_jaw_panoptic",
+              "agent_1_third_rgb",
+              "agent_1_localization_sensor"
+            ]
+          },
+          "seed": 100,
+          "simulator": {
+            "ac_freq_ratio": 4,
+            "additional_object_paths": [],
+            "agents": {
+              "agent_0": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_1": {
+                "articulated_agent_type": "SpotRobot",
+                "articulated_agent_urdf": "data/robots/hab_spot_arm/urdf/hab_spot_arm.urdf",
+                "grasp_managers": 1,
+                "height": 0.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "",
+                "radius": 0.5,
+                "sim_sensors": {
+                  "jaw_depth_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "max_depth": 10.0,
+                    "min_depth": 0.0,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "normalize_depth": true,
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimDepthSensor",
+                    "uuid": "articulated_agent_jaw_depth",
+                    "width": 384
+                  },
+                  "jaw_panoptic_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimSemanticSensor",
+                    "uuid": "articulated_agent_jaw_panoptic",
+                    "width": 384
+                  },
+                  "jaw_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "articulated_agent_jaw_rgb",
+                    "width": 384
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_2": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_3": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_4": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_5": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_6": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_7": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "agent_8": {
+                "articulated_agent_type": "KinematicHumanoid",
+                "articulated_agent_urdf": "data/humanoids/humanoid_data/female_2/female_2.urdf",
+                "grasp_managers": 1,
+                "height": 1.5,
+                "ik_arm_urdf": null,
+                "is_set_start_state": false,
+                "joint_start_noise": 0.1,
+                "joint_start_override": null,
+                "joint_that_can_control": null,
+                "max_climb": 0.2,
+                "max_slope": 45.0,
+                "motion_data_path": "data/humanoids/humanoid_data/female_2/female_2_motion_data_smplx.pkl",
+                "radius": 0.3,
+                "sim_sensors": {
+                  "head_rgb_sensor": {
+                    "height": 224,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "head_rgb",
+                    "width": 224
+                  },
+                  "third_rgb_sensor": {
+                    "height": 384,
+                    "hfov": 90,
+                    "noise_model": "None",
+                    "noise_model_kwargs": {},
+                    "orientation": [
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "position": [
+                      0.0,
+                      1.25,
+                      0.0
+                    ],
+                    "sensor_subtype": "PINHOLE",
+                    "type": "HabitatSimRGBSensor",
+                    "uuid": "third_rgb",
+                    "width": 384
+                  }
+                },
+                "start_position": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "start_rotation": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              }
+            },
+            "agents_order": [
+              "agent_0",
+              "agent_1",
+              "agent_2",
+              "agent_3",
+              "agent_4",
+              "agent_5",
+              "agent_6",
+              "agent_7",
+              "agent_8"
+            ],
+            "auto_sleep": true,
+            "concur_render": false,
+            "create_renderer": false,
+            "ctrl_freq": 40.0,
+            "debug_render": false,
+            "debug_render_articulated_agent": false,
+            "debug_render_goal": true,
+            "default_agent_id": 0,
+            "default_agent_navmesh": true,
+            "ep_info": null,
+            "forward_step_size": 0.25,
+            "grasp_impulse": 10000.0,
+            "habitat_sim_v0": {
+              "allow_sliding": true,
+              "enable_gfx_replay_save": false,
+              "enable_hbao": false,
+              "enable_physics": true,
+              "frustum_culling": true,
+              "gpu_device_id": 0,
+              "gpu_gpu": false,
+              "leave_context_with_background_renderer": false,
+              "physics_config_file": "./data/default.physics_config.json"
+            },
+            "hold_thresh": 0.15,
+            "kinematic_mode": false,
+            "load_objs": true,
+            "navmesh_include_static_objects": true,
+            "needs_markers": true,
+            "object_ids_start": 100,
+            "renderer": {
+              "classic_replay_renderer": false,
+              "composite_files": null,
+              "enable_batch_renderer": false
+            },
+            "requires_textures": true,
+            "robot_joint_start_noise": 0.0,
+            "scene": "data/scene_datasets/habitat-test-scenes/van-gogh-room.glb",
+            "scene_dataset": "data/scene_datasets/hm3d/hm3d_annotated_basis.scene_dataset_config.json",
+            "seed": 100,
+            "should_setup_semantic_ids": true,
+            "step_physics": true,
+            "turn_angle": 10,
+            "type": "RearrangeSim-v2",
+            "update_articulated_agent": true
+          },
+          "task": {
+            "actions": {
+              "agent_0_humanoid_navigate_action": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.5,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": -1.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": -1.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavCoordActionObstacleForMainHuman"
+              },
+              "agent_1_base_velocity": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 6.28,
+                "collision_threshold": 1e-05,
+                "enable_lateral_move": true,
+                "enable_rotation_check_for_dyn_slide": false,
+                "lateral_lin_speed": 10.0,
+                "lin_speed": 10.0,
+                "longitudinal_lin_speed": 15.0,
+                "navmesh_offset": [
+                  [
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.25,
+                    0.0
+                  ],
+                  [
+                    -0.25,
+                    0.0
+                  ]
+                ],
+                "type": "BaseVelNonCylinderAction"
+              },
+              "agent_1_oracle_follow_action": {
+                "allow_back": true,
+                "allow_dyn_slide": false,
+                "ang_speed": 10.0,
+                "collision_threshold": 1e-05,
+                "dist_thresh": 1.5,
+                "enable_lateral_move": false,
+                "enable_rotation_check_for_dyn_slide": true,
+                "lateral_lin_speed": 10.0,
+                "lin_speed": 10.0,
+                "longitudinal_lin_speed": 10.0,
+                "max_forward_speed": 3.75,
+                "max_tangent_speed": 1.25,
+                "max_yaw_speed": 3.75,
+                "navmesh_offset": null,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": -1.0,
+                "turn_thresh": 0.1,
+                "type": "OracleNavCoordinateActionForRobot"
+              },
+              "agent_2_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_3_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_4_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_5_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_6_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_7_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              },
+              "agent_8_oracle_nav_randcoord_action_obstacle": {
+                "allow_back": true,
+                "allow_dyn_slide": true,
+                "ang_speed": 10.0,
+                "dist_thresh": 0.2,
+                "forward_velocity": 1.0,
+                "human_stop_and_walk_to_robot_distance_threshold": 2.0,
+                "lin_speed": 10.0,
+                "motion_control": "human_joints",
+                "num_joints": 17,
+                "num_spawn_attempts": 200,
+                "spawn_max_dist_to_obj": 2.0,
+                "turn_thresh": 0.1,
+                "turn_velocity": 1.0,
+                "type": "OracleNavRandCoordActionForOtherHuman"
+              }
+            },
+            "art_succ_thresh": 0.15,
+            "base_angle_noise": 0.523599,
+            "base_noise": 0.05,
+            "cache_robot_init": false,
+            "constraint_violation_drops_object": false,
+            "constraint_violation_ends_episode": true,
+            "count_obj_collisions": true,
+            "desired_resting_position": [
+              0.5,
+              0.0,
+              1.0
+            ],
+            "ee_exclude_region": 0.0,
+            "ee_sample_factor": 0.2,
+            "enable_safe_drop": false,
+            "end_on_success": false,
+            "filter_colliding_states": true,
+            "force_regenerate": false,
+            "goal_sensor_uuid": "pointgoal",
+            "joint_max_impulse": -1.0,
+            "lab_sensors": {
+              "agent_1_main_humanoid_detector_sensor": {
+                "human_id": 100,
+                "human_pixel_threshold": 10000,
+                "is_return_image_bbox": false,
+                "return_image": false,
+                "type": "MainHumanoidDetectorSensor"
+              },
+              "agent_1_other_humanoid_detector_sensor": {
+                "human_id": 100,
+                "human_pixel_threshold": 10000,
+                "is_return_image_bbox": false,
+                "return_image": false,
+                "type": "OtherHumanoidDetectorSensor"
+              }
+            },
+            "measurements": {
+              "did_multi_agents_collide": {
+                "type": "DidMultiAgentsCollide"
+              },
+              "distance_to_leader": {
+                "type": "DistanceToLeader"
+              },
+              "human_collision": {
+                "type": "HumanCollision"
+              },
+              "human_distance_to_goal": {
+                "type": "HumanDistanceToGoal"
+              },
+              "human_following": {
+                "success_distance": 3.0,
+                "type": "HumanFollowing"
+              },
+              "human_following_success": {
+                "max_episode_steps": 300,
+                "success_following_distance_lower": 1.0,
+                "success_following_distance_upper": 3.0,
+                "type": "HumanFollowingSuccess"
+              }
+            },
+            "min_distance_start_agents": -1.0,
+            "min_start_distance": 3.0,
+            "num_spawn_attempts": 200,
+            "obj_succ_thresh": 0.3,
+            "object_in_hand_sample_prob": 0.167,
+            "pddl_domain_def": "replica_cad",
+            "physics_target_sps": 60.0,
+            "rank0_env0_measure_names": [
+              "habitat_perf"
+            ],
+            "rank0_measure_names": [],
+            "recep_place_shrink_factor": 0.8,
+            "render_target": true,
+            "reward_measure": null,
+            "robot_at_thresh": 2.0,
+            "settle_steps": 5,
+            "should_enforce_target_within_reach": false,
+            "should_save_to_cache": false,
+            "slack_reward": -0.01,
+            "spawn_max_dist_to_obj": 2.0,
+            "spawn_max_dist_to_obj_delta": 0.02,
+            "spawn_region_scale": 0.2,
+            "success_measure": null,
+            "success_reward": 2.5,
+            "success_state": 0.0,
+            "task_spec": "",
+            "task_spec_base_path": "habitat/task/rearrange/pddl/",
+            "type": "MultiHumanTrackingTask-v0",
+            "use_marker_t": true
+          }
+        }
+      },
+      "resolved_config_sha256": "4e0b3a3338e997cc4d6787e09b68aa6fa9fdb24eb2c49a2333288c42e2eb0ac7",
+      "seed": 100
+    }
+  },
+  "environment_created": false,
+  "policy_loaded": false,
+  "read_only": true
+}

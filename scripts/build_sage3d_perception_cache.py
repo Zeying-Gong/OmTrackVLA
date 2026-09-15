@@ -74,6 +74,35 @@ def _episode_output(root: Path, relative: str) -> Path:
     return root / "episodes" / parts.parent / f"{parts.name}.json"
 
 
+def _canonical_rejection_record(episode: Path, relative: str) -> dict[str, object] | None:
+    """Return an auditable skip only for a source episode explicitly rejected twice.
+
+    The root ``index.json`` is a catalog, not an admission list.  A missing sidecar
+    is expected only when the source episode has no ``_ACCEPTED`` marker *and* its
+    quality record explicitly says ``rejected``.  Every other missing-sidecar case
+    remains a hard error in ``main``.
+    """
+    if (episode / "_ACCEPTED").is_file():
+        return None
+    quality_path = episode / "quality.json"
+    if not quality_path.is_file():
+        return None
+    quality = _load(quality_path)
+    if not isinstance(quality, dict) or quality.get("status") != "rejected":
+        return None
+    record: dict[str, object] = {
+        "path": relative,
+        "reason": "source_not_canonically_accepted",
+        "quality_status": "rejected",
+    }
+    rejection_reasons = quality.get("rejection_reasons")
+    if isinstance(rejection_reasons, list) and all(
+        isinstance(value, str) for value in rejection_reasons
+    ):
+        record["source_rejection_reasons"] = list(rejection_reasons)
+    return record
+
+
 def main() -> int:
     args = _arguments()
     if args.record_stride <= 0:
@@ -133,6 +162,14 @@ def main() -> int:
         sidecar_path = episode_sidecar_path(sidecar_root, relative)
         sidecar_metadata = sidecar_manifest["episodes"].get(relative)
         if not isinstance(sidecar_metadata, dict):
+            rejection = _canonical_rejection_record(episode, relative)
+            if rejection is not None:
+                skipped.append(rejection)
+                print(
+                    f"[{episode_number}/{len(entries)}] skip rejected {relative}",
+                    flush=True,
+                )
+                continue
             raise ValueError(f"missing admitted sidecar metadata: {relative}")
         if sha256_file(sidecar_path) != sidecar_metadata["sidecar_sha256"]:
             raise ValueError(f"sidecar checksum mismatch: {relative}")
@@ -238,6 +275,11 @@ def main() -> int:
             "unit_count": len(units),
             "requested_episodes": len(entries),
             "cached_episodes": len(episodes),
+            "skipped_episodes": len(skipped),
+            "canonically_rejected_episodes": sum(
+                value.get("reason") == "source_not_canonically_accepted"
+                for value in skipped
+            ),
             "record_stride": args.record_stride,
             "max_units": args.max_units,
             "max_episodes": args.max_episodes,

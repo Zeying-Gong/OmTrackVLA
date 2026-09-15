@@ -1,0 +1,84 @@
+phase: 2
+method: architecture_v1_end_to_end
+status: next_025_smoke_only
+
+model:
+  class: omtrackvla.models.end_to_end.EndToEndFollowPolicy
+  da3_source_commit: 3d835ec1a5802d64a8b8b15f817a1ab54809bfe4
+  da3_model_revision: e08cab65ca0ec38e7826075418411ab90cab4da3
+  da3_feature_layer: 11
+  image_height: 280
+  image_width: 504
+  history_size: 4
+  patch_size: 14
+  patch_grid: [20, 36]
+  backbone_dim: 768
+  policy_dim: 256
+  attention_heads: 8
+  roi_align_size: [3, 3]
+  adapter:
+    kind: residual
+    last_da3_blocks: 2
+    bottleneck_dim: 64
+  waypoint_horizon: 8
+
+deployment_inputs:
+  initial_rgb_bbox_once: true
+  ego_rgb_history: true
+  uwb_base_xy_covariance_quality_age_valid: true
+  camera_intrinsics_extrinsics: true
+  forbidden:
+    - perception_cache
+    - later_external_bbox
+    - gt_depth
+    - gt_target_pose
+    - gt_target_point
+    - gt_realized_motion
+
+smoke_data:
+  dataset: sage3d_extracted
+  source_root: /data/nfs/share/OmTrackVLA/data/sage3d_extracted
+  phase1_split_manifest: configs/manifests/phase1_v1.json
+  required_split: train
+  sidecar_root: results/sage3d_bbox_sidecar_v1
+  policy_admission: results/sage3d_policy_v1_audit/admission.json
+  episode: 0001_83992/stt/0/go2_realsense_d435i
+  initial_index: 0
+  anchor_index: 8
+  waypoint_target: admitted_sage3d_expert
+  uwb_measurement: simulated_uwb
+  perception_cache: false
+  test_locked_used: false
+
+uwb:
+  early_fusion: camera_geometry_gaussian_patch_bias
+  late_fusion: independent_continuous_z_uwb
+  age_limit_s: 1.0
+  age_decay_s: 0.5
+  target_motion_sigma_m_s: 0.5
+  tag_height_mean_m: 1.0
+  tag_height_sigma_m: 0.35
+  calibration_sigma_px: 2.0
+  available_measurement_kind: simulated_uwb
+
+smoke:
+  objective: waypoint_only_smooth_l1
+  required_nonzero_gradients:
+    - fusion
+    - gru
+    - da3_adapter
+  auxiliary_losses: []
+  single_gpu_real_batches: 1
+  max_ddp_steps: 1
+  formal_training: false
+  test_locked_used: false
+
+explicitly_excluded:
+  - flow_waypoint_decoder
+  - multi_scale_da3_fusion
+  - part_tokens
+  - memory_bank
+  - occupancy_decoder
+  - depth_decoder
+  - da3_dualdpt
+  - da3_camera_decoder

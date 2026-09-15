@@ -8,7 +8,7 @@ import multiprocessing as mp
 import importlib.util
 from pathlib import Path
 import traceback
-from typing import Optional, Sequence, Tuple
+from typing import Callable, Optional, Sequence, Tuple
 
 import cv2
 import numpy as np
@@ -112,12 +112,20 @@ class TargetAppearanceMemory:
         max_positive_embeddings: int = 8,
         max_negative_embeddings: int = 16,
         duplicate_cosine: float = 0.995,
+        normalize_embedding: Optional[
+            Callable[[Optional[np.ndarray]], Optional[np.ndarray]]
+        ] = None,
+        similarity01: Optional[
+            Callable[[Optional[np.ndarray], Optional[np.ndarray]], float]
+        ] = None,
     ) -> None:
         if max_positive_embeddings < 1 or max_negative_embeddings < 0:
             raise ValueError("appearance gallery capacities are invalid")
         self.max_positive_embeddings = int(max_positive_embeddings)
         self.max_negative_embeddings = int(max_negative_embeddings)
         self.duplicate_cosine = float(duplicate_cosine)
+        self._normalize_embedding = normalize_embedding or self._normalized
+        self._embedding_similarity01 = similarity01 or self._cosine01
         self.reset(anchor_embedding)
 
     @staticmethod
@@ -138,20 +146,26 @@ class TargetAppearanceMemory:
         return 0.5 * (float(np.clip(np.dot(left, right), -1.0, 1.0)) + 1.0)
 
     def reset(self, anchor_embedding: Optional[np.ndarray]) -> None:
-        self.anchor_embedding = self._normalized(anchor_embedding)
+        self.anchor_embedding = self._normalize_embedding(anchor_embedding)
         self.positive_embeddings: list[np.ndarray] = []
         self.negative_embeddings: list[np.ndarray] = []
 
     def scores(self, embedding: Optional[np.ndarray]) -> dict[str, float]:
-        value = self._normalized(embedding)
-        anchor = self._cosine01(self.anchor_embedding, value)
+        value = self._normalize_embedding(embedding)
+        anchor = self._embedding_similarity01(self.anchor_embedding, value)
         gallery = max(
-            (self._cosine01(item, value) for item in self.positive_embeddings),
+            (
+                self._embedding_similarity01(item, value)
+                for item in self.positive_embeddings
+            ),
             default=anchor,
         )
         positive = max(anchor, 0.35 * anchor + 0.65 * gallery)
         negative = max(
-            (self._cosine01(item, value) for item in self.negative_embeddings),
+            (
+                self._embedding_similarity01(item, value)
+                for item in self.negative_embeddings
+            ),
             default=0.0,
         )
         # A known distractor may look somewhat like the target.  Penalize it
@@ -166,10 +180,14 @@ class TargetAppearanceMemory:
         }
 
     def _append_diverse(self, collection: list[np.ndarray], embedding: np.ndarray, capacity: int) -> bool:
-        value = self._normalized(embedding)
+        value = self._normalize_embedding(embedding)
         if value is None or capacity <= 0:
             return False
-        if any(float(np.dot(item, value)) >= self.duplicate_cosine for item in collection):
+        if any(
+            2.0 * self._embedding_similarity01(item, value) - 1.0
+            >= self.duplicate_cosine
+            for item in collection
+        ):
             return False
         collection.append(value)
         if len(collection) > capacity:
@@ -206,6 +224,8 @@ class RGBPersonPerception:
         detector_architecture: str = "fasterrcnn_mobilenet_v3_large_320_fpn",
         reid_weights_path: Path | str = DEFAULT_REID_WEIGHTS,
         reid_code_path: Path | str = DEFAULT_REID_CODE,
+        reid_backend: str = "osnet",
+        kpr_source_path: Optional[Path | str] = None,
         score_threshold: float = 0.30,
         association_threshold: float = 0.20,
         reid_threshold: float = 0.55,
@@ -214,6 +234,12 @@ class RGBPersonPerception:
         global_identity_threshold: float = 0.67,
         global_single_identity_threshold: float = 0.72,
         global_identity_margin: float = 0.01,
+        tracklet_identity_floor: Optional[float] = None,
+        tracklet_iou_threshold: float = 0.20,
+        short_reacquisition_identity_threshold: float = 0.81,
+        reacquisition_confirm_frames: int = 1,
+        reacquisition_consistency_iou: float = 0.10,
+        reacquisition_consistency_reid: float = 0.0,
         memory_update_detector_threshold: float = 0.70,
         memory_update_identity_threshold: float = 0.82,
         memory_update_anchor_threshold: float = 0.72,
@@ -260,24 +286,44 @@ class RGBPersonPerception:
         if detector_max_size is not None:
             self.model.transform.max_size = int(detector_max_size)
         self.model.eval().to(self.device)
+        self.reid_backend_name = str(reid_backend).lower()
+        if self.reid_backend_name not in {"osnet", "kpr"}:
+            raise ValueError(f"unsupported ReID backend: {reid_backend}")
         reid_weights_path = Path(reid_weights_path)
-        reid_code_path = Path(reid_code_path)
         if not reid_weights_path.is_file():
             raise FileNotFoundError(f"ReID feature weights not found: {reid_weights_path}")
-        if not reid_code_path.is_file():
-            raise FileNotFoundError(f"OSNet model code not found: {reid_code_path}")
-        spec = importlib.util.spec_from_file_location("omtrackvla_osnet", reid_code_path)
-        if spec is None or spec.loader is None:
-            raise ImportError(f"Could not load OSNet module: {reid_code_path}")
-        osnet_module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(osnet_module)
-        reid_state = torch.load(reid_weights_path, map_location="cpu", weights_only=True)
-        num_classes = int(reid_state["classifier.weight"].shape[0])
-        self.reid_model = osnet_module.osnet_x0_25(
-            num_classes=num_classes, pretrained=False
-        )
-        self.reid_model.load_state_dict(reid_state, strict=True)
-        self.reid_model.eval().to(self.device)
+        self._reid_backend = None
+        if self.reid_backend_name == "kpr":
+            if kpr_source_path is None:
+                raise ValueError("kpr_source_path is required for the KPR backend")
+            from .kpr_reid import KPRReIDBackend
+
+            self._reid_backend = KPRReIDBackend(
+                source_path=kpr_source_path,
+                weights_path=reid_weights_path,
+                device=self.device,
+            )
+            self.reid_model = self._reid_backend.model
+        else:
+            reid_code_path = Path(reid_code_path)
+            if not reid_code_path.is_file():
+                raise FileNotFoundError(f"OSNet model code not found: {reid_code_path}")
+            spec = importlib.util.spec_from_file_location(
+                "omtrackvla_osnet", reid_code_path
+            )
+            if spec is None or spec.loader is None:
+                raise ImportError(f"Could not load OSNet module: {reid_code_path}")
+            osnet_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(osnet_module)
+            reid_state = torch.load(
+                reid_weights_path, map_location="cpu", weights_only=True
+            )
+            num_classes = int(reid_state["classifier.weight"].shape[0])
+            self.reid_model = osnet_module.osnet_x0_25(
+                num_classes=num_classes, pretrained=False
+            )
+            self.reid_model.load_state_dict(reid_state, strict=True)
+            self.reid_model.eval().to(self.device)
         self.score_threshold = float(score_threshold)
         self.association_threshold = float(association_threshold)
         self.reid_threshold = float(reid_threshold)
@@ -288,6 +334,22 @@ class RGBPersonPerception:
             global_single_identity_threshold
         )
         self.global_identity_margin = float(global_identity_margin)
+        self.tracklet_identity_floor = float(
+            reid_threshold
+            if tracklet_identity_floor is None
+            else tracklet_identity_floor
+        )
+        self.tracklet_iou_threshold = float(tracklet_iou_threshold)
+        self.short_reacquisition_identity_threshold = float(
+            short_reacquisition_identity_threshold
+        )
+        self.reacquisition_confirm_frames = int(reacquisition_confirm_frames)
+        self.reacquisition_consistency_iou = float(reacquisition_consistency_iou)
+        self.reacquisition_consistency_reid = float(
+            reacquisition_consistency_reid
+        )
+        if self.reacquisition_confirm_frames < 1:
+            raise ValueError("reacquisition_confirm_frames must be positive")
         self.memory_update_detector_threshold = float(memory_update_detector_threshold)
         self.memory_update_identity_threshold = float(memory_update_identity_threshold)
         self.memory_update_anchor_threshold = float(memory_update_anchor_threshold)
@@ -324,12 +386,15 @@ class RGBPersonPerception:
             self._goal_embedding,
             max_positive_embeddings=getattr(self, "memory_max_positive_embeddings", 8),
             max_negative_embeddings=getattr(self, "memory_max_negative_embeddings", 16),
+            normalize_embedding=self._normalize_embedding,
+            similarity01=self._embedding_similarity01,
         )
         self._track_embedding = self._goal_embedding
         self._track_hist = (
             self._reference_hist.copy() if self._reference_hist is not None else None
         )
         self._bbox_velocity = np.zeros(4, dtype=np.float32)
+        self._pending_reacquisition = None
         self._missed_steps = 0
         self._recent_goal_similarities = []
         self._confirmed_track_steps = 0
@@ -362,6 +427,8 @@ class RGBPersonPerception:
     def _embed_crops(self, crops):
         if not crops or getattr(self, "reid_model", None) is None:
             return [None] * len(crops)
+        if getattr(self, "_reid_backend", None) is not None:
+            return self._reid_backend.embed_crops(crops)
         import torch
 
         tensors = []
@@ -391,11 +458,35 @@ class RGBPersonPerception:
         y2 = int(np.clip(math.ceil(y2), y1 + 1, height))
         return image[y1:y2, x1:x2]
 
-    @staticmethod
-    def _cosine(a, b):
+    def _normalize_embedding(self, embedding):
+        backend = getattr(self, "_reid_backend", None)
+        if backend is not None:
+            return backend.normalize(embedding)
+        return TargetAppearanceMemory._normalized(embedding)
+
+    def _embedding_similarity01(self, a, b):
+        backend = getattr(self, "_reid_backend", None)
+        if backend is not None:
+            return backend.similarity01(a, b)
+        return TargetAppearanceMemory._cosine01(a, b)
+
+    def _blend_embedding(self, previous, current, current_weight):
+        backend = getattr(self, "_reid_backend", None)
+        if backend is not None:
+            return backend.blend(previous, current, current_weight)
+        if previous is None:
+            return self._normalize_embedding(current)
+        if current is None:
+            return self._normalize_embedding(previous)
+        return self._normalize_embedding(
+            (1.0 - current_weight) * np.asarray(previous)
+            + current_weight * np.asarray(current)
+        )
+
+    def _cosine(self, a, b):
         if a is None or b is None:
             return 0.0
-        return float(np.clip(np.dot(a, b), -1.0, 1.0))
+        return 2.0 * self._embedding_similarity01(a, b) - 1.0
 
     def _appearance_scores(self, embedding) -> dict[str, float]:
         memory = getattr(self, "_appearance_memory", None)
@@ -417,6 +508,57 @@ class RGBPersonPerception:
         cx = 0.5 * (x1 + x2) / width
         center_penalty = abs(cx - 0.5)
         return detector_score + 0.35 * math.sqrt(area_fraction) - 0.25 * center_penalty
+
+    def _confirm_reacquisition(self, box, embedding) -> bool:
+        """Require a geometrically and visually consistent short tracklet."""
+
+        required = int(getattr(self, "reacquisition_confirm_frames", 1))
+        if required <= 1 or int(getattr(self, "_missed_steps", 0)) <= 0:
+            self._pending_reacquisition = None
+            return True
+        box = np.asarray(box, dtype=np.float32)
+        pending = getattr(self, "_pending_reacquisition", None)
+        consistent = False
+        if pending is not None:
+            predicted = pending["bbox"] + pending["velocity"]
+            overlap = bbox_iou(predicted, box)
+            previous_center = np.array(
+                (0.5 * (predicted[0] + predicted[2]), 0.5 * (predicted[1] + predicted[3]))
+            )
+            center = np.array(
+                (0.5 * (box[0] + box[2]), 0.5 * (box[1] + box[3]))
+            )
+            scale = max(
+                1.0,
+                math.hypot(
+                    predicted[2] - predicted[0], predicted[3] - predicted[1]
+                ),
+            )
+            center_consistent = float(np.linalg.norm(center - previous_center)) <= 0.5 * scale
+            appearance_consistent = self._embedding_similarity01(
+                pending["embedding"], embedding
+            ) >= float(getattr(self, "reacquisition_consistency_reid", 0.0))
+            consistent = (
+                overlap >= float(getattr(self, "reacquisition_consistency_iou", 0.10))
+                or center_consistent
+            ) and appearance_consistent
+        if consistent:
+            observed_velocity = box - pending["bbox"]
+            velocity = 0.5 * pending["velocity"] + 0.5 * observed_velocity
+            count = int(pending["count"]) + 1
+        else:
+            velocity = np.zeros(4, dtype=np.float32)
+            count = 1
+        self._pending_reacquisition = {
+            "bbox": box.copy(),
+            "velocity": np.asarray(velocity, dtype=np.float32),
+            "embedding": self._normalize_embedding(embedding),
+            "count": count,
+        }
+        if count < required:
+            return False
+        self._pending_reacquisition = None
+        return True
 
     def _select(self, rgb: np.ndarray, candidates):
         height, width = np.asarray(rgb).shape[:2]
@@ -564,6 +706,7 @@ class RGBPersonPerception:
                         )
                     )
                 if not ranked:
+                    self._pending_reacquisition = None
                     return None
                 ranked.sort(key=lambda item: item[0], reverse=True)
                 (
@@ -586,6 +729,11 @@ class RGBPersonPerception:
                     and identity_score - ranked[1][1]
                     < float(getattr(self, "global_identity_margin", 0.01))
                 ):
+                    return None
+                if not self._confirm_reacquisition(box, embedding):
+                    self.last_candidate_diagnostics[candidate_index][
+                        "reacquisition_pending"
+                    ] = int(self._pending_reacquisition["count"])
                     return None
                 return (
                     box,
@@ -640,7 +788,10 @@ class RGBPersonPerception:
                 fusion_model is None
                 and missed_steps > 0
                 and self._goal_embedding is not None
-                and goal_reid < 0.81
+                and goal_reid
+                < float(
+                    getattr(self, "short_reacquisition_identity_threshold", 0.81)
+                )
             ):
                 continue
 
@@ -743,7 +894,18 @@ class RGBPersonPerception:
         else:
             if selection_score < self.association_threshold:
                 return None
-            if self._goal_embedding is not None and goal_reid < self.reid_threshold:
+            identity_floor = self.reid_threshold
+            selected_overlap = bbox_iou(predicted_bbox, box)
+            if (
+                int(getattr(self, "_missed_steps", 0)) == 0
+                and selected_overlap
+                >= float(getattr(self, "tracklet_iou_threshold", 0.20))
+            ):
+                identity_floor = min(
+                    identity_floor,
+                    float(getattr(self, "tracklet_identity_floor", identity_floor)),
+                )
+            if self._goal_embedding is not None and goal_reid < identity_floor:
                 return None
             if (
                 len(ranked) > 1
@@ -786,10 +948,12 @@ class RGBPersonPerception:
                 max_negative_embeddings=int(
                     getattr(self, "memory_max_negative_embeddings", 16)
                 ),
+                normalize_embedding=self._normalize_embedding,
+                similarity01=self._embedding_similarity01,
             )
             self._appearance_memory = memory
         if memory.anchor_embedding is None:
-            normalized = TargetAppearanceMemory._normalized(embedding)
+            normalized = self._normalize_embedding(embedding)
             self._goal_embedding = normalized
             memory.reset(normalized)
             self._track_embedding = normalized
@@ -828,14 +992,9 @@ class RGBPersonPerception:
                 if getattr(self, "_track_hist", None) is None
                 else 0.9 * self._track_hist + 0.1 * hist
             )
-        self._track_embedding = (
-            np.asarray(embedding, dtype=np.float32).copy()
-            if getattr(self, "_track_embedding", None) is None
-            else 0.95 * self._track_embedding + 0.05 * embedding
+        self._track_embedding = self._blend_embedding(
+            getattr(self, "_track_embedding", None), embedding, 0.05
         )
-        norm = float(np.linalg.norm(self._track_embedding))
-        if norm > 1e-6:
-            self._track_embedding /= norm
 
         # Only a trusted winner may turn spatially separate, low-identity
         # detections into persistent distractor evidence.
@@ -864,6 +1023,8 @@ class RGBPersonPerception:
                 if self._missed_steps >= self.spatial_reset_after_misses:
                     self._bbox = None
                     self._bbox_velocity.fill(0.0)
+            elif not candidates:
+                self._pending_reacquisition = None
             relative = self._last_relative or (self.max_depth_m, 0.0)
             forward, left = relative
             return TargetObservation(
@@ -902,6 +1063,7 @@ class RGBPersonPerception:
             relative = (self.max_depth_m, 0.0)
 
         previous_bbox = self._bbox
+        self._pending_reacquisition = None
         missed_before_selection = self._missed_steps
         if previous_bbox is not None:
             observed_velocity = box - self._bbox

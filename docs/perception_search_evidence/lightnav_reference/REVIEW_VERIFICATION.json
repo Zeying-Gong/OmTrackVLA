@@ -1,0 +1,13 @@
+{
+    "commit":  "c6f40e3220edbf7011e4f17eaf2c865416737d4d",
+    "verified_source_files":  205,
+    "source_sha256_mismatches":  [
+
+                                 ],
+    "report":  "LIGHTNAV_REVIEW.md",
+    "report_sha256":  "2738189b7b873ebe83701bfb983c676a18a0173ed827dbbe7c8307548ccb563a",
+    "repository_code_executed":  false,
+    "dependencies_installed":  false,
+    "gpu_work_launched":  false,
+    "hf_metadata_verified":  false
+}

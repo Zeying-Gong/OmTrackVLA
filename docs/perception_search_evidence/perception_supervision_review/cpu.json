@@ -1,0 +1,232 @@
+{
+  "status": "passed",
+  "stage": "perception_supervision_wiring_preflight",
+  "optimizer_steps": 0,
+  "optimizer_created": false,
+  "optimizer_input_allowed": false,
+  "formal_training_eligible": false,
+  "product_acceptance_evidence": false,
+  "test_locked_used": false,
+  "verification_sha256": "aec0690b2d2a3727d7e3ba80afce07670876568e49ed2028e48d6545d70cfc5d",
+  "plan_file_sha256": "dd9fcd6b00249a802410f1638216f56a64af51ef998fd1fc9d6566317e080780",
+  "manifest_sha256": "f822609f23da1fd48662c509ad1dfd6fed9ab582f7c8794eabd17faf173a6972",
+  "sample_count": 19,
+  "samples": [
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor012/sample/sample.json",
+      "sample_sha256": "7337451c32e2d6af2b9eee052e057de073532427b01af3dec8b7373792fe1249",
+      "sequence_length": 13,
+      "burn_in_steps": 9,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor014/sample/sample.json",
+      "sample_sha256": "8fd7da90cc8c936e99f9f764d30b6ec8834d4b90c2cf04244294ef85b7d3f560",
+      "sequence_length": 15,
+      "burn_in_steps": 11,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor015/sample/sample.json",
+      "sample_sha256": "989a4cb87f11cd81ff70874597720f3292100e66412b42d60fda8ce69ea199d9",
+      "sequence_length": 16,
+      "burn_in_steps": 12,
+      "visibility_labels": 4,
+      "visible_labels": 3,
+      "bbox_labels": 3,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor019/sample/sample.json",
+      "sample_sha256": "ce7efc875dc851d1bc983554a36803c9d44037e98a970f1b4804e33c76adfc24",
+      "sequence_length": 20,
+      "burn_in_steps": 16,
+      "visibility_labels": 4,
+      "visible_labels": 0,
+      "bbox_labels": 0,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor026/sample/sample.json",
+      "sample_sha256": "b959d646faa3aa3950b194d6834bdc7aee9b5a80c6cdc5dce4113177d9a3750f",
+      "sequence_length": 27,
+      "burn_in_steps": 23,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor027/sample/sample.json",
+      "sample_sha256": "1acc470f54d66780225d33da030411f224660dc12965bbb881fca3629a0ac6c7",
+      "sequence_length": 28,
+      "burn_in_steps": 24,
+      "visibility_labels": 4,
+      "visible_labels": 3,
+      "bbox_labels": 3,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor031/sample/sample.json",
+      "sample_sha256": "d57158212fd72eb98a06c7f73fe1afc4312914401aa6f385087e1b649648ee85",
+      "sequence_length": 32,
+      "burn_in_steps": 28,
+      "visibility_labels": 4,
+      "visible_labels": 0,
+      "bbox_labels": 0,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor032/sample/sample.json",
+      "sample_sha256": "2e5044d91fcba81259d15e1cea028b3ec669307135d5561cce26afab80998f08",
+      "sequence_length": 33,
+      "burn_in_steps": 29,
+      "visibility_labels": 4,
+      "visible_labels": 0,
+      "bbox_labels": 0,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor032/sample/sample.json",
+      "sample_sha256": "5eec5afd8a1583dc3c25d4d9d031bae2309b46a71f5174d30d354bb61081e100",
+      "sequence_length": 33,
+      "burn_in_steps": 29,
+      "visibility_labels": 4,
+      "visible_labels": 0,
+      "bbox_labels": 0,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor032/sample/sample.json",
+      "sample_sha256": "017fd9f0137690e24ccd188140e5e0b965f36d0813274d9552762408e85e6d14",
+      "sequence_length": 33,
+      "burn_in_steps": 29,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/at_0401_128steps__anchor032/sample/sample.json",
+      "sample_sha256": "24c557594a1008a0d3a2de1289a6df33056f76446c7570b0ec1ff6133ac22278",
+      "sequence_length": 33,
+      "burn_in_steps": 29,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor036/sample/sample.json",
+      "sample_sha256": "dd4f975171d74f82e96dbb3480c83e72714acb8ea630c0037ce8fa2c92866894",
+      "sequence_length": 37,
+      "burn_in_steps": 33,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor037/sample/sample.json",
+      "sample_sha256": "40315dec895fbd090d1bce6c234ba25b71c498c33cbb6ac0368a710fe0fd1d3b",
+      "sequence_length": 38,
+      "burn_in_steps": 34,
+      "visibility_labels": 4,
+      "visible_labels": 3,
+      "bbox_labels": 3,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor041/sample/sample.json",
+      "sample_sha256": "95fb1d4bd6850deb2aa12516a1dcc2e317904aeb72d8378311f8c3f05055b046",
+      "sequence_length": 42,
+      "burn_in_steps": 38,
+      "visibility_labels": 4,
+      "visible_labels": 0,
+      "bbox_labels": 0,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/at_0401_128steps__anchor041/sample/sample.json",
+      "sample_sha256": "811aa69b2fb93da06a8b6ec5c1eaa3a34eb6534f576df6315a5feb4a1e89ffca",
+      "sequence_length": 42,
+      "burn_in_steps": 38,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/dt_0200_128steps__anchor064/sample/sample.json",
+      "sample_sha256": "121e6990312e212eea0476e39a71a17719d4bbd678f3faf803133e751aca854f",
+      "sequence_length": 65,
+      "burn_in_steps": 61,
+      "visibility_labels": 4,
+      "visible_labels": 0,
+      "bbox_labels": 0,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_3100_128steps__anchor064/sample/sample.json",
+      "sample_sha256": "d869a31cd2df66a44a4246575b65d90f7524d862478891dcb710f545feaf48cd",
+      "sequence_length": 65,
+      "burn_in_steps": 61,
+      "visibility_labels": 4,
+      "visible_labels": 0,
+      "bbox_labels": 0,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/at_0401_128steps__anchor064/sample/sample.json",
+      "sample_sha256": "275b5e7908a7d3a52ff8dc4a05248df6216946a4ddff9d5fd04c5273bb004613",
+      "sequence_length": 65,
+      "burn_in_steps": 61,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    },
+    {
+      "sample_path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/long_prefix_collection_v1/stt_0000_128steps__anchor007/sample/sample.json",
+      "sample_sha256": "9f4d030bee195a5b7de5686dc02c58a4a83878a731599b413a6f6d8bd2d9bc18",
+      "sequence_length": 8,
+      "burn_in_steps": 4,
+      "visibility_labels": 4,
+      "visible_labels": 4,
+      "bbox_labels": 4,
+      "waypoint_anchors": 1,
+      "model_inputs_unchanged": true
+    }
+  ],
+  "optimizer_access_rejected": true,
+  "model_loaded": false,
+  "source_hashes": {
+    "scripts/preflight_perception_supervision.py": "d17b3ed830bd30822ee0eff8b46247c5a559d489ef9325f65aa63b0fd7910551",
+    "omtrackvla/data/perception_sidecar.py": "c893a2f15ef7f7069d4f8436528f99428c7ed807f2cb313507534ded0ea898de",
+    "omtrackvla/training/sequence_training.py": "f936822e2c2cce861726741fdeb27d560b43ce3c2ba6231b37f86c9a8c361934"
+  }
+}

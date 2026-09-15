@@ -1,0 +1,85 @@
+schema_version: 1
+phase: 1
+method: architecture_v1_end_to_end
+stage: next026_architecture_v1_phase1_osnet_teacher
+formal_training: true
+test_locked_used: false
+seed: 20260911
+
+da3_model: /data/nfs/share/gzy/models/DA3-SMALL/e08cab65ca0ec38e7826075418411ab90cab4da3
+da3_source: /data/nfs/share/gzy/third_party/depth-anything-3/3d835ec1a5802d64a8b8b15f817a1ab54809bfe4/src
+da3_runtime: /data/nfs/share/gzy/third_party/depth-anything-3/runtime-py39-v1
+osnet_teacher_weights: models/reid/osnet_x0_25_msmt17.pt
+osnet_teacher_code: third_party/torchreid/torchreid/reid/models/osnet.py
+
+architecture:
+  image_height: 280
+  image_width: 504
+  history_size: 4
+  patch_size: 14
+  backbone_dim: 768
+  policy_dim: 256
+  attention_heads: 8
+  horizon: 8
+  roi_size: 3
+  adapter_layers: 2
+  adapter_bottleneck: 64
+  uwb_age_limit_s: 1.0
+  uwb_age_decay_s: 0.5
+  target_motion_sigma_m_s: 0.5
+  tag_height_mean_m: 1.0
+  tag_height_sigma_m: 0.35
+  calibration_sigma_px: 2.0
+
+data:
+  manifest: configs/manifests/phase1_v1.json
+  roots:
+    intern_data_n1: /h100-2/vln_n1/traj_data
+    sage3d_extracted: /data/nfs/share/OmTrackVLA/data/sage3d_extracted
+    tpt_bench_clean_v2: /data/nfs/share/OmTrackVLA/data/tpt_bench_clean_v2
+  sage3d_sidecar: results/sage3d_bbox_sidecar_v1
+  identity_datasets:
+    - sage3d_extracted
+    - tpt_bench_clean_v2
+  identity_fraction: 0.5
+  identity_sampling: uniform_by_dataset
+  geometry_maximum_gap: 8
+  max_units_per_dataset: null
+  perception_cache: false
+
+training:
+  epochs: 1
+  samples_per_epoch: 131072
+  batch_size_per_device: 4
+  num_workers: 4
+  policy_learning_rate: 0.0003
+  adapter_learning_rate: 0.00003
+  weight_decay: 0.0001
+  warmup_steps: 200
+  gradient_clip_norm: 1.0
+  bfloat16: true
+  visibility_negative_weight: 10.0
+  identity_teacher: osnet
+  log_every_steps: 10
+  checkpoint_every_steps: 250
+  loss_weights:
+    bbox: 0.5
+    visibility: 0.5
+    identity_or_binding: 0.1
+    osnet_identity: 0.1
+    ego: 0.1
+    world_action: 0.1
+    inverse: 0.1
+
+excluded:
+  - waypoint_policy_loss
+  - old_resnet18_checkpoint_migration
+  - perception_cache
+  - external_later_bbox
+  - gt_depth_input
+  - flow_waypoint_decoder
+  - multi_scale_da3_fusion
+  - part_tokens
+  - memory_bank
+  - occupancy_decoder
+  - depth_decoder

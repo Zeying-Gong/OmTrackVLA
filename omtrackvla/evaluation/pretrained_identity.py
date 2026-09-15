@@ -71,7 +71,39 @@ def _arguments() -> argparse.Namespace:
     )
     parser.add_argument("--reid-weights", type=Path, default=DEFAULT_REID_WEIGHTS)
     parser.add_argument("--reid-code", type=Path, default=DEFAULT_REID_CODE)
+    parser.add_argument("--reid-backend", choices=("osnet", "kpr"), default="osnet")
+    parser.add_argument(
+        "--kpr-source",
+        type=Path,
+        help="Root of the official KPR source tree (required with --reid-backend kpr).",
+    )
     parser.add_argument("--fusion-weights", type=Path)
+    parser.add_argument("--reid-threshold", type=float, default=0.55)
+    parser.add_argument("--tracklet-identity-floor", type=float)
+    parser.add_argument("--tracklet-iou-threshold", type=float, default=0.20)
+    parser.add_argument(
+        "--short-reacquisition-identity-threshold", type=float, default=0.81
+    )
+    parser.add_argument("--global-identity-threshold", type=float, default=0.67)
+    parser.add_argument(
+        "--global-single-identity-threshold", type=float, default=0.72
+    )
+    parser.add_argument("--global-identity-margin", type=float, default=0.01)
+    parser.add_argument("--reacquisition-confirm-frames", type=int, default=1)
+    parser.add_argument(
+        "--reacquisition-consistency-iou", type=float, default=0.10
+    )
+    parser.add_argument(
+        "--reacquisition-consistency-reid", type=float, default=0.0
+    )
+    parser.add_argument("--memory-update-detector-threshold", type=float, default=0.70)
+    parser.add_argument("--memory-update-identity-threshold", type=float, default=0.82)
+    parser.add_argument("--memory-update-anchor-threshold", type=float, default=0.72)
+    parser.add_argument("--memory-update-association-threshold", type=float, default=0.65)
+    parser.add_argument("--memory-update-margin", type=float, default=0.04)
+    parser.add_argument("--memory-update-min-confirmed-steps", type=int, default=2)
+    parser.add_argument("--memory-max-positive-embeddings", type=int, default=8)
+    parser.add_argument("--memory-max-negative-embeddings", type=int, default=16)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--detector-min-size", type=int)
     parser.add_argument("--detector-max-size", type=int)
@@ -529,7 +561,31 @@ def main() -> int:
         detector_architecture=args.detector_architecture,
         reid_weights_path=args.reid_weights,
         reid_code_path=args.reid_code,
+        reid_backend=args.reid_backend,
+        kpr_source_path=args.kpr_source,
         fusion_weights_path=args.fusion_weights,
+        reid_threshold=args.reid_threshold,
+        tracklet_identity_floor=args.tracklet_identity_floor,
+        tracklet_iou_threshold=args.tracklet_iou_threshold,
+        short_reacquisition_identity_threshold=(
+            args.short_reacquisition_identity_threshold
+        ),
+        global_identity_threshold=args.global_identity_threshold,
+        global_single_identity_threshold=args.global_single_identity_threshold,
+        global_identity_margin=args.global_identity_margin,
+        reacquisition_confirm_frames=args.reacquisition_confirm_frames,
+        reacquisition_consistency_iou=args.reacquisition_consistency_iou,
+        reacquisition_consistency_reid=args.reacquisition_consistency_reid,
+        memory_update_detector_threshold=args.memory_update_detector_threshold,
+        memory_update_identity_threshold=args.memory_update_identity_threshold,
+        memory_update_anchor_threshold=args.memory_update_anchor_threshold,
+        memory_update_association_threshold=(
+            args.memory_update_association_threshold
+        ),
+        memory_update_margin=args.memory_update_margin,
+        memory_update_min_confirmed_steps=args.memory_update_min_confirmed_steps,
+        memory_max_positive_embeddings=args.memory_max_positive_embeddings,
+        memory_max_negative_embeddings=args.memory_max_negative_embeddings,
         device=args.device,
         detector_min_size=args.detector_min_size,
         detector_max_size=args.detector_max_size,
@@ -554,7 +610,9 @@ def main() -> int:
     ]
     result = {
         "schema_version": 1,
-        "benchmark_id": "pretrained-fasterrcnn-osnet-target-memory-v1",
+        "benchmark_id": (
+            f"pretrained-fasterrcnn-{args.reid_backend}-target-memory-v1"
+        ),
         "split": args.split,
         "source": "tpt_bench_clean_v2",
         "frame_stride": args.frame_stride,
@@ -568,10 +626,19 @@ def main() -> int:
                 "max_size": tracker.detector_max_size,
             },
             "person_reid": {
-                "architecture": "osnet_x0_25",
-                "pretraining_dataset": "MSMT17",
+                "architecture": (
+                    "kpr_solider" if args.reid_backend == "kpr" else "osnet_x0_25"
+                ),
+                "pretraining_dataset": (
+                    "Occluded-Duke" if args.reid_backend == "kpr" else "MSMT17"
+                ),
                 "weights_sha256": _sha256(args.reid_weights),
                 "frozen": True,
+                "part_visibility_metric": (
+                    "mutually-visible-mean-euclidean"
+                    if args.reid_backend == "kpr"
+                    else None
+                ),
             },
             "candidate_fusion": _candidate_fusion_metadata(
                 args.fusion_weights,
@@ -588,6 +655,26 @@ def main() -> int:
             "update_association_threshold": tracker.memory_update_association_threshold,
             "update_margin": tracker.memory_update_margin,
             "update_min_confirmed_steps": tracker.memory_update_min_confirmed_steps,
+        },
+        "association_policy": {
+            "reid_threshold": tracker.reid_threshold,
+            "tracklet_identity_floor": tracker.tracklet_identity_floor,
+            "tracklet_iou_threshold": tracker.tracklet_iou_threshold,
+            "short_reacquisition_identity_threshold": (
+                tracker.short_reacquisition_identity_threshold
+            ),
+            "global_identity_threshold": tracker.global_identity_threshold,
+            "global_single_identity_threshold": (
+                tracker.global_single_identity_threshold
+            ),
+            "global_identity_margin": tracker.global_identity_margin,
+            "reacquisition_confirm_frames": tracker.reacquisition_confirm_frames,
+            "reacquisition_consistency_iou": (
+                tracker.reacquisition_consistency_iou
+            ),
+            "reacquisition_consistency_reid": (
+                tracker.reacquisition_consistency_reid
+            ),
         },
         "aggregate": _aggregate(summaries),
         "sequences": summaries,

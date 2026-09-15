@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "phase": 3,
+  "method": "architecture_v1_end_to_end",
+  "stage": "next007_phase3_recovery_pilot_v1",
+  "formal_training": true,
+  "test_locked_used": false,
+  "seed": 20260914,
+  "base_model_config": "configs/phases/phase2_end_to_end_v1_phase1_init_formal.yaml",
+  "parent_checkpoint": "outputs/ablations/next026_abl08_converged_v1/teacher_on/gru_curriculum_4k/checkpoints/best.ckpt",
+  "recovery_manifest": "outputs/training/next007_phase3_recovery_pilot_v1/recovery_manifest_frozen.json",
+  "training": {
+    "max_steps": 512,
+    "clean_batch_size_per_device": 4,
+    "recovery_batch_size_per_device": 2,
+    "clean_waypoint_weight": 1.0,
+    "recovery_waypoint_weight": 1.0,
+    "policy_learning_rate": 0.00003,
+    "gru_learning_rate": 0.0001,
+    "adapter_learning_rate": 0.000003,
+    "weight_decay": 0.0001,
+    "warmup_steps": 32,
+    "gradient_clip_norm": 1.0,
+    "bfloat16": true,
+    "log_every_steps": 10,
+    "checkpoint_every_steps": 128
+  },
+  "excluded": [
+    "evt_bench_waypoint_training",
+    "test_locked",
+    "flow",
+    "multi_scale_da3_fusion",
+    "part_tokens",
+    "memory_bank",
+    "occupancy_decoder",
+    "depth_decoder"
+  ]
+}

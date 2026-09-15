@@ -1,0 +1,50 @@
+{
+    "schema_version":  1,
+    "stage":  "recovery_sequence_safe_stop_retention_v3",
+    "method":  "architecture_v1_end_to_end",
+    "formal_training":  false,
+    "test_locked_used":  false,
+    "seed":  20260914,
+    "base_model_config":  "configs/phases/phase2_end_to_end_v1_phase1_init_formal.yaml",
+    "parent_checkpoint":  "outputs/ablations/next026_abl08_converged_v1/teacher_on/gru_curriculum_4k/checkpoints/best.ckpt",
+    "parent_checkpoint_sha256":  "32c8f2f73277cfab8c3c7c22a53994061f7178498cfa003e1635b9576641bc9c",
+    "recovery_manifest":  "outputs/takeover/recovery_pilot_scene_split_v2/manifest.json",
+    "training":  {
+                     "maximum_steps":  64,
+                     "burn_in_steps":  6,
+                     "learning_policy_calls":  4,
+                     "clean_sequence_steps":  2,
+                     "clean_samples_per_mode":  1,
+                     "recovery_batch_size":  1,
+                     "clean_weight":  1.0,
+                     "recovery_weight":  0.25,
+                     "adapter_learning_rate":  0.000001,
+                     "policy_learning_rate":  0.00001,
+                     "gru_learning_rate":  0.00001,
+                     "weight_decay":  0.0001,
+                     "gradient_clip_norm":  1.0,
+                     "warmup_steps":  8,
+                     "validation_every_steps":  16,
+                     "checkpoint_every_steps":  16,
+                     "bfloat16":  true,
+                     "deterministic_algorithms":  false,
+                     "num_workers":  0,
+                     "safe_stop_waypoint_multiplier":  8
+                 },
+    "validation":  {
+                       "sage_samples_per_mode":  4,
+                       "sage_index_seed":  48031,
+                       "clean_relative_tolerance":  0.05,
+                       "clean_absolute_tolerance":  0.0001,
+                       "selection_metric":  "recovery_val_ade_m",
+                       "automatic_promotion":  false
+                   },
+    "limitations":  [
+                        "Eight source anchors across six scenes are early development data, not a complete loss-and-recovery dataset.",
+                        "Recovery supervision is only the actual-time waypoint target at anchor call 9; recovery auxiliary labels are unavailable.",
+                        "Independent scene validation is a development selection gate, not product acceptance or formal success-rate evidence.",
+                        "RNG and optimizer state are restored; bitwise CUDA replay is not promised when deterministic algorithms are disabled."
+                    ],
+    "hypothesis":  "Increase only safe_stop zero-waypoint supervision by eight, preserving the original batch denominator, other mode/head weights, parent, seed, 64-step budget, held-out scene split and validation thresholds.",
+    "prior_decision":  "outputs/takeover/RECOVERY_PILOT_V2_DECISION.json"
+}

@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import json
+import math
 import random
+import time
 from pathlib import Path
 
 import numpy as np
@@ -51,6 +53,7 @@ def _cache_path(
 def _checkpoint_payload(
     model: torch.nn.Module,
     optimizer: torch.optim.Optimizer,
+    scheduler: torch.optim.lr_scheduler.LRScheduler,
     epoch: int,
     global_step: int,
     best_loss: float,
@@ -65,9 +68,39 @@ def _checkpoint_payload(
         "best_loss": float(best_loss),
         "model": module.state_dict(),
         "optimizer": optimizer.state_dict(),
+        "scheduler": scheduler.state_dict(),
         "model_config": config["model"],
         "policy_input": "frozen_rgb_person_perception_v1",
     }
+
+
+def _selected_indices(
+    dataset_length: int,
+    samples_per_epoch: int,
+    *,
+    seed: int,
+    epoch: int,
+) -> list[int]:
+    """Select the same deterministic epoch-dependent contiguous window as E2E."""
+
+    if dataset_length <= 0 or samples_per_epoch <= 0:
+        raise ValueError("dataset length and samples_per_epoch must be positive")
+    if samples_per_epoch > dataset_length:
+        raise ValueError(
+            f"samples_per_epoch={samples_per_epoch} exceeds dataset={dataset_length}"
+        )
+    span = dataset_length - samples_per_epoch
+    start = 0 if span == 0 else (seed * 1_000_003 + epoch * 97_409) % (span + 1)
+    return list(range(start, start + samples_per_epoch))
+
+
+def _learning_rate_scale(step: int, *, warmup_steps: int, maximum_steps: int) -> float:
+    if warmup_steps < 0 or maximum_steps <= 0 or warmup_steps >= maximum_steps:
+        raise ValueError("learning-rate schedule requires 0 <= warmup_steps < maximum_steps")
+    if step < warmup_steps:
+        return max(1.0e-3, float(step + 1) / max(1, warmup_steps))
+    progress = (step - warmup_steps) / max(1, maximum_steps - warmup_steps)
+    return 0.5 * (1.0 + math.cos(math.pi * min(1.0, progress)))
 
 
 def _save_checkpoint(path: Path, payload: dict[str, object]) -> None:
@@ -103,30 +136,27 @@ def run(args, distributed_context) -> int:
     samples_per_epoch = int(training.get("samples_per_epoch", len(dataset)))
     if samples_per_epoch <= 0:
         raise ValueError("Phase 2 samples_per_epoch must be positive")
-    if samples_per_epoch < len(dataset):
-        indices = np.linspace(0, len(dataset) - 1, samples_per_epoch, dtype=np.int64).tolist()
-        training_dataset = Subset(dataset, indices)
-    else:
-        training_dataset = dataset
-    sampler = DistributedSampler(
-        training_dataset,
-        num_replicas=world_size,
-        rank=rank,
-        shuffle=bool(training.get("shuffle_samples", False)),
-        seed=seed,
-    )
+    if samples_per_epoch > len(dataset):
+        raise ValueError(
+            f"Phase 2 samples_per_epoch={samples_per_epoch} exceeds dataset={len(dataset)}"
+        )
     workers = int(args.num_workers if args.num_workers is not None else training["num_workers"])
-    loader = DataLoader(
-        training_dataset,
-        batch_size=int(args.batch_size_per_device or training["batch_size_per_device"]),
-        sampler=sampler,
-        num_workers=workers,
-        pin_memory=True,
-        drop_last=True,
-        persistent_workers=workers > 0,
-    )
-    if not len(loader):
+    batch_size = int(args.batch_size_per_device or training["batch_size_per_device"])
+    global_batch_size = world_size * batch_size
+    if samples_per_epoch % global_batch_size:
+        raise ValueError(
+            "Phase 2 samples_per_epoch must divide evenly by the global batch size"
+        )
+    steps_per_epoch = samples_per_epoch // global_batch_size
+    if steps_per_epoch <= 0:
         raise ValueError("Phase 2 training selection is smaller than one distributed batch")
+    epochs = int(training["epochs"])
+    maximum_steps = int(training.get("maximum_steps", epochs * steps_per_epoch))
+    stop_after_steps = int(args.max_steps or maximum_steps)
+    if maximum_steps <= 0 or maximum_steps > epochs * steps_per_epoch:
+        raise ValueError("Phase 2 maximum_steps exceeds the configured epoch budget")
+    if stop_after_steps <= 0 or stop_after_steps > maximum_steps:
+        raise ValueError("Phase 2 --max-steps exceeds training.maximum_steps")
 
     model = Phase2WaypointPolicy(**config["model"]).to(device)
     optimizer = torch.optim.AdamW(
@@ -134,6 +164,11 @@ def run(args, distributed_context) -> int:
         lr=float(training["learning_rate"]),
         weight_decay=float(training["weight_decay"]),
     )
+    warmup_steps = int(training.get("warmup_steps", 0))
+    schedule = lambda step: _learning_rate_scale(
+        step, warmup_steps=warmup_steps, maximum_steps=maximum_steps
+    )
+    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, schedule)
     start_epoch = 0
     global_step = 0
     best_loss = float("inf")
@@ -143,6 +178,9 @@ def run(args, distributed_context) -> int:
             raise ValueError("Phase 2 can only resume a Phase 2 checkpoint")
         model.load_state_dict(checkpoint["model"])
         optimizer.load_state_dict(checkpoint["optimizer"])
+        if "scheduler" not in checkpoint:
+            raise ValueError("Phase 2 resume checkpoint has no scheduler state")
+        scheduler.load_state_dict(checkpoint["scheduler"])
         start_epoch = int(checkpoint["epoch"]) + 1
         global_step = int(checkpoint["global_step"])
         best_loss = float(checkpoint["best_loss"])
@@ -158,11 +196,42 @@ def run(args, distributed_context) -> int:
     if world_size > 1:
         model = DistributedDataParallel(model, device_ids=[device.index])
     use_bfloat16 = bool(training.get("bfloat16", True)) and torch.cuda.is_bf16_supported()
-    epochs = int(training["epochs"])
+    metrics_path = args.output_dir / "train_metrics.json"
     history = []
+    if args.resume_from and metrics_path.is_file():
+        previous_metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+        if isinstance(previous_metrics.get("history"), list):
+            history = list(previous_metrics["history"])
     stop = False
+    log_path = args.output_dir / "train_log.jsonl"
+    started = time.time()
+    running_loss = 0.0
+    running_gradient_norm = 0.0
+    running_batches = 0
     for epoch in range(start_epoch, epochs):
+        indices = _selected_indices(
+            len(dataset), samples_per_epoch, seed=seed, epoch=epoch
+        )
+        training_dataset = Subset(dataset, indices)
+        sampler = DistributedSampler(
+            training_dataset,
+            num_replicas=world_size,
+            rank=rank,
+            shuffle=bool(training.get("shuffle_samples", False)),
+            seed=seed,
+        )
         sampler.set_epoch(epoch)
+        loader = DataLoader(
+            training_dataset,
+            batch_size=batch_size,
+            sampler=sampler,
+            num_workers=workers,
+            pin_memory=True,
+            drop_last=True,
+            persistent_workers=workers > 0,
+        )
+        if len(loader) != steps_per_epoch:
+            raise RuntimeError("Phase 2 epoch produced an unexpected optimizer-step count")
         model.train()
         loss_sum = 0.0
         batches = 0
@@ -187,14 +256,47 @@ def run(args, distributed_context) -> int:
             if not torch.isfinite(loss):
                 raise FloatingPointError(f"non-finite Phase 2 loss at step {global_step}")
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), float(training["gradient_clip_norm"]))
+            gradient_norm = torch.nn.utils.clip_grad_norm_(
+                model.parameters(), float(training["gradient_clip_norm"])
+            )
+            if not torch.isfinite(gradient_norm):
+                raise FloatingPointError(
+                    f"non-finite Phase 2 gradient at step {global_step}"
+                )
             optimizer.step()
+            scheduler.step()
             global_step += 1
             batches += 1
             loss_sum += float(loss.detach())
-            if rank == 0 and global_step % int(training["log_every_steps"]) == 0:
-                print(json.dumps({"epoch": epoch, "global_step": global_step, "loss": float(loss)}))
-            if args.max_steps is not None and global_step >= args.max_steps:
+            running_loss += float(loss.detach())
+            running_gradient_norm += float(gradient_norm.detach())
+            running_batches += 1
+            if global_step % int(training["log_every_steps"]) == 0:
+                interval_values = torch.tensor(
+                    (running_loss, running_gradient_norm, float(running_batches)),
+                    dtype=torch.float64,
+                    device=device,
+                )
+                if world_size > 1:
+                    dist.all_reduce(interval_values, op=dist.ReduceOp.SUM)
+                interval = max(1.0, float(interval_values[2]))
+                if rank == 0:
+                    record = {
+                        "epoch": epoch,
+                        "global_step": global_step,
+                        "loss_mean": float(interval_values[0]) / interval,
+                        "gradient_norm_mean": float(interval_values[1]) / interval,
+                        "learning_rate": float(optimizer.param_groups[0]["lr"]),
+                        "elapsed_s": time.time() - started,
+                    }
+                    args.output_dir.mkdir(parents=True, exist_ok=True)
+                    with log_path.open("a", encoding="utf-8") as handle:
+                        handle.write(json.dumps(record, sort_keys=True) + "\n")
+                    print(json.dumps(record, sort_keys=True), flush=True)
+                running_loss = 0.0
+                running_gradient_norm = 0.0
+                running_batches = 0
+            if global_step >= stop_after_steps:
                 stop = True
                 break
 
@@ -205,7 +307,13 @@ def run(args, distributed_context) -> int:
         history.append({"epoch": epoch, "global_step": global_step, "total": epoch_loss})
         if rank == 0:
             payload = _checkpoint_payload(
-                model, optimizer, epoch, global_step, min(best_loss, epoch_loss), config
+                model,
+                optimizer,
+                scheduler,
+                epoch,
+                global_step,
+                min(best_loss, epoch_loss),
+                config,
             )
             _save_checkpoint(args.output_dir / "checkpoints" / "last.ckpt", payload)
             if epoch_loss < best_loss:
@@ -213,8 +321,23 @@ def run(args, distributed_context) -> int:
                 payload["best_loss"] = best_loss
                 _save_checkpoint(args.output_dir / "checkpoints" / "best.ckpt", payload)
             args.output_dir.mkdir(parents=True, exist_ok=True)
-            (args.output_dir / "train_metrics.json").write_text(
-                json.dumps({"history": history, "best_loss": best_loss}, indent=2) + "\n",
+            metrics_path.write_text(
+                json.dumps(
+                    {
+                        "history": history,
+                        "best_loss": best_loss,
+                        "global_step": global_step,
+                        "budget": {
+                            "epochs": epochs,
+                            "samples_per_epoch": samples_per_epoch,
+                            "global_batch_size": global_batch_size,
+                            "maximum_steps": maximum_steps,
+                        },
+                        "selection": "epoch_dependent_contiguous_window_v1",
+                    },
+                    indent=2,
+                )
+                + "\n",
                 encoding="utf-8",
             )
         if world_size > 1:

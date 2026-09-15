@@ -22,6 +22,9 @@ ckpt*/
 
 # Raw datasets and linked simulator assets
 data/humanoids/
+data/humanoids
+.codex_upload/
+results/
 data/scene_datasets
 data/versioned_data/
 data/sample/

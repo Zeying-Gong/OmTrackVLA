@@ -1,0 +1,108 @@
+{
+  "status": "remote_train4_source_hashes_verified_reports_identical",
+  "artifacts": [
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/train4_visibility_diagnostic_v1/diagnose_train4_visibility.py",
+      "sha256": "2822c5fe262c1e0326ccc80793b2c4003fd0ccc83ef3b2210ddfcf2f7f1a846a",
+      "bytes": 17843
+    },
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/train4_visibility_diagnostic_v1/train4_visibility_diagnostic.json",
+      "sha256": "2bc268217741fe4305c0a1da71083d9186b24eed67610dba9cf52d50e159d0ae",
+      "bytes": 403861
+    },
+    {
+      "path": "/data/nfs/share/wam_tracking/OmTrackVLA/outputs/takeover/train4_visibility_diagnostic_v1/train4_visibility_diagnostic.md",
+      "sha256": "3b2c1026783915074844b80dd93a86ba89c02c80a73a8bdd9d8850c3af8fced9",
+      "bytes": 11024
+    }
+  ],
+  "summary": {
+    "aggregate": {
+      "decision_count": 366,
+      "confusion_matrix": {
+        "TP": 121,
+        "TN": 202,
+        "FP": 0,
+        "FN": 43
+      },
+      "visual_uncertain_stop_count": 245,
+      "visual_uncertain_stop_while_input_gt_visible": 43,
+      "visual_uncertain_stop_while_input_gt_invisible": 202,
+      "reset_initialized_labels_included": 4,
+      "terminal_observations_excluded": 4,
+      "cold_start_cases": 0,
+      "gt_loss_events": 3,
+      "gt_reappearance_events": 0
+    },
+    "sources": [
+      {
+        "source": "AT401",
+        "matrix": {
+          "TP": 69,
+          "TN": 0,
+          "FP": 0,
+          "FN": 16
+        },
+        "first_low_decision": 26,
+        "first_loss": null,
+        "lead_decisions": null
+      },
+      {
+        "source": "DT200",
+        "matrix": {
+          "TP": 15,
+          "TN": 89,
+          "FP": 0,
+          "FN": 0
+        },
+        "first_low_decision": 16,
+        "first_loss": {
+          "kind": "gt_loss",
+          "post_action_observation_index": 15,
+          "first_decision_that_can_observe_change": 16,
+          "terminal_without_next_decision": false
+        },
+        "lead_decisions": 0
+      },
+      {
+        "source": "STT0",
+        "matrix": {
+          "TP": 13,
+          "TN": 57,
+          "FP": 0,
+          "FN": 14
+        },
+        "first_low_decision": 14,
+        "first_loss": {
+          "kind": "gt_loss",
+          "post_action_observation_index": 27,
+          "first_decision_that_can_observe_change": 28,
+          "terminal_without_next_decision": false
+        },
+        "lead_decisions": 14
+      },
+      {
+        "source": "STT3100",
+        "matrix": {
+          "TP": 24,
+          "TN": 56,
+          "FP": 0,
+          "FN": 13
+        },
+        "first_low_decision": 24,
+        "first_loss": {
+          "kind": "gt_loss",
+          "post_action_observation_index": 37,
+          "first_decision_that_can_observe_change": 38,
+          "terminal_without_next_decision": false
+        },
+        "lead_decisions": 14
+      }
+    ],
+    "artifacts": {
+      "train4_visibility_diagnostic.json": "2bc268217741fe4305c0a1da71083d9186b24eed67610dba9cf52d50e159d0ae",
+      "train4_visibility_diagnostic.md": "3b2c1026783915074844b80dd93a86ba89c02c80a73a8bdd9d8850c3af8fced9"
+    }
+  }
+}

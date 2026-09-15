@@ -32,10 +32,21 @@ def _wrapped_angle_error(predicted: torch.Tensor, target: torch.Tensor) -> torch
     return torch.abs(torch.atan2(torch.sin(predicted_angle - target_angle), torch.cos(predicted_angle - target_angle)))
 
 
+def _path_length(waypoints: torch.Tensor) -> torch.Tensor:
+    if waypoints.shape[-1] != 2 or waypoints.shape[-2] < 2:
+        raise ValueError("waypoints must end in [horizon,2]")
+    return torch.linalg.vector_norm(
+        waypoints[..., 1:, :] - waypoints[..., :-1, :], dim=-1
+    ).sum(dim=-1)
+
+
 def _mode_sums(model, dataset, indices, batch_size: int, device: torch.device) -> torch.Tensor:
     # count, finite, ADE, FDE, heading, exact-stop, pred-visible, gt-visible,
-    # visibility-intersection, visible-pair-count, visible-pair-IoU
-    sums = torch.zeros(11, dtype=torch.float64, device=device)
+    # visibility-intersection, visible-pair-count, visible-pair-IoU,
+    # predicted-path, target-path, path-ratio, path-ratio-count,
+    # then per-horizon error sums and counts.
+    horizon = 8
+    sums = torch.zeros(15 + 2 * horizon, dtype=torch.float64, device=device)
     loader = DataLoader(Subset(dataset, indices), batch_size=batch_size, num_workers=0)
     with torch.inference_mode():
         for batch in loader:
@@ -49,6 +60,9 @@ def _mode_sums(model, dataset, indices, batch_size: int, device: torch.device) -
             ade = (errors[:, 1:] * future_mask).sum(dim=1) / future_mask.sum(dim=1).clamp_min(1)
             fde = errors[:, -1]
             heading = _wrapped_angle_error(predicted[:, -1], target[:, -1])
+            predicted_path = _path_length(predicted)
+            target_path = _path_length(target)
+            path_ratio_valid = finite & (target_path > 1.0e-6)
             exact_stop = predicted.abs().amax(dim=(1, 2)) <= 1e-8
             predicted_visible = batch["predicted_visible"].to(device) > 0.5
             target_visible = batch["target_visible"].to(device) > 0.5
@@ -69,6 +83,16 @@ def _mode_sums(model, dataset, indices, batch_size: int, device: torch.device) -
                 )
                 sums[9] += iou.numel()
                 sums[10] += iou.sum()
+            sums[11] += predicted_path[finite].sum()
+            sums[12] += target_path[finite].sum()
+            sums[13] += (
+                predicted_path[path_ratio_valid]
+                / target_path[path_ratio_valid].clamp_min(1.0e-6)
+            ).sum()
+            sums[14] += path_ratio_valid.sum()
+            horizon_valid = mask & finite[:, None]
+            sums[15 : 15 + horizon] += errors.masked_fill(~horizon_valid, 0.0).sum(dim=0)
+            sums[15 + horizon : 15 + 2 * horizon] += horizon_valid.sum(dim=0)
     return sums
 
 
@@ -79,8 +103,18 @@ def _metrics(values: torch.Tensor, *, safety: bool = False) -> dict[str, object]
         "sample_count": int(count),
         "finite_prediction_coverage": finite / max(count, 1.0),
         "waypoint_ade_m": float(values[2]) / max(finite, 1.0),
+        "waypoint_ade_definition": "mean over nontrivial future points 1..7; point 0 is the zero anchor",
         "waypoint_fde_m": float(values[3]) / max(finite, 1.0),
         "endpoint_heading_mae_rad": float(values[4]) / max(finite, 1.0),
+        "predicted_path_length_mean_m": float(values[11]) / max(finite, 1.0),
+        "target_path_length_mean_m": float(values[12]) / max(finite, 1.0),
+        "path_length_ratio_mean": (
+            float(values[13]) / float(values[14]) if float(values[14]) else None
+        ),
+        "horizon_error_m": [
+            float(error_sum) / max(float(error_count), 1.0)
+            for error_sum, error_count in zip(values[15:23], values[23:31])
+        ],
     }
     if safety:
         result["exact_stop_rate"] = float(values[5]) / max(count, 1.0)
@@ -92,6 +126,8 @@ def run(args, distributed_device) -> int:
     model, checkpoint = load_phase2_model(args.checkpoint, device)
     benchmark_header = load_yaml(args.config)
     benchmark_split = str(benchmark_header.get("split", "val"))
+    if benchmark_split == "test_locked":
+        raise ValueError("Phase 2 ABL-09 evaluation must not access test_locked")
     dataset, benchmark = build_phase2_dataset(
         args.config,
         benchmark_split,
@@ -127,6 +163,7 @@ def run(args, distributed_device) -> int:
             "phase": 2,
             "checkpoint_global_step": int(checkpoint.get("global_step", -1)),
             "split": benchmark_split,
+            "test_locked_used": False,
             "benchmarks": {
                 "B2-OPEN": {
                     **_metrics(normal),
