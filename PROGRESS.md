@@ -1,7 +1,7 @@
 # Project Progress
 
 Last updated: 2026-09-23
-Status: READY_TO_COMMIT
+Status: COMPLETE
 
 ## Repository
 
@@ -10,6 +10,7 @@ Status: READY_TO_COMMIT
 - Repository: `/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA`
 - Branch: `gzy/local-mods`
 - Pre-cleanup commit: `16733f1e24dcd292f44e607dd8044dd418d96c3c`
+- Cleanup commit: `89b89ca` (pushed to `origin/gzy/local-mods`)
 - GitHub `origin/gzy/local-mods` matched the pre-cleanup commit before this task.
 - GitHub default `main`: `a667bf78b933898d5f1bc2a86d63a43e1edad341`; the working branch was 56 commits ahead.
 
@@ -47,8 +48,7 @@ These numbers are historical evidence, not newly reproduced on H100.
 
 ## Current work
 
-- Cleanup and local verification are complete.
-- Git commit and GitHub push are pending.
+- Repository cleanup, local verification, commit, and GitHub push are complete.
 
 ## Verification
 
@@ -57,3 +57,4 @@ These numbers are historical evidence, not newly reproduced on H100.
 - Active shell syntax checks passed.
 - Maintained unit suite passed: 105/105.
 - No active imports from archived failed routes.
+- Cleanup commit `89b89ca` is present on GitHub.
