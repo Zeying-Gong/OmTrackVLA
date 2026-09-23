@@ -1,0 +1,17 @@
+experiment_id,date,route,task,split,status,episodes,source_commit,checkpoint,success_rate_pct,tracking_rate_pct,collision_rate_pct,artifact,notes
+official_0401_text_stt_final_fix,2026-07-15,official,STT,val,COMPLETE,1405,unknown,ckpt_0401_text,77.15,81.57,4.56,archive/2026-09/experiment_logs/eval_official_ckpt_0401_text_stt_final_fix_20260715/summary.txt,Full validation after avatar and protocol fixes
+official_0401_text_dt_final_fix,2026-07-15,official,DT,val,COMPLETE,1405,unknown,ckpt_0401_text,41.07,61.22,11.46,archive/2026-09/experiment_logs/eval_official_ckpt_0401_text_dt_final_fix_20260715/summary.txt,Full validation
+official_0401_text_at_final_fix,2026-07-15,official,AT,val,COMPLETE,1405,unknown,ckpt_0401_text,57.37,74.38,7.76,archive/2026-09/experiment_logs/eval_official_ckpt_0401_text_at_final_fix_20260715/summary.txt,Full validation
+repro_0420_step450000_stt,2026-07-22,official,STT,val,COMPLETE,1405,unknown,step450000,71.53,78.53,7.90,archive/2026-09/experiment_logs/eval_repro_0420_step450000_stt_20260722_155144/summary.txt,Full reproduction run
+oracle_modular_v5_stt_train,2026-07-26,modular-oracle,STT,train,COMPLETE,7257,unknown,none,83.92,37.29,6.90,results/oracle_v5_summary.csv,Controller V5
+oracle_modular_v5_stt_val,2026-07-26,modular-oracle,STT,val,COMPLETE,1405,unknown,none,88.47,83.19,4.77,results/oracle_v5_summary.csv,Controller V5
+oracle_modular_v5_dt_train,2026-07-26,modular-oracle,DT,train,COMPLETE,7257,unknown,none,78.60,34.44,7.14,results/oracle_v5_summary.csv,Controller V5
+oracle_modular_v5_dt_val,2026-07-26,modular-oracle,DT,val,PARTIAL,1404/1405,unknown,none,85.83,77.37,4.77,results/oracle_v5_summary.csv,One episode missing
+oracle_modular_v5_at_train,2026-07-26,modular-oracle,AT,train,COMPLETE,7257,unknown,none,80.61,50.30,6.85,results/oracle_v5_summary.csv,Controller V5
+oracle_modular_v5_at_val,2026-07-26,modular-oracle,AT,val,COMPLETE,1405,unknown,none,85.27,81.88,4.20,results/oracle_v5_summary.csv,Controller V5
+rgb_v5_subset_stt,2026-07-31,modular-rgb,STT,val,PARTIAL,20,unknown,none,45.00,68.69,35.00,archive/2026-07/RGB_Baseline总结_0731.md,Subset result; not comparable to full validation
+rgb_v5_subset_dt,2026-07-31,modular-rgb,DT,val,PARTIAL,20,unknown,none,45.00,63.68,30.00,archive/2026-07/RGB_Baseline总结_0731.md,Subset result; not comparable to full validation
+rgb_v5_subset_at,2026-07-31,modular-rgb,AT,val,PARTIAL,20,unknown,none,30.00,65.31,45.00,archive/2026-07/RGB_Baseline总结_0731.md,Subset result; not comparable to full validation
+e2e_mrope_mixed_data,2026-08-15,failed-e2e,ALL,train,FAILED,smoke/300-step,7a02284,ckpt_e2e,,,,archive/2026-09/failed_routes/docs/README_e2e_policy_3dmrope.md,Optimization and smoke passed but route failed project benchmark criteria
+hybrid_flux_rl_v26,2026-09-03,failed-rl,ALL,train,FAILED,11-updates,16733f1,partial,,,,archive/2026-09/failed_routes/docs/跑实验说明_0903_RL问题诊断.md,No validation best or final checkpoint; insufficient transitions
+hybrid_flux_rl_v27,2026-09-03,failed-rl,ALL,probe,FAILED,protocol-only,16733f1,none,,,,archive/2026-09/failed_routes/docs/跑实验说明_0903_RL问题诊断.md,Protocol repair existed but no accepted full benchmark improvement

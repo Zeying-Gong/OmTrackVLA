@@ -37,12 +37,6 @@ try:
 except Exception:
     snapshot_download = None  # type: ignore
 
-try:
-    from flux_agent import FluxHTTPAgent
-except Exception:
-    FluxHTTPAgent = None  # type: ignore
-
-
 def _env_flag(name: str, default: bool = False) -> bool:
     val = os.environ.get(name)
     if val is None:
@@ -52,13 +46,7 @@ def _env_flag(name: str, default: bool = False) -> bool:
 
 def evaluate_agent(config, dataset_split, save_path) -> None:
     # robot definition
-    agent_name = os.environ.get("TRACKVLA_AGENT", "omtrackvla").strip().lower()
-    if agent_name == "flux":
-        if FluxHTTPAgent is None:
-            raise RuntimeError("TRACKVLA_AGENT=flux was requested, but flux_agent.py could not be imported.")
-        robot_config = FluxHTTPAgent(save_path)
-    else:
-        robot_config = GTBBoxAgent(save_path)
+    robot_config = GTBBoxAgent(save_path)
     try:
         live_frame_interval = max(
             0, int(os.environ.get("TRACKVLA_LIVE_FRAME_INTERVAL", "0"))
@@ -144,17 +132,7 @@ def evaluate_agent(config, dataset_split, save_path) -> None:
                     )
 
                 detector = env.task._get_observations(env.current_episode)
-                if agent_name == "flux":
-                    action = robot_config.act(
-                        obs,
-                        detector,
-                        env.current_episode.episode_id,
-                        instruction,
-                        robot_agent=robot_agent,
-                        humanoid_agent=humanoid_agent_main,
-                    )
-                else:
-                    action = robot_config.act(obs, detector, env.current_episode.episode_id, instruction)
+                action = robot_config.act(obs, detector, env.current_episode.episode_id, instruction)
 
                 action_dict = {
                     "action": ("agent_0_humanoid_navigate_action", "agent_1_base_velocity", "agent_2_oracle_nav_randcoord_action_obstacle", "agent_3_oracle_nav_randcoord_action_obstacle", "agent_4_oracle_nav_randcoord_action_obstacle", "agent_5_oracle_nav_randcoord_action_obstacle"),

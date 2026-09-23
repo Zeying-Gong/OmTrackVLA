@@ -7,12 +7,11 @@ __pycache__/
 *.pyc
 __pycache__
 trackvla_vis/
+artifacts/
 
-# Keep experiment outputs reproducible in Git. Raw logs remain ignored, while
-# their compact summaries are tracked below.
-logs/**
-!logs/**/
-!logs/**/summary.txt
+# Runtime output stays on persistent NAS. Compact evidence is indexed in
+# EXPERIMENTS.csv; historical summaries live under archive/.
+logs/
 ckpt*/
 
 *.pt
@@ -40,4 +39,3 @@ sim_data/stt_seed1000
 data/tpt_bench/
 data/sage3d_extracted/
 outputs/
-e2e_policy/*.log

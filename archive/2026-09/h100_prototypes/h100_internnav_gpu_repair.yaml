@@ -1,0 +1,20 @@
+config_version: 1
+cluster: aliyun_h100
+image: ai-base:ubuntu22.04-sim5.0.0-lab_MD2.2.1-ray2.52.0-cu12.8_devel-v2.0
+num_gpus: 1
+shared_workspace: /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA
+log_folder: omtrackvla_internnav_gpu_repair
+tasks:
+  - name: internnav_gpu_repair
+    type: shell
+    num_gpus: 1
+    timeout: 1800
+    cmd: |
+      set -euo pipefail
+      ENV=/data/nas_ray/home/zeying.gong/algorithm/envs/internnav_gpu
+      OUT=/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/artifacts/h100_internnav_gpu_bootstrap_20260918
+      /opt/miniforge/bin/conda run -p "$ENV" pip install --no-cache-dir numpy==1.26.4 pillow==10.3.0 opencv-python==4.11.0.86 imageio imageio-ffmpeg numba numpy-quaternion scipy tqdm attrs gym hydra-core omegaconf gitpython
+      /opt/miniforge/bin/conda run -p "$ENV" pip install --no-deps -e /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/habitat-lab
+      /opt/miniforge/bin/conda install -y -p "$ENV" -c conda-forge libegl
+      "$ENV/bin/python" -c "import habitat, habitat_sim; print(habitat.__version__); print(habitat_sim.__version__)" > "$OUT/import_check.txt"
+      nvidia-smi -L > "$OUT/gpu.txt"

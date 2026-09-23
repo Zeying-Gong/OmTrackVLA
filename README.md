@@ -16,6 +16,21 @@ This repository is dedicated to democratizing embodied AI. We have intentionally
 
 > **Acknowledgment:** OmTrackVLA builds on the ideas introduced by the original [TrackVLA project](https://github.com/wsakobe/TrackVLA). Their partially-open release inspired this community-driven effort to keep the ecosystem open so researchers and developers can continue improving the stack together.
 
+## Maintained project scope
+
+This research branch maintains two benchmark routes:
+
+1. the official OmTrackVLA 0.6B training and EVT-Bench evaluation baseline;
+2. the modular person-following baseline with oracle references, RGB/RGB-D perception, ReID, obstacle mapping, and modular control.
+
+The immediate objective is reproducible STT/DT/AT evaluation; real-robot transfer is a secondary objective. Experimental end-to-end and Hybrid FLUX/online-RL routes were unsuccessful and are retained only as historical evidence under `archive/2026-09/failed_routes/`.
+
+Current status is tracked in `CURRENT_TASK.md`, `PROGRESS.md`, and `EXPERIMENTS.csv`. Maintained usage notes are in:
+
+- `docs/official_baseline.md`
+- `docs/modular_baseline.md`
+- `docs/h100.md`
+
 ---
 
 ## 📢 News & Updates

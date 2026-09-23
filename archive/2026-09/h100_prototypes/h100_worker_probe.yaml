@@ -1,0 +1,40 @@
+config_version: 1
+cluster: aliyun_h100
+image: ai-base:ubuntu22.04-sim5.0.0-lab_MD2.2.1-ray2.52.0-cu12.8_devel-v2.0
+num_gpus: 1
+shared_workspace: /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA
+log_folder: omtrackvla_episode_viz
+os_env_vars:
+  PYTHONPATH: /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA
+tasks:
+  - name: omtrackvla_episode_viz_smoke
+    type: shell
+    num_gpus: 1
+    timeout: 1800
+    cmd: |
+      set -euo pipefail
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA
+      test -x /opt/miniforge/envs/internnav/bin/python
+      /opt/miniforge/envs/internnav/bin/python tools/render_track_episodes.py
+    cmd: |
+      set -eu
+      OUT=/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/artifacts/h100_worker_probe_20260918
+      mkdir -p "$OUT"
+      {
+        echo ===worker===
+        hostname
+        pwd
+        echo ===gpu===
+        nvidia-smi -L || true
+        echo ===python===
+        command -v python || true
+        python --version || true
+        echo ===conda===
+        command -v conda || true
+        echo ===miniforge===
+        find /opt/miniforge/envs -maxdepth 2 -type f -name python -print 2>/dev/null || true
+        echo ===nas-envs===
+        find /data/nas_ray/home/zeying.gong -maxdepth 5 -type f -path "*/bin/python" -print 2>/dev/null | head -100 || true
+        echo ===repo===
+        ls -ld /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA
+      } > "$OUT/worker_env.txt" 2>&1

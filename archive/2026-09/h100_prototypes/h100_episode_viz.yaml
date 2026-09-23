@@ -1,0 +1,19 @@
+cluster: aliyun
+num_gpus: 1
+log_folder: omtrackvla_episode_viz
+workspace:
+  path: /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA
+py_paths:
+  - .
+conda_preset: internnav
+distributed_train_engine: ray
+os_env_vars:
+  PYTHONPATH: /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA
+  HABITAT_SIM_LOG: quiet
+tasks:
+  - name: omtrackvla_episode_viz_smoke
+    type: md_rl.train
+    entry: tools/render_track_episodes.py
+    args: []
+    num_gpus: 1
+    mlflow_enabled: false

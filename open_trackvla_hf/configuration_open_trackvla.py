@@ -10,7 +10,7 @@ class OpenTrackVLAConfig(PretrainedConfig):
     """
     Minimal HuggingFace configuration wrapper for the OpenTrackVLA planner.
     This mirrors the fields consumed by `model.ModelConfig` so checkpoints
-    converted via `convert_ckpt_to_hf.py` can be loaded with
+    converted via `tools/official/convert_ckpt_to_hf.py` can be loaded with
     `OpenTrackVLAForWaypoint.from_pretrained(...)`.
     """
 

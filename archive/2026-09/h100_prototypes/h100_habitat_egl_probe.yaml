@@ -1,0 +1,21 @@
+config_version: 1
+cluster: aliyun_h100
+image: ai-base:ubuntu22.04-sim5.0.0-lab_MD2.2.1-ray2.52.0-cu12.8_devel-v2.0
+num_gpus: 1
+shared_workspace: /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA
+log_folder: omtrackvla_egl_probe
+tasks:
+  - name: habitat_egl_probe
+    type: shell
+    num_gpus: 1
+    timeout: 600
+    cmd: |
+      set -u
+      ENV=/data/nas_ray/home/zeying.gong/algorithm/envs/internnav_gpu
+      OUT=/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/artifacts/h100_egl_probe_20260918
+      mkdir -p "$OUT"
+      export PATH="$ENV/bin:$PATH"
+      export LD_LIBRARY_PATH="$ENV/lib:${LD_LIBRARY_PATH:-}"
+      export EGL_PLATFORM=surfaceless
+      { env | sort; echo ===DEVICES===; ls -l /dev/nvidia*; echo ===NVIDIA===; nvidia-smi -L; echo ===GLVND===; find /usr/share/glvnd -type f -maxdepth 3 -print -exec sed -n "1,40p" {} \;; echo ===EGL===; command -v eglinfo || true; eglinfo -B || true; } > "$OUT/system.txt" 2>&1
+      "$ENV/bin/python" -c "import habitat_sim; c=habitat_sim.SimulatorConfiguration(); s=habitat_sim.Simulator(c); print(s)" > "$OUT/habitat_context.txt" 2>&1
