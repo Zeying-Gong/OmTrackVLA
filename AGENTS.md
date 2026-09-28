@@ -12,6 +12,8 @@
 - User clarification2026-09-28: WLA architecture may change; preserve the WLA research paradigm and use LightNav/USS as references.
 - User authorized16selected pairs/32complete video rollouts; no validation videos or review annotations enter training.
 
+- User explicitly authorized overnight WLA formal training and full evaluation on2026-09-28; continue audited stage transitions without asking again.
+
 ## Scope and evidence
 - Official OmTrackVLA and modular following are maintained reference baselines.
 - WLA text+RGB and DA3 bbox+RGB are different interfaces; the comparison is not a backbone ablation.

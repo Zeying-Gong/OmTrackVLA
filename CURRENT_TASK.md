@@ -1,6 +1,6 @@
 # Current task
 Updated: 2026-09-28
-Status: WLA_DEVELOPMENT_PASS_COLLECTION_AUTH_PENDING / DA3_RETIRED
+Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 
 ## Decision
 - Adopt WLA as the primary tracking route.
@@ -16,7 +16,10 @@ Status: WLA_DEVELOPMENT_PASS_COLLECTION_AUTH_PENDING / DA3_RETIRED
 - Human review received for6/16cases:2wrong-target,3occlusion recovery failures,1both-success.
 - Target grounding/memory prototype:unit and real-checkpoint developer checks PASS; efficacy UNVERIFIED.
 - Real collector54frames PASS; full2043manifest/scene/data audit PASS.
-- Proposed4A800full2043label collection awaits explicit authorization; no auto-training.
+- User authorized overnight formal training and full evaluation. Job59097/69868 collecting2043rollouts on4A800.
+- Job59110/69881 running full15347initial-frame localization pretraining on2A800; at least200/3838optimizer updates verified.
+- Complete data+pretraining gates next4A800temporal training and full4215evaluation; heartbeat follows every30minutes.
+- [Overnight stages, source hashes and limitations](docs/wla_overnight_training_20260928.md).
 - [Development evidence and exact collection recipe](docs/wla_target_memory_development.md).
 - Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
 - Plan: [architecture and review](docs/wla_tracking_improvement_plan.md).
