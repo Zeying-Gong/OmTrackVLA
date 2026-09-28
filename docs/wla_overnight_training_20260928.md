@@ -56,3 +56,6 @@ Job59110/Task69881 SUCCEEDED23:24:57, all3838updates/2epochs complete. Full1543h
 ## Verified2026-09-29 05:53 update
 Collection59097/69868 SUCCEEDED05:38:21:2043rollouts,176814frames,170275visible/6539invisible;621train/70heldout scenes,zero benchmark scene overlap. Full collection labels audited; qualified ordered teacher clips are admitted by next pipeline.
 Both upstream gates passed, frozen442-file source check and checkpoint SHA passed; logged-in md_ai_kit2.0.0 showed8free Beijing A800. No duplicate temporal job existed (unrelated queued59125 is wa_mobile on Baoding and was untouched). Submitted59352/70125 at05:52:38;RUNNING05:52:43 on4A800. Output /data/nas_ray/project/md-ak/users/zeying.gong/job_59352/task_70125/wla_target_memory. Full2epochs then full4215evaluation, unchanged recipe. Optimizer updates not yet verified at this check.
+
+## Verified2026-09-29 06:25 update
+Job59352 actual optimizer updates verified:at least2350/3456,epoch2,finite gradients and loss. Initial grounder hash matches Job59110; saved adapter checkpoint hash verified. Peak training11.59GiB/rank. Temporal training still running; heldout and4215rollout efficacy pending.
