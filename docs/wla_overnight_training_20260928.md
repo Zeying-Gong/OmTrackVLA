@@ -52,3 +52,7 @@ Temporal training performs full heldout action/grounding evaluation, then runs a
 
 ## Verified23:42 update
 Job59110/Task69881 SUCCEEDED23:24:57, all3838updates/2epochs complete. Full1543heldout normalized UV L2 error improved from0.11451486684019814 to0.029675512296363123 (74.09% reduction versus the untrained point head). This comparison does not measure identification among distractors, temporal recovery or tracking success; action policy is unchanged. Checkpoint grounder.pt SHA256219e963119e526ff901e45ea13582d60107e2326924bf5da34c064dabb86f730 verified against file. Job59097 remains RUNNING,270/2043 completed at23:42. Temporal stage remains WAITING_FOR_FULL_COLLECTION; no additional GPU allocation submitted.
+
+## Verified2026-09-29 05:53 update
+Collection59097/69868 SUCCEEDED05:38:21:2043rollouts,176814frames,170275visible/6539invisible;621train/70heldout scenes,zero benchmark scene overlap. Full collection labels audited; qualified ordered teacher clips are admitted by next pipeline.
+Both upstream gates passed, frozen442-file source check and checkpoint SHA passed; logged-in md_ai_kit2.0.0 showed8free Beijing A800. No duplicate temporal job existed (unrelated queued59125 is wa_mobile on Baoding and was untouched). Submitted59352/70125 at05:52:38;RUNNING05:52:43 on4A800. Output /data/nas_ray/project/md-ak/users/zeying.gong/job_59352/task_70125/wla_target_memory. Full2epochs then full4215evaluation, unchanged recipe. Optimizer updates not yet verified at this check.

@@ -1,5 +1,5 @@
 # Current task
-Updated: 2026-09-28
+Updated: 2026-09-29
 Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 
 ## Decision
@@ -16,9 +16,9 @@ Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 - Human review received for6/16cases:2wrong-target,3occlusion recovery failures,1both-success.
 - Target grounding/memory prototype:unit and real-checkpoint developer checks PASS; efficacy UNVERIFIED.
 - Real collector54frames PASS; full2043manifest/scene/data audit PASS.
-- User authorized overnight formal training and full evaluation. Job59097/69868 collecting2043rollouts on4A800.
+- User authorized overnight formal training and full evaluation. Job59097/69868 SUCCEEDED05:38:21;2043rollouts/176814frames audited,6539invisible,0benchmark scene overlap.
 - Job59110/69881 SUCCEEDED23:24:57;3838updates/2epochs;1543heldout point error0.114515→0.029676; action policy unchanged.
-- Complete data+pretraining gates next4A800temporal training and full4215evaluation; heartbeat follows every30minutes.
+- Both upstream gates passed. Job59352/70125 RUNNING on4A800 since05:52:43;data admission then2epochs and full4215evaluation; updates not yet verified.
 - [Overnight stages, source hashes and limitations](docs/wla_overnight_training_20260928.md).
 - [Development evidence and exact collection recipe](docs/wla_target_memory_development.md).
 - Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
@@ -28,7 +28,7 @@ Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 - DA3 Job58613 / Task69363 verified STOPPED at 2026-09-28 19:06:21 Asia/Shanghai after user reauthentication.
 - The19:06all-cluster check found no active/queued DA3 jobs; WLA58638 was RUNNING then.
 - No SUBMITTED, SUBMITTING or SCHEDULED jobs were returned in the all-cluster check.
-- WLA Job58638 continues its existing evaluation; do not stop it.
+- WLA Job58638 scheduler SUCCEEDED; full artifact audit remains pending.
 - GitHub update is authorized for the documentation cleanup. Existing uncommitted experimental source changes remain on NAS.
 
 ## Recording acceptance

@@ -1,5 +1,5 @@
 # Project progress
-Updated: 2026-09-28
+Updated: 2026-09-29
 
 ## Current route
 WLA is the primary tracking route by explicit user decision. DA3 is retired.
@@ -21,11 +21,11 @@ User observes slower WLA turning/following; cause remains unmeasured.
 Priority:target grounding+identity memory, yaw/range-controller diagnostics, recovery-and-return data.
 Independent target-memory/grounding prototype:4contract tests and real WLA checkpoint two-step developer check PASS; baseline initialization exact;peak10.313GiB.
 Real training collector check:54frames,19student/35teacher actions;all per-step labels/diagnostics present.
-Sampled old data16episodes/1496frames had0per-step grounding labels. Full2043manifest audited;Job59097/69868 RUNNING on4A800 after explicit overnight authorization.
+Sampled old data16episodes/1496frames had0per-step grounding labels. Job59097/69868 SUCCEEDED05:38:21;full2043rollouts/176814frames audited,6539invisible.
 Job59110/69881 SUCCEEDED23:24:57;3838updates/2epochs;1543heldout point error0.114515→0.029676; action policy unchanged.
 Initial labels are all visible:visibility/GRU/action residual frozen in this stage.
 Four-step temporal trainer passed real dual-GPU updates/checkpoint and causal serving reset checks.
-Full temporal training+4215evaluation prepared; waiting for complete collection; initial pretraining checkpoint SHA verified.
+Job59352/70125 RUNNING on4A800 since05:52:43;full clip admission then2epochs and full4215evaluation. Actual optimizer updates not yet verified.
 See [overnight recipe and provenance](docs/wla_overnight_training_20260928.md).
 [Development and collection specification](docs/wla_target_memory_development.md).
 Initial-frame localization pretraining completed; temporal adaptation and tracking improvement remain UNVERIFIED.
