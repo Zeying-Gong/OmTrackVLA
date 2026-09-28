@@ -6,6 +6,18 @@ WLA is the primary tracking route by explicit user decision. DA3 is retired.
 Official OmTrackVLA and modular baselines remain reference implementations.
 No further DA3 collection, training, evaluation or automatic DAgger retraining is authorized.
 
+## WLA paired review and architecture
+User permits architecture changes while retaining the WLA paradigm.
+Authorized32full rollouts on16paired cases: Job58925/Task69692 SUCCEEDED on4A800 at20:03:23.
+Initial Job58917/Task69684 failed before model load due to launcher GPU enumeration; failure retained.
+Recording source r3 SHA256 8037a3636e4320c8900c10ef0102e798ba97c0e453579efd80850e4eb9adaffa.
+Verified32videos/complete rollouts,2612source frames,16initial-hash matches.
+WLA case_02 changed fail-to-success;case_12changed termination but remains unsuccessful.
+Browser playback/case switch/copyable JSON export PASS; selected videos are diagnostic only.
+Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
+See [plan and recording provenance](docs/wla_tracking_improvement_plan.md).
+No proposed architecture improvement has yet been trained or validated.
+
 ## Verified evidence
 | Result | Evidence | Status |
 |---|---|---|

@@ -1,6 +1,6 @@
 # Current task
 Updated: 2026-09-28
-Status: WLA_PRIMARY / DA3_RETIRED / ALL_DA3_JOBS_STOPPED
+Status: WLA_PAIRED_REVIEW_READY / DA3_RETIRED
 
 ## Decision
 - Adopt WLA as the primary tracking route.
@@ -8,14 +8,28 @@ Status: WLA_PRIMARY / DA3_RETIRED / ALL_DA3_JOBS_STOPPED
 - Do not submit, restart or automatically resume DA3 jobs without a new explicit user instruction.
 - Preserve all NAS data, checkpoints, logs and failure evidence.
 
+## Current WLA work
+- User permits WLA architecture changes and references to LightNav/USS. WLA remains the research route.
+- Authorized16pairs/32complete rollouts: Job58925/Task69692 SUCCEEDED on4A800;32videos verified.
+- Job58917 failed before model loading due to missing CUDA_VISIBLE_DEVICES; preserved and corrected.
+- PASS:32complete rollouts/videos,2612frames,16matched initial hashes; browser playback/JSON export verified.
+- Awaiting user visual review; proposed architecture changes remain untrained.
+- Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
+- Plan: [architecture and review](docs/wla_tracking_improvement_plan.md).
+
 ## Outstanding work
 - DA3 Job58613 / Task69363 verified STOPPED at 2026-09-28 19:06:21 Asia/Shanghai after user reauthentication.
-- All-cluster active/queued listings contain no DA3 jobs; only WLA58638 remains RUNNING.
+- The19:06all-cluster check found no active/queued DA3 jobs; WLA58638 was RUNNING then.
 - No SUBMITTED, SUBMITTING or SCHEDULED jobs were returned in the all-cluster check.
 - WLA Job58638 continues its existing evaluation; do not stop it.
 - GitHub update is authorized for the documentation cleanup. Existing uncommitted experimental source changes remain on NAS.
 
-## Acceptance
+## Recording acceptance
+- PASS: scheduler SUCCEEDED2026-09-28 20:03:23; VERIFICATION.json on Baidu NAS.
+- WLA case_02 changed fail-to-success; case_12 changed termination type but remains unsuccessful.
+- Videos are selected diagnostic cases, not benchmark scores or exact historical replays.
+
+## Retirement acceptance
 - PASS: decision and comparative evidence recorded in docs/tracking_route_decision.md.
 - PASS: current state compacted and prior state preserved under archive/2026-09/da3_retirement/.
 - PASS: scheduler-confirmed DA3 cancellation.

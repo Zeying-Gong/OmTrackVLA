@@ -9,6 +9,9 @@
 - Cancellation of Job58613 is explicitly authorized; verify actual terminal scheduler status.
 - WLA Job58638 is separate and must not be stopped as part of DA3 cleanup.
 
+- User clarification2026-09-28: WLA architecture may change; preserve the WLA research paradigm and use LightNav/USS as references.
+- User authorized16selected pairs/32complete video rollouts; no validation videos or review annotations enter training.
+
 ## Scope and evidence
 - Official OmTrackVLA and modular following are maintained reference baselines.
 - WLA text+RGB and DA3 bbox+RGB are different interfaces; the comparison is not a backbone ablation.
