@@ -17,7 +17,7 @@ Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 - Target grounding/memory prototype:unit and real-checkpoint developer checks PASS; efficacy UNVERIFIED.
 - Real collector54frames PASS; full2043manifest/scene/data audit PASS.
 - User authorized overnight formal training and full evaluation. Job59097/69868 collecting2043rollouts on4A800.
-- Job59110/69881 running full15347initial-frame localization pretraining on2A800; at least200/3838optimizer updates verified.
+- Job59110/69881 SUCCEEDED23:24:57;3838updates/2epochs;1543heldout point error0.114515→0.029676; action policy unchanged.
 - Complete data+pretraining gates next4A800temporal training and full4215evaluation; heartbeat follows every30minutes.
 - [Overnight stages, source hashes and limitations](docs/wla_overnight_training_20260928.md).
 - [Development evidence and exact collection recipe](docs/wla_target_memory_development.md).

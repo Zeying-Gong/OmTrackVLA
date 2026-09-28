@@ -49,3 +49,6 @@ Temporal training performs full heldout action/grounding evaluation, then runs a
 - Initial launch: `bash target_memory_train_20260928/bootstrap_pipeline.sh`, scheduler config `bootstrap_a800.yaml`.
 - Next full launch: `bash target_memory_train_20260928/pipeline.sh`, scheduler config `full_a800.yaml`; creates independent `job_<id>/task_<id>/wla_target_memory` NAS output.
 - Original WLA58638 evaluation remains running independently and must not be stopped.
+
+## Verified23:42 update
+Job59110/Task69881 SUCCEEDED23:24:57, all3838updates/2epochs complete. Full1543heldout normalized UV L2 error improved from0.11451486684019814 to0.029675512296363123 (74.09% reduction versus the untrained point head). This comparison does not measure identification among distractors, temporal recovery or tracking success; action policy is unchanged. Checkpoint grounder.pt SHA256219e963119e526ff901e45ea13582d60107e2326924bf5da34c064dabb86f730 verified against file. Job59097 remains RUNNING,270/2043 completed at23:42. Temporal stage remains WAITING_FOR_FULL_COLLECTION; no additional GPU allocation submitted.
