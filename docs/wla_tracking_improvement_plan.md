@@ -78,3 +78,20 @@ ssh -N -L 18781:127.0.0.1:18781 nas-a800
 Open http://127.0.0.1:18781 . Annotate first visible error time, failure type and confidence; export/copy JSON.
 The service serves review_site/index.html with only display fields, excluding internal NAS paths.
 Human review is pending; no new architecture training has been submitted.
+
+## Human review received (2026-09-28; 6 of 16 cases)
+User-provided file SHA256:7193b6d628add453ad6ed9a2f32616b303dbeac0c45315f06ef9eabb557adffc.
+Raw annotation archive on Baidu NAS: WLA-EVT-20260925/paired_review_20260928/human_review_20260928.json.
+- case_01 and03: wrong target, fairly confident.
+- case_04/05/06: failure to recover after occlusion, fairly confident.
+- case_02: both succeeded, confident; agrees with the rerun outcome drift already recorded.
+These six selected cases are qualitative evidence, not population failure rates. Paired timestamps differ in several annotations; interpret them as per-video markers, not matched-time causal comparisons.
+User additionally observes faster turns/more decisive following in LightNav and WLA falling behind. This is a hypothesis about behavior, not measured angular speed or inference latency.
+
+### Updated priority
+P1: Explicit target grounding (predicted image point/heatmap and visibility) coupled to identity-preserving temporal memory. Condition WLA MetaQuery/action expert on these predicted representations. Keep original text+RGB inference inputs; no ground-truth target coordinates at inference.
+LightNav's object point denotes the goal; affordance point denotes feasible motion/free space. Target identification is more directly associated with object grounding, while affordance may help motion selection. Their separate causal contributions to this observed gap are not established.
+P2 in parallel diagnostics: distinguish yaw prediction, waypoint-to-control conversion, range-guard speed suppression, and disappearance/reacquisition. Current WLA range_only explicitly restores learned yaw; its approach guard can limit forward motion when predicted range is too small. This is a possible mechanism, not a confirmed episode-level cause. Log predicted/actual target bearing and distance, predicted yaw/trajectory, pre/post-controller commands and visible/lost events; ground truth only in isolated evaluation diagnostics.
+P3: Add training-only expert intervention before target exits view or following falls behind; recover and return control, including turns/occlusions/reacquisition.
+Latent dynamics remains a later ablation after target grounding/control diagnosis. Do not merely raise speed globally: target error and collision risk can worsen.
+No new formal experiment was submitted from this feedback. Validation videos/annotations remain excluded from training.

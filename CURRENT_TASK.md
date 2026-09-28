@@ -1,6 +1,6 @@
 # Current task
 Updated: 2026-09-28
-Status: WLA_PAIRED_REVIEW_READY / DA3_RETIRED
+Status: WLA_DEVELOPMENT_PASS_COLLECTION_AUTH_PENDING / DA3_RETIRED
 
 ## Decision
 - Adopt WLA as the primary tracking route.
@@ -13,7 +13,11 @@ Status: WLA_PAIRED_REVIEW_READY / DA3_RETIRED
 - Authorized16pairs/32complete rollouts: Job58925/Task69692 SUCCEEDED on4A800;32videos verified.
 - Job58917 failed before model loading due to missing CUDA_VISIBLE_DEVICES; preserved and corrected.
 - PASS:32complete rollouts/videos,2612frames,16matched initial hashes; browser playback/JSON export verified.
-- Awaiting user visual review; proposed architecture changes remain untrained.
+- Human review received for6/16cases:2wrong-target,3occlusion recovery failures,1both-success.
+- Target grounding/memory prototype:unit and real-checkpoint developer checks PASS; efficacy UNVERIFIED.
+- Real collector54frames PASS; full2043manifest/scene/data audit PASS.
+- Proposed4A800full2043label collection awaits explicit authorization; no auto-training.
+- [Development evidence and exact collection recipe](docs/wla_target_memory_development.md).
 - Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
 - Plan: [architecture and review](docs/wla_tracking_improvement_plan.md).
 

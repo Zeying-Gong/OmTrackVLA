@@ -16,7 +16,14 @@ WLA case_02 changed fail-to-success;case_12changed termination but remains unsuc
 Browser playback/case switch/copyable JSON export PASS; selected videos are diagnostic only.
 Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
 See [plan and recording provenance](docs/wla_tracking_improvement_plan.md).
-No proposed architecture improvement has yet been trained or validated.
+Human review6/16cases:2wrong-target,3occlusion recovery failures,1both-success.
+User observes slower WLA turning/following; cause remains unmeasured.
+Priority:target grounding+identity memory, yaw/range-controller diagnostics, recovery-and-return data.
+Independent target-memory/grounding prototype:4contract tests and real WLA checkpoint two-step developer check PASS; baseline initialization exact;peak10.313GiB.
+Real training collector check:54frames,19student/35teacher actions;all per-step labels/diagnostics present.
+Sampled old data16episodes/1496frames had0per-step grounding labels. Full2043manifest audited;4A800collection awaiting authorization.
+[Development and collection specification](docs/wla_target_memory_development.md).
+No new architecture has completed formal training or demonstrated benchmark improvement.
 
 ## Verified evidence
 | Result | Evidence | Status |
