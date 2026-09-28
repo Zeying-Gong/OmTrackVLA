@@ -119,7 +119,7 @@ def main():
         if sampler:
             sampler.set_epoch(epoch)
         losses = torch.zeros(3,device=device)
-        for batch in loader:
+        for step, batch in enumerate(loader, 1):
             batch = transfer(batch,device)
             image_valid,point_valid = flags(batch,args.mode,device)
             optimizer.zero_grad(set_to_none=True)
@@ -132,6 +132,9 @@ def main():
             torch.nn.utils.clip_grad_norm_(model.parameters(),1.)
             optimizer.step()
             losses += torch.tensor([loss.item(),result["trajectory_loss"].item(),1.],device=device)
+            if rank == 0 and (step == 1 or step % 100 == 0):
+                print(json.dumps(dict(epoch=epoch+1,step=step,total_steps=len(loader),
+                                      loss=loss.item(),elapsed_s=time.monotonic()-start)),flush=True)
         if world>1:
             dist.all_reduce(losses)
         if rank==0:
