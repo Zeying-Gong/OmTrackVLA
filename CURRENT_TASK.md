@@ -1,37 +1,27 @@
-# Current Task
+# Current task
+Updated: 2026-09-28
+Status: WLA_PRIMARY / DA3_RETIRED / ALL_DA3_JOBS_STOPPED
 
-Status: COMPLETE
+## Decision
+- Adopt WLA as the primary tracking route.
+- DA3 collection, training and evaluation are retired. Earlier conditional retraining authorizations are superseded.
+- Do not submit, restart or automatically resume DA3 jobs without a new explicit user instruction.
+- Preserve all NAS data, checkpoints, logs and failure evidence.
 
-## Objective
+## Outstanding work
+- DA3 Job58613 / Task69363 verified STOPPED at 2026-09-28 19:06:21 Asia/Shanghai after user reauthentication.
+- All-cluster active/queued listings contain no DA3 jobs; only WLA58638 remains RUNNING.
+- No SUBMITTED, SUBMITTING or SCHEDULED jobs were returned in the all-cluster check.
+- WLA Job58638 continues its existing evaluation; do not stop it.
+- GitHub update is authorized for the documentation cleanup. Existing uncommitted experimental source changes remain on NAS.
 
-Reduce the active repository to two maintained routes:
+## Acceptance
+- PASS: decision and comparative evidence recorded in docs/tracking_route_decision.md.
+- PASS: current state compacted and prior state preserved under archive/2026-09/da3_retirement/.
+- PASS: scheduler-confirmed DA3 cancellation.
+- PASS: documentation/CSV validation; this change is the authorized GitHub documentation publication.
 
-1. official OmTrackVLA 0.6B benchmark baseline;
-2. modular person-following benchmark baseline.
-
-## Acceptance criteria
-
-- Root directory contains only project state, primary entry points, and core modules.
-- End-to-end and Hybrid FLUX/online-RL implementations are absent from active code paths and preserved only under the September 2026 archive.
-- Historical notes and compact log evidence are moved under `archive/`.
-- `AGENTS.md`, `CURRENT_TASK.md`, `PROGRESS.md`, and `EXPERIMENTS.csv` exist and reflect current truth.
-- Official and modular launchers resolve their new paths.
-- Active Python files compile, shell launchers pass `bash -n`, and maintained unit tests pass or have explicit blockers.
-- The generated `habitat_lab.egg-info/SOURCES.txt` change is removed.
-- `artifacts/` remains on NAS but is ignored by Git.
-- Final commit is pushed to `origin/gzy/local-mods`.
-
-## Verification
-
-- Root directory reduced to 25 files.
-- Active Python compilation passed.
-- Active shell syntax checks passed.
-- Maintained unit suite passed: 105/105.
-- No active imports from archived failed routes.
-- Cleanup commit `89b89ca` was pushed to `origin/gzy/local-mods`.
-
-## Out of scope
-
-- Formal training or full benchmark submission.
-- Revival of archived failed routes.
-- Direct merge into GitHub `main`.
+## Boundaries
+WLA currently uses text+RGB, whereas DA3 used initial bbox+RGB with UWB missing.
+This selects the current complete system, not a proven backbone-only winner.
+A bbox/UWB WLA interface is separate, unimplemented work.

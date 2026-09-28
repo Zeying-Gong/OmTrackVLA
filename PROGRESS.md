@@ -1,60 +1,43 @@
-# Project Progress
+# Project progress
+Updated: 2026-09-28
 
-Last updated: 2026-09-23
-Status: COMPLETE
+## Current route
+WLA is the primary tracking route by explicit user decision. DA3 is retired.
+Official OmTrackVLA and modular baselines remain reference implementations.
+No further DA3 collection, training, evaluation or automatic DAgger retraining is authorized.
 
-## Repository
+## Verified evidence
+| Result | Evidence | Status |
+|---|---|---|
+| DA3 mixed training | Job58085, 4 A800, 679878 updates / 2 epochs, final epoch_2 checkpoint verified | TRAINING_COMPLETE |
+| DA3 paired diagnostic | Job58582: 0/10 successes, 40% collisions; valid-init subset 0/7 | EFFICACY_FAILED |
+| WLA matched diagnostic | Job58346: 9/10 successes, 0 collisions; same 10 initial image hashes; valid-DA3-init subset 6/7 | VERIFIED_SYSTEM_COMPARISON |
+| WLA completed full evaluation | Job58346: 1405 unique episodes/task; STT SR80.28%, DT53.31%, AT49.25% | COMPLETE |
+| DA3 offline heldout | Job58633: 1003 episodes / 78958 windows; ADE0.75114m, FDE1.27461m | COMPLETE, not closed-loop success |
+| WLA new candidate | Job58638, full STT SR81.28%; DT/AT incomplete at last check | EVALUATION_RUNNING |
+| DA3 correction collection | Job58613 / Task69363, 8 A800 | STOPPED_USER_RETIRED |
 
-- H100 development entry: `nas-h100`
-- Host checked: `devpod-zeying-gong-cpu-785c989ff4-577fb`
-- Repository: `/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA`
-- Branch: `gzy/local-mods`
-- Pre-cleanup commit: `16733f1e24dcd292f44e607dd8044dd418d96c3c`
-- Cleanup commit: `89b89ca` (pushed to `origin/gzy/local-mods`)
-- GitHub `origin/gzy/local-mods` matched the pre-cleanup commit before this task.
-- GitHub default `main`: `a667bf78b933898d5f1bc2a86d63a43e1edad341`; the working branch was 56 commits ahead.
+The matched-ten comparison is one scene. WLA uses text; DA3 uses initial bbox with UWB missing.
+Backbone, decoder, training and controller differ. Do not describe this as an encoder ablation.
+DA3 diffusion terminal noise mismatch is confirmed in code, but its causal contribution remains UNVERIFIED.
 
-## Maintained routes
+## Cancellation
+Initial stop attempts were rejected for expired authentication; no credentials were copied.
+After user reauthentication, Job58613 and Task69363 were verified STOPPED at
+2026-09-28 19:06:21 Asia/Shanghai.
+All-cluster RUNNING returned WLA58638 only; SUBMITTED/SUBMITTING/SCHEDULED returned none.
+No DA3 jobs remain active or queued. Logs and NAS outputs were retained.
 
-1. Official OmTrackVLA 0.6B training, conversion, and EVT-Bench evaluation.
-2. Modular person-following with oracle references, RGB/RGB-D perception, ReID, map/reactive control, batch evaluation, and summaries.
+## Storage and publication
+All raw data, logs, checkpoints and partial correction rollouts are retained on NAS.
+Partial correction data are not an audited training release; no correction retraining was run.
+The code baseline is 9ad4bd1554f97e3a43913bdcd3d4f30af797f6b7 plus uncommitted experimental source.
+This cleanup publishes documentation and records only, not those unreviewed source changes.
+WLA execution snapshot is on Baidu NAS at algorithm/repos/WLA-EVT-20260925;
+this document does not claim its source has been integrated into this repository.
 
-The experimental end-to-end policy and Hybrid FLUX/online-RL routes are classified as failed and moved out of active code. Their source, tests, notes, and compact evidence remain recoverable under `archive/2026-09/failed_routes/` and Git history.
-
-## Established benchmark evidence
-
-Official checkpoint `ckpt_0401_text`, full validation runs after the avatar/protocol fixes:
-
-- STT: SR 77.15, TR 81.57, CR 4.56.
-- DT: SR 41.07, TR 61.22, CR 11.46.
-- AT: SR 57.37, TR 74.38, CR 7.76.
-
-Oracle Modular V5 full or nearly full evaluation is preserved in `results/oracle_v5_summary.csv`. Validation results:
-
-- STT: 1,405/1,405, SR 88.47, TR 83.19, CR 4.77.
-- DT: 1,404/1,405, SR 85.83, TR 77.37, CR 4.77; one episode missing.
-- AT: 1,405/1,405, SR 85.27, TR 81.88, CR 4.20.
-
-These numbers are historical evidence, not newly reproduced on H100.
-
-## H100 status
-
-- Aliyun NAS mount and repository path are available.
-- Existing artifacts show three fixed validation episodes were rendered for STT, DT, and AT.
-- The current development pod is CPU-only.
-- Prototype job YAMLs used incompatible or duplicate schemas; they are archived pending creation of one live-validated job configuration.
-- Official checkpoint paths, complete scene assets, Python environment, Ray connectivity, and a maintained one-GPU benchmark smoke have not yet been jointly revalidated.
-- No formal training or benchmark run is authorized by the current task.
-
-## Current work
-
-- Repository cleanup, local verification, commit, and GitHub push are complete.
-
-## Verification
-
-- Root directory reduced to 25 files.
-- Active Python compilation passed.
-- Active shell syntax checks passed.
-- Maintained unit suite passed: 105/105.
-- No active imports from archived failed routes.
-- Cleanup commit `89b89ca` is present on GitHub.
+## References
+- [Decision and limitations](docs/tracking_route_decision.md)
+- [Retirement record](archive/2026-09/da3_retirement/README.md)
+- [Full pre-retirement progress](archive/2026-09/da3_retirement/pre_retirement_PROGRESS.md)
+- [Original experiment ledger](EXPERIMENTS.csv)

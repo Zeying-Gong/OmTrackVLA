@@ -1,3 +1,5 @@
+> Historical snapshot before DA3 retirement; instructions and RUNNING states below are superseded.
+
 # OmTrackVLA 🤖 👀
 
 **Visual Navigation & Following for Everyone.**
@@ -18,18 +20,62 @@ This repository is dedicated to democratizing embodied AI. We have intentionally
 
 ## Maintained project scope
 
-This research branch retains the official OmTrackVLA 0.6B and modular following baselines.
-WLA is the selected primary tracking direction. The experimental DA3 route is retired;
-its failures, artifacts and implementation snapshots remain preserved for audit.
+This research branch keeps two benchmark baselines:
 
-See [the route decision](docs/tracking_route_decision.md) for comparative evidence and
-interface limits, and [the DA3 archive](archive/2026-09/da3_retirement/README.md) for history.
-WLA currently uses text+RGB; bbox/UWB support must not be assumed.
-WLA execution source has not been integrated into this documentation-only update.
+1. the official OmTrackVLA 0.6B training and EVT-Bench evaluation baseline;
+2. the modular person-following baseline with oracle references, RGB/RGB-D perception, ReID, obstacle mapping, and modular control.
 
-Current operations belong in [CURRENT_TASK.md](CURRENT_TASK.md),
-[PROGRESS.md](PROGRESS.md) and [EXPERIMENTS.csv](EXPERIMENTS.csv).
-Baseline usage: [official](docs/official_baseline.md), [modular](docs/modular_baseline.md).
+A user-authorized minimal DA3 route is also active as a `PARTIAL` experiment. It is separate from the unsuccessful older end-to-end and Hybrid FLUX/online-RL routes retained under `archive/2026-09/failed_routes/`.
+
+Current truth is tracked in `CURRENT_TASK.md`, `PROGRESS.md`, and `EXPERIMENTS.csv`. Maintained usage notes are in:
+
+- `docs/official_baseline.md`
+- `docs/modular_baseline.md`
+- `docs/h100.md`
+
+### Minimal DA3 person-following route
+
+The model consumes a persistent first-frame RGB plus target bbox, exactly 31 history frames plus the current RGB, and optional two-dimensional polar UWB `(range_m, bearing_rad)`. The prompt expands this to normalized range, `sin/cos` bearing, valid, and age. DA3-SMALL/L11 yields 256 tokens of width 768 per 224x224 frame. A 3x3 RoI produces nine identity tokens; target fusion produces four tokens per frame; the causal temporal sequence has 128 tokens. The public output is seven `(r, theta)` robot waypoints at 0.1-0.7 s. The controller adapter converts these to metric `(x, y)` and prepends an interface-only origin.
+
+The current tiny-data checkpoint fits four windows from an on-disk simulator episode, but the UWB-disabled bbox-swap test is `UNVERIFIED`: changing the selected person did not meaningfully change the path. Treat the route as implementation- and optimization-verified, not identity- or benchmark-verified.
+
+Inspect the real episode without constructing the model:
+
+```bash
+/opt/miniforge/envs/isaacray/bin/python scripts/da3/run_da3.py inspect
+```
+
+Run the unit checks:
+
+```bash
+PYTHONPATH="$PWD/habitat-lab:$PWD" \
+  /opt/miniforge/envs/isaacray/bin/python -m unittest tests.test_da3_policy -v
+```
+
+The checked Aliyun Ray configurations are:
+
+```bash
+export MD_AK_CONFIG_PATH="$PWD/scripts/da3/md_ai_kit_h100_compat.yaml"
+TOOL=/opt/miniforge/envs/isaacray/bin/md_ai_kit
+$TOOL list --cluster aliyun_sh_h100 --limit 10
+$TOOL submit scripts/da3/h100_smoke.yaml
+$TOOL submit scripts/da3/h100_overfit.yaml
+$TOOL submit scripts/da3/h100_qualitative.yaml
+```
+
+Despite the scheduler name `aliyun_sh_h100`, all three verified jobs reported an `NVIDIA L20Z` worker. Do not label their results as H100 results.
+
+Run one offline inference report from the small overfit checkpoint:
+
+```bash
+PYTHONPATH="$PWD:/data/nas_ray/home/zeying.gong/algorithm/repos/Depth-Anything-3/src" \
+  /opt/miniforge/envs/isaacray/bin/python scripts/da3/run_da3.py infer \
+  --checkpoint artifacts/da3_minimal_polar_uwb_20260923/overfit/overfit_checkpoint.pt \
+  --output-dir artifacts/da3_minimal_polar_uwb_20260923/infer_frame60 \
+  --current-index 60 --no-use-uwb
+```
+
+The corrected overfit visualization is under `artifacts/da3_minimal_polar_uwb_20260923/overfit/visualization/`. Polar-UWB qualitative reports are pending regeneration; the older `da3_minimal_20260923/qualitative/` reports used the former external UWB API. Trajectories are not overlaid on RGB because this sample has no verified camera projection calibration.
 
 ---
 
