@@ -59,3 +59,6 @@ Both upstream gates passed, frozen442-file source check and checkpoint SHA passe
 
 ## Verified2026-09-29 06:25 update
 Job59352 actual optimizer updates verified:at least2350/3456,epoch2,finite gradients and loss. Initial grounder hash matches Job59110; saved adapter checkpoint hash verified. Peak training11.59GiB/rank. Temporal training still running; heldout and4215rollout efficacy pending.
+
+## Verified2026-09-29 06:56 update
+Temporal training complete:3456updates,2epochs. Final checkpoint step-0003456.pt SHA2562d0907890557674b520b9ef6516ae719611861b14175a0ece4e07fbf3a5e18d7 verified. Full heldout6489windows:ADE0.249677m,yawMAE0.128644rad,visible-point normalizedL2=0.0451692;visibility TP6130/FP139/FN53 (306invisible windows). No matched before/after temporal heldout baseline measured; no efficacy claim from these values. Full4215rollout evaluation automatically started and reached86episodes at06:56; complete SR/TR/CR pending.

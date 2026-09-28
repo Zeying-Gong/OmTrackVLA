@@ -25,7 +25,7 @@ Sampled old data16episodes/1496frames had0per-step grounding labels. Job59097/69
 Job59110/69881 SUCCEEDED23:24:57;3838updates/2epochs;1543heldout point error0.114515→0.029676; action policy unchanged.
 Initial labels are all visible:visibility/GRU/action residual frozen in this stage.
 Four-step temporal trainer passed real dual-GPU updates/checkpoint and causal serving reset checks.
-Job59352/70125 RUNNING on4A800 since05:52:43;full clip admission then2epochs and full4215evaluation. Actual optimizer 2350/3456actual updates verified; epoch2.
+Job59352/70125:TRAINING_COMPLETE3456updates/2epochs;heldout6489windows;FULL_EVALUATION running,86/4215 at06:56. Final checkpoint hash verified.
 See [overnight recipe and provenance](docs/wla_overnight_training_20260928.md).
 [Development and collection specification](docs/wla_target_memory_development.md).
 Initial-frame localization pretraining completed; temporal adaptation and tracking improvement remain UNVERIFIED.

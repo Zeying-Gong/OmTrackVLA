@@ -18,7 +18,7 @@ Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 - Real collector54frames PASS; full2043manifest/scene/data audit PASS.
 - User authorized overnight formal training and full evaluation. Job59097/69868 SUCCEEDED05:38:21;2043rollouts/176814frames audited,6539invisible,0benchmark scene overlap.
 - Job59110/69881 SUCCEEDED23:24:57;3838updates/2epochs;1543heldout point error0.114515→0.029676; action policy unchanged.
-- Both upstream gates passed. Job59352/70125 RUNNING on4A800 since05:52:43;data admission then2epochs and full4215evaluation; 2350/3456actual updates verified; epoch2.
+- Job59352/70125:TRAINING_COMPLETE3456updates/2epochs;heldout6489windows;FULL_EVALUATION running,86/4215 at06:56. Final checkpoint hash verified.
 - [Overnight stages, source hashes and limitations](docs/wla_overnight_training_20260928.md).
 - [Development evidence and exact collection recipe](docs/wla_target_memory_development.md).
 - Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
