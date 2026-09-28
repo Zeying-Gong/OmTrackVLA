@@ -1,9 +1,9 @@
 # WA-Mobile current task
-Status: INFRASTRUCTURE_ONLY
+Status: CPU_REAL_BATCH_AND_DDP_PASS
 Prepare reproducible WA research on branch `wa`, independently of existing WLA.
-Current deliverable: shared environment preflight and lightweight result exchange.
-No model implementation, model training or benchmark effectiveness claimed.
-Next: audit data and action timebase, then select a visual backbone and implement
-image / metric-point / mixed conditioning with persistent target identity.
+Current deliverable: ResNet18 temporal policy, three prompt modes, DDP trainer.
+Seven CPU tests and real-data single/two-process diagnostic runs passed.
+No formal training or effectiveness claim; all 10,660 episode prompts passed audit.
+Next: provision pretrained weights/data on target workers and approve full-run config.
 Formal training/evaluation requires an approved experiment configuration.
-Acceptance: CPU exchange tests pass; remote branch contains reproducible tooling.
+Acceptance: see wa/VALIDATION.md and wa/RUNBOOK.md.

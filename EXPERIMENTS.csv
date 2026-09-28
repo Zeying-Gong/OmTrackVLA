@@ -1,0 +1,5 @@
+experiment_id,date,status,scope,artifact,notes
+wa_cpu_realbatch_v1,2026-09-28,DIAGNOSTIC_PASS,2 train and 2 heldout windows,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/cpu_realbatch_v1,random frozen encoder; no effectiveness claim
+wa_cpu_ddp_v1,2026-09-28,DIAGNOSTIC_PASS,2 CPU ranks 4 train and 4 heldout windows,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/cpu_ddp_v1,Gloo only; NCCL and 8H100 unverified
+wa_prompt_audit_v1,2026-09-28,PASS,10660 episode initial prompts and timebases,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/prompt_audit_v1.json,not all frame hashes
+wa_infer_v1,2026-09-28,DIAGNOSTIC_PASS,checkpoint reload and real initial RGB,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/infer_result_v1.json,random encoder; no robot execution

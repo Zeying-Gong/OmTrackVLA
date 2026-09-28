@@ -1,9 +1,9 @@
 # WA-Mobile portable experiment workspace
 
 This directory is independent of the inherited OmTrackVLA training scripts.
-Status: infrastructure only; there is no WA training entry point yet.
+Status: CPU-verified baseline; see [RUNBOOK.md](RUNBOOK.md) for both training lanes.
 Python >=3.10; result tooling uses only the standard library.
-PyTorch/CUDA are optional for CPU tests, required for GPU readiness inspection.
+PyTorch/torchvision are required for policy tests; exchange tests use the standard library.
 
 ## Both execution lanes
 Run from the repository root after checking out `wa` at a recorded commit.
