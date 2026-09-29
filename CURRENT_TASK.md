@@ -1,7 +1,7 @@
 # WA-Mobile current task
-Status: TRAINING + BACKUP_AUTH_BLOCKED. User authorized ModelScope private backup then H100 download; keep4090 training.
-JEPA59566 verified2550/22707 steps; do not stop or launch duplicate H100 training.
-ModelScope H100 whoami succeeds; Baidu ms-hub whoami reports missing API token. User must log in at source; do not copy credentials.
+Status: TRAINING + PRIVATE_BACKUP_RUNNING. Both ModelScope logins verified; no credential copying.
+JEPA59566 verified4875/22707 steps; do not stop or launch duplicate H100 training.
+Private other-license repo a597836509/wa-evt-jepa-private-backup-20260929:150shards /163832726558sourcebytes; first shard uploaded. H100 downloader started.
 DINO Job59568 Task70425 verified STOPPED on2026-09-29; outputs retained.
 JEPA Job59566 Task70423 RUNNING on8RTX4090;775/22707 optimizer steps verified. H100 switch now interrupts valid training.
 Target: aliyun_sh_h100 using verified platform KubeRay/TorchTrainer capability, not Baidu shell/K8s.

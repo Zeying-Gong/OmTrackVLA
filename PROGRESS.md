@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-29 authentication resolved; private ModelScope uploader and H100 verifier running. First1GiB shard uploaded.
+Backup plan150archives/1051170files/163832726558sourcebytes. Complete backup NOT yet verified.
+JEPA59566 continues:4875/22707steps. See wa/wm/MODELSCOPE_BACKUP.md for paths, process and verification protocol.
 2026-09-29 user authorized private ModelScope backup and H100 download alongside current4090 training.
 JEPA59566 verified2550/22707steps. Training continues unchanged; no duplicate experiment authorized.
 Backup BLOCKED on source authentication: Baidu ms-hub missing API token; H100 logged in. No data uploaded yet.
