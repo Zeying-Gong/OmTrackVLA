@@ -14,7 +14,8 @@ Small eval59674/70536 STOPPED_USER_SUPERSEDED; retained outputs.
 
 Confirmed old closed-loop mode0/polarzero wrongly omits requested UWB; mixed interface now implemented.
 Also offline zero vs closed-loop Gaussian initial flow state mismatch; causal role unverified.
-Next: complete paired diagnostic96episodes (24each image/mixed x random/zero).
+Next: finish paired diagnostic96episodes; random24each complete, zero pending at00:07+08.
+Random pair image8/24 vs mixed14/24 successes; mixed STT6/8 DT5/8 AT3/8. Gate unmet. Wait zero results then inspect controller/trajectory failures before retrain.
 Plan wa/wm/mixed_diagnostic_plan_v1.json outcome-blind selection; separate24 confirmation episodes.
 Sensor ideal_simulated_uwb matches training axes/time; no text/future/GT path fed to policy.
 Developer10unit tests + actual mixed checkpoint2calls + actual worker-cwd imports PASS. Dependencies hash PASS.

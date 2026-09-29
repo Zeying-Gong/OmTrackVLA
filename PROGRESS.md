@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-30 00:07+08 Job59726 RUNNING; random variants24each complete, zero variants pending. Same24 development episodes image_random8success vs mixed_random14success. NOT full96 result.
+Task SR image_random STT50% DT12.5% AT37.5%; mixed_random75%/62.5%/37.5%. Mixed CR12.5% eachtask. Gate NOT met. Keep job running; no retraining chosen before zero comparison.
+2011 mixed_random logged policy frames include actual ideal_simulated_uwb. Predicted target rangeMAE0.08327m bearingMAE1.428deg; mean normalized action jump0.12898. Geometry accuracy alone does not establish safe tracking.
 2026-09-29 23:49+08 paired96 diagnostic59726/70588 RUNNING2A800; sourceefa41778 config8ebe6409; job_59726/task_70588/wa_mixed_diagnostic_v1. No duplicate evaluation.
 4A800 diagnostic59720/70582 STOPPED before launch after FailedScheduling GPU/CPU; complete96 scope unchanged. Prior4GPU logs retained.
 2026-09-29 23:46+08 mixed paired96 diagnostic59720/70582 SUBMITTED4A800; sourceefa41778 configcca17305; output job_59720/task_70582/wa_mixed_diagnostic_v1.
