@@ -1,4 +1,10 @@
 # WA-Mobile progress
+2026-09-29 23:46+08 mixed paired96 diagnostic59720/70582 SUBMITTED4A800; sourceefa41778 configcca17305; output job_59720/task_70582/wa_mixed_diagnostic_v1.
+Confirmed prior closed-loop omitted UWB despite3-mode training; fixed polar RPC. Offlinezero/closedlooprandom difference isolated in4paired variants. NO causal improvement claimed.
+Development24 vs confirmation24 in disjoint scenes and no training-scene overlap; fixed plan e7d9b859.10unit tests + actual checkpoint mixed2calls PASS; simulator imports PASS from actual BENCH cwd.
+Heartbeat wa every15min created; user permits overnight fixes/retraining/diagnostics. Provisional most-success gate>=80% each task; do not blindly exceed2epochs.
+Training59566/70423 SUCCEEDED22707steps; offline metrics exist. Image ADE/FDE .2691/.4697m; mixed .2576/.4487m; no closedloop claim.
+Fullimage59678 remains RUNNING unchanged. STT complete63.42%SR/8.04%CR;57invalid starts; DT stillpartial at lastquery. Historical lines below are chronological records, not current state.
 2026-09-29T21:13+08 full4215episode eval Job59678/Task70540 RUNNING scheduler;8A800 allocated without prolonged queue.
 Source8ebbb30f/config77447239; all8x3 dataset audits PASS. User allows fewer parallel GPUs if8GPU queues. Effectiveness UNVERIFIED.
 2026-09-29 user superseded small evaluation with full4215episodes on8GPUs. Job59674/70536 verified STOPPED.
