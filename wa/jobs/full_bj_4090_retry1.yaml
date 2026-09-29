@@ -1,0 +1,36 @@
+config_version: 1
+cluster: baidu_4090
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 8
+log_folder: wa_mobile_full_4090_retry1
+tasks:
+  - name: wa_mobile_full_epoch_bj_4090_retry1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 8
+    timeout: 172800
+    cmd: |
+      set -euo pipefail
+      RUN_PARENT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}"
+      mkdir -p "$RUN_PARENT"
+      export WA_OUTPUT="$RUN_PARENT/wa_mobile_full_4090_retry1"
+      export WA_CACHE=/data/nas_ray/home/zeying.gong/datasets/wla_evt_se2_cache_20260925_v2
+      export WA_ENCODER_WEIGHTS=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/models/resnet18-f37072fd.pth
+      export WA_PYTHON=/data/nas_ray/home/zeying.gong/algorithm/envs/wla_evt_torch28/bin/python
+      export WA_GPUS=8
+      export OMP_NUM_THREADS=2
+      export NCCL_DEBUG=WARN
+      SOURCE=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_full_v1
+      hostname
+      findmnt -T /data/nas_ray
+      for required in "$SOURCE/wa/train.py" "$WA_PYTHON" "$WA_ENCODER_WEIGHTS" "$WA_CACHE/complete.json"; do
+        test -e "$required" || { printf 'MISSING_REQUIRED_PATH: %s\n' "$required"; exit 1; }
+      done
+      cd "$SOURCE"
+      test "$(git rev-parse HEAD)" = 4a73fbd6616f3a080f883fcf59164e97e82ca48e
+      test -z "$(git status --porcelain)"
+      nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader
+      "$WA_PYTHON" -c 'import torch; from wa.data import sha; import os; names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]; print(names); assert len(names)==8 and all("4090" in n for n in names); assert sha(os.environ["WA_ENCODER_WEIGHTS"])=="f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"'
+      bash wa/scripts/train_managed.sh --epochs 1 --batch-size 4 --workers 2 --seed 42 --lr 0.0003 --mode all --world-weight 0.1
+      "$WA_PYTHON" wa/tools/exchange.py pack --run "$WA_OUTPUT" --output "${WA_OUTPUT}.zip"
+      "$WA_PYTHON" wa/tools/exchange.py verify --bundle "${WA_OUTPUT}.zip"
