@@ -1,4 +1,10 @@
 # WA-Mobile progress
+2026-09-29: READY_TO_SUBMIT official JEPA/DINO full robot-domain experiments.
+Action recording order and control saturation verified; actual-dt command adapters added.
+Full v2 audit retains726631 train/73368 heldout; abnormal transitions excluded and recorded.
+Both2A800 real-data optimizer/NCCL tests PASS; peak8.67/8.23GiB;13 regression tests PASS.
+Full recipe and external8H100 lane: wa/wm/ROBOT_TRAINING.md; managed two8RTX4090 tasks.
+Historical probe-only gates below superseded; no job ID claimed until submission evidence.
 2026-09-29: user-approved WLA-compatible route implemented as PARTIAL integration.
 Restored original64 MetaQuery/ActionExpert/target head; official JEPA/DINO strict-loaded.
 Added UWB polar validation and USS-inspired fusion; retained original SE2 flow+geometry.

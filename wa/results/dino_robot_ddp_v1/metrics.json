@@ -1,0 +1,35 @@
+{
+  "status": "DIAGNOSTIC_PASS",
+  "kind": "dino",
+  "steps": 2,
+  "metrics": {
+    "image": {
+      "ADE_m": 0.376687228679657,
+      "FDE_m": 0.5616492182016373,
+      "yaw_MAE_rad": 0.11516239494085312,
+      "windows": 4,
+      "SR": null,
+      "collision_rate": null
+    },
+    "point": {
+      "ADE_m": 0.33777812123298645,
+      "FDE_m": 0.6256012320518494,
+      "yaw_MAE_rad": 0.28656283020973206,
+      "windows": 4,
+      "SR": null,
+      "collision_rate": null
+    },
+    "mixed": {
+      "ADE_m": 0.37696412205696106,
+      "FDE_m": 0.5603540539741516,
+      "yaw_MAE_rad": 0.11507823318243027,
+      "windows": 4,
+      "SR": null,
+      "collision_rate": null
+    }
+  },
+  "closed_loop": false,
+  "edge_latency_verified": false,
+  "point_source": "simulated_uwb",
+  "elapsed_s": 3.0204629600048065
+}

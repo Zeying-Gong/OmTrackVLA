@@ -1,0 +1,33 @@
+{
+  "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928",
+  "encoder_weight": "/data/nas_ray/home/zeying.gong/datasets_processed/threepanel_debug_v2/traversability_stepp_v1/_weights/dinov2_vits14_pretrain.pth",
+  "wla_source": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/dependencies/wla_v1",
+  "wla_checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_58346/task_69086/wla_teacher_train/training/checkpoints/step-0043203.pt",
+  "cache": "/data/nas_ray/home/zeying.gong/datasets/wla_evt_se2_cache_20260925_v2",
+  "index_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/robot_transition_audit_v2",
+  "output": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dino_robot_ddp_v1",
+  "kind": "dino",
+  "batch_size": 2,
+  "accumulation": 2,
+  "workers": 2,
+  "epochs": 1,
+  "seed": 42,
+  "world_weight": 0.1,
+  "diagnostic": true,
+  "lane": "managed",
+  "contract": "evt_normalized_command3_actual_dt_v1",
+  "cache_sha256": "eb5a52d3478bab1391d12a990dcdc57ce2c77cef787109d29f7f286be797f901",
+  "index_audit_sha256": "3138364dea80543fc83be476e1af8191a4eca3711a9b353591311fc8daf5c2d3",
+  "effective_batch": 8,
+  "train_rows": 16,
+  "heldout_rows": 4,
+  "world_size": 2,
+  "precision": "fp32 training / bf16 frozen encoder",
+  "base_lrs": [
+    2.5e-06,
+    5e-06,
+    5e-05,
+    1e-05,
+    0.0001
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "contract": "evt_normalized_command3_actual_dt_v1",
+  "rules": "exclude windows spanning any oversized displacement/yaw or dt outside[.02,.15]; preserve original scene split and cached7x4 labels",
+  "cache_complete_sha256": "eb5a52d3478bab1391d12a990dcdc57ce2c77cef787109d29f7f286be797f901",
+  "splits": {
+    "train": {
+      "original": 780025,
+      "retained": 726631,
+      "excluded": 53394,
+      "bad_steps": 469,
+      "steps": 915223,
+      "episode_errors": [],
+      "index_sha256": "17ecf5abe76583759fd338d58117896343a26ebc86b55b1e88c956457a763538"
+    },
+    "heldout": {
+      "original": 78958,
+      "retained": 73368,
+      "excluded": 5590,
+      "bad_steps": 65,
+      "steps": 93000,
+      "episode_errors": [],
+      "index_sha256": "cb8bb502b9baa170b6f14460ec1ec5cb7f11304a28c53ad4aa04e8e20cbec802"
+    }
+  }
+}

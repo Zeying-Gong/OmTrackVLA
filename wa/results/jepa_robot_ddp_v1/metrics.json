@@ -1,0 +1,35 @@
+{
+  "status": "DIAGNOSTIC_PASS",
+  "kind": "jepa",
+  "steps": 2,
+  "metrics": {
+    "image": {
+      "ADE_m": 0.37662218511104584,
+      "FDE_m": 0.561814934015274,
+      "yaw_MAE_rad": 0.11509214341640472,
+      "windows": 4,
+      "SR": null,
+      "collision_rate": null
+    },
+    "point": {
+      "ADE_m": 0.3351607024669647,
+      "FDE_m": 0.6391513645648956,
+      "yaw_MAE_rad": 0.28774088621139526,
+      "windows": 4,
+      "SR": null,
+      "collision_rate": null
+    },
+    "mixed": {
+      "ADE_m": 0.3768921494483948,
+      "FDE_m": 0.5605376809835434,
+      "yaw_MAE_rad": 0.11500761285424232,
+      "windows": 4,
+      "SR": null,
+      "collision_rate": null
+    }
+  },
+  "closed_loop": false,
+  "edge_latency_verified": false,
+  "point_source": "simulated_uwb",
+  "elapsed_s": 3.6380567084997892
+}

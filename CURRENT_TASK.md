@@ -1,16 +1,17 @@
 # WA-Mobile current task
-Status: PARTIAL; WLA-compatible world-action integration, not independent ResNet policy.
-User approved: USS-inspired nontext target fusion; UWB robot-frame polar metres/radians.
-Keep64 WLA MetaQueries, original ActionExpert and seven-point SE2 output contract.
-Main official backbone: JEPA-WM; comparison: Meta official DINO-WM reproduction.
-Implemented adapter, strict upstream/WLA loading, training-only query-to-world bridge.
-See wa/wm/README.md and wa/results/wm_integration_v2.json for exact changes and evidence.
-A800 developer forward/backward: both candidates passed; WM/action gradients reach queries.
-Image/point/mixed inference verified with world predictor disabled;11 regression tests passed.
-Full integrated size385M/388M including original WLA expert; not a40M complete policy.
-PARTIAL: adapters untrained; dynamics interface still PointMaze probe-only, not robot actions.
-Next: audit action/timebase; define robot conditioning; validate joint training/DDP/configs.
-Formal training and closed-loop SR/CR, Thor latency remain UNVERIFIED. No new job submitted.
-Old Job59519/Task70376 naturally SUCCEEDED; checkpoint and offline metrics inspected.
-Old baseline kept separate; never relabel it as JEPA-WM or DINO-WM training.
-External H100 probe uses explicit paths; source/data dependencies required; full launcher pending.
+Status: READY_TO_SUBMIT; user authorized complete training on2026-09-29.
+WLA-compatible WA: retain64 MetaQueries and original7x4 SE2 ActionExpert/target head.
+JEPA-WM main + Meta DINO-WM reproduction comparison; UWB polar / image / mixed modes.
+Robot command/time adapter implemented; data contract evt_normalized_command3_actual_dt_v1.
+Official world interiors retained; new4->10 command and4->4 prior-command adapters learned.
+World loss only training; inference retains existing WLA flow action path, no Qwen/text.
+Full data audit v2:726631 train /73368 heldout; zero parsing errors; scene split unchanged.
+Invalid history/transitions excluded, not relabeled. Raw records and audit v1 preserved.
+13 regression tests and both2A800 real-data optimizer/DDP checks passed.
+Peak allocated memory8.67GiB JEPA /8.23GiB DINO; original WLA checkpoint strict-loaded.
+Recipe: wa/wm/ROBOT_TRAINING.md; each model8RTX4090,1epoch,batch2x8xaccum2=32.
+22707 optimizer updates, full three-mode heldout, save checkpoint and portable results.
+Source and WLA dependency frozen on Beijing NAS; no cross-NAS migration.
+H100 reachable but project assets absent; A800 insufficient8-card availability;4090 ready.
+Formal job IDs pending actual submission; do not claim training until worker evidence.
+Closed-loop SR/CR and Thor/RDK latency remain UNVERIFIED; formal run is offline training/eval.
