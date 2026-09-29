@@ -14,12 +14,13 @@ Small eval59674/70536 STOPPED_USER_SUPERSEDED; retained outputs.
 
 Confirmed old closed-loop mode0/polarzero wrongly omits requested UWB; mixed interface now implemented.
 Also offline zero vs closed-loop Gaussian initial flow state mismatch; causal role unverified.
-Next: finish paired diagnostic96episodes; random24each complete, zero pending at00:07+08.
-Random pair image8/24 vs mixed14/24 successes; mixed STT6/8 DT5/8 AT3/8. Gate unmet. Wait zero results then inspect controller/trajectory failures before retrain.
+Paired96 COMPLETE59726: image_random8/24 mixed_random14/24 image_zero7/24 mixed_zero16/24 successes; initialRGB pairs equal.
+Mixed_zero taskSR STT87.5% DT75% AT37.5%; CR12.5% each. Gate unmet. No checkpoint extension yet.
+Next controller hypothesis Job59737/70599 RUNNING2A800; source912db155 configf0fc1e2e; same24mixed_zero episodes/weights. Inspect result before deciding retrain.
 Plan wa/wm/mixed_diagnostic_plan_v1.json outcome-blind selection; separate24 confirmation episodes.
 Sensor ideal_simulated_uwb matches training axes/time; no text/future/GT path fed to policy.
 Developer10unit tests + actual mixed checkpoint2calls + actual worker-cwd imports PASS. Dependencies hash PASS.
-Paired96 diagnostic Job59726/Task70588 RUNNING2A800 since23:49:19+08; sourceefa41778 config8ebe6409. Check fresh state before any retry.
+Paired96 diagnostic59726/70588 SUCCEEDED00:17:26+08; archived wa/results/mixed_diagnostic_59726.json. Do not rerun.
 Job59720/70582 STOPPED before worker launch due4GPU/CPU placement failure; outputs retained. Same96episodes on2GPUs, no protocol change.
 
 Repo /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout branch wa.

@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-30 00:26+08 controller hypothesis59737/70599 RUNNING2A800; source912db155 configf0fc1e2e. Same24 mixed_zero: measuredUWB range guard and far-heading blend>=.5; hypothesis not proven; weights unchanged.8unit tests PASS.
+Paired96 Job59726 SUCCEEDED00:17; initialRGB all equal; image_random8 mixed_random14 image_zero7 mixed_zero16 successes of24. Mixed_zero STT7/8 DT6/8 AT3/8; CR1/8 eachtask. Gate unmet.
+Failure traces: AT lost with UWB range>5m bearing~.42rad yet predictedyaw~0 and original guard heading_blend0 above3m. Near collision repeated same scene with range<.7m despite retreat, not solved by heading hypothesis. No realUWB validation or final generalization claim.
 2026-09-30 00:07+08 Job59726 RUNNING; random variants24each complete, zero variants pending. Same24 development episodes image_random8success vs mixed_random14success. NOT full96 result.
 Task SR image_random STT50% DT12.5% AT37.5%; mixed_random75%/62.5%/37.5%. Mixed CR12.5% eachtask. Gate NOT met. Keep job running; no retraining chosen before zero comparison.
 2011 mixed_random logged policy frames include actual ideal_simulated_uwb. Predicted target rangeMAE0.08327m bearingMAE1.428deg; mean normalized action jump0.12898. Geometry accuracy alone does not establish safe tracking.

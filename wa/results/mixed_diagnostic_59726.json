@@ -1,0 +1,101 @@
+{
+  "status": "COMPLETE_PAIRED_DEVELOPMENT_DIAGNOSTIC",
+  "episodes": 96,
+  "results": {
+    "image_random": {
+      "stt": {
+        "n": 8,
+        "SR": 50.0,
+        "CR": 25.0,
+        "macro_TR": 70.99283652855081,
+        "invalid": 0
+      },
+      "dt": {
+        "n": 8,
+        "SR": 12.5,
+        "CR": 12.5,
+        "macro_TR": 39.71111546041495,
+        "invalid": 0
+      },
+      "at": {
+        "n": 8,
+        "SR": 37.5,
+        "CR": 12.5,
+        "macro_TR": 68.87978277055606,
+        "invalid": 0
+      }
+    },
+    "mixed_random": {
+      "stt": {
+        "n": 8,
+        "SR": 75.0,
+        "CR": 12.5,
+        "macro_TR": 78.3347411396192,
+        "invalid": 0
+      },
+      "dt": {
+        "n": 8,
+        "SR": 62.5,
+        "CR": 12.5,
+        "macro_TR": 67.51851566963035,
+        "invalid": 0
+      },
+      "at": {
+        "n": 8,
+        "SR": 37.5,
+        "CR": 12.5,
+        "macro_TR": 76.06608020299211,
+        "invalid": 0
+      }
+    },
+    "image_zero": {
+      "stt": {
+        "n": 8,
+        "SR": 50.0,
+        "CR": 12.5,
+        "macro_TR": 66.56237789100263,
+        "invalid": 0
+      },
+      "dt": {
+        "n": 8,
+        "SR": 0.0,
+        "CR": 12.5,
+        "macro_TR": 42.547261354101366,
+        "invalid": 0
+      },
+      "at": {
+        "n": 8,
+        "SR": 37.5,
+        "CR": 25.0,
+        "macro_TR": 74.89247690390472,
+        "invalid": 0
+      }
+    },
+    "mixed_zero": {
+      "stt": {
+        "n": 8,
+        "SR": 87.5,
+        "CR": 12.5,
+        "macro_TR": 82.88670960808567,
+        "invalid": 0
+      },
+      "dt": {
+        "n": 8,
+        "SR": 75.0,
+        "CR": 12.5,
+        "macro_TR": 66.96129968398887,
+        "invalid": 0
+      },
+      "at": {
+        "n": 8,
+        "SR": 37.5,
+        "CR": 12.5,
+        "macro_TR": 75.34673782765915,
+        "invalid": 0
+      }
+    }
+  },
+  "initial_rgb_pairs_equal": true,
+  "uwb": "ideal_simulated_uwb",
+  "real_uwb_verified": false
+}
