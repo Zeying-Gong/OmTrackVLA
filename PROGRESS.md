@@ -1,4 +1,6 @@
 # WA-Mobile progress
+2026-09-29 H100 CPU-only preflight:13 regression tests PASS in isolated torch2.7/cu128 environment.
+Transfer snapshot:538MiB dataset /310MiB original checkpoints; incomplete. GPU/model-load checks pending.
 2026-09-29: user authorized8H100 JEPA only. H100 NAS migration actively in progress, not training.
 Copied source/dependencies/audit indices; streaming10660episodes/1050874files and original checkpoints.
 Direct inter-devpod SSH denied; local stream relay has low throughput. No credentials copied.
