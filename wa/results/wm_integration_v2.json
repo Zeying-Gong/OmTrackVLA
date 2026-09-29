@@ -1,0 +1,742 @@
+{
+  "status": "DIAGNOSTIC_PASS",
+  "warning": "Interface/gradient diagnostic only. Robot actions NOT mapped to PointMaze. Fusion adapters untrained; no SR/CR or quality claim. Not a formal GPU task.",
+  "python": "3.11.15 | packaged by conda-forge | (main, Jun 11 2026, 03:34:02) [GCC 14.3.0]",
+  "torch": "2.8.0+cu128",
+  "gpu": "NVIDIA A800-SXM4-80GB",
+  "upstream_pins": {
+    "jepa-wms": "13cf1d9c7e476f53c17714d2e0f1dc239a883ce0",
+    "dinov2": "7764ea0f912e53c92e82eb78a2a1631e92725fc8"
+  },
+  "weight_hashes": {
+    "jepa": "a01d99c4592fbedf44af076cf4c339de230c56f9f377c7559f584b97569b59bc",
+    "dino": "b4dc463b5c7a1546c1e5edf2ef813005c136523fa373ba98bc207782860b3803",
+    "encoder": "b938bf1bc15cd2ec0feacfe3a1bb553fe8ea9ca46a7e1d8d00217f29aef60cd9"
+  },
+  "models": {
+    "jepa": {
+      "status": "DIAGNOSTIC_PASS",
+      "parameters_total": 385199816,
+      "wm_loss": 0.6678711771965027,
+      "wm_gradient_norms": {
+        "metaquery": 2.670884668987128e-06,
+        "polar_encoder": 1.4010973359290801e-06,
+        "fusion": 0.001319201460205477,
+        "bridge": 0.0004515319658773276,
+        "official_predictor": 0.46174399615847506
+      },
+      "flow_loss": 0.19357910752296448,
+      "flow_metaquery_gradient_norm": 0.04969494044780731,
+      "world_off_inference_verified": true,
+      "modes": {
+        "mixed": {
+          "shape": [
+            1,
+            7,
+            4
+          ],
+          "one_call_ms": 99.13205727934837,
+          "pose": [
+            [
+              [
+                -0.18105913698673248,
+                -0.14472244679927826,
+                -0.05688558518886566,
+                0.6978379487991333
+              ],
+              [
+                -0.14617593586444855,
+                -0.16491609811782837,
+                -0.025228388607501984,
+                0.8239163160324097
+              ],
+              [
+                -0.17952385544776917,
+                -0.1962905377149582,
+                -0.02151268720626831,
+                0.8149099349975586
+              ],
+              [
+                -0.18509554862976074,
+                -0.21044284105300903,
+                -0.07145977765321732,
+                0.7005065679550171
+              ],
+              [
+                -0.20396271347999573,
+                -0.22878500819206238,
+                0.017993509769439697,
+                0.9016913771629333
+              ],
+              [
+                -0.12567777931690216,
+                -0.26656991243362427,
+                -0.08218444138765335,
+                0.6243168115615845
+              ],
+              [
+                -0.08549268543720245,
+                -0.258985310792923,
+                -0.03743235766887665,
+                0.8038055300712585
+              ]
+            ]
+          ],
+          "target_geometry": [
+            [
+              0.21460238099098206,
+              1.1796743869781494,
+              -0.06180416792631149
+            ]
+          ]
+        },
+        "image": {
+          "shape": [
+            1,
+            7,
+            4
+          ],
+          "one_call_ms": 78.64331267774105,
+          "pose": [
+            [
+              [
+                -0.18367861211299896,
+                -0.14407792687416077,
+                -0.05564720928668976,
+                0.698360025882721
+              ],
+              [
+                -0.14898793399333954,
+                -0.16409406065940857,
+                -0.023845098912715912,
+                0.8245078325271606
+              ],
+              [
+                -0.1823907196521759,
+                -0.1954483985900879,
+                -0.020145172253251076,
+                0.815430760383606
+              ],
+              [
+                -0.1883225291967392,
+                -0.2093411237001419,
+                -0.069892019033432,
+                0.7009599804878235
+              ],
+              [
+                -0.2070000171661377,
+                -0.22776943445205688,
+                0.01941104233264923,
+                0.9022426605224609
+              ],
+              [
+                -0.12949594855308533,
+                -0.2652398347854614,
+                -0.08045756816864014,
+                0.6246321797370911
+              ],
+              [
+                -0.08940744400024414,
+                -0.25744110345840454,
+                -0.03564409911632538,
+                0.804225504398346
+              ]
+            ]
+          ],
+          "target_geometry": [
+            [
+              0.2202225923538208,
+              1.1779060363769531,
+              -0.06367571651935577
+            ]
+          ]
+        },
+        "point": {
+          "shape": [
+            1,
+            7,
+            4
+          ],
+          "one_call_ms": 76.08632929623127,
+          "pose": [
+            [
+              [
+                0.24391870200634003,
+                -0.05513805150985718,
+                -0.05327679216861725,
+                0.7474972605705261
+              ],
+              [
+                0.30458778142929077,
+                -0.08179610967636108,
+                -0.025999262928962708,
+                0.8363786339759827
+              ],
+              [
+                0.29781174659729004,
+                -0.12067148834466934,
+                -0.015238523483276367,
+                0.81782066822052
+              ],
+              [
+                0.3363509774208069,
+                -0.13341930508613586,
+                -0.037078455090522766,
+                0.7453223466873169
+              ],
+              [
+                0.33970749378204346,
+                -0.18060588836669922,
+                0.031103655695915222,
+                0.8501961827278137
+              ],
+              [
+                0.4557766020298004,
+                -0.20525579154491425,
+                -0.001829788088798523,
+                0.6689842343330383
+              ],
+              [
+                0.5284662246704102,
+                -0.21272872388362885,
+                0.04078391194343567,
+                0.7752317190170288
+              ]
+            ]
+          ],
+          "target_geometry": [
+            [
+              -0.28326416015625,
+              1.3003449440002441,
+              -0.18967589735984802
+            ]
+          ]
+        }
+      }
+    },
+    "dino": {
+      "status": "DIAGNOSTIC_PASS",
+      "parameters_total": 388374350,
+      "wm_loss": 0.6750268340110779,
+      "wm_gradient_norms": {
+        "metaquery": 2.846894176400383e-06,
+        "polar_encoder": 1.2073793449474124e-06,
+        "fusion": 0.001479555315881953,
+        "bridge": 0.0005090359237656106,
+        "official_predictor": 0.9031078589614481
+      },
+      "flow_loss": 0.31933969259262085,
+      "flow_metaquery_gradient_norm": 0.08238185197114944,
+      "world_off_inference_verified": true,
+      "modes": {
+        "mixed": {
+          "shape": [
+            1,
+            7,
+            4
+          ],
+          "one_call_ms": 89.67792056500912,
+          "pose": [
+            [
+              [
+                0.40872159600257874,
+                -0.028965681791305542,
+                -0.04203163459897041,
+                0.9176656007766724
+              ],
+              [
+                0.5228520631790161,
+                0.0010268539190292358,
+                -0.11608031392097473,
+                0.803601861000061
+              ],
+              [
+                0.5180162191390991,
+                -0.01592107117176056,
+                -0.05641084909439087,
+                0.984269380569458
+              ],
+              [
+                0.5770251154899597,
+                -0.012187018990516663,
+                -0.008140653371810913,
+                1.1253663301467896
+              ],
+              [
+                0.5389350056648254,
+                -0.013332873582839966,
+                0.045085400342941284,
+                1.2719416618347168
+              ],
+              [
+                0.5291992425918579,
+                -0.013749286532402039,
+                -0.02289094775915146,
+                1.107384204864502
+              ],
+              [
+                0.731907069683075,
+                -0.028392910957336426,
+                -0.14296641945838928,
+                0.7463910579681396
+              ]
+            ]
+          ],
+          "target_geometry": [
+            [
+              0.9873899221420288,
+              1.2003657817840576,
+              -0.2589082419872284
+            ]
+          ]
+        },
+        "image": {
+          "shape": [
+            1,
+            7,
+            4
+          ],
+          "one_call_ms": 76.2182530015707,
+          "pose": [
+            [
+              [
+                0.40882596373558044,
+                -0.02857571840286255,
+                -0.04146907851099968,
+                0.9183453321456909
+              ],
+              [
+                0.5230246186256409,
+                0.0014836862683296204,
+                -0.11549068987369537,
+                0.8041069507598877
+              ],
+              [
+                0.518076479434967,
+                -0.01546524465084076,
+                -0.055684953927993774,
+                0.9849703907966614
+              ],
+              [
+                0.5770679116249084,
+                -0.01169200986623764,
+                -0.007340222597122192,
+                1.1262047290802002
+              ],
+              [
+                0.5389066934585571,
+                -0.012846440076828003,
+                0.04600563645362854,
+                1.272908091545105
+              ],
+              [
+                0.5292292237281799,
+                -0.013254225254058838,
+                -0.022144228219985962,
+                1.1082557439804077
+              ],
+              [
+                0.7322661280632019,
+                -0.027763575315475464,
+                -0.142238050699234,
+                0.7469280362129211
+              ]
+            ]
+          ],
+          "target_geometry": [
+            [
+              0.9710696935653687,
+              1.202210783958435,
+              -0.26404476165771484
+            ]
+          ]
+        },
+        "point": {
+          "shape": [
+            1,
+            7,
+            4
+          ],
+          "one_call_ms": 72.44119048118591,
+          "pose": [
+            [
+              [
+                0.4344990849494934,
+                -0.02102676033973694,
+                0.028717223554849625,
+                0.8854104280471802
+              ],
+              [
+                0.5581116080284119,
+                0.02220270037651062,
+                0.0018971636891365051,
+                0.851270318031311
+              ],
+              [
+                0.624081015586853,
+                0.008848682045936584,
+                0.02379631996154785,
+                0.9110074043273926
+              ],
+              [
+                0.691761314868927,
+                0.026523828506469727,
+                0.05749054253101349,
+                0.9683728218078613
+              ],
+              [
+                0.7101919651031494,
+                0.05346238613128662,
+                0.06514710187911987,
+                1.0352736711502075
+              ],
+              [
+                0.699356734752655,
+                0.03496861457824707,
+                0.06745913624763489,
+                0.9374399185180664
+              ],
+              [
+                0.7709550261497498,
+                0.024308621883392334,
+                0.04732424020767212,
+                0.7992931604385376
+              ]
+            ]
+          ],
+          "target_geometry": [
+            [
+              -0.5277805328369141,
+              1.5982587337493896,
+              -0.8479548692703247
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "adapter_sources": {
+    "wa/tools/wm_integration_probe.py": "d1f65e5af52fa61994a8c78358efbd7c5f308adbd02f04377808aaad0ecad682",
+    "wa/wm/adapters.py": "24d239540315dba258759e14953e61a3a3fe7e9676f7a36e8a58dc672063507a",
+    "wa/wm/loaders.py": "185bc69497b821b05f971ec587134cd1322e59efd18db8e6f0adde89bb9f7cb7"
+  },
+  "sample": {
+    "split": "train",
+    "index": 100,
+    "times": [
+      -1.5119999647140503,
+      -1.0240000486373901,
+      -0.5360000133514404,
+      0.0
+    ],
+    "uwb_source": "simulator target label ONLY for explicitly simulated UWB input; not real sensor",
+    "polar": [
+      2.0766494274139404,
+      -0.006553636398166418
+    ]
+  },
+  "wla": {
+    "checkpoint_sha256": "0b8f036fd282474d8c9efe9e34e1f4dc56b9282c44295bcda1f16edcf48460e1",
+    "checkpoint_step": 43203,
+    "source_files": {
+      "src/md_wla/__init__.py": "3ac3993dbf8aafdca4e5035d9a6f5488bba83b901bcd3e19e1ce7767eb3b4522",
+      "src/md_wla/causal_diagnostics.py": "689a9a5fc592973ca73a7df8202a85412a3cb56987000cf4130328ea54447440",
+      "src/md_wla/checkpoint/__init__.py": "7709affd76f9f8fe51bd0b7774e29367f2d1c62dd64685e99055657c299f1556",
+      "src/md_wla/checkpoint/export.py": "6f70381acb80a62a9bd694076186710e70b6a25dea7b63dfb05955a7f421a7b7",
+      "src/md_wla/checkpoint/fingerprints.py": "17c04f2ed79c836e675085f4f36fa5ad37750f8c44f040f2afa1f1864a76271e",
+      "src/md_wla/checkpoint/manager.py": "30fa2e0d1fe894ca2469b83fee81860788578726e76de6093329e52ce9beda5c",
+      "src/md_wla/checkpoint/migrate.py": "01aaf518d1dbeb839b9fe6a598ad93bdc45c4048d4083c53f79ebebacb8c3f91",
+      "src/md_wla/checkpoint/stage2.py": "758cb359c1aa8bb1bf81728b6c78d66b4b11da9b6835c06b98eb6e295dd5c8a2",
+      "src/md_wla/cli/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/md_wla/cli/audit_data.py": "058b35aa1c28d51d94d017d6b9110dc51f9573ad4ecf1c55297f6efbbc3e4073",
+      "src/md_wla/cli/audit_mcap.py": "2d2ded346f91ada8daea651f52f03da7337b82a5a55e851ab80ecc73ec6de3e6",
+      "src/md_wla/cli/build_depth_cache.py": "88ba03ea20b675b3913ca31cc80cd02c24d3d8502c511e429a81359822f2e387",
+      "src/md_wla/cli/build_human_ego.py": "9b3a797f99a9ac0c539614ccfc84b9f0d899032f59782eb51d8adc82ba6ac7f6",
+      "src/md_wla/cli/build_jd_robotdata.py": "7705853462093dc61a0b29a9044de0f66426a5768373dfca71b689801c9908a2",
+      "src/md_wla/cli/compute_stats.py": "2d4c19bbfd260a47d7a5477698a391d8e935cb1b783f73267bc9954eb26c4caf",
+      "src/md_wla/cli/eval_deployment_gate.py": "ca8c62812302fbcb3293f58662d1ad8d55ad88f6515964ca519b34e0070ade2d",
+      "src/md_wla/cli/eval_rx_action_probe.py": "e0576eb205f069bfd238e01f8144d9302b8a4a17077049dd003d9d9d62d67c18",
+      "src/md_wla/cli/evaluate.py": "1fe4236f82ce8c49470c8cdf92b840c8409ce6bcad587ac07bbd2904a60d428d",
+      "src/md_wla/cli/finalize_text_action_quality.py": "d269866234faaa5d88a67bed325627204ab3111979cea91d11b44a20605378a3",
+      "src/md_wla/cli/materialize_current_subtasks.py": "52139f5dc87d508dd90054f0576182950b9282236e60c1cfbe0cde6bdf1c1f95",
+      "src/md_wla/cli/pin_sana_snapshot.py": "138d0e2b58a531618514f28b247a5fe1f888137f02793ff9683a8c3ff016ab8c",
+      "src/md_wla/cli/prepare_belief_full.py": "2a9bb19311663b5bd65e1de6c6166072586889045550036edb081087ad7aec4f",
+      "src/md_wla/cli/prepare_belief_smoke.py": "048eb6496a1ba2c39c35c3b6e4835c3c2f0eece0736d3b4a2b73f7ef1bd29f5f",
+      "src/md_wla/cli/prepare_genrobot_human_ego.py": "5cacd5dfbb49cabb6ce6e149423f47ed10b5c0fc52021f98010c232ab28909f6",
+      "src/md_wla/cli/prepare_text_action.py": "103dd6e3a0f6e837904128e6647e15ff56b17eabd1ef7071c63d4bc34c38a4b3",
+      "src/md_wla/cli/text_action_full_paired_index.py": "b1ab1bb80da2926cdeae681c377e528c9d9e9b1b164bdead487f610010e435b8",
+      "src/md_wla/cli/text_action_quality_scan.py": "3ef2c831dff50c2ef8b1c17e70af296092e856b73d6b9bb1ef37e8f92bd34ed7",
+      "src/md_wla/cli/text_action_smoke.py": "092370f25acb2552298d6f9095dda7f8c3b8678a3c523fdb54ab2b61a71fd382",
+      "src/md_wla/cli/train.py": "f975c47b45d1b56d8479a05d2301d41ddcf57d29f7df1b1f0e0dfc42ec440c81",
+      "src/md_wla/config.py": "9e7261481bc1d7f92d7cff7fcb6ae7d2ca30e9708d94ed731b011383d7e6f395",
+      "src/md_wla/contracts/__init__.py": "0a061151cdc896e5d909e80c0c595e2caeda8abfc2db1bb8260d632628f308f0",
+      "src/md_wla/contracts/acceptance.py": "5b3f9a2b64b1713ad140b6a5f1af994aefb4cd8d6dc841e5717495ea6aca266d",
+      "src/md_wla/contracts/actions.py": "b1d573ad21dbd8e0e6fe8f61821d806291053b7cfb70f1ab9177a045b65a2a17",
+      "src/md_wla/contracts/batches.py": "85f46ca93b4913513e85324ed0ff32402faad50e67f250ff07fac0013f56f784",
+      "src/md_wla/contracts/belief.py": "ab8451800e29e0c985bc32ab55c5f6ddb82ee7752f59f8b3b6346c05a8f1c4b2",
+      "src/md_wla/contracts/checkpoint.py": "9c4226d8c15c12a43da1f7cc9585b921caffbc191f6a7a0bdee9148ad6b44ec4",
+      "src/md_wla/contracts/inference.py": "f15f61d1ff06f6da1cda575db41a6719827f7028948bc42e4e41853b1b569494",
+      "src/md_wla/contracts/model.py": "0b9c146d95680849e82b380e47b66f28363fe977a8b2a8d4031e7831c682526e",
+      "src/md_wla/contracts/pytree.py": "e59e15848ef1f34f59e5b23a2920377286dc9fb4b662ae4bca7994431653589c",
+      "src/md_wla/contracts/state.py": "d595b125ffb6eb9699a06a1115568538b3062267f3ad3832decf52b6e5ef28d4",
+      "src/md_wla/contracts/visualization.py": "adcaec151290fd496888ea412b8fd6b40fee88e2b672f312fa5cc493a591c531",
+      "src/md_wla/data/__init__.py": "ef704dcd016f423beba0eef858566309bd9ce7ae8372b1cce4aae5fd3789849b",
+      "src/md_wla/data/batch_read.py": "25c0c572159b945345c67d2a5131657997c5b8e862732806e281b22f4e731378",
+      "src/md_wla/data/belief_compact.py": "2b13d07318f0dd3f0dad28e602787bbf8543ab500513e83b4745a587307cdeed",
+      "src/md_wla/data/belief_production.py": "a0bb0aabba748b9c433752007b100eac60895b8049b85250dddd75e5fc72c1f9",
+      "src/md_wla/data/belief_production_smoke.py": "184b60eb57aa959c570126e2f1193c3f931aecd2e1ea6882e0e8a379f99d4d81",
+      "src/md_wla/data/belief_sequence.py": "bc9ed6abd4753cd2b4e2f07064c79c84d299f553710f92129bc716f08d6376d0",
+      "src/md_wla/data/canonical_dataset.py": "3e20ea101f094bbb627eaddfe459abb98b18c74d0dda0a6580f41e87027f4c45",
+      "src/md_wla/data/collate.py": "711ee16c6afbfc4fd10d740b644ed339d5d7dec2fd45fd57456dc84a0aab1045",
+      "src/md_wla/data/cosmos25/__init__.py": "c0ba09005df0c8a28f4ed5a5ffb9e4583bf69d20497076b72e837d2a8665d691",
+      "src/md_wla/data/cosmos25/artifacts.py": "a5e305bf025d23d61c09710ab443e2b0ff04c5ab5af22426941053235cbd8111",
+      "src/md_wla/data/cosmos25/catalog.py": "f3383ec196ba3679f981faffdc87f79122fa6d4884f3af5c2a3dc0d316d3ce85",
+      "src/md_wla/data/cosmos25/cli.py": "4786b9e74b969dc9a6bb6f33e5527d7d99da96d4127e137cc3f73b16a193c3bc",
+      "src/md_wla/data/cosmos25/episode_validation.py": "72d9548c17e24bf3c3d98b871cd2a02995f976f75e0ad3bce03b13486e48fe3c",
+      "src/md_wla/data/cosmos25/manifests.py": "7b72ac402c7c901ae3585d20a853b8f7a04544787d37e09f6a21ad22f792f046",
+      "src/md_wla/data/cosmos25/mapping.py": "80dccab0ef0a5cf568f2bf1c71eb8dd29b357b9992bd48d7eae9d4fce30e3399",
+      "src/md_wla/data/cosmos25/normalization.py": "d69c88d9503a1ad355044f4d8cf2ca021d7618aebf25bd7cd2d817b32bc8bdf9",
+      "src/md_wla/data/cosmos25/policy.py": "761d7e1f1efdfbeaf53e4dce53f59334ce6fc59eb201cfc327c58ef29bac698a",
+      "src/md_wla/data/cosmos25/production.py": "dc04f571cc3bfe88686bb7e1a19372ec421e060cf759233e6805328e74b2c266",
+      "src/md_wla/data/cosmos25/prompts.py": "fa75153f023eee3dd9371a4984a5cf11f49cc409e0ffbf714ffe4f04b57fe763",
+      "src/md_wla/data/cosmos25/semantics.py": "da3911f656606e74de4c90ba7f64741a8ed53a65d1ee927869c59f095ddcdf7a",
+      "src/md_wla/data/cosmos25/smoke.py": "997e72e5e2c411ae8161d6473a0f30e0c7f8ded798c658c2098acbcdee1bdab6",
+      "src/md_wla/data/cosmos25/sonic_contract.py": "302cf317be7dbb65918b876d3e183d9d6a98175464e2988edb7c1910778aa015",
+      "src/md_wla/data/cosmos25/sonic_union.py": "36f544ae31cd321378abddc43531d1bd0707096900bf5037fd30dfcf04e4c357",
+      "src/md_wla/data/current_subtask_artifact.py": "a3edc9407a327000cede3f451f2d6e37fce43df13fd0878d34dc43d9ff5c176d",
+      "src/md_wla/data/dataset.py": "22eca6f89032b604eda949533a79708b04ef9fe6ff889f130808c837cd0edcf2",
+      "src/md_wla/data/dataset_routing.py": "afae305b782b08ef61517761a6f547ce8757db625338ccb6d72e8bac1611d78a",
+      "src/md_wla/data/depth.py": "11150278a9dad934dd3c2572db3899bea3e4cd81f920bb7f2f23a3d4136705ad",
+      "src/md_wla/data/depth_cache.py": "f03d28f24e4f7f6c24d501b34dd94d0776ee513ed15779bf4b0c04ba48b76ab1",
+      "src/md_wla/data/depth_dataset.py": "cfe90145b036c42665fedc0e5ee84cdd0080001a34b86eb89179f99a35fa2ce8",
+      "src/md_wla/data/embodiments/__init__.py": "f3e1c78f6eaedb7780c75ebf6c7d322f025571cb89ae4040a2d90625ac9e1e6c",
+      "src/md_wla/data/embodiments/base.py": "2fdd5bdaceb7e332ca2340fc1580b8ef82f1e9df401fb92cb02751b6538fdb11",
+      "src/md_wla/data/embodiments/genrobot.py": "7a905c0797ee913ffd77e4677e9f6c409d278ca83b78590152ef74c7cc5deecb",
+      "src/md_wla/data/embodiments/registry.py": "6d1f7cead6cac6fc71f712a6ebffc34f9ba3c1138f3e34e259b5b004875c16fa",
+      "src/md_wla/data/embodiments/rt1.py": "ac18f9cbe51f3b14b713d1c334b2e2cc0cc76798c0e2478bf525f3ba2eeb7900",
+      "src/md_wla/data/embodiments/sonic.py": "e10c5673f5974a4a11083868e3f9731461debaa132255ee5e03107af7bdcb42a",
+      "src/md_wla/data/fixed_fsq.py": "d2844844e9ea9301222671e6a399d8625ec7f14570a33771e4da01fb499495f0",
+      "src/md_wla/data/fsq64_normalization.py": "b696cfc1a570461bdee074a0f1f75d919d0eac8722ff2ca37400b3231ddabaed",
+      "src/md_wla/data/genrobot_annotations.py": "34a3ae087de91cedb3fb1d4db387d1d7e69d0449210803d2e77fad03f99f55ea",
+      "src/md_wla/data/gr1_shared.py": "e7fcf1821b1de23afea9ebe105f76425390baff936a8809101ac3c4de62074d5",
+      "src/md_wla/data/horizon_padding.py": "f77aca81a16d67b961682f1c793bfb9e0e8590d3f8984df1d4d00dece517723c",
+      "src/md_wla/data/human_ego/__init__.py": "f75491ce9ccb193f3ed267b14ef538b24cbfa033ad924817106c69ee9de16c7e",
+      "src/md_wla/data/human_ego/artifacts.py": "0e805e40197437418b23fd9d108ac15b086e8b7b8d563ae95b9957a6d2a3d8b0",
+      "src/md_wla/data/human_ego/composite.py": "6510f6226326529b4fd5f34112b7b29b5e3100ea3da375bfed33d3eaaeb93c7c",
+      "src/md_wla/data/human_ego/depth.py": "cd7998cc28d484b3937581ec53cb91f9f629bb2350b658387a41daec6fb6813d",
+      "src/md_wla/data/human_ego/genrobot_dataset.py": "1a733345766fd9b3f430ccd31dfa046c9791aec6358097fcf86546b63fb80fd4",
+      "src/md_wla/data/human_ego/genrobot_release.py": "f546f66a1486ffce226d77ef32bd70813c0e1a93a0e6ad2e85b019bdb645cf32",
+      "src/md_wla/data/human_ego/hand.py": "2895300c73b6ca58bc9e1b403f0845660aa8b01199676b21e6be4826d3aef9af",
+      "src/md_wla/data/human_ego/human_rx_dataset.py": "ba5495590c0c3b74aec1a6c8ff2ee2499be334c3d0b29dc938be8de24b363ec7",
+      "src/md_wla/data/human_ego/human_rx_projection.py": "357949185de77e69ee61b483db3b180e49b0d8aca6943f107010a5ea83fd456b",
+      "src/md_wla/data/human_ego/human_rx_release.py": "3eb54fefa5d8d9c1c0084fd3bc2c3fa22fea7e5f99cfe885e0e066b9264703ae",
+      "src/md_wla/data/human_ego/language.py": "f52871bc0163be9a0f0f685b984ce5fe8f5705c3a723519cb1248473d069cf38",
+      "src/md_wla/data/human_ego/motion.py": "3da26814ad717b0ce8305f40d7b4554bc687e8b865662a9ed5b88a390bc44c7c",
+      "src/md_wla/data/human_ego/normalization.py": "4aa9c7b866db5cf4f09f78d45ca6387472c40a54ce02692e98a5885c61efafdd",
+      "src/md_wla/data/human_ego/protobuf.py": "2bc6d05fb2a2caaec7885ec6a8b68708afdfecb158f70f3cf1d7f8c622e70518",
+      "src/md_wla/data/human_ego/publication_audit.py": "cb0904ee965b14fe0ac759a1045dc2a082faaf1530f03f652b16a434c347e0a9",
+      "src/md_wla/data/human_ego/sample.py": "464122949f5b1e9b64721f9c3e9093dbd4af1befe983af30b899be0f262c6d03",
+      "src/md_wla/data/human_ego/sampling.py": "2abf15da15448b8a4eb2d9bea4436b12c5b9bde662dbcd01cf7215aee4aec1a4",
+      "src/md_wla/data/human_ego/video_production.py": "95a86b96b063569f6ad04938a20acc26d97d0ca605c471fb90c9a3fd0347e8b4",
+      "src/md_wla/data/independent_anchor_sampling.py": "4b5e86540d02c3cc7fc030a6084e83d40ea605da8a2ddb90b04fc989f9b9634d",
+      "src/md_wla/data/jd_robotdata/__init__.py": "bfdea034481ddd44e7ddd778dbe3f037d92329e86613e1b79c32757425e3c019",
+      "src/md_wla/data/jd_robotdata/artifacts.py": "b852c8efcef1626067c8b6f493419328e56ade7a46f19b75499f4502dbd35f9a",
+      "src/md_wla/data/jd_robotdata/dataset.py": "20e1039e83b38b09f5cd1411d1fe8215d05b364b202e04610a91267877942ed8",
+      "src/md_wla/data/jd_robotdata/language.py": "a4b6f84823a8270025e67059e063c194da2f24fc0d7e81beb357c414c986d319",
+      "src/md_wla/data/jd_robotdata/motion.py": "278d87f763f86b12cc6cb91dc87b1177002ce19e2a0ecf89650a8247f9a5bb3b",
+      "src/md_wla/data/jd_robotdata/release.py": "d136926d9becee608459bce6e5b945dd2209aab14b63c23de8982e36040e6bb5",
+      "src/md_wla/data/jd_robotdata/source.py": "5aeac5b1ad1a55541daaa5996a81f49d7ba926644b0598b31c2f84fe35ae8bf7",
+      "src/md_wla/data/jd_robotdata/video.py": "8f6a5feb9540d7fbc25f91b8e51e2fdaf62229d8b25122432a7aefdc810f3654",
+      "src/md_wla/data/lerobot_dataset.py": "041a5eb3cf85ef03e56a55334477dd26c19a5382d15471588bdf94eadb073a88",
+      "src/md_wla/data/lerobot_episodes.py": "163918c80ba9b876dfd46fcedad0bdef263396c2e57c50cee1ace921a445d424",
+      "src/md_wla/data/lerobot_manifest.py": "e5f3740962fcbd0aa89ebbd1089f43f2f1f9ea57109b70e490bea60e73bdf6c4",
+      "src/md_wla/data/lerobot_reader.py": "3ee78f6a339dd6b28628aedd0f9663e2da67a53aa0d3959cc01afd25341452e8",
+      "src/md_wla/data/lerobot_spec.py": "91426a35d2a43d4a50afd4dee1fc67189b8820522c2d40cb43c0a437fbde9673",
+      "src/md_wla/data/lerobot_spec_config.py": "98e4eabf98224c41ebf5e40681993afcd7d0bab55297c8ba994cb23e3d1d0209",
+      "src/md_wla/data/manifest.py": "d8018f7e43f9dc6aec3a5b17aa0d7b59e4ee163540213cf0d2a6b9943dfbc442",
+      "src/md_wla/data/mcap.py": "8af812a512053ad67b1ff30f9a02d5f9050a5ccb020d77782771f1e4520f1c68",
+      "src/md_wla/data/mixture_config.py": "cd85489a1a81b5408a4dced0b1bed3f8ac709e7513633d939a3a4afbac4b966e",
+      "src/md_wla/data/mixture_dataset.py": "945b871b5ee33e91547584a3b18cb4b8e6eb6d1568b4e530c59bdb786baef35f",
+      "src/md_wla/data/motionxpp.py": "a427f496bacd5db83b161e0be8dc72e3b92c939e845e4cae1c58118390821a0d",
+      "src/md_wla/data/normalization.py": "e84275cc99483a6c1b93bbab31ad26ed416b2f0862e35d5477393a8ec27a434c",
+      "src/md_wla/data/normalization_scope.py": "c4507eefd24f3737a7ea10bf03edb87c358ed9d9a0b0adcf1994e161cc63ffcb",
+      "src/md_wla/data/objective_mixture.py": "0edef1a4d6447f697f2ed214e43e6e03f071b4167819e687ea68228eefb62055",
+      "src/md_wla/data/omg.py": "96f87a51590c7191db41fe1ee25a5de2c31bc03cbeaf30f7b33a085fb3a019d5",
+      "src/md_wla/data/prompt_adapters.py": "cfa4160e262a64ab14b04210e690430aa0b672a01ef6478dd8f7b494fdf46dd3",
+      "src/md_wla/data/rx_robot.py": "793d3d04546304d349fb1a362b87380abaaec9acac49315bffcfe62ebaf9d81f",
+      "src/md_wla/data/rx_state_contract.py": "4b97b894b34c0cecd26d7d7b3d88aeb459498f2227393cd6bfeeb45774b7fed9",
+      "src/md_wla/data/rx_text_action.py": "3f55f69b00707cd70fcbc018bc8b1b95b40f5ef5225abda262f1c94be33674cf",
+      "src/md_wla/data/rx_text_action_normalization.py": "e11d62bbd5ee19fe075efce9d7cdc15d0b07e58317834535834d00d826d67981",
+      "src/md_wla/data/rx_text_action_release.py": "5d4f0a34ca75e54b67ed90d56db772066612f43914f540546b4652808e3067db",
+      "src/md_wla/data/sampling.py": "d2e47ddd1af5c4e1f2b81c76163371bdc31640638dcfa88c2b1a11a55fd02717",
+      "src/md_wla/data/shared_state.py": "68f8d4b2c139e937cce3c87979330119b583f9e89c9540247834cfd60e8c92c8",
+      "src/md_wla/data/sonic.py": "76af9c4f8b9230f2266d452f3cb50f51e964e0f4a292766d7a1ea6e4f1e7a935",
+      "src/md_wla/data/state_normalization.py": "f1423df4b789e92d31c7e0dbf37d2256d887615620f27165d69c933b7867eb7c",
+      "src/md_wla/data/subtask.py": "eb8b0634813dc6a889ec354b149a48ce54e057bc6c05318a213931f809d3b6af",
+      "src/md_wla/data/text_action.py": "bcc23b2d973ca07d81d7159c50448f23830ab744eafb95cbfcc5c5283ceabf8b",
+      "src/md_wla/data/text_action_dataset.py": "ba2271890e81aca3fcb0399ee9dfba7985980e680b956e808572d8ef1acf6b08",
+      "src/md_wla/data/text_action_full_paired_index.py": "8288e1221246413f6b9705c2c7dc75f705428bd76713ccf5cb3924f055c97ee8",
+      "src/md_wla/data/text_action_normalization.py": "4a8b2298086a6577a04874a8b93f71a58785bb385abe1166d1f761fc9ba94c21",
+      "src/md_wla/data/text_action_quality.py": "11629fedde4ff522d03f6452d98084c26f724eb4a09c5f6d0348bdcb6ecf21d3",
+      "src/md_wla/data/text_action_release.py": "1482ceffb5ea79483794f875e22b679304f53fc1f6c05b7e9bdbb24601bfbe89",
+      "src/md_wla/data/text_action_sampling.py": "932911c3a7a25ece99e113da7fc84053b0164b28130fec1bd712bdfef54a68b2",
+      "src/md_wla/data/video.py": "6c54c8704c4c2b0455380592e28388ad591deb7d82fc97f87d7331412fe9d191",
+      "src/md_wla/data/vlm/__init__.py": "ce59131b5675d84a634c48ec900763c4a984f218a76ad7ad3c8b83e64820ffb9",
+      "src/md_wla/data/vlm/__main__.py": "ccb4c1041c646a471b6a716548125aa42b16f9ae617c99a0fa46ff3a2c9b3398",
+      "src/md_wla/data/vlm/adapters/__init__.py": "1b347d0f0c7af13827b68ee130747ef6951aed1984863441fa45cc3bd1d3d69b",
+      "src/md_wla/data/vlm/adapters/additional_conversations.py": "e06fd392babdc366d5eb9103a95660c5e87bb8d09515c4259d0c92d1bf8c16fa",
+      "src/md_wla/data/vlm/adapters/additional_parquet.py": "693e20aebd627c030cbc94bae77b5f7318837b522d3ffbceb3a9cbf79b11a9e7",
+      "src/md_wla/data/vlm/adapters/additional_qa.py": "108a4e10a1312b09951bce8781f8f2c0c78d717503bc77946be25e48499ba25e",
+      "src/md_wla/data/vlm/adapters/additional_video.py": "eb93ab5cfa28ff48efc7d5cd583e9b636b4fc93ba8d58214fa38b1c2745c5ad0",
+      "src/md_wla/data/vlm/adapters/conversations.py": "4f86fdf947a0e48f4cf30ad18086a4f13c2cf8c4f5d20d20ff22cc31a0badc82",
+      "src/md_wla/data/vlm/adapters/robot.py": "210fa206b72ab5916878d8b91d76338274e478541f5e6393d855a5437c80754f",
+      "src/md_wla/data/vlm/adapters/tabular.py": "1ce6b458a66cc34a4cdab4ee044071ca7fcfc16ed09ecb363f3ecad2497f6c4f",
+      "src/md_wla/data/vlm/additional_parts.py": "a55ff2405a45a680028af9e92042f2c5ef8109cf9347be71f6d6cd0d3894498f",
+      "src/md_wla/data/vlm/archive_index.py": "702760a8e89fe3cf81b640061b14a7998cd06965945a535c3114db212669780e",
+      "src/md_wla/data/vlm/artifacts.py": "8b77fd1ba7cde98b3715e20b737d59292b23dfd0b40682f55736a581f0c1d4c0",
+      "src/md_wla/data/vlm/build.py": "ae21c9985a5e536b8801d153700d09f9d958c1a6ee8b16d3ff1a2e43dc598547",
+      "src/md_wla/data/vlm/catalog.py": "7f6a6b32f7b0029affe796b194188331f39c9bbc824648006ad7f4fec2e7af41",
+      "src/md_wla/data/vlm/catalog_index_cache.py": "6c6922917f84c6f9005a67004b6397fd5103db4f6faf836b48f5394ae9418164",
+      "src/md_wla/data/vlm/cli.py": "2a9b7226de336daee67bcf371d91755cec2c4ffd228d0d48dd2fb5b2f38734c2",
+      "src/md_wla/data/vlm/dataset.py": "01cfa59235a98a5c52cbe412f88621ceebb446b0c7ae4fc6f9910ba1ddbc9b0f",
+      "src/md_wla/data/vlm/fast_media.py": "ef6cd3f6cba568adf330c81e4746130d8c9aed316c04c87072f9134288593622",
+      "src/md_wla/data/vlm/grounding.py": "322f35253611431473d53f47ddcbc5ff79e60686ea7f912fb3f526137a5080dd",
+      "src/md_wla/data/vlm/indexed_jsonl.py": "8f6423ab9561011d1ac81235c7c41063bb33e8fa1397374eacba071e80971744",
+      "src/md_wla/data/vlm/inventory_sidecar.py": "ec720d5f6dd4f919c990e4cef2853255000edae7397da91f319814aa96539a29",
+      "src/md_wla/data/vlm/legacy_staging.py": "3de241ff3cfadaf44e91a138617e3541e9d36ecc5a763a1826c8693f460b5608",
+      "src/md_wla/data/vlm/media.py": "867c693a62b667734e0fbead74022a4512ec5e91eb3ecb7b9ba6dd4051a27942",
+      "src/md_wla/data/vlm/media_index.py": "12519d6395ac4919f25098cfca1beea36327074f1721ce9fe4c2d7bfb34f742c",
+      "src/md_wla/data/vlm/media_staging.py": "e990f1d712c647c83e2be0329fed5e7a2bbda338fec47c01ae6f2c88d6772aea",
+      "src/md_wla/data/vlm/parallel_qualification.py": "ee9dbb4a6e992726f6b9b578d1e494ec8f1f3a17b558f97f52bdcdd9963b059e",
+      "src/md_wla/data/vlm/part_planning.py": "b26c22d9798cedb944e3edef1039429573b035d479c54d271300af898fc4c75c",
+      "src/md_wla/data/vlm/records.py": "1d502ae9e6e94be3612a7464f86d8b1da2832bb06fbbee195cd766a8f0517694",
+      "src/md_wla/data/vlm/shard_merge.py": "ebb5da450ca96014cec295da3d41bb12050eed09b8cdfd4c0ab72be02ca0e70e",
+      "src/md_wla/data/vlm/shard_migration.py": "d0cd70fae5825a7c6ff9871c94b538c93552035e80eb6f707762ff41a8825aae",
+      "src/md_wla/data/vlm/shards.py": "b15f7d62a32bb7d3b20cd3e31c8aebfeccf8a1cef69a1d400642e12cab344992",
+      "src/md_wla/data/vlm/source_set.py": "377d6b08f0e4849543c87593cd090a70ba0281ae05691dc156ba9b34512e1dca",
+      "src/md_wla/data/vlm/source_shards.py": "8371713d74016ca9d56c08d41389528b1c803689cab8fc678d997a26a334692a",
+      "src/md_wla/data/vqa.py": "86809b202b51b8d7d333beb89d56fb1db88b50cf53a62cb568c98ca19bf47d92",
+      "src/md_wla/data/vqa_builder.py": "132efe18e4db1f97dd6d448d62c80644a9af3b149877c1dea42dff820c298f44",
+      "src/md_wla/data/vqa_dataset.py": "eb0f8f58abc453430718abfbbd2e3514ba6a5dc8e3ee3f013bed28904564cfc5",
+      "src/md_wla/data/vqav2.py": "4107db63262f51a770d9d213545dc2534575c486f65f12699b799e452c8a4236",
+      "src/md_wla/deploy/__init__.py": "441ee4795cd8f6fe91c7508649f2b9c32078ab6ef9a9b7bb1e7a33c3246e73f5",
+      "src/md_wla/deploy/rx46_rtc_candidate_server.py": "da54fc5db26d1821ef912753ad348d686899cf9d955f6e2ddd45ac61ae798f08",
+      "src/md_wla/deploy/rx46_step12000_candidate_server.py": "98d5f7fe55b61bacf2354e6c87b5b963b3bfac39ce1462bace804e7d69b042dd",
+      "src/md_wla/deploy/rx50k_step32000_rtc480_server.py": "22d8b9d94384003f7ecdbc383cacafe4d35581c89b17a2ef8e4c351017e4cb11",
+      "src/md_wla/deploy/rx_contract.py": "ec11d13e4ffbad11731d95390cdabfff25cb065b9ecd1be03ffa0e220cead5fb",
+      "src/md_wla/deploy/rx_first_token_audit.py": "d5f956790b7c5c422e7b3a3c66d593b5bf07c2891cd838f9ea19b3249dc55389",
+      "src/md_wla/deploy/rx_frame_cache.py": "016b972b62c56c37730623bb1449a6e57df3f0bfde5576d656f5e28da30e3745",
+      "src/md_wla/deploy/rx_history.py": "96b4861493a35bc8d693b5e8fbc6d5464479a929e55fdc940e299cb48bb45850",
+      "src/md_wla/deploy/rx_identity.py": "81400f39bf2f7f964e842191dc79b26d917899fc5f9b478ead60d7838667765d",
+      "src/md_wla/deploy/rx_medicine_images.py": "442b458610efc3150399c445eacf5925d701837bbf58463643f927d47ea4a03a",
+      "src/md_wla/deploy/rx_medicine_policy.py": "417fe4d5062ac87bed0faed4437f51757baf6f6b0fa6c8e1e00da2bea5dbaff5",
+      "src/md_wla/deploy/rx_medicine_server.py": "8ccc9f106c9fe594710848e62863b76e05858f9cc1b43cd521ef7f361289d978",
+      "src/md_wla/deploy/rx_mjpeg.py": "c558212f07e875b04ad5d30781667f4417844d056eee88334a869b6071de6720",
+      "src/md_wla/deploy/rx_model.py": "c7cce9e7b3abad12eef97bf43e4220a7627dcd7111e3df236f86d8ed7491bb8e",
+      "src/md_wla/deploy/rx_policy_server.py": "7f817ffed4fc15877c64cd8431b4c55e04ac9dfe4290d0163b2d3d34c536e57c",
+      "src/md_wla/deploy/rx_predictor.py": "5ce807b80cb3b06fe4eee374d3a7730bbedd7b142c157005e5d8abeeb7455d31",
+      "src/md_wla/deploy/rx_protocol.py": "8c187a6eda1aef5f12c9cfbf60fa1be3623e373ed83f00f7b79f7739fbbc1284",
+      "src/md_wla/deploy/rx_rtc_action_export.py": "a3245b8a016310c3a1f7a18d85b4feaeafdef42a9ae4c1e4d4079728f6d7afa1",
+      "src/md_wla/deploy/rx_rtc_contract.py": "664d46542a454a7be37e2eb219a02b69c2e4517629b5cf8048a2ce4e849f33dc",
+      "src/md_wla/deploy/rx_rtc_trt_bindings.py": "a802940f6b255473f20aec51c61fc4221842707fb5d1672460f7bdb01ad78049",
+      "src/md_wla/deploy/rx_shadow_decoder.py": "6f6302d50b768590ae9bf5f488420c92f2c9b8a396753a7a2b080ab9a6115bab",
+      "src/md_wla/deploy/rx_shadow_proxy.py": "f45abbcd29d2cbb26510dd8b10b3b22942f71a19978e6de06185289d654a92a6",
+      "src/md_wla/evaluation/__init__.py": "7aa062b9fa54b43fab9ccfb54163b7f55540f46ba17031dbfd118a1f52064552",
+      "src/md_wla/evaluation/action.py": "573186454c4327307ba39af1a1ba94b7e0ba75d12eacaacb42c5a7dfdf60ad2f",
+      "src/md_wla/evaluation/belief.py": "fd2de0e5cc0f77774e259c73d61b95ddce9c699fd63c33174d24cd077167989b",
+      "src/md_wla/evaluation/contract.py": "c20b7d83ee0dcbd39e9659e49e39179cbc2514573c3010b22dcc565645bb79d0",
+      "src/md_wla/evaluation/deployment_gate.py": "01ea0ae9be9981c7246e810e6cfe64ab255a6bb8ce3ac6e2a6816e1180c465ec",
+      "src/md_wla/evaluation/depth.py": "04bdb92a90c83635e7d51bc4a7d022ccba5d30ed2fc7ab619358e250466dd9cf",
+      "src/md_wla/evaluation/g1_calibrated_scene.py": "a695fb90095a57182703cbdef8fc9cd7e3cc3118b824d8dc41c5b770f1174ca9",
+      "src/md_wla/evaluation/g1_early_color_motion.py": "75641b3018894300d6bbe2600fc1af2c250da0df5c1a080ca31c09602b42ed2e",
+      "src/md_wla/evaluation/g1_english_generalization.py": "f0b03709cc6a5dfcfe631c31441b2367b5e1eb9c943fd22153da7c371bd5d91a",
+      "src/md_wla/evaluation/g1_gripper_scene.py": "c8005caab8b2be56b32028fa89d212803101873995872d014c50d4b32b8e5895",
+      "src/md_wla/evaluation/g1_language_order.py": "85215a11e4821b7c71bb3c859042e1cb502f199ef7001b156c7cc740a3bc56c9",
+      "src/md_wla/evaluation/g1_video.py": "a9f27df241f9e4931cdba47da2cc4aa78038ae07678c8cda766e42f8790cd3f9",
+      "src/md_wla/evaluation/g1_wla_bridge.py": "bbb2122cdfb8d66c3d55303377085cae1f85d6e9f4f7f82cea8e863f4f820180",
+      "src/md_wla/evaluation/health.py": "3a2b3c3a237178938ae24e3baf8fc2f98e3ff5a49c19444298f1a21056c5b709",
+      "src/md_wla/evaluation/loss_gate.py": "bfd6d133b109f6b81e197b637e70336d28d3701d4677ee7ec89f3f05e916e556",
+      "src/md_wla/evaluation/recurrent_context.py": "c586fc695b5e0d5beeda310d766af2abb2706da0805659b1018d27d69a467af5",
+      "src/md_wla/evaluation/report.py": "12094766c55385c7a2693ee5ab8c2383a929e19a3870d94e5eb15cb6bb8bcd25",
+      "src/md_wla/evaluation/rx_action_probe.py": "9817db5a78ba94c2afb7df024e2387c564a82663397df3d3e7d27224c446faa4",
+      "src/md_wla/evaluation/sonic_decoder.py": "001737f91626fd8ae4a3f519de4a2941e92cb4a510b7a3b556e97dd457513bd3",
+      "src/md_wla/evaluation/vqa.py": "8881e7d5df78efdeddf2ef1055c1ec9bc3463d8307db649a66ebac570c334829",
+      "src/md_wla/evaluation/weights.py": "64bddec532376dc9c77ebd22495f9fc8424d1daa299c37ff20525b191476508a",
+      "src/md_wla/evaluation/world.py": "53158c8f406e6aed62cac9ed1b7ddbb55f45ae244f215ec132227d0da670cdfb",
+      "src/md_wla/inference/__init__.py": "6ffb3e8a14edbf42efa69295276710e6c2c2dfed763d8f1fc2abff7836f2ad28",
+      "src/md_wla/inference/belief_cache.py": "60cb3840298efdf3b6686d8e7ace2b4f1abf677c90136b30f4b7644f4505d7ce",
+      "src/md_wla/inference/belief_policy.py": "0a1c08ae1ab35471f3644ab1c8b90b632e4f1042fd5a5cf5cacf2ea7183b47b9",
+      "src/md_wla/inference/state.py": "5d83179e4e06d3f0488ca025d03fa8e7b2da93d5dc8a98540f8b4377fa802084",
+      "src/md_wla/inference/subtask.py": "141172c26d592263e2d26ae5dec4fbd6374807499c7ed9618c7e14ee11716238",
+      "src/md_wla/loss_reduction.py": "a6776d8f5bbfa8f10bbe48c793b866e9a7c82338476b565ead7f0aac427d40dc",
+      "src/md_wla/models/__init__.py": "80232cd6d92a19006ef4b7717799de899487dadcaba15bf9ddfd247c7ed40f03",
+      "src/md_wla/models/action/__init__.py": "4ab93c443a56527074317fcae839fe16bd8f6f9984e3081eeca99560d00f18f0",
+      "src/md_wla/models/action/blocks.py": "fa2664974c9e57db3c27db546544b598e830943207e794acdc93a44e35267102",
+      "src/md_wla/models/action/codec.py": "8300f6fa3215202c6e335f1729b9aa105430f0ef58c451d1dc641709cdc659f5",
+      "src/md_wla/models/action/expert.py": "2cdd7c2c3a31c050b3dbc110b8423892ae36353bafc190159376632b3e1d67f8",
+      "src/md_wla/models/action/flow.py": "90a6a32e8f7d90359d77a526c86be6b3ac981262f9d3578bed4d6cf9a8273490",
+      "src/md_wla/models/action/rtc.py": "336ffe959bf535b492e9f907b28407832156635e638afcd3aaa562c04bb29e9a",
+      "src/md_wla/models/backbone/__init__.py": "0058992b63c2dd14d352567efd81c478346a27d942e56cf8ef7388fc71891d4b",
+      "src/md_wla/models/backbone/qwen35.py": "6e46f689193286b023d4fdcf18a3dfb74faf9ca44c895bb5c262c4a6e6bf2d31",
+      "src/md_wla/models/belief/__init__.py": "c6cb4d24048481b672961bf1c77d65765aafbff586198e807f0f3a9af8852dba",
+      "src/md_wla/models/belief/config.py": "54ac20e6ff3dd78cfc01da4eb4a3c63114d9623a6cb80ff14f31f5e13c862565",
+      "src/md_wla/models/belief/core.py": "a0cf375f1136a88a9a9011770c15e5c0a10125c401888685ea3bd026f3fb4fcf",
+      "src/md_wla/models/belief/fusion.py": "f5e24c1b61c9424f6aac13c318e7508a780a6f4a845576b91906a4d65041511d",
+      "src/md_wla/models/belief/readers.py": "a1f4c43e01576acb95ff2d11ff0a97c903f7c92317d1c161a038999c2fd29d97",
+      "src/md_wla/models/belief/route.py": "1a1c1f2f942157a80c52722a1481b4e59d69cf4c3cf0f2a93d116dbd711a46fe",
+      "src/md_wla/models/belief/write_gate.py": "a72e0bd7f894721b1d78f1a62d11b861b436205a53f321ae0477140196816b33",
+      "src/md_wla/models/depth/__init__.py": "d65574d5e10403a261ac0b6b45d9cb0bd7012041c90f02941ac5bee1d9b4fff8",
+      "src/md_wla/models/depth/data.py": "e8e15a084bd1c068d2be55de5e98973617eb9aeea70dab957849d9c590d6a1cc",
+      "src/md_wla/models/depth/head.py": "35130ae2ea235647299b6963816e6b24896867123fa9d1145ec6c88d967b9a28",
+      "src/md_wla/models/depth/loss.py": "11d683f7c0f410dd88b57155bd4edba525ff13aa778f51ddab4f8c7e3061b8bd",
+      "src/md_wla/models/language/__init__.py": "86e0d37c8f1078b74c829de644abe4f0915d53227b64c3cfa58988c3018773a5",
+      "src/md_wla/models/language/planner.py": "1d231cdf03ca800e1e576d3b6c41cd276a83a84ac484f11cfd6cd2e7a2239a66",
+      "src/md_wla/models/language/schema.py": "86da90b957296cc774fdb3625840cfffcf7a7023ec9a7d268fdfa5d7adc2b8fd",
+      "src/md_wla/models/queries.py": "41066678f7ed28c720bf292fb4cdff0196920a9b9d30dc217f88bf862b190bf4",
+      "src/md_wla/models/wla.py": "7fab7a63c7a01ab12ac8e331fcc16896ae83b514472e6ffbbadae2f825ae97f0",
+      "src/md_wla/models/world/__init__.py": "66c092ae7091618c2739202dff8668ca1faa951e2062469cbe24c64e31b905f9",
+      "src/md_wla/models/world/connectors.py": "f2512491a31a5a63f1498773d6a77f5f0d109b723570a4325397122abe6bbcc4",
+      "src/md_wla/models/world/expert.py": "b056d98efd1e72e44b615f8a419495fb176ab213aed2a54a8ad9f23d274627d3",
+      "src/md_wla/models/world/layerwise_sana.py": "1199c5f03f06b6fbe4d3f121a058cf48aeb435fa50a2aececa131072aecfbc98",
+      "src/md_wla/models/world/targets.py": "9beb389a346ca1098f5b365c7dd2dc3a59903268532590fce6154a91a40adc55",
+      "src/md_wla/prompt/__init__.py": "ca58fe42961cd4a87febabd650a8b9445446b0dd6d1e1e4332dd4e9ca9249d3b",
+      "src/md_wla/prompt/context.py": "213e72d506f69d3a850e0b69c3520814e34b68feac0166552599b08d721f0cee",
+      "src/md_wla/prompt/render.py": "315daa2da3031b24805de8fc986b6ec7577d2c87533997bceeb5790125ebf46f",
+      "src/md_wla/prompt/static_layer.py": "00dffffb0e65d7f6fa60a901802978e91057a2c99cb7711aec578328a2a00c66",
+      "src/md_wla/qwen35_fast_kernels.py": "5e172492284e1c59c0731a30b3ca95ee153acf76ccf7f88f9d8c38d5bc87bc49",
+      "src/md_wla/runtime_versions.py": "2b6d232fe5822b6ae563e803c2cbd585bb3021f712763d7d46d1da2446b31748",
+      "src/md_wla/training/__init__.py": "7e850e96e54bcf9e7b91fa6a5872c1523e4f0f6fc84e391a6330710d3b102d30",
+      "src/md_wla/training/artifact_metrics.py": "f66373a4c94c6bcaa65730214775418186082cddd691ddd06d82ecb977eba928",
+      "src/md_wla/training/belief_state.py": "c86e033adbc5c11f6caabb2f0934d4419ae19970ca9b0aba742393d9284a7a28",
+      "src/md_wla/training/ema.py": "4b219dd53b5210905649a3ccb05065c8076c8bb42737a586be130a4f82618725",
+      "src/md_wla/training/engine.py": "318ed7d23d3e1e2f632cbbe0a643722dc6b4a9b31e340740506e4bfd158c9366",
+      "src/md_wla/training/fsdp2.py": "62e90406d7f7d521a07c7aa099ace22892ee679b128cce26618b7aa4aeacd729",
+      "src/md_wla/training/gradient_routing.py": "ae114edc268b174e296f3ec2ceb873a984e0064f4fe8d666945a7f8f885f4511",
+      "src/md_wla/training/losses.py": "c6a27f9a70ce47523684b7f00eaec04d4d3ca18c8d56959076200da313eed055",
+      "src/md_wla/training/muon.py": "d674904fd01d56ab2e991dfa63ef44f040b6f240a9cbad27735789f0469138b2",
+      "src/md_wla/training/muon_config.py": "0a7668c0c2cef1ef9f07629213fd5347198ed53d948d0050dc5a17c64e6431c8",
+      "src/md_wla/training/muon_publish.py": "d4f422885693a478bf82c2f493dec31e8d2113f3067ec4517c5dac47e4465e8c",
+      "src/md_wla/training/objectives.py": "e192e1653b2d7fd84bd0336f1caac40499cd3d21624435cc9c992b1d89d214f4",
+      "src/md_wla/training/optim.py": "1243ce2a8fcd80a77c73968f1ceb564e836dd69bc3c6d67efdc05504b4e53520",
+      "src/md_wla/training/prefetch.py": "75541cbfc0dd9bc8ed4b0c9cadce268a2e449804519ef51b7b1dd302c4a79a91",
+      "src/md_wla/training/rng.py": "038c43c56db3a33b3bff1247715a9a2e0419c0ea3ad7477cded53a70d9929f56",
+      "src/md_wla/training/rtc.py": "7bd766455cea064ac2bc9a807c7f5c43a55b1286521dfb778e132f2992e40561",
+      "src/md_wla/training/runtime.py": "ce53828fdfa6694b035d8b520c01a7dbb06ea47beb4d9d70bb55028a5de9b99f",
+      "src/md_wla/training/state.py": "f339bd0064997ffa2e279e5e4a369cd7bdc53bd8acc0655bb4b70869aff0af39",
+      "src/md_wla/training/task_evidence.py": "cf7a92ee90f561f01bf225468057b1a069e22603acf172455e5eeca8b33ac7d6",
+      "src/md_wla/training/tensorboard.py": "0d158eac1901cb4ce405b8f0ab1ee44103fc818db6f116632b2fa56a209c2860",
+      "src/md_wla/vision/__init__.py": "7335512ec4badeea1e2b7c63fdd62952c0bcb34e8d6c33c05d7a4a60453fc398",
+      "src/md_wla/vision/geometry.py": "baa4fd5d6a8f01bfce18bc82cbe164a99b626090346a1b38f8de21e06ea4a361"
+    },
+    "strict_loaded": [
+      "action_expert",
+      "metaquery",
+      "target_head"
+    ],
+    "omitted": [
+      "Qwen backbone",
+      "language LoRA"
+    ],
+    "action_contract": "7x4 XY/sin(yaw)/cos(yaw)"
+  }
+}

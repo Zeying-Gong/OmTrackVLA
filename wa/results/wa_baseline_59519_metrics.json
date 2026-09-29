@@ -1,0 +1,36 @@
+{
+  "status": "OFFLINE_ONLY",
+  "protocol_id": "wa_evt_xy7_dt0.1_bbox_simuwb_v1",
+  "dataset_sha256": "eb5a52d3478bab1391d12a990dcdc57ce2c77cef787109d29f7f286be797f901",
+  "seed": 42,
+  "metrics": {
+    "image": {
+      "ADE_m": 0.3895280061176387,
+      "FDE_m": 0.6923297514110021,
+      "windows": 78958,
+      "SR": null,
+      "TR": null,
+      "collision_rate": null
+    },
+    "point": {
+      "ADE_m": 0.36254729868606783,
+      "FDE_m": 0.6295003803428394,
+      "windows": 78958,
+      "SR": null,
+      "TR": null,
+      "collision_rate": null
+    },
+    "mixed": {
+      "ADE_m": 0.3682443908465959,
+      "FDE_m": 0.6391398393720267,
+      "windows": 78958,
+      "SR": null,
+      "TR": null,
+      "collision_rate": null
+    }
+  },
+  "elapsed_s": 6629.252813331783,
+  "closed_loop": false,
+  "edge_latency_verified": false,
+  "point_source": "simulated_uwb"
+}

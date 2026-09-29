@@ -1,4 +1,11 @@
 # WA-Mobile progress
+2026-09-29: user-approved WLA-compatible route implemented as PARTIAL integration.
+Restored original64 MetaQuery/ActionExpert/target head; official JEPA/DINO strict-loaded.
+Added UWB polar validation and USS-inspired fusion; retained original SE2 flow+geometry.
+Both A800 joint-gradient probes and three-mode world-off inference passed;11 tests passed.
+See wa/wm/README.md and wa/results/wm_integration_v2.json; NOT trained/effective yet.
+Robot action/time adapter pending; no new formal job. Total model385M/388M, not40M.
+Old Job59519 naturally SUCCEEDED; checkpoint and78958-window three-mode offline metrics verified.
 2026-09-29: user selected JEPA-WM mainline; DINO-WM comparison, academic usage.
 Both official PointMaze pretrained models strict-loaded and ran on A800; 39.7M/42.9M.
 Artifacts: wa/results/pretrained_wm_probe_v{1,2}.json; wa/PRETRAINED_WM_PROBE.md.

@@ -1,4 +1,7 @@
 experiment_id,date,status,scope,artifact,notes
+wm_integration_v1,2026-09-29,DIAGNOSTIC_PASS,1 A800 official WM plus restored WLA heads,wa/results/wm_integration_v1.json,real RGB synthetic dynamics actions; gradients connected; no optimizer step
+wm_integration_v2,2026-09-29,DIAGNOSTIC_PASS,1 A800 preserved flow plus geometry gradient,wa/results/wm_integration_v2.json,all source hashes; three modes; world disabled at inference; action mapping pending
+WA_FULL_4090_RETRY1_FINAL,2026-09-29,OFFLINE_ONLY,8 RTX4090 full epoch and78958 heldout windows per mode,wa/results/wa_baseline_59519_metrics.json,Job59519 Task70376 SUCCEEDED naturally; checkpoint exists; closed-loop SR CR unverified
 pretrained_wm_probe_v1,2026-09-29,PARTIAL,1 A800 developer GPU official pretrained interface diagnostic,wa/results/pretrained_wm_probe_v1.json,strict load both models; real RGB synthetic controls; no effectiveness claim
 pretrained_wm_probe_v2,2026-09-29,PARTIAL,portable rerun with source and script hashes,wa/results/pretrained_wm_probe_v2.json,JEPA main DINO Meta reproduction comparison; no formal job submitted
 wa_cpu_realbatch_v1,2026-09-28,DIAGNOSTIC_PASS,2 train and 2 heldout windows,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/cpu_realbatch_v1,random frozen encoder; no effectiveness claim
