@@ -18,7 +18,8 @@ Next: complete paired diagnostic96episodes (24each image/mixed x random/zero).
 Plan wa/wm/mixed_diagnostic_plan_v1.json outcome-blind selection; separate24 confirmation episodes.
 Sensor ideal_simulated_uwb matches training axes/time; no text/future/GT path fed to policy.
 Developer10unit tests + actual mixed checkpoint2calls + actual worker-cwd imports PASS. Dependencies hash PASS.
-Paired96 diagnostic Job59720/Task70582 SUBMITTED4A800 23:46:33+08; sourceefa41778 configcca17305. Check fresh state before any retry.
+Paired96 diagnostic Job59726/Task70588 RUNNING2A800 since23:49:19+08; sourceefa41778 config8ebe6409. Check fresh state before any retry.
+Job59720/70582 STOPPED before worker launch due4GPU/CPU placement failure; outputs retained. Same96episodes on2GPUs, no protocol change.
 
 Repo /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout branch wa.
 Development entry devpod-a800; GPFS /data/nas_ray. No cross-NAS needed for current diagnosis.

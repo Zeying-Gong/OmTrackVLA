@@ -1,4 +1,6 @@
 # WA-Mobile progress
+2026-09-29 23:49+08 paired96 diagnostic59726/70588 RUNNING2A800; sourceefa41778 config8ebe6409; job_59726/task_70588/wa_mixed_diagnostic_v1. No duplicate evaluation.
+4A800 diagnostic59720/70582 STOPPED before launch after FailedScheduling GPU/CPU; complete96 scope unchanged. Prior4GPU logs retained.
 2026-09-29 23:46+08 mixed paired96 diagnostic59720/70582 SUBMITTED4A800; sourceefa41778 configcca17305; output job_59720/task_70582/wa_mixed_diagnostic_v1.
 Confirmed prior closed-loop omitted UWB despite3-mode training; fixed polar RPC. Offlinezero/closedlooprandom difference isolated in4paired variants. NO causal improvement claimed.
 Development24 vs confirmation24 in disjoint scenes and no training-scene overlap; fixed plan e7d9b859.10unit tests + actual checkpoint mixed2calls PASS; simulator imports PASS from actual BENCH cwd.
