@@ -1,4 +1,6 @@
 # WA-Mobile progress
+2026-09-30 05:35+08 checkpoint59791 verified45414steps/2epochs;sha39d47f885d303d491f4b97d36044f60def8f25af04ad5bf6ad07f95c85fcf728. Offline3mode validation stillrunning, no metrics yet.
+Mixed24 epoch2 eval59826/70688 RUNNING2A800; source9a8534a0 config75654321; lockednewhash/step; samefixedplan/seed/zero decoder/originallearnedguard and baseline59726. No confirmation set or third epoch used.
 2026-09-30 02:57+08 A800 epoch2 replacement59791/70653 RUNNING8A800; source9a8534a0 config634bb657. Original4090 job59748 STOPPED before launch after2hGPU/CPU queue. No duplicate/no crossNAS; same recipe and software; GPU arithmetic may differ.
 IMAGE59678 SUCCEEDED02:40:39 all4215/all8shards complete. SR63.416/18.363/33.523%; CR8.043/14.662/11.317% STT/DT/AT. Invalid starts57/57/51 retained. Artifact wa/results/full_image_59678.json. Does not meet product targets.
 2026-09-30 01:06+08 train59748 stillqueued; workerPending FailedScheduling cpu/GPU, nooptimizer yet. Resource totalsA8008free H1002free4090 68free do NOT establish8GPU node placement; no duplicate or queue churn.
