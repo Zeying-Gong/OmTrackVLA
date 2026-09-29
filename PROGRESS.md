@@ -72,3 +72,7 @@ User2026-09-29 authorized iterative recovery/return A/B development, formal trai
 See [A/B plan and implementation gates](docs/wla_intervention_ab_20260929.md). Shared full2043 recovery collection Job59545/Task70402 RUNNING on4A800. A/B training not submitted; waiting for audited shared data and B inversion checks.
 
 A real dual-GPU updates and A/B serving reset PASS; B inversion24/24PASS (meanADE3.99mm), full B trainer single/dual-GPU PASS; both training routes wait for audited data. No tracking efficacy claim.
+
+Live NAS dashboard2026-09-29: http://127.0.0.1:18784/ ; tunnel: ssh -N -L 18784:127.0.0.1:18784 nas-a800 . Server/artifacts: Baidu NAS /data/nas_ray/project/md-ak/users/zeying.gong/wla_ab_dashboard_20260929 . Collection counts/rolling ETA and round0 A/B artifact adapters implemented; browser verified315/2043 at16:53. Future round1/eval counters not connected yet; estimates exclude those stages.
+
+17:25 China heartbeat: Job59545/70402 RUNNING;458/2043 completed,0collection exceptions,247takeovers,146qualified returns. All4active shards updated within1minute. Full release/cache not present; A/B remain unsubmitted awaiting audited data. Detailed snapshot: Baidu intervention_ab_20260929/MONITOR_LATEST.json.
