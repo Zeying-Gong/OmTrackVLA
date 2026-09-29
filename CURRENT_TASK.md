@@ -55,3 +55,5 @@ See [A/B plan and implementation gates](docs/wla_intervention_ab_20260929.md). J
 A real dual-GPU updates and A/B serving reset PASS; B inversion24/24PASS (meanADE3.99mm), full B trainer single/dual-GPU PASS; audited data are ready and A formal training has started. No tracking efficacy claim.
 
 2026-09-30 02:03: A2 diagnostic59767/70629 SUCCEEDED,36 matched episodes. AT SR5/12→7/12;STT/DT SRunchanged;DT TRmacro-9.100pp and CR2/12→0. Mixed, not stable improvement; frozen target head did not eliminate DT regression. Fixed A2 reserved confirmation59777/70639 RUNNING4A800: fresh baseline36+A236 complete rollouts, seed7 FP32; no repeated selection on confirmation. B59734 continues full inversion.
+
+2026-09-30 02:27: Confirmation59777/70639 SUCCEEDED02:23:08,72rollouts/36strictpairs. STT baseline/A2 SR83.333/83.333,TRmacro93.892/94.262,CR8.333/8.333;DT SR83.333/66.667,TR78.525/70.931,CR0/0;AT SR58.333/66.667,TR75.169/80.837,CR0/0. Mixed with replicated DT regression; no overall improvement claim. Confirmation is not for further tuning. Latest A2 round1_a package prepared; developer collector verification in progress, NOT submitted. B inversion continues.
