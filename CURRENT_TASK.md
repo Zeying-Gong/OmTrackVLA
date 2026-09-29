@@ -21,6 +21,7 @@ Epoch2 TRAINING_COMPLETE45414steps; final checkpoint metadata completed_epochs=2
 Final checkpoint SHA25639d47f885d303d491f4b97d36044f60def8f25af04ad5bf6ad07f95c85fcf728.
 Epoch2 mixed24 evaluation59826/70688 SUCCEEDED05:42:21 but GATE_FAILED:14/24 vs epoch1 16/24; SR75/62.5/37.5%; CR25/12.5/12.5%; initialRGB matched; invalid0. Do not adopt as better or extend epoch3.
 Next: audit action/time/control and failure-state coverage before evidence-backed correction. Turning/reverse labels are present; lack of these labels is not an established cause. Confirmation24 untouched.
+Sampled128episodes/9000windows: firstXY cache vs raw reconstruction error<3e-8m; training range>=3m only49/4800 and>=5m0. Recovery coverage hypothesis needs full-distribution audit; not established causal explanation. See wa/results/coverage_audit_20260930_v1.json.
 Queued4090 59748/70610 STOPPED02:56:50 without optimizer steps; A800 became available after full eval. Same NAS/environment/recipe, GPU-type change documented. New output job_59791/task_70653/wm_jepa_epoch2_a800_v1.
 Read wa/wm/EPOCH2_CONTINUATION.md. When NEW checkpoint exists, verify complete/hash then evaluate fixed24 mixed_zero with original controller; don't accidentally use old checkpoint. No duplicate train job.
 Plan wa/wm/mixed_diagnostic_plan_v1.json outcome-blind selection; separate24 confirmation episodes.
