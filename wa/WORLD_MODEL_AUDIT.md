@@ -1,5 +1,8 @@
 # Pretrained latent world-model migration audit
 Date: 2026-09-29. Status: PARTIAL / migration gates pending.
+Historical audit below. Subsequent user decision selects JEPA-WM mainline;
+official JEPA/DINO pretrained checkpoints have now been executed. See
+PRETRAINED_WM_PROBE.md for superseding results and current limitations.
 
 ## Scope and decision
 User explicitly rejects the self-designed ResNet18 baseline as the desired WA method.

@@ -1,0 +1,78 @@
+{
+  "status": "interface_probe_only",
+  "warning": "Official Meta PointMaze checkpoints; real EVT images but synthetic normalized action/proprio probes, not tracking or prediction-quality evaluation. FP32 developer A800 timing excludes I/O, preprocessing, planning and control; not Thor latency.",
+  "torch": "2.8.0+cu128",
+  "gpu": "NVIDIA A800-SXM4-80GB",
+  "encoder_parameters": 22056576,
+  "encoder_sha256": "b938bf1bc15cd2ec0feacfe3a1bb553fe8ea9ca46a7e1d8d00217f29aef60cd9",
+  "images": [
+    "/data/nas_ray/home/zeying.gong/datasets/evt_teacher_at_20260924_v1/lightnav/shard_002/rollouts/t6tH2pNA9X5/0037907af25ade2ffb34/attempt_000/rgb_0000.png",
+    "/data/nas_ray/home/zeying.gong/datasets/evt_teacher_at_20260924_v1/lightnav/shard_002/rollouts/t6tH2pNA9X5/0037907af25ade2ffb34/attempt_000/rgb_0001.png",
+    "/data/nas_ray/home/zeying.gong/datasets/evt_teacher_at_20260924_v1/lightnav/shard_002/rollouts/t6tH2pNA9X5/0037907af25ade2ffb34/attempt_000/rgb_0002.png"
+  ],
+  "models": {
+    "jepa": {
+      "checkpoint_sha256": "a01d99c4592fbedf44af076cf4c339de230c56f9f377c7559f584b97569b59bc",
+      "strict_load": true,
+      "predictor_parameters": 17626480,
+      "total_parameters": 39683136,
+      "output_shape": [
+        1,
+        3,
+        256,
+        384
+      ],
+      "finite": true,
+      "action_response_mean_abs": 0.05420812964439392,
+      "causal_future_leak_max": 1.6629695892333984e-05,
+      "predictor_timing": {
+        "p50_ms": 15.983082354068756,
+        "p95_ms": 22.356125619262457,
+        "iterations": 20
+      },
+      "encoder_plus_predictor_timing": {
+        "p50_ms": 19.966823048889637,
+        "p95_ms": 30.753021221607927,
+        "iterations": 20
+      },
+      "peak_allocated_mib": 270.88818359375
+    },
+    "dino": {
+      "checkpoint_sha256": "b4dc463b5c7a1546c1e5edf2ef813005c136523fa373ba98bc207782860b3803",
+      "strict_load": true,
+      "predictor_parameters": 20800884,
+      "total_parameters": 42857670,
+      "output_shape": [
+        1,
+        3,
+        256,
+        384
+      ],
+      "finite": true,
+      "action_response_mean_abs": 0.021356863901019096,
+      "causal_future_leak_max": 0.0,
+      "predictor_timing": {
+        "p50_ms": 4.425421357154846,
+        "p95_ms": 9.24610486254096,
+        "iterations": 20
+      },
+      "encoder_plus_predictor_timing": {
+        "p50_ms": 10.284782387316227,
+        "p95_ms": 24.26266921684146,
+        "iterations": 20
+      },
+      "peak_allocated_mib": 231.58056640625
+    }
+  },
+  "source_commits": {
+    "dinov2": "7764ea0f912e53c92e82eb78a2a1631e92725fc8",
+    "jepa-wms": "13cf1d9c7e476f53c17714d2e0f1dc239a883ce0"
+  },
+  "script_sha256": "8a491b481885035923b2bd5f9100d4928fbd8901110835f1d72574fe23b88706",
+  "python": "3.11.15 | packaged by conda-forge | (main, Jun 11 2026, 03:34:02) [GCC 14.3.0]",
+  "encoder_timing": {
+    "p50_ms": 7.7003976330161095,
+    "p95_ms": 14.49150089174509,
+    "iterations": 20
+  }
+}

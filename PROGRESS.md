@@ -1,4 +1,8 @@
 # WA-Mobile progress
+2026-09-29: user selected JEPA-WM mainline; DINO-WM comparison, academic usage.
+Both official PointMaze pretrained models strict-loaded and ran on A800; 39.7M/42.9M.
+Artifacts: wa/results/pretrained_wm_probe_v{1,2}.json; wa/PRETRAINED_WM_PROBE.md.
+PARTIAL: synthetic controls only; no tracking-quality claim. Job59519 still RUNNING.
 2026-09-29: Job 59125 / Task 69896 FAILED before training: source path
 2026-09-29: user requires existing pretrained latent/video world models, not self-built WA.
 Audited pinned official DINO-WM/JEPA-WM/V-JEPA2 clones; report wa/WORLD_MODEL_AUDIT.md.
