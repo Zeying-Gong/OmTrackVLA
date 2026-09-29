@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-29 final checkpoint verified22707steps/1epoch; Job59566 RUNNING and offline metrics not yet produced.
+Training logged-sample averages(first/middle/last100): loss0.1861/0.1270/0.1211; world0.3166/0.2122/0.2028. NOT validation loss.
+TensorBoard installed in separate environment;909 sampled training points served on devpod-a800:6006 via localhost16006 SSH. No continuation job submitted.
 2026-09-29 authentication resolved; private ModelScope uploader and H100 verifier running. First1GiB shard uploaded.
 Backup plan150archives/1051170files/163832726558sourcebytes. Complete backup NOT yet verified.
 JEPA59566 continues:4875/22707steps. See wa/wm/MODELSCOPE_BACKUP.md for paths, process and verification protocol.

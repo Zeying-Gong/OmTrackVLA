@@ -1,6 +1,7 @@
 # WA-Mobile current task
-Status: TRAINING + PRIVATE_BACKUP_RUNNING. Both ModelScope logins verified; no credential copying.
-JEPA59566 verified4875/22707 steps; do not stop or launch duplicate H100 training.
+Status: TRAINING_COMPLETE / OFFLINE_EVALUATION_PENDING. Job59566 still RUNNING; no metrics.json yet.
+Final checkpoint confirms22707steps/1epoch. Do not infer convergence or closed-loop effectiveness.
+TensorBoard devpod-a800 localhost6006 verified; local SSH16006 HTTP200. JSONL exporter shows909 logged samples and waits for final metrics.
 Private other-license repo a597836509/wa-evt-jepa-private-backup-20260929:150shards /163832726558sourcebytes; first shard uploaded. H100 downloader started.
 DINO Job59568 Task70425 verified STOPPED on2026-09-29; outputs retained.
 JEPA Job59566 Task70423 RUNNING on8RTX4090;775/22707 optimizer steps verified. H100 switch now interrupts valid training.
