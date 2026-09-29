@@ -1,0 +1,18 @@
+config_version: 1
+cluster: baidu_a800
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 2
+log_folder: wa_mixed_diagnostic_v1
+tasks:
+  - name: wa_mixed_paired_96_2gpu_v1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 2
+    timeout: 14400
+    cmd: |
+      set -euo pipefail
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_mixed_diagnostic_v1
+      test "$(git rev-parse HEAD)" = efa417788f4c39b4df4638c6c787666150c16efe
+      test -z "$(git status --porcelain)"
+      OUTPUT_ROOT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_mixed_diagnostic_v1"
+      bash wa/scripts/eval_diagnostic.sh "$OUTPUT_ROOT"
