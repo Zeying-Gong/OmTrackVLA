@@ -1,0 +1,35 @@
+{
+  "status": "OFFLINE_ONLY",
+  "kind": "jepa",
+  "steps": 45414,
+  "metrics": {
+    "image": {
+      "ADE_m": 0.2654878469325577,
+      "FDE_m": 0.4644562560765409,
+      "yaw_MAE_rad": 0.12391241579484845,
+      "windows": 73368,
+      "SR": null,
+      "collision_rate": null
+    },
+    "point": {
+      "ADE_m": 0.254841324792358,
+      "FDE_m": 0.4450353713429384,
+      "yaw_MAE_rad": 0.11446651118967843,
+      "windows": 73368,
+      "SR": null,
+      "collision_rate": null
+    },
+    "mixed": {
+      "ADE_m": 0.25384831720165285,
+      "FDE_m": 0.44280948702586415,
+      "yaw_MAE_rad": 0.11404802483411258,
+      "windows": 73368,
+      "SR": null,
+      "collision_rate": null
+    }
+  },
+  "closed_loop": false,
+  "edge_latency_verified": false,
+  "point_source": "simulated_uwb",
+  "elapsed_s": 11820.890984717757
+}

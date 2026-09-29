@@ -1,0 +1,47 @@
+{
+  "protocol": "all audited training and heldout windows; current simulated target geometry only; CPU metadata audit",
+  "splits": {
+    "train": {
+      "rows": 726631,
+      "bins": {
+        "range_lt1": 8156,
+        "range_lt1p5": 160861,
+        "range_ge3": 4031,
+        "range_ge4": 318,
+        "range_ge5": 12,
+        "bearing_abs_ge0p4": 80647
+      },
+      "range_quantiles": [
+        0.21024899959012672,
+        0.9698000848149158,
+        1.3650651317003506,
+        1.7287184141347527,
+        2.2819886637317293,
+        2.8220350989705243,
+        6.034235449266709
+      ],
+      "valid_index_sha256": "17ecf5abe76583759fd338d58117896343a26ebc86b55b1e88c956457a763538"
+    },
+    "heldout": {
+      "rows": 73368,
+      "bins": {
+        "range_lt1": 682,
+        "range_lt1p5": 16702,
+        "range_ge3": 510,
+        "range_ge4": 30,
+        "range_ge5": 0,
+        "bearing_abs_ge0p4": 9262
+      },
+      "range_quantiles": [
+        0.5016401583083892,
+        1.0137538996201667,
+        1.363022978860602,
+        1.7156260809188217,
+        2.282870514741899,
+        2.8715557881887266,
+        4.570179363848409
+      ],
+      "valid_index_sha256": "cb8bb502b9baa170b6f14460ec1ec5cb7f11304a28c53ad4aa04e8e20cbec802"
+    }
+  }
+}
