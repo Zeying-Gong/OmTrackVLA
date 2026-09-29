@@ -1,5 +1,5 @@
 # WA-Mobile current task
-Status: WORKER_STARTING; retry Job 59519 / Task 70376; first run 59125 FAILED.
+Status: TRAINING; retry Job 59519 / Task 70376; first optimizer step verified.
 Prepare reproducible WA research on branch `wa`, independently of existing WLA.
 Current deliverable: ResNet18 temporal policy, three prompt modes, DDP trainer.
 Seven CPU tests and real-data single/two-process diagnostic runs passed.

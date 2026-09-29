@@ -5,7 +5,8 @@ Independent checkout on A800 persistent NAS; branch `wa`.
 Added ResNet18 prompt/temporal baseline, data adapter and two DDP launchers.
 Seven tests and real-data CPU/Gloo checks passed; GPU/Thor remain UNVERIFIED.
 2026-09-29 14:12 +08:00: retry Job59519 Task70376 on baidu_bj_4090, 8 GPUs.
-Scheduler RUNNING; optimizer steps not yet verified. Source4a73fbd6 config170e71e9.
+TRAINING verified: environment.json confirms eight RTX4090 GPUs and clean source4a73fbd6.
+First step 1/24375 loss0.49227056; config170e71e9; completion/effectiveness UNVERIFIED.
 A800 retry configuration was superseded before submission; no duplicate job.
 Effective batch/lr/objectives unchanged; per-rank RNG and GPU numerics may differ.
 External 8xH100 uses the same tools; no access to that machine is assumed.
