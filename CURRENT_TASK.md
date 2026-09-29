@@ -1,12 +1,12 @@
 # WA-Mobile current task
-Status: PARTIAL / H100_MIGRATION_IN_PROGRESS. User authorized JEPA-WM only on8H100.
+Status: PARTIAL / H100_MIGRATION_PAUSED_BY_USER. Prefer public downloads; inventory required before further copying.
 DINO Job59568 Task70425 verified STOPPED on2026-09-29; outputs retained.
 JEPA Job59566 Task70423 RUNNING on8RTX4090;775/22707 optimizer steps verified. H100 switch now interrupts valid training.
 Target: aliyun_sh_h100 using verified platform KubeRay/TorchTrainer capability, not Baidu shell/K8s.
 Central resource snapshot:26 free H100. This is not guaranteed8GPU node placement.
 Legacy aliyun Ray Dashboard DNS failed; current central jobs/list works; KubeRay needs final validation.
 Alibaba root: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928.
-Source/dependency/index migration completed; dataset and checkpoints are still being transferred.
+Source/dependency/index copy completed; data and WLA checkpoint transfers stopped. Partial targets are NOT usable.
 Exact data inventory:10660episodes /1050874files; original scene split preserved.
 Dataset target: data_migration_v1; use data-root/source-prefix mapping, never edit original manifest.
 Checkpoint target: pretrained_migration_v1; hashes must match before training.

@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-29 user requested minimize migration and list exact files/sizes: stopped data/checkpoint SSH streams.
+Partial target files retained, not verified or usable. 4090 JEPA training unaffected.
+Public JEPA/DINOv2 weights and code should be downloaded at destination; custom EVT data cannot be substituted by PointMaze.
 2026-09-29: JEPA59566 now RUNNING;775/22707 real optimizer steps verified, elapsed447.9s; peak8.73GiB.
 H100 migration still incomplete; seek direction before interrupting newly active training for a slower migration.
 2026-09-29 H100 CPU-only preflight:13 regression tests PASS in isolated torch2.7/cu128 environment.
