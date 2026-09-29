@@ -1,7 +1,7 @@
 # WA-Mobile current task
 Status: PARTIAL / H100_MIGRATION_IN_PROGRESS. User authorized JEPA-WM only on8H100.
 DINO Job59568 Task70425 verified STOPPED on2026-09-29; outputs retained.
-JEPA Job59566 Task70423 remains SUBMITTED on8RTX4090 until H100 ready; avoid duplicate training.
+JEPA Job59566 Task70423 RUNNING on8RTX4090;775/22707 optimizer steps verified. H100 switch now interrupts valid training.
 Target: aliyun_sh_h100 using verified platform KubeRay/TorchTrainer capability, not Baidu shell/K8s.
 Central resource snapshot:26 free H100. This is not guaranteed8GPU node placement.
 Legacy aliyun Ray Dashboard DNS failed; current central jobs/list works; KubeRay needs final validation.

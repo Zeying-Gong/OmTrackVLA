@@ -1,6 +1,6 @@
 experiment_id,date,status,scope,artifact,notes
 WM_DINO_ROBOT_V1,2026-09-29,STOPPED,8RTX4090,/data/nas_ray/project/md-ak/users/zeying.gong/job_59568/task_70425,User selected JEPA only; cancelled before training
-WM_JEPA_ROBOT_V1,2026-09-29,SUBMITTED,8RTX4090,/data/nas_ray/project/md-ak/users/zeying.gong/job_59566/task_70423,Retained pending H100 migration; no optimizer evidence
+WM_JEPA_ROBOT_V1,2026-09-29,RUNNING,8RTX4090,/data/nas_ray/project/md-ak/users/zeying.gong/job_59566/task_70423,775of22707 optimizer steps verified; elapsed447.9s; peak8.73GiB; effectiveness unverified
 WM_JEPA_H100_MIGRATION_V1,2026-09-29,MIGRATING,8H100 planned,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/data_migration_v1,10660episodes1050874files; no H100 job submitted; torch2.7 differs from Baidu2.8
 WM_ROBOT_V1_QUEUE,2026-09-29,QUEUED,Jobs59566and59568 both8RTX4090,wa/jobs/wm_robot_v1_run.json,16:45+08 Pods Pending; insufficient CPU/full8GPU placement; no optimizer evidence; no duplicates
 WM_JEPA_ROBOT_V1,2026-09-29,SUBMITTED,8RTX4090 full1epoch22707updates,/data/nas_ray/project/md-ak/users/zeying.gong/job_59566/task_70423/wm_jepa_robot_v1,Job59566 Task70423;16:40+08;sourceab3ed46d;config735d9731;metadata wa/jobs/wm_robot_v1_run.json
