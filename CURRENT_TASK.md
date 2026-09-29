@@ -1,7 +1,8 @@
 # WA-Mobile current task
-Latest user instruction: full4215 STT/DT/AT closed-loop evaluation in one8GPU allocation, not ten-episode diagnostic.
-Job59674/Task70536 STOPPED_USER_SUPERSEDED; partial rollout frames retained. Full8GPU submission being prepared.
-For this WA task future formal jobs request at least8GPUs unless user overrides; respect single shell/K8s max8.
+Latest user instruction: full4215 STT/DT/AT evaluation; prefer parallel GPUs but fewer allowed if8GPU queues.
+Job59678/Task70540 RUNNING scheduler on8A800 since2026-09-29T21:13:12+08; worker startup being verified.
+Source8ebbb30f; config77447239 wa/jobs/full_closed_loop_a800_v1.yaml; checkpoint59566 step22707; image-only.
+Job59674/Task70536 STOPPED_USER_SUPERSEDED; partial artifacts retained. No closed-loop metrics yet.
 Status: TRAINING_COMPLETE / OFFLINE_EVALUATION_PENDING. Job59566 still RUNNING; no metrics.json yet.
 Final checkpoint confirms22707steps/1epoch. Do not infer convergence or closed-loop effectiveness.
 TensorBoard devpod-a800 localhost6006 verified; local SSH16006 HTTP200. JSONL exporter shows909 logged samples and waits for final metrics.

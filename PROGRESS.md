@@ -1,4 +1,6 @@
 # WA-Mobile progress
+2026-09-29T21:13+08 full4215episode eval Job59678/Task70540 RUNNING scheduler;8A800 allocated without prolonged queue.
+Source8ebbb30f/config77447239; all8x3 dataset audits PASS. User allows fewer parallel GPUs if8GPU queues. Effectiveness UNVERIFIED.
 2026-09-29 user superseded small evaluation with full4215episodes on8GPUs. Job59674/70536 verified STOPPED.
 Small job had begun real A800 simulation and rendered initial frames; no completed metrics. Artifacts retained.
 Full evaluator preserves image-only policy/controller;8static data shards audited before submitting one full allocation.
