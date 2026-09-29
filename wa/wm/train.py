@@ -19,6 +19,8 @@ def arguments():
     p.add_argument('--seed',type=int,default=42);p.add_argument('--world-weight',type=float,default=.1)
     p.add_argument('--diagnostic',action='store_true');p.add_argument('--lane',choices=['managed','external-h100'],default='managed')
     p.add_argument('--data-root');p.add_argument('--source-prefix')
+    p.add_argument('--resume');p.add_argument('--resume-sha256')
+    p.add_argument('--completed-epochs',type=int,default=0)
     return p.parse_args()
 
 def moved(batch,device):return {k:v.to(device,non_blocking=True) for k,v in batch.items()}
@@ -44,6 +46,8 @@ def main():
     a=arguments()
     if min(a.batch_size,a.accumulation,a.epochs)<1 or not math.isfinite(a.world_weight) or a.world_weight<=0:raise ValueError('invalid training configuration')
     if a.diagnostic and os.environ.get('MD_AK_JOB_ID'):raise ValueError('developer diagnostic forbidden in formal cluster job')
+    if bool(a.resume)!=bool(a.completed_epochs) or a.completed_epochs<0 or a.completed_epochs+a.epochs>2:raise ValueError('explicit epoch provenance and maximum2 epochs required')
+    if a.resume and (not a.resume_sha256 or sha(a.resume)!=a.resume_sha256):raise ValueError('resume hash mismatch')
     rank=int(os.environ.get('RANK',0));world=int(os.environ.get('WORLD_SIZE',1));local=int(os.environ.get('LOCAL_RANK',0))
     if not a.diagnostic and world!=8:raise ValueError('full recipe requires8 ranks')
     torch.cuda.set_device(local);device=torch.device('cuda',local)
@@ -73,16 +77,29 @@ def main():
     wrapped=DDP(model,device_ids=[local],find_unused_parameters=True,broadcast_buffers=False) if world>1 else model
     groups=optimizer_groups(model);base_lrs=[g['lr'] for g in groups]
     optimizer=torch.optim.AdamW(groups,weight_decay=.01)
+    resume_step=0
+    if a.resume:
+        checkpoint=torch.load(a.resume,map_location='cpu',weights_only=True,mmap=True)
+        if checkpoint['kind']!=a.kind or checkpoint['contract']!=CONTRACT:raise ValueError('resume contract mismatch')
+        expected={k for k in model.state_dict() if not k.startswith('encoder.')}
+        if set(checkpoint['model'])!=expected:raise ValueError('resume state mismatch')
+        result=model.load_state_dict(checkpoint['model'],strict=False)
+        if result.unexpected_keys or any(not k.startswith('encoder.') for k in result.missing_keys):raise ValueError('partial resume')
+        optimizer.load_state_dict(checkpoint['optimizer']);resume_step=int(checkpoint['step'])
+        if resume_step!=22707 or a.completed_epochs!=1:raise ValueError('this continuation is exactly original1epoch to2epochs')
+        base_lrs=[g['lr'] for g in optimizer.param_groups]  # Continue from last LR, do not restart at peak.
+        del checkpoint
     if rank==0:
         config=vars(a)|dict(contract=CONTRACT,cache_sha256=cache_sha,index_audit_sha256=sha(Path(a.index_root)/'audit.json'),effective_batch=world*a.batch_size*a.accumulation,train_rows=len(train),heldout_rows=len(val),world_size=world,precision='fp32 training / bf16 frozen encoder',base_lrs=base_lrs)
         root=Path(__file__).resolve().parents[2]
         env=dict(commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip(),dirty=subprocess.check_output(['git','-C',str(root),'status','--porcelain'],text=True).strip(),torch=torch.__version__,gpu_names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())],source_sha256={str(f.relative_to(root)):sha(f) for f in sorted((root/'wa').rglob('*.py'))},wla=model.provenance)
         (output/'config.json').write_text(json.dumps(config,indent=2));(output/'environment.json').write_text(json.dumps(env,indent=2))
     # Random streams diverge after identical model initialization/DDP synchronization.
-    torch.manual_seed(a.seed+rank)
-    start=time.monotonic();step=0;total_steps=math.ceil(len(loader)/a.accumulation)*a.epochs
+    torch.manual_seed(a.seed+rank+10000*a.completed_epochs)
+    start=time.monotonic();step=resume_step;phase_steps=math.ceil(len(loader)/a.accumulation)*a.epochs;total_steps=resume_step+phase_steps
     for epoch in range(a.epochs):
-        sampler.set_epoch(epoch);wrapped.train();optimizer.zero_grad(set_to_none=True)
+        sampler.set_epoch(epoch+a.completed_epochs);wrapped.train();optimizer.zero_grad(set_to_none=True)
+        group_log=torch.zeros(4,device=device)
         for i,batch in enumerate(loader):
             batch=moved(batch,device);modes=torch.randint(0,3,(len(batch['pose']),),device=device)
             group_start=i//a.accumulation*a.accumulation
@@ -93,19 +110,28 @@ def main():
                 values=wrapped(batch,modes,a.world_weight)
                 if not torch.isfinite(values['loss']):raise FloatingPointError('nonfinite loss')
                 (values['loss']/group_count).backward()
+            group_log+=torch.stack([values[k].detach().float() for k in ('loss','flow','geometry','world')])/group_count
             if sync:
-                multiplier=min(1.,(step+1)/100)*(.1+.9*.5*(1+math.cos(math.pi*step/max(total_steps,1))))
+                phase_step=step-resume_step
+                warmup=1. if a.resume else min(1.,(phase_step+1)/100)
+                multiplier=warmup*(.1+.9*.5*(1+math.cos(math.pi*phase_step/max(phase_steps,1))))
                 for g,lr in zip(optimizer.param_groups,base_lrs):g['lr']=lr*multiplier
                 norm=torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad],1.,error_if_nonfinite=True)
                 optimizer.step();optimizer.zero_grad(set_to_none=True);step+=1
-                if rank==0 and (step==1 or step%25==0 or a.diagnostic):
-                    row=dict(step=step,total_steps=total_steps,loss=float(values['loss'].detach()),flow=float(values['flow']),geometry=float(values['geometry']),world=float(values['world']),grad_norm=float(norm),peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,elapsed_s=time.monotonic()-start)
+                log_now=step==resume_step+1 or step%25==0 or a.diagnostic
+                if log_now and world>1:dist.all_reduce(group_log);group_log/=world
+                if rank==0 and log_now:
+                    row=dict(step=step,total_steps=total_steps,phase_step=step-resume_step,epoch=epoch+a.completed_epochs,
+                        **{k:float(group_log[j]) for j,k in enumerate(('loss','flow','geometry','world'))},
+                        loss_aggregation='DDP_mean_over_accumulation_group',loss_rank0_last_microbatch=float(values['loss'].detach()),
+                        lr=[g['lr'] for g in optimizer.param_groups],grad_norm=float(norm),peak_allocated_gib=torch.cuda.max_memory_allocated()/2**30,elapsed_s=time.monotonic()-start)
                     with (output/'train.jsonl').open('a') as f:f.write(json.dumps(row)+'\n')
                     print(json.dumps(row),flush=True)
+                group_log.zero_()
                 if rank==0 and not a.diagnostic and step%2000==0:
                     torch.save({'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT},output/f'step-{step:07d}.pt')
     if rank==0 and not a.diagnostic:
-        torch.save({'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT},output/'checkpoint.pt')
+        torch.save({'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT,'completed_epochs':a.completed_epochs+a.epochs,'parent_checkpoint':a.resume,'parent_sha256':a.resume_sha256},output/'checkpoint.pt')
     if world>1:dist.barrier()
     metrics=evaluate(model,val,a.batch_size,device,rank,world)
     if rank==0:

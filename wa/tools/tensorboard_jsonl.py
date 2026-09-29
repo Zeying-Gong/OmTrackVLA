@@ -8,9 +8,11 @@ p=argparse.ArgumentParser();p.add_argument('--run',required=True);p.add_argument
 a=p.parse_args();run=Path(a.run);out=Path(a.output)
 if out.exists():raise SystemExit('use a new event directory; do not duplicate prior scalars')
 writer=SummaryWriter(str(out));seen=set();window=deque(maxlen=100)
-writer.add_text('readme','Training losses are rank-0 LAST microbatch samples every25 optimizer steps, NOT DDP-averaged train loss or validation loss. Rolling100 averages100 logged samples (~2500steps). Validation ADE/FDE/yaw is emitted only when metrics.json exists. No closed-loop SR/collision results are available. Gradient norm is before clipping.')
+writer.add_text('readme','Loss scope follows each record: train_ddp_accumulation_mean is global over GPUs and accumulated microbatches; legacy train_rank0_last_microbatch is NOT a global mean. Rolling100 averages100 logged samples (~2500steps), not validation. Offline metrics emitted only when metrics.json exists. No closed-loop metrics here. Gradient norm is before clipping.')
 keys=['loss','flow','geometry','world']
 while True:
+    if not (run/'train.jsonl').exists():
+        time.sleep(30);continue
     for line in (run/'train.jsonl').read_text().splitlines():
         try:r=json.loads(line)
         except json.JSONDecodeError:continue
@@ -18,8 +20,9 @@ while True:
         if step in seen:continue
         seen.add(step);window.append(r)
         for key in keys:
-            writer.add_scalar('train_rank0_last_microbatch/'+key,r[key],step)
-            writer.add_scalar('train_rolling100_logged_samples/'+key,sum(x[key] for x in window)/len(window),step)
+            scope='train_ddp_accumulation_mean' if r.get('loss_aggregation')=='DDP_mean_over_accumulation_group' else 'train_rank0_last_microbatch'
+            writer.add_scalar(scope+'/'+key,r[key],step)
+            writer.add_scalar(scope+'_rolling100/'+key,sum(x[key] for x in window)/len(window),step)
         for key in ['grad_norm','peak_allocated_gib','elapsed_s']:
             writer.add_scalar('diagnostics/'+key,r[key],step)
     path=run/'metrics.json'
