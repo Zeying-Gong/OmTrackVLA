@@ -107,3 +107,20 @@ Developer simulator checks3tasks x16steps PASS, no efficacy interpretation. Earl
 Source manifest21dd4d177342d52cb39546285741b27c4654fe918690e92fc5a630fadebfb711; config diagnostic_a_a800.yaml; final manifest stores both checkpoint hashes. No running training code changed.
 Auto compare generates PAIRED_REPORT.json,asserts36unique identical identity/seed/initialRGB, reports SR/TR_macro/CR and paired deltas. TR_macro is mean following_rate, not historical reference-duration-normalized benchmark TR. Wrong-person/loss/turn labels remain UNANNOTATED_REVIEW_REQUIRED until trajectory/video inspection; not zero. Repeated development tuning must be declared, confirmation kept aside, final4215 remains independent.
 Dashboard18784 reads diagnostic RUN output,72-rollout count and rolling ETA; Acomplete and Bfull28114denominator retained. Next: review paired diagnostics/failures and make evidence-based limited fixes/retrain if needed; continue B then round1.
+
+## 2026-09-30 01:10 mixed diagnostic and controlled A2 repair
+Diagnostic59741/70603 SUCCEEDED00:57:17;72fullrollouts/36matchedidentities+initialRGB+seed.
+| Task (12 each) | Baseline SR / TRmacro / CR (%) | A SR / TRmacro / CR (%) |
+|---|---|---|
+| STT |91.667 /92.186 /0|91.667 /92.084 /0|
+| DT |58.333 /76.413 /16.667|58.333 /66.865 /0|
+| AT |41.667 /77.601 /16.667|50 /77.219 /16.667|
+Mixed results, not stable improvement. Original PAIRED_REPORT diagnose_required=false only considered aggregate success/collision and missed DT tracking-rate regression; REPAIR_DECISION.json explicitly overrides acceptance and retains original report.
+DT u9LiqMn6kA6/1 baseline success became A Lost: A mean actual range3.563m versus predicted1.559m,27/52frames limited approach, mean forward0.131 versusbaseline0.319. These are divergent trajectories, not causal proof. Real frames show near-person occlusion; wrong identity remains unconfirmed. ACTION_AUDIT_INITIAL.json records per-episode action/range diagnostics.
+A2 controlled repair59752/70614 submitted01:09:21 and RUNNING4A800. Same original58346 initialization,24910training/3204heldoutwindows,full2epochs3114updates,same50/50correction-replay/task weights and controller. Only action_expert trains; baseline backbone/LoRA/metaquery/target head frozen. Hypothesis: prevent condition/geometry drift while adapting recovery actions, not a proven fix.
+New isolated package intervention_action_only_20260930,sourceSHAff626aa2dcec5fa92f88534e6215d193aa50f0a2dda7c0bb174e05c30b43282f;full_a800.yaml;output /data/nas_ray/project/md-ak/users/zeying.gong/job_59752/task_70614/wla_intervention_a_action_only_round0 . Original running B source unchanged. Single/dualGPU2updates each PASS,checkpoint reload frozen tensors bitwiseequal to baseline; actionexpert maxdelta7.808e-6. Trainer checks frozen hash each epoch and rejects frozen gradients.
+Next:after A2 training completes,full same36development rollouts and strict paired comparison with saved59741baseline; no need rerun unchanged baseline. Use a new diagnostic package/output, verify checkpoint/hash/protocol. Confirmation36 remains unused; no diagnostic labels enter training. B59734 continues full inversion; round1 and final4215 remain required.
+Real complete paired videos3cases(2regressions/1gain),6videos,framecounts exactly matchtotal_step: http://127.0.0.1:18783/diagnostic_59741/ ; tunnel: ssh -N -L 18783:127.0.0.1:18783 nas-a800 . Derived from simulator JPEG RGB at actual action interval, not synthetic footage. Video source manifest is under59545output/episode_video_review/diagnostic_59741. Selected illustrations do not replace all36paired metrics.
+Dashboard18784 now includes A2 actual updates alongside original A/B and completed diagnostic. Training success/loss does not establish improvement.
+
+01:12China: A2 actual275/3114formal optimizer updates verified; no efficacy result yet.
