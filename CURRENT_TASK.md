@@ -1,6 +1,7 @@
 # WA-Mobile current task
 
-Observer diagnostic59842/70704 RUNNING2A800 since07:24:18; fullfixed24 mixedzero epoch2weights; sourceeefdd26c config98255a74. No policy change; actual poses logged ONLY offline. Await traces to distinguish actual retreat from blocked commands; do not duplicate.
+Observer diagnostic59842/70704 SUCCEEDED07:31:39; all24 outcomes match59826 (14success); initialRGBmatch. Actual telemetry available offline only; do not rerun.
+Motion audit shows heterogeneous collision mechanisms: severe command/actual displacement mismatch in some cases; DT final retreat matches command but target approaches faster. Need collision/NavMesh constraints and earlier avoidance diagnosis; blind reverse amplification not justified.
 Objective: diagnose and improve JEPA-WA RGB + polar UWB mixed tracking, NO TEXT.
 User authorizes overnight code fixes / retraining / evaluation without repeat confirmation.
 Heartbeat wa every15min; read wa/wm/OVERNIGHT_DIAGNOSIS.md before further action.
