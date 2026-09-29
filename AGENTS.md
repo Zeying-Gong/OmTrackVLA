@@ -14,6 +14,11 @@
 
 - User explicitly authorized overnight WLA formal training and full evaluation on2026-09-28; continue audited stage transitions without asking again.
 
+- User2026-09-29 superseded the overnight evaluation: stop Job59352, implement iterative expert recovery/return and compare A(weighted flow replay) with B(FlowDAgger adaptation). Parallel formal A/B training/evaluation is authorized after implementation/data checks.
+- Job59545/Task70402 is the new shared2043episode collection. Do not stop it as part of retiring Job59352.
+- Collection source is frozen separately from training source; never edit files covered by a running job's manifest.
+- Final A/B/reference comparisons must use the same action-decoder precision and protocol; historical BF16 scores alone do not validate the new FP32 comparison.
+
 ## Scope and evidence
 - Official OmTrackVLA and modular following are maintained reference baselines.
 - WLA text+RGB and DA3 bbox+RGB are different interfaces; the comparison is not a backbone ablation.

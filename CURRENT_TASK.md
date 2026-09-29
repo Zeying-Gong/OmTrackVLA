@@ -1,6 +1,6 @@
 # Current task
 Updated: 2026-09-29
-Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
+Status: WLA_INTERVENTION_AB_DEVELOPMENT / DA3_RETIRED
 
 ## Decision
 - Adopt WLA as the primary tracking route.
@@ -18,7 +18,7 @@ Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 - Real collector54frames PASS; full2043manifest/scene/data audit PASS.
 - User authorized overnight formal training and full evaluation. Job59097/69868 SUCCEEDED05:38:21;2043rollouts/176814frames audited,6539invisible,0benchmark scene overlap.
 - Job59110/69881 SUCCEEDED23:24:57;3838updates/2epochs;1543heldout point error0.114515→0.029676; action policy unchanged.
-- Job59352/70125:TRAINING_COMPLETE3456updates/2epochs;heldout6489windows;FULL_EVALUATION running,568/4215 at08:29. Final checkpoint hash verified.
+- Job59352/70125:training completed; evaluation STOPPED_USER_SUPERSEDED at user request2026-09-29. Partial results and checkpoint preserved.
 - [Overnight stages, source hashes and limitations](docs/wla_overnight_training_20260928.md).
 - [Development evidence and exact collection recipe](docs/wla_target_memory_development.md).
 - Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
@@ -48,3 +48,8 @@ This selects the current complete system, not a proven backbone-only winner.
 A bbox/UWB WLA interface is separate, unimplemented work.
 
 - 08:29 matched568STT partial: new/baseline SR79.049/79.049%,TR76.372/76.043%,CR8.803/8.099%;initial images/text match. DT/AT pending; no demonstrated SR gain.
+
+User2026-09-29 authorized iterative recovery/return A/B development, formal training and evaluation; A/B may run in parallel after checks. No old59352 restart.
+See [A/B plan and implementation gates](docs/wla_intervention_ab_20260929.md). Shared full2043 recovery collection Job59545/Task70402 RUNNING on4A800. A/B training not submitted; waiting for audited shared data and B inversion checks.
+
+A real dual-GPU updates and A/B serving reset PASS; B inversion24/24PASS (meanADE3.99mm), full B trainer single/dual-GPU PASS; both training routes wait for audited data. No tracking efficacy claim.

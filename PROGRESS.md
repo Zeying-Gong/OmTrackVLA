@@ -25,7 +25,7 @@ Sampled old data16episodes/1496frames had0per-step grounding labels. Job59097/69
 Job59110/69881 SUCCEEDED23:24:57;3838updates/2epochs;1543heldout point error0.114515→0.029676; action policy unchanged.
 Initial labels are all visible:visibility/GRU/action residual frozen in this stage.
 Four-step temporal trainer passed real dual-GPU updates/checkpoint and causal serving reset checks.
-Job59352/70125:TRAINING_COMPLETE3456updates/2epochs;heldout6489windows;FULL_EVALUATION running,568/4215 at08:29. Final checkpoint hash verified.
+Job59352/70125:training completed; evaluation STOPPED_USER_SUPERSEDED at user request2026-09-29. Partial results and checkpoint preserved.
 See [overnight recipe and provenance](docs/wla_overnight_training_20260928.md).
 [Development and collection specification](docs/wla_target_memory_development.md).
 Initial-frame localization pretraining completed; temporal adaptation and tracking improvement remain UNVERIFIED.
@@ -67,3 +67,8 @@ this document does not claim its source has been integrated into this repository
 - [Original experiment ledger](EXPERIMENTS.csv)
 
 08:29 matched568STT partial: new/baseline SR79.049/79.049%,TR76.372/76.043%,CR8.803/8.099%;initial images/text match. DT/AT pending; no demonstrated SR gain.
+
+User2026-09-29 authorized iterative recovery/return A/B development, formal training and evaluation; A/B may run in parallel after checks. No old59352 restart.
+See [A/B plan and implementation gates](docs/wla_intervention_ab_20260929.md). Shared full2043 recovery collection Job59545/Task70402 RUNNING on4A800. A/B training not submitted; waiting for audited shared data and B inversion checks.
+
+A real dual-GPU updates and A/B serving reset PASS; B inversion24/24PASS (meanADE3.99mm), full B trainer single/dual-GPU PASS; both training routes wait for audited data. No tracking efficacy claim.
