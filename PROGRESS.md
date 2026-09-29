@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-29 16:45+08:00: both formal Pods Pending; no optimizer steps yet.
+K8s FailedScheduling: insufficient CPU/full8GPU placement. Platform requests56CPU/472GiB.
+Keep queued; no duplicate jobs or platform changes. This is scheduling wait, not training failure.
 2026-09-29 16:40/16:41 +08:00: JEPA Job59566 Task70423 and DINO Job59568 Task70425 SUBMITTED.
 Each8RTX4090 on baidu_bj_4090; sourceab3ed46d; full22707 updates plus three-mode heldout.
 wa/jobs/wm_robot_v1_run.json records config hashes and NAS paths; optimizer evidence pending.

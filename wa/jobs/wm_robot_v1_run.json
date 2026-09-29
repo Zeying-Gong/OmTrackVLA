@@ -43,6 +43,7 @@
       "command": "WA_WORLD_KIND=dino bash wa/scripts/train_world_managed.sh"
     }
   ],
-  "verification": "Both scheduler tasks allocated requested8 GPUs in baidu_bj_4090; K8s job creation logged. Worker optimizer evidence pending.",
+  "verification": "Both tasks request8 GPUs in baidu_bj_4090; Pods Pending with no assigned node. No optimizer evidence yet.",
+  "queue_evidence": {"observed_at":"2026-09-29T16:45:42+08:00","reason":"FailedScheduling: Insufficient cpu and Insufficient nvidia.com/gpu across eligible nodes","platform_cpu_request_per_task":56,"platform_memory_request_gib_per_task":472,"action":"Leave both jobs queued; no duplicate submission or platform-template modification"},
   "acceptance": "Complete22707 updates and three-mode73368-window offline metrics plus checkpoint; closed-loop SR/CR and Thor latency not included or claimed."
 }

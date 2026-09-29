@@ -2,6 +2,9 @@
 Status: SUBMITTED; full JEPA-WM and DINO-WM robot-domain training authorized and dispatched.
 JEPA Job59566 Task70423; DINO Job59568 Task70425; each8RTX4090 on baidu_bj_4090.
 Source frozen atab3ed46d; configurations pinned in0ace1c0c. Worker training evidence pending.
+Queue diagnosis: both Pods Pending; eligible nodes lack CPU or a full8GPU placement.
+Current platform8RTX4090 profile requests56CPU/472GiB; no task-level CPU override found.
+Leave tasks queued. No duplicate submission, cancellation or platform-template modification.
 Complete provenance/output paths: wa/jobs/wm_robot_v1_run.json.
 WLA-compatible WA retains64 MetaQueries, original7x4 SE2 ActionExpert and target head.
 USS-inspired image/BBox target fusion + UWB polar; no Qwen/text at deployment.
