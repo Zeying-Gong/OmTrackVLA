@@ -1,0 +1,42 @@
+{
+  "status": "COMPLETE_FULL_VALIDATION",
+  "mode": "image",
+  "episodes": 4215,
+  "metrics_percent": {
+    "stt": {
+      "episodes": 1405,
+      "SR": 63.41637010676157,
+      "TR": 64.44266953953601,
+      "CR": 8.042704626334519,
+      "macro_TR": 71.00112413381204,
+      "finish": 72.81138790035587,
+      "invalid_init_count": 57,
+      "reference_missing": 52
+    },
+    "dt": {
+      "episodes": 1405,
+      "SR": 18.362989323843415,
+      "TR": 35.66781115372569,
+      "CR": 14.661921708185053,
+      "macro_TR": 46.62210683208598,
+      "finish": 35.729537366548044,
+      "invalid_init_count": 57,
+      "reference_missing": 52
+    },
+    "at": {
+      "episodes": 1405,
+      "SR": 33.52313167259786,
+      "TR": 52.32999375274763,
+      "CR": 11.316725978647687,
+      "macro_TR": 62.16463240201361,
+      "finish": 49.25266903914591,
+      "invalid_init_count": 51,
+      "reference_missing": 52
+    }
+  },
+  "limits": [
+    "simulation only",
+    "first-frame bbox; no text/UWB",
+    "no edge latency verification"
+  ]
+}

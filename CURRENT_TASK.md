@@ -8,8 +8,8 @@ Report CR and all failures; confirmation scenes reserved; no product/generalizat
 
 Training59566/70423 SUCCEEDED:8RTX4090,22707steps,1epoch. Offline metrics.json exists.
 Image ADE/FDE0.2691/0.4697m; mixed0.2576/0.4487m. Not closed-loop metrics.
-Full IMAGE eval59678/70540 runs on8A800 frozen8ebbb30f; do not edit running source.
-01:06 snapshot3136/4215; STT1405 SR63.42% CR8.04%; DT1405 SR18.36% CR14.66%; AT326partial. IMAGE-only, not mixed.
+Full IMAGE59678/70540 SUCCEEDED02:40:39; all4215 unique episodes, all8 COMPLETE markers. wa/results/full_image_59678.json.
+Full IMAGE SR STT63.42% DT18.36% AT33.52%; CR8.04/14.66/11.32%. No UWB; not mixed-mode results.
 Small eval59674/70536 STOPPED_USER_SUPERSEDED; retained outputs.
 
 Confirmed old closed-loop mode0/polarzero wrongly omits requested UWB; mixed interface now implemented.
@@ -17,7 +17,8 @@ Also offline zero vs closed-loop Gaussian initial flow state mismatch; causal ro
 Paired96 COMPLETE59726: image_random8/24 mixed_random14/24 image_zero7/24 mixed_zero16/24 successes; initialRGB pairs equal.
 Mixed_zero taskSR STT87.5% DT75% AT37.5%; CR12.5% each. Gate unmet. No checkpoint extension yet.
 Controller59737/70599 SUCCEEDED but REJECTED:14/24vs16/24, STT collisions increased. Use original learned_target_guard_v3.
-Epoch2 continuation59748/70610 SUBMITTED8RTX4090; source9a8534a0 config1b939978. Parent59566 step22707; one additional full epoch to45414, no more.
+Epoch2 continuation59791/70653 RUNNING8A800 since02:56:58; source9a8534a0 config634bb657. Parent59566step22707; one additional full epoch to45414, no more.
+Queued4090 59748/70610 STOPPED02:56:50 without optimizer steps; A800 became available after full eval. Same NAS/environment/recipe, GPU-type change documented. New output job_59791/task_70653/wm_jepa_epoch2_a800_v1.
 Read wa/wm/EPOCH2_CONTINUATION.md. When NEW checkpoint exists, verify complete/hash then evaluate fixed24 mixed_zero with original controller; don't accidentally use old checkpoint. No duplicate train job.
 Plan wa/wm/mixed_diagnostic_plan_v1.json outcome-blind selection; separate24 confirmation episodes.
 Sensor ideal_simulated_uwb matches training axes/time; no text/future/GT path fed to policy.
