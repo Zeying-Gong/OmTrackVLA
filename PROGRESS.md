@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-29 user authorized private ModelScope backup and H100 download alongside current4090 training.
+JEPA59566 verified2550/22707steps. Training continues unchanged; no duplicate experiment authorized.
+Backup BLOCKED on source authentication: Baidu ms-hub missing API token; H100 logged in. No data uploaded yet.
 2026-09-29 user requested minimize migration and list exact files/sizes: stopped data/checkpoint SSH streams.
 Partial target files retained, not verified or usable. 4090 JEPA training unaffected.
 Public JEPA/DINOv2 weights and code should be downloaded at destination; custom EVT data cannot be substituted by PointMaze.
