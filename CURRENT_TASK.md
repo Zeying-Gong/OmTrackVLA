@@ -1,10 +1,10 @@
 # WA-Mobile current task
-Status: TRAINING; retry Job 59519 / Task 70376; first optimizer step verified.
-Prepare reproducible WA research on branch `wa`, independently of existing WLA.
-Current deliverable: ResNet18 temporal policy, three prompt modes, DDP trainer.
-Seven CPU tests and real-data single/two-process diagnostic runs passed.
-User explicitly authorized formal training on 2026-09-28; source commit 4a73fbd6.
-User selected Beijing 4090: 8 GPUs x batch4; full epoch; global batch32 unchanged.
-Keep source 4a73fbd6 and all previous failed-run evidence; confirm actual steps.
-All prompts passed; NCCL and pretrained GPU diagnostics passed. Effectiveness UNVERIFIED.
-Acceptance: see wa/VALIDATION.md and wa/RUNBOOK.md.
+Status: PARTIAL; official pretrained latent world-model migration audit.
+User rejects self-designed ResNet18 as desired WA; use existing open-source world model.
+First candidate: original DINO-WM; compare JEPA-WM and small V-JEPA video encoders.
+See wa/WORLD_MODEL_AUDIT.md for pinned commits, executed diagnostic and migration gates.
+Existing Job59519 Task70376 continues unchanged at explicit user request; not the new method.
+Official DINO predictor causal/forward/backward developer diagnostic passed, random weights.
+Raw action/timebase and apparent high-speed transitions require investigation before training.
+Do not conflate video encoder pretraining with pretrained action-conditioned dynamics.
+No new formal run, checkpoint download or end-to-end deployment claim in this audit.
