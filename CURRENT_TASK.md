@@ -18,7 +18,7 @@ Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 - Real collector54frames PASS; full2043manifest/scene/data audit PASS.
 - User authorized overnight formal training and full evaluation. Job59097/69868 SUCCEEDED05:38:21;2043rollouts/176814frames audited,6539invisible,0benchmark scene overlap.
 - Job59110/69881 SUCCEEDED23:24:57;3838updates/2epochs;1543heldout point error0.114515→0.029676; action policy unchanged.
-- Job59352/70125:TRAINING_COMPLETE3456updates/2epochs;heldout6489windows;FULL_EVALUATION running,86/4215 at06:56. Final checkpoint hash verified.
+- Job59352/70125:TRAINING_COMPLETE3456updates/2epochs;heldout6489windows;FULL_EVALUATION running,568/4215 at08:29. Final checkpoint hash verified.
 - [Overnight stages, source hashes and limitations](docs/wla_overnight_training_20260928.md).
 - [Development evidence and exact collection recipe](docs/wla_target_memory_development.md).
 - Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
@@ -46,3 +46,5 @@ Status: WLA_OVERNIGHT_TRAINING_AUTHORIZED / DA3_RETIRED
 WLA currently uses text+RGB, whereas DA3 used initial bbox+RGB with UWB missing.
 This selects the current complete system, not a proven backbone-only winner.
 A bbox/UWB WLA interface is separate, unimplemented work.
+
+- 08:29 matched568STT partial: new/baseline SR79.049/79.049%,TR76.372/76.043%,CR8.803/8.099%;initial images/text match. DT/AT pending; no demonstrated SR gain.

@@ -62,3 +62,6 @@ Job59352 actual optimizer updates verified:at least2350/3456,epoch2,finite gradi
 
 ## Verified2026-09-29 06:56 update
 Temporal training complete:3456updates,2epochs. Final checkpoint step-0003456.pt SHA2562d0907890557674b520b9ef6516ae719611861b14175a0ece4e07fbf3a5e18d7 verified. Full heldout6489windows:ADE0.249677m,yawMAE0.128644rad,visible-point normalizedL2=0.0451692;visibility TP6130/FP139/FN53 (306invisible windows). No matched before/after temporal heldout baseline measured; no efficacy claim from these values. Full4215rollout evaluation automatically started and reached86episodes at06:56; complete SR/TR/CR pending.
+
+## Morning report2026-09-29 08:29
+Both training stages complete and checkpoint verified. Full evaluation remains RUNNING:568/4215 completed, all STT so far. Matched identical568episodes with original WLA58346: new SR79.0493%,TR76.3723%,CR8.8028%;baseline SR79.0493%,TR76.0428%,CR8.0986%. Every initial image hash and instruction matched. No SR improvement observed in this partial subset; collision rate is0.7042points higher. This is not the full benchmark; DT/AT and remaining STT are pending. Data collection took6.8hours, so rollout evaluation began only after morning training completion. Continue the existing full job; no truncation or duplicate submission. NAS MORNING_REPORT.json records this report.
