@@ -47,7 +47,9 @@ def lane(slot,variant,shard):
     finally:
         if worker:stop(worker)
         stop(server)
-jobs=[(v,s) for v in ['image_random','mixed_random','image_zero','mixed_zero'] for s in range(2)]
+variants=os.environ.get('WA_DIAG_VARIANTS','image_random,mixed_random,image_zero,mixed_zero').split(',')
+assert variants and len(set(variants))==len(variants) and set(variants)<=set(['image_random','mixed_random','image_zero','mixed_zero'])
+jobs=[(v,s) for v in variants for s in range(2)]
 def slot_run(slot):
     for variant,shard in jobs[slot::len(visible)]:lane(slot,variant,shard)
 def interrupt(*_):raise KeyboardInterrupt()
@@ -57,7 +59,7 @@ try:
     fs=[pool.submit(slot_run,i) for i in range(len(visible))]
     for f in concurrent.futures.as_completed(fs):f.result()
     results={};initial={}
-    for variant in ['image_random','mixed_random','image_zero','mixed_zero']:
+    for variant in variants:
         rows=[]
         for s in range(2):
             dest=OUT/f'{variant}_shard{s}';assert (dest/'COMPLETE.json').exists()
@@ -70,8 +72,15 @@ try:
             results[variant][task]=dict(n=8,SR=100*sum(r['success'] for r in part)/8,CR=100*sum(r['collision'] for r in part)/8,
                 macro_TR=100*sum(r['following_rate'] for r in part)/8,invalid=sum(r.get('policy_init_valid') is False for r in part))
     if not all(len(h)==1 for h in initial.values()):raise ValueError('paired initial RGB mismatch')
-    (OUT/'summary.json').write_text(json.dumps(dict(status='COMPLETE_PAIRED_DEVELOPMENT_DIAGNOSTIC',episodes=96,results=results,
-        initial_rgb_pairs_equal=True,uwb='ideal_simulated_uwb',real_uwb_verified=False),indent=2))
+    baseline=os.environ.get('WA_DIAG_BASELINE')
+    if baseline:
+        reference={}
+        for f in Path(baseline).glob('mixed_zero_shard*/episodes.jsonl'):
+            for line in f.read_text().splitlines():
+                r=json.loads(line);reference[(r['task'],r['key'])]={r['initial_rgb_sha256']}
+        assert reference==initial,'baseline initial RGB mismatch'
+    (OUT/'summary.json').write_text(json.dumps(dict(status='COMPLETE_PAIRED_DEVELOPMENT_DIAGNOSTIC',episodes=24*len(variants),results=results,
+        initial_rgb_pairs_equal=True,baseline=baseline,controller=os.environ.get('WA_DIAG_CONTROLLER','learned_target_guard_v3'),uwb='ideal_simulated_uwb',real_uwb_verified=False),indent=2))
     print('DIAGNOSTIC_COMPLETE',json.dumps(results),flush=True)
 finally:
     with lock:cancel.set();snapshot=list(children)
