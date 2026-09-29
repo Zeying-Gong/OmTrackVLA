@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-29 user superseded small evaluation with full4215episodes on8GPUs. Job59674/70536 verified STOPPED.
+Small job had begun real A800 simulation and rendered initial frames; no completed metrics. Artifacts retained.
+Full evaluator preserves image-only policy/controller;8static data shards audited before submitting one full allocation.
 2026-09-29 final checkpoint verified22707steps/1epoch; Job59566 RUNNING and offline metrics not yet produced.
 Training logged-sample averages(first/middle/last100): loss0.1861/0.1270/0.1211; world0.3166/0.2122/0.2028. NOT validation loss.
 TensorBoard installed in separate environment;909 sampled training points served on devpod-a800:6006 via localhost16006 SSH. No continuation job submitted.
