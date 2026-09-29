@@ -80,3 +80,21 @@ At submission, estimate B inversion runtime from actual release size and develop
 - Known frozen release corner case: return_count records quality-qualified returns while the release assertion counts all physical returns. A collision within1s of a later return can fail final audit despite earlier valid segments. COLLECTION_AUDIT_ERRATA.md and separate release_after_collection.py preserve a corrected whole-corpus audit path without modifying running source or raw data. Never consume a partial release.
 - prepare_round1.py and aggregate_rounds.py now prepare latest-student packages and a shared union of all three correction releases; static syntax checks only. Actual round1 serving/collector checks remain required once real round0 checkpoints exist.
 - Updated heartbeat records actual59545/70402, waits for complete audited caches, verifies resources/source/checkpoints before each full A/B submission, and must continue updated-student aggregation before final evaluation.
+
+## 2026-09-30 full release and formal A start
+- Collection59545/70402 SUCCEEDED2026-09-29 23:56:11China;2043/2043 complete. Original release RECOVERY_RELEASE_AUDIT_PASS; no errata rebuild required.
+- Eligible correction episodes596; training671episodes/24910windows; heldout72episodes/3204windows. Cache hashes verified, train/heldout scenes disjoint, no final-evaluation scene overlap.
+- A59730/70592 submitted00:01:40China on4A800, full2epochs/3114updates.550actual updates verified; no tracking improvement claim.
+- A output: /data/nas_ray/project/md-ak/users/zeying.gong/job_59730/task_70592/wla_intervention_a_round0 .
+- Source manifest b2501ed49ca9c3169467e7aecf9c2d00f1e8453642e035ef94cb57fa2593e168; starting checkpoint SHA256 0b8f036fd282474d8c9efe9e34e1f4dc56b9282c44295bcda1f16edcf48460e1.
+- A8002free after A launch; H100 missing this snapshot/cache. B 4090 developer compatibility check uses shared verified NAS; no cross-NAS copy. Full job pending check.
+- B conservative inversion estimate22.13h from272s/24 developer samples across28114windows/4GPU; includes model startup, rough only.48h timeout retained. Morning completion is not promised.
+- Latest sleep-time authorization: independently evaluate each completed candidate on fixed stratified development episodes against matching FP32 reference; preserve separate confirmation subset. Diagnose failures and make limited traceable fixes/retrain if needed. No diagnostic labels enter training; final4215 test remains independent. Continue latest-student round1 afterwards.
+- First follow-up after2026-09-30 08:00China must report actual status/updates/coverage/pairedSR/TR/CR or explicit incomplete reason and persist report marker.
+- Dashboard18784 now reads A actual updates and B full28114-window inversion denominator; diagnostic card explicitly pending until jobs exist.
+
+### B formal submission00:12China
+B59734/70596 RUNNING onbaidu_bj_4090,4RTX4090; train_b_4090.yaml invokes unchanged frozen train_b_pipeline.sh,48h timeout, full inversion and2epochs. Output /data/nas_ray/project/md-ak/users/zeying.gong/job_59734/task_70596/wla_intervention_b_round0 .
+4090 developer compatibility PASS:4/4 real windows meet1cm/2degree;2optimizer updates and checkpoint epoch2 saved. Evidence /data/nas_ray/home/zeying.gong/algorithm/experiments/wla_b_4090_compat_20260930_gpu6/training/COMPLETE.json . Initial own GPU0 preflight stopped before model load because GPU was occupied; retained its output, reran on idle GPU6, no unrelated process stopped.
+No cross-NAS data copy; shared paths and source hashes verified on4090. Hardware differs from A; final inference precision/protocol remain matched. B formal optimizer updates not yet verified (inversion first).
+A now950/3114 real updates. Begin fixed matched development diagnosis once A completes, independently of B. Diagnostic subset and jobs not yet implemented; this remains the immediate next engineering step.

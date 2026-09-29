@@ -1,6 +1,6 @@
 # Current task
-Updated: 2026-09-29
-Status: WLA_INTERVENTION_AB_DEVELOPMENT / DA3_RETIRED
+Updated: 2026-09-30
+Status: WLA_INTERVENTION_AB_TRAINING / DA3_RETIRED
 
 ## Decision
 - Adopt WLA as the primary tracking route.
@@ -50,6 +50,6 @@ A bbox/UWB WLA interface is separate, unimplemented work.
 - 08:29 matched568STT partial: new/baseline SR79.049/79.049%,TR76.372/76.043%,CR8.803/8.099%;initial images/text match. DT/AT pending; no demonstrated SR gain.
 
 User2026-09-29 authorized iterative recovery/return A/B development, formal training and evaluation; A/B may run in parallel after checks. No old59352 restart.
-See [A/B plan and implementation gates](docs/wla_intervention_ab_20260929.md). Shared full2043 recovery collection Job59545/Task70402 RUNNING on4A800. A/B training not submitted; waiting for audited shared data and B inversion checks.
+See [A/B plan and implementation gates](docs/wla_intervention_ab_20260929.md). Job59545/70402 SUCCEEDED;2043/2043 collected and full release/cache audit PASS. A Job59730/70592 RUNNING on4A800;950/3114 optimizer updates verified. B59734/70596 RUNNING on4RTX4090 (full inversion then2epochs); compatibility4windows/2updates PASS.
 
-A real dual-GPU updates and A/B serving reset PASS; B inversion24/24PASS (meanADE3.99mm), full B trainer single/dual-GPU PASS; both training routes wait for audited data. No tracking efficacy claim.
+A real dual-GPU updates and A/B serving reset PASS; B inversion24/24PASS (meanADE3.99mm), full B trainer single/dual-GPU PASS; audited data are ready and A formal training has started. No tracking efficacy claim.
