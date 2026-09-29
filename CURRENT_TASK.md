@@ -9,7 +9,7 @@ Report CR and all failures; confirmation scenes reserved; no product/generalizat
 Training59566/70423 SUCCEEDED:8RTX4090,22707steps,1epoch. Offline metrics.json exists.
 Image ADE/FDE0.2691/0.4697m; mixed0.2576/0.4487m. Not closed-loop metrics.
 Full IMAGE eval59678/70540 runs on8A800 frozen8ebbb30f; do not edit running source.
-Last23:29 snapshot1879/4215; STT complete SR63.42% CR8.04%; DT partial. Check fresh status.
+01:06 snapshot3136/4215; STT1405 SR63.42% CR8.04%; DT1405 SR18.36% CR14.66%; AT326partial. IMAGE-only, not mixed.
 Small eval59674/70536 STOPPED_USER_SUPERSEDED; retained outputs.
 
 Confirmed old closed-loop mode0/polarzero wrongly omits requested UWB; mixed interface now implemented.

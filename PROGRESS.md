@@ -1,4 +1,6 @@
 # WA-Mobile progress
+2026-09-30 01:06+08 train59748 stillqueued; workerPending FailedScheduling cpu/GPU, nooptimizer yet. Resource totalsA8008free H1002free4090 68free do NOT establish8GPU node placement; no duplicate or queue churn.
+IMAGE59678 continues3136/4215. DT complete1405 SR18.36299% CR14.66192%; STT1405 SR63.41637% CR8.04270%; AT326partial. Full summary stillabsent; NOT mixed-mode results.
 2026-09-30 00:48+08 epoch2 continuation59748/70610 SUBMITTED8RTX4090; source9a8534a0 config1b939978; output job_59748/task_70610/wm_jepa_epoch2_v1.1additionalepoch to45414total; original727k data/modes/objective unchanged.
 Restore model+AdamW from22707; LR continues saved final value and cosine decays10x, no peak restart. Fresh deterministic RNG/sampler epoch1 explicitly recorded; not bitwise uninterrupted2epoch. Developer2GPU2updates plus3mode eval PASS.
 Global DDP+accumulation loss logging corrected, historical rank0 lastmicrobatch retained separately. New TensorBoard run jepa_epoch2_59748 under existing6006 service.
