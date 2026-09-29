@@ -1,0 +1,87 @@
+{
+  "manifest_sha256": "a1f515534153ccaa720f787f01ea23b9097c174fe25020f756c7d7947eedf98f",
+  "seed": 7,
+  "selection": "outcome-blind hash; 8 distinct scenes per split; no scene overlap",
+  "development": {
+    "stt": [
+      "XB4GS9ShBRE/2",
+      "SByzJLxpRGn/8",
+      "CrMo8WxCyVb/11",
+      "4ok3usBNeis/7",
+      "VLzqgDo317F/89",
+      "7MXmsvcQjpJ/6",
+      "auFeVz9Go4m/10",
+      "3t8DB4Uzvkt/20"
+    ],
+    "dt": [
+      "XB4GS9ShBRE/2",
+      "SByzJLxpRGn/8",
+      "CrMo8WxCyVb/11",
+      "4ok3usBNeis/7",
+      "VLzqgDo317F/89",
+      "7MXmsvcQjpJ/6",
+      "auFeVz9Go4m/10",
+      "3t8DB4Uzvkt/20"
+    ],
+    "at": [
+      "XB4GS9ShBRE/2",
+      "SByzJLxpRGn/8",
+      "CrMo8WxCyVb/11",
+      "4ok3usBNeis/7",
+      "VLzqgDo317F/89",
+      "7MXmsvcQjpJ/6",
+      "auFeVz9Go4m/10",
+      "3t8DB4Uzvkt/20"
+    ]
+  },
+  "confirmation": {
+    "stt": [
+      "p53SfW6mjZe/4",
+      "cvZr5TUy5C5/3",
+      "GLAQ4DNUx5U/20",
+      "QaLdnwvtxbs/0",
+      "SUHsP6z2gcJ/13",
+      "qyAac8rV8Zk/9",
+      "7GAhQPFzMot/3",
+      "JmbYfDe2QKZ/10"
+    ],
+    "dt": [
+      "p53SfW6mjZe/4",
+      "cvZr5TUy5C5/3",
+      "GLAQ4DNUx5U/20",
+      "QaLdnwvtxbs/0",
+      "SUHsP6z2gcJ/13",
+      "qyAac8rV8Zk/9",
+      "7GAhQPFzMot/3",
+      "JmbYfDe2QKZ/10"
+    ],
+    "at": [
+      "p53SfW6mjZe/4",
+      "cvZr5TUy5C5/3",
+      "GLAQ4DNUx5U/20",
+      "QaLdnwvtxbs/0",
+      "SUHsP6z2gcJ/13",
+      "qyAac8rV8Zk/9",
+      "7GAhQPFzMot/3",
+      "JmbYfDe2QKZ/10"
+    ]
+  },
+  "variants": [
+    "image_random",
+    "mixed_random",
+    "image_zero",
+    "mixed_zero"
+  ],
+  "majority_gate": {
+    "SR_min_percent": 80,
+    "require_each_task": true,
+    "report_CR_always": true
+  },
+  "limitations": [
+    "ideal simulator UWB matches training; not real UWB",
+    "development reused for debugging; confirmation untouched until candidate fixed",
+    "diagnostic samples must not enter training",
+    "no final-test claim; current complete image benchmark already uses validation split",
+    "invalid first bbox retained as failure even with UWB for controlled input ablation"
+  ]
+}

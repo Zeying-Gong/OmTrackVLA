@@ -39,8 +39,8 @@ class JointRobotModel(nn.Module):
         return torch.cat(parts).reshape(*shape,256,384)
     def make_conditions(self,batch,mode_ids):
         return dict(visual=self.encode(batch['rgb']),template=self.encode(batch['template']),
-                    template_valid=mode_ids!=1,polar=batch['polar'],uwb_valid=mode_ids!=0,
-                    age_s=torch.zeros_like(batch['polar'][:,0]),times=batch['times'])
+                    template_valid=batch.get('template_valid',mode_ids!=1),polar=batch['polar'],uwb_valid=mode_ids!=0,
+                    age_s=batch.get('uwb_age_s',torch.zeros_like(batch['polar'][:,0])),times=batch['times'])
     def forward(self,batch,mode_ids,world_weight=.1):
         from md_wla.models.action.flow import sample_flow_training_pair
         cond=self.make_conditions(batch,mode_ids);taps,query=self.policy.conditions(cond)
