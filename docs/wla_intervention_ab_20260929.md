@@ -124,3 +124,9 @@ Real complete paired videos3cases(2regressions/1gain),6videos,framecounts exactl
 Dashboard18784 now includes A2 actual updates alongside original A/B and completed diagnostic. Training success/loss does not establish improvement.
 
 01:12China: A2 actual275/3114formal optimizer updates verified; no efficacy result yet.
+
+## 2026-09-30 01:41 A2 complete and paired diagnostic
+A2 training59752/70614 SUCCEEDED01:30:56,3114updates/2epochs. Final checkpoint SHA256bcd922e71685b626c65f234d288c178b18e4746a16c532829ff50a7ff92d30c7;frozen condition hashd1655a635e399f14601477ae29f6463a18246f28d6fca54091edcdb69b4e7e95. Saved checkpoint reloaded;LoRA/metaquery/target_head tensors all bitwise match original baseline.
+A2 diagnostic59767/70629 RUNNING4A800,created01:40:07;new36full candidate rollouts,original59741baseline36 reused after result/model hash checks. Output /data/nas_ray/project/md-ak/users/zeying.gong/job_59767/task_70629/wla_a2_development_diagnostic .
+New package intervention_diagnostic_a2_20260930/full_a800.yaml;sourceSHA8dcd51bf350556ad04211dda0581f6c71c124fe0034ea66c3b0cd4e61bd4c3f0. Same fixed36/seed7/FP32/identity protocol,initialRGB matched again after run. Three16-step real simulator checks PASS before formal submission, not efficacy results. Comparison now flags TRmacro regressions as well as success/collision; old report preserved.
+Confirmation36 untouched. B full inversion continues (at least1604recorded/1599passing); full quality gate pending. Dashboard18784 includes separate A2 diagnostic36 counter/rolling ETA. Await paired result before claims or further adjustments.
