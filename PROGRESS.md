@@ -4,7 +4,9 @@ not visible on Baoding worker. No optimizer steps or trained checkpoint.
 Independent checkout on A800 persistent NAS; branch `wa`.
 Added ResNet18 prompt/temporal baseline, data adapter and two DDP launchers.
 Seven tests and real-data CPU/Gloo checks passed; GPU/Thor remain UNVERIFIED.
-Preparing Beijing A800 retry: 1 GPU, batch32, same full epoch and source 4a73fbd6.
+2026-09-29 14:12 +08:00: retry Job59519 Task70376 on baidu_bj_4090, 8 GPUs.
+Scheduler RUNNING; optimizer steps not yet verified. Source4a73fbd6 config170e71e9.
+A800 retry configuration was superseded before submission; no duplicate job.
 Effective batch/lr/objectives unchanged; per-rank RNG and GPU numerics may differ.
 External 8xH100 uses the same tools; no access to that machine is assumed.
 All 10,660 episode first-frame identities/timebases passed; checkpoint inference passed.

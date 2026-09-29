@@ -4,7 +4,7 @@
   "task_id": 69896,
   "status": "FAILED",
   "failure": "2026-09-29 10:55:16 +08:00: Baoding worker could not see source_full_v1; training never started",
-  "retry_configuration": "wa/jobs/full_bj_a800_retry1.yaml",
+  "retry_configuration": "wa/jobs/full_bj_4090_retry1.yaml",
   "cluster": "baidu_bd_a800",
   "requested_gpus": 8,
   "actual_gpu_model": "UNVERIFIED_PENDING_WORKER",
