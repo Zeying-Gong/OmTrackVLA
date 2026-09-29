@@ -1,0 +1,18 @@
+config_version: 1
+cluster: baidu_4090
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 8
+log_folder: wm_dino_robot_v1
+tasks:
+  - name: wm_dino_robot_full_epoch_v1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 8
+    timeout: 172800
+    cmd: |
+      set -euo pipefail
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_robot_world_v1
+      test "$(git rev-parse HEAD)" = ab3ed46d767c832e371e77c5d2d588b741f6efc0
+      test -z "$(git status --porcelain)"
+      export WA_WORLD_KIND=dino
+      bash wa/scripts/train_world_managed.sh
