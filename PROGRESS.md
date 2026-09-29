@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-30 05:50+08 epoch2 mixed59826/70688 COMPLETE_GATE_FAILED:14/24 vs epoch1 16/24; STT/DT/AT SR75/62.5/37.5%; CR25/12.5/12.5%; invalid0; initialRGB equal. Original controller and ideal simulated UWB; no text. No third epoch.
+Training59791 still RUNNING offline validation; training45414steps/2epochs complete. Confirmation24 untouched. Checkpoint2 not adopted as improved.
+Read-only label coverage audit: train726631 first-waypoint reverse13.556%; any reverse15.866%; final yaw>20deg52.168%; heldout73368 corresponding14.082/16.690/54.105%. Turning/reverse labels are plentiful; no evidence for an absent-turn-label explanation. Timing/control and failure-state coverage still under diagnosis.
 2026-09-30 05:35+08 checkpoint59791 verified45414steps/2epochs;sha39d47f885d303d491f4b97d36044f60def8f25af04ad5bf6ad07f95c85fcf728. Offline3mode validation stillrunning, no metrics yet.
 Mixed24 epoch2 eval59826/70688 RUNNING2A800; source9a8534a0 config75654321; lockednewhash/step; samefixedplan/seed/zero decoder/originallearnedguard and baseline59726. No confirmation set or third epoch used.
 2026-09-30 02:57+08 A800 epoch2 replacement59791/70653 RUNNING8A800; source9a8534a0 config634bb657. Original4090 job59748 STOPPED before launch after2hGPU/CPU queue. No duplicate/no crossNAS; same recipe and software; GPU arithmetic may differ.
