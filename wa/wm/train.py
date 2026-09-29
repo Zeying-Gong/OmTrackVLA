@@ -48,7 +48,11 @@ def main():
     if not a.diagnostic and world!=8:raise ValueError('full recipe requires8 ranks')
     torch.cuda.set_device(local);device=torch.device('cuda',local)
     if a.lane=='external-h100' and (world!=8 or not all('H100' in torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count()))):raise ValueError('external lane requires8H100')
-    if world>1:dist.init_process_group('nccl')
+    # Ray TorchTrainer initializes NCCL before invoking this entry point.
+    # Standalone torchrun still needs initialization here.
+    if world>1 and not dist.is_initialized():dist.init_process_group('nccl')
+    if world>1 and (dist.get_world_size()!=world or dist.get_rank()!=rank):
+        raise ValueError('launcher/process-group rank mismatch')
     random.seed(a.seed);np.random.seed(a.seed);torch.manual_seed(a.seed);torch.set_num_threads(2)
     os.environ['MD_WLA_ACTION_ACTIVATION_CHECKPOINTING']='1'
     output=Path(a.output)

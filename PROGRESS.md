@@ -1,4 +1,12 @@
 # WA-Mobile progress
+2026-09-29: user authorized8H100 JEPA only. H100 NAS migration actively in progress, not training.
+Copied source/dependencies/audit indices; streaming10660episodes/1050874files and original checkpoints.
+Direct inter-devpod SSH denied; local stream relay has low throughput. No credentials copied.
+H100 isolated torch2.7/cu128+timm1.0.30 environment created; final data/model checks pending.
+Ray preinitialized NCCL guard added;13 regression tests PASS on developer. DINO59568 STOPPED.
+2026-09-29: user selected JEPA-WM only; DINO Job59568 stop request accepted.
+H100 live platform reports26 free GPUs; expected WA dataset cache absent on Alibaba NAS.
+Retain JEPA Job59566 while checking migration; no H100 submission and no duplicate run.
 2026-09-29 16:45+08:00: both formal Pods Pending; no optimizer steps yet.
 K8s FailedScheduling: insufficient CPU/full8GPU placement. Platform requests56CPU/472GiB.
 Keep queued; no duplicate jobs or platform changes. This is scheduling wait, not training failure.

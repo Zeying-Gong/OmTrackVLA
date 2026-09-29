@@ -1,19 +1,22 @@
 # WA-Mobile current task
-Status: SUBMITTED; full JEPA-WM and DINO-WM robot-domain training authorized and dispatched.
-JEPA Job59566 Task70423; DINO Job59568 Task70425; each8RTX4090 on baidu_bj_4090.
-Source frozen atab3ed46d; configurations pinned in0ace1c0c. Worker training evidence pending.
-Queue diagnosis: both Pods Pending; eligible nodes lack CPU or a full8GPU placement.
-Current platform8RTX4090 profile requests56CPU/472GiB; no task-level CPU override found.
-Leave tasks queued. No duplicate submission, cancellation or platform-template modification.
-Complete provenance/output paths: wa/jobs/wm_robot_v1_run.json.
-WLA-compatible WA retains64 MetaQueries, original7x4 SE2 ActionExpert and target head.
-USS-inspired image/BBox target fusion + UWB polar; no Qwen/text at deployment.
-Official world interiors retained; robot command/dt and prior-command interfaces trained.
-Full data audit:726631 train /73368 heldout; no parse errors; original scene split preserved.
-Abnormal transitions excluded; original data and superseded audit retained.
-13 tests and both2A800 real-data optimizer/NCCL diagnostics passed; peak8.67/8.23GiB.
-Recipe: wa/wm/ROBOT_TRAINING.md;1epoch22707 updates; batch2x8xaccum2=32; world weight0.1.
-New source/dependency snapshots on Beijing NAS; no cross-NAS migration.
-External8H100 full launcher and portable result exchange instructions published.
-Next: verify worker/NAS optimizer logs then completed checkpoints and full offline metrics.
-Model effectiveness, closed-loop SR/CR and Thor/RDK latency remain UNVERIFIED.
+Status: PARTIAL / H100_MIGRATION_IN_PROGRESS. User authorized JEPA-WM only on8H100.
+DINO Job59568 Task70425 verified STOPPED on2026-09-29; outputs retained.
+JEPA Job59566 Task70423 remains SUBMITTED on8RTX4090 until H100 ready; avoid duplicate training.
+Target: aliyun_sh_h100 using verified platform KubeRay/TorchTrainer capability, not Baidu shell/K8s.
+Central resource snapshot:26 free H100. This is not guaranteed8GPU node placement.
+Legacy aliyun Ray Dashboard DNS failed; current central jobs/list works; KubeRay needs final validation.
+Alibaba root: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928.
+Source/dependency/index migration completed; dataset and checkpoints are still being transferred.
+Exact data inventory:10660episodes /1050874files; original scene split preserved.
+Dataset target: data_migration_v1; use data-root/source-prefix mapping, never edit original manifest.
+Checkpoint target: pretrained_migration_v1; hashes must match before training.
+Direct devpod-to-devpod SSH denied; authorized local SSH stream relay used, no local dataset copy.
+H100 isolated h100_env: torch2.7.0+cu128 / torchvision0.22.0 / timm1.0.30.
+Baidu verified environment uses torch2.8; H100 full import/model/data checks still required.
+Ray initialization guard added to wa/wm/train.py;13 developer regression tests PASS.
+Source baseline ab3ed46d; new guard must be committed and frozen for H100 before submission.
+Architecture unchanged: official JEPA dynamics;64 MetaQueries; original7x4 ActionExpert; USS polar goals.
+Recipe unchanged:726631 train /73368 heldout;1epoch22707updates;batch2x8xaccum2;worldweight0.1.
+No H100 formal job submitted. No H100 optimizer-step evidence. Training effectiveness UNVERIFIED.
+Next: finish/check transfer hashes; freeze source; validate KubeRay config/env; submit full8H100 only.
+After successful H100 submission cancel old JEPA queue and register IDs/config/output evidence.
