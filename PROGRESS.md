@@ -1,4 +1,7 @@
 # WA-Mobile progress
+2026-09-29 16:40/16:41 +08:00: JEPA Job59566 Task70423 and DINO Job59568 Task70425 SUBMITTED.
+Each8RTX4090 on baidu_bj_4090; sourceab3ed46d; full22707 updates plus three-mode heldout.
+wa/jobs/wm_robot_v1_run.json records config hashes and NAS paths; optimizer evidence pending.
 2026-09-29: READY_TO_SUBMIT official JEPA/DINO full robot-domain experiments.
 Action recording order and control saturation verified; actual-dt command adapters added.
 Full v2 audit retains726631 train/73368 heldout; abnormal transitions excluded and recorded.

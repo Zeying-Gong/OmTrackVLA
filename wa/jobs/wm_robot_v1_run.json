@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "status": "SUBMITTED",
+  "source_commit": "ab3ed46d767c832e371e77c5d2d588b741f6efc0",
+  "config_commit": "0ace1c0c",
+  "source": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_robot_world_v1",
+  "cluster": "baidu_bj_4090",
+  "gpu_model_requested": "RTX4090",
+  "gpus_per_task": 8,
+  "image": "x5-builder:cuda12.8-isaac5.0.0-v2.test1",
+  "epochs": 1,
+  "effective_batch": 32,
+  "expected_steps": 22707,
+  "cache": "/data/nas_ray/home/zeying.gong/datasets/wla_evt_se2_cache_20260925_v2",
+  "index": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/robot_transition_audit_v2",
+  "index_audit_sha256": "3138364dea80543fc83be476e1af8191a4eca3711a9b353591311fc8daf5c2d3",
+  "train_windows": 726631,
+  "heldout_windows_per_mode": 73368,
+  "wla_checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_58346/task_69086/wla_teacher_train/training/checkpoints/step-0043203.pt",
+  "wla_checkpoint_sha256": "0b8f036fd282474d8c9efe9e34e1f4dc56b9282c44295bcda1f16edcf48460e1",
+  "world_weights": "models/jepa_wms/mz_{jepa,dino}-wm.pth.tar; hashes pinned in wa/wm/loaders.py",
+  "jobs": [
+    {
+      "experiment_id": "WM_JEPA_ROBOT_V1",
+      "kind": "jepa",
+      "job_id": 59566,
+      "task_id": 70423,
+      "submitted_at": "2026-09-29T16:40:22+08:00",
+      "config": "wa/jobs/wm_jepa_robot_v1.yaml",
+      "config_sha256": "735d973184ce6125195469b87e4c35fac22b96bdfb2cfdfc6699272b54ba3796",
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_59566/task_70423/wm_jepa_robot_v1",
+      "command": "WA_WORLD_KIND=jepa bash wa/scripts/train_world_managed.sh"
+    },
+    {
+      "experiment_id": "WM_DINO_ROBOT_V1",
+      "kind": "dino",
+      "job_id": 59568,
+      "task_id": 70425,
+      "submitted_at": "2026-09-29T16:41:35+08:00",
+      "config": "wa/jobs/wm_dino_robot_v1.yaml",
+      "config_sha256": "658ecc070f4bdf1c9e8e07ea14cae77a8ebeadb202518fba8120fb8fbc00e47c",
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_59568/task_70425/wm_dino_robot_v1",
+      "command": "WA_WORLD_KIND=dino bash wa/scripts/train_world_managed.sh"
+    }
+  ],
+  "verification": "Both scheduler tasks allocated requested8 GPUs in baidu_bj_4090; K8s job creation logged. Worker optimizer evidence pending.",
+  "acceptance": "Complete22707 updates and three-mode73368-window offline metrics plus checkpoint; closed-loop SR/CR and Thor latency not included or claimed."
+}

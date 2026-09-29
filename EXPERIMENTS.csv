@@ -1,4 +1,6 @@
 experiment_id,date,status,scope,artifact,notes
+WM_JEPA_ROBOT_V1,2026-09-29,SUBMITTED,8RTX4090 full1epoch22707updates,/data/nas_ray/project/md-ak/users/zeying.gong/job_59566/task_70423/wm_jepa_robot_v1,Job59566 Task70423;16:40+08;sourceab3ed46d;config735d9731;metadata wa/jobs/wm_robot_v1_run.json
+WM_DINO_ROBOT_V1,2026-09-29,SUBMITTED,8RTX4090 full1epoch22707updates,/data/nas_ray/project/md-ak/users/zeying.gong/job_59568/task_70425/wm_dino_robot_v1,Job59568 Task70425;16:41+08;sourceab3ed46d;config658ecc07;metadata wa/jobs/wm_robot_v1_run.json
 robot_transition_audit_v1,2026-09-29,SUPERSEDED,full raw action audit,../artifacts/robot_transition_audit_v1/audit.json,pre-saturation command rejection was too strict; all evidence retained
 robot_transition_audit_v2,2026-09-29,PASS,all original train and heldout episodes,wa/results/robot_transition_audit_v2.json,actual clipped commands;726631 train73368 heldout; scene-disjoint; raw hashes
 jepa_robot_ddp_v1,2026-09-29,DIAGNOSTIC_PASS,2 developer A800 ranks two optimizer updates,wa/results/jepa_robot_ddp_v1/metrics.json,real robot commands and RGB; NCCL;8.67GiB; not effectiveness evaluation

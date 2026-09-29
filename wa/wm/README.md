@@ -1,4 +1,7 @@
 # WLA-compatible world-action integration (PARTIAL)
+Update2026-09-29: robot-domain training is now implemented and full jobs submitted.
+See ROBOT_TRAINING.md and ../jobs/wm_robot_v1_run.json. The probe-only limitations
+below describe the earlier integration milestone, not the new training entrypoint.
 
 This is the user-selected third design, not the older `wa/model.py` ResNet policy.
 No Qwen or text encoder is instantiated. JEPA-WM is primary; Meta's official
