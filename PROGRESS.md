@@ -1,4 +1,8 @@
 # WA-Mobile progress
+2026-09-30 00:48+08 epoch2 continuation59748/70610 SUBMITTED8RTX4090; source9a8534a0 config1b939978; output job_59748/task_70610/wm_jepa_epoch2_v1.1additionalepoch to45414total; original727k data/modes/objective unchanged.
+Restore model+AdamW from22707; LR continues saved final value and cosine decays10x, no peak restart. Fresh deterministic RNG/sampler epoch1 explicitly recorded; not bitwise uninterrupted2epoch. Developer2GPU2updates plus3mode eval PASS.
+Global DDP+accumulation loss logging corrected, historical rank0 lastmicrobatch retained separately. New TensorBoard run jepa_epoch2_59748 under existing6006 service.
+Controller59737 complete24 initialRGB matched: STT62.5/DT62.5/AT50%SR vs87.5/75/37.5%; total14vs16; STTCR25vs12.5. Hypothesis REJECTED, don't deploy UWB heading override. Results wa/results/uwb_control_59737.json.
 2026-09-30 00:26+08 controller hypothesis59737/70599 RUNNING2A800; source912db155 configf0fc1e2e. Same24 mixed_zero: measuredUWB range guard and far-heading blend>=.5; hypothesis not proven; weights unchanged.8unit tests PASS.
 Paired96 Job59726 SUCCEEDED00:17; initialRGB all equal; image_random8 mixed_random14 image_zero7 mixed_zero16 successes of24. Mixed_zero STT7/8 DT6/8 AT3/8; CR1/8 eachtask. Gate unmet.
 Failure traces: AT lost with UWB range>5m bearing~.42rad yet predictedyaw~0 and original guard heading_blend0 above3m. Near collision repeated same scene with range<.7m despite retreat, not solved by heading hypothesis. No realUWB validation or final generalization claim.

@@ -16,7 +16,9 @@ Confirmed old closed-loop mode0/polarzero wrongly omits requested UWB; mixed int
 Also offline zero vs closed-loop Gaussian initial flow state mismatch; causal role unverified.
 Paired96 COMPLETE59726: image_random8/24 mixed_random14/24 image_zero7/24 mixed_zero16/24 successes; initialRGB pairs equal.
 Mixed_zero taskSR STT87.5% DT75% AT37.5%; CR12.5% each. Gate unmet. No checkpoint extension yet.
-Next controller hypothesis Job59737/70599 RUNNING2A800; source912db155 configf0fc1e2e; same24mixed_zero episodes/weights. Inspect result before deciding retrain.
+Controller59737/70599 SUCCEEDED but REJECTED:14/24vs16/24, STT collisions increased. Use original learned_target_guard_v3.
+Epoch2 continuation59748/70610 SUBMITTED8RTX4090; source9a8534a0 config1b939978. Parent59566 step22707; one additional full epoch to45414, no more.
+Read wa/wm/EPOCH2_CONTINUATION.md. When NEW checkpoint exists, verify complete/hash then evaluate fixed24 mixed_zero with original controller; don't accidentally use old checkpoint. No duplicate train job.
 Plan wa/wm/mixed_diagnostic_plan_v1.json outcome-blind selection; separate24 confirmation episodes.
 Sensor ideal_simulated_uwb matches training axes/time; no text/future/GT path fed to policy.
 Developer10unit tests + actual mixed checkpoint2calls + actual worker-cwd imports PASS. Dependencies hash PASS.
