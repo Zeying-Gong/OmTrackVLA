@@ -1,0 +1,33 @@
+config_version: 1
+cluster: baidu_a800
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 2
+log_folder: wa_lightnav_review_v1
+tasks:
+  - name: wa_lightnav_complete48_review_v1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 2
+    timeout: 14400
+    cmd: |
+      set -euo pipefail
+      ROOT=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928
+      BENCH=/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924
+      WLA=/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925
+      cd "$ROOT/source_paired_review_v1"
+      test "$(git rev-parse HEAD)" = 7cb2a1a62a5b4cca95293dfcb05bef3f174c421a
+      test -z "$(git status --porcelain)"
+      export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+      export TOKENIZERS_PARALLELISM=false OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2
+      export TRACKVLA_SAVE_VIDEO=0 SAVE_VIDEO=0 TRACKVLA_VERBOSE_STEPS=0 TRACKVLA_LIVE_FRAME_INTERVAL=10
+      export HABITAT_SIM_LOG=quiet MAGNUM_LOG=quiet
+      export WA_REVIEW_VIDEO=1 WA_DIAG_OBSERVER_STATE=1 WA_DIAG_VARIANTS=mixed_zero WA_DIAG_CONTROLLER=learned_target_guard_v3
+      export WA_DIAG_BASELINE=/data/nas_ray/project/md-ak/users/zeying.gong/job_59842/task_70704/wa_observer_v1
+      export WA_DIAG_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_59791/task_70653/wm_jepa_epoch2_a800_v1/checkpoint.pt
+      "$ROOT/probe_env/bin/python" -c 'import os; from wa.wm.loaders import sha; assert sha(os.environ["WA_DIAG_CHECKPOINT"])=="39d47f885d303d491f4b97d36044f60def8f25af04ad5bf6ad07f95c85fcf728"'
+      (cd "$WLA" && sha256sum -c lightnav_transport_20260927/source.sha256 && sha256sum -c evt_text_action_v3/benchmark_protocol.sha256)
+      OUTPUT_ROOT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_lightnav_review_v1"
+      mkdir "$OUTPUT_ROOT"
+      bash wa/scripts/eval_diagnostic.sh "$OUTPUT_ROOT/wa"
+      source "$BENCH/scripts/runtime/install_xvfb_bundle.sh" "$BENCH/artifacts/xvfb_bundle"
+      PYTHONPATH="$PWD" "$ROOT/probe_env/bin/python" -u -m wa.wm.reference_review_launch "$OUTPUT_ROOT/lightnav"
