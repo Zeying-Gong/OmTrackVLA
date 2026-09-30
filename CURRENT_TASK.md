@@ -1,6 +1,7 @@
 # WA-Mobile current task
 
-Paired review59846/70708 RUNNING2A800 since08:36:31; complete WA24+LightNav24 with observer-only front/third MP4 and action/pose JSONL. Frozen source7cb2a1a6 confige7ae8924; output job_59846/task_70708/wa_lightnav_review_v1. Do not duplicate; next validate48video/trace outcomes and initial hashes then quantify successful evasive/turn behaviors and show user clips. No new training.
+Paired review59846/70708 SUCCEEDED08:53:33;48video completion records;24initialRGBmatches. WA14/24 LightNav17/24. Videos and steps under job_59846/task_70708/wa_lightnav_review_v1. No new training; do not duplicate.
+Behavior stats artifact paired_review_stats_59846.json. Focus VLzqgDo317F/89: LightNav succeeds3tasks while WA fails3; LightNav less reverse/lateral, body bearing stays within0.35rad; WA approaches too close then fails recovery. Descriptive not causal; different controllers/modalities. LightNav DTauFeVz9Go4m/10 changed Collision->Normal from historical run; variability unresolved.
 User clarification: retreat to preserve distance AND lateral yielding; accelerate turning near visual edge to retain target. Use actual LightNav/TrackVLA EVT-Bench actuator constraints; do not ask user to restate them.
 Priority next: complete paired24 LightNav action/video recording versus WA; historical58433 LightNav16/24 vs WA14/24 initialRGB24matched. VLzqgDo317F/89 succeeds LightNav all3 and fails WAall3; XB4GS9ShBRE/2 collides bothall3. No old action traces/video found; do not infer successful maneuvers from outcome alone. Inputs differ (LightNavRGB+text vs WA mixed no text).
 Observer diagnostic59842/70704 SUCCEEDED07:31:39; all24 outcomes match59826 (14success); initialRGBmatch. Actual telemetry available offline only; do not rerun.
