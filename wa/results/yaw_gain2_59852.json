@@ -1,0 +1,34 @@
+{
+  "status": "COMPLETE_PAIRED_DEVELOPMENT_DIAGNOSTIC",
+  "episodes": 24,
+  "results": {
+    "mixed_zero": {
+      "stt": {
+        "n": 8,
+        "SR": 75.0,
+        "CR": 12.5,
+        "macro_TR": 86.178501520354,
+        "invalid": 0
+      },
+      "dt": {
+        "n": 8,
+        "SR": 62.5,
+        "CR": 12.5,
+        "macro_TR": 70.28399447690765,
+        "invalid": 0
+      },
+      "at": {
+        "n": 8,
+        "SR": 62.5,
+        "CR": 12.5,
+        "macro_TR": 84.01683571953168,
+        "invalid": 0
+      }
+    }
+  },
+  "initial_rgb_pairs_equal": true,
+  "baseline": "/data/nas_ray/project/md-ak/users/zeying.gong/job_59842/task_70704/wa_observer_v1",
+  "controller": "yaw_gain2_v1",
+  "uwb": "ideal_simulated_uwb",
+  "real_uwb_verified": false
+}
