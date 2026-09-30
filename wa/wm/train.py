@@ -21,6 +21,7 @@ def arguments():
     p.add_argument('--data-root');p.add_argument('--source-prefix')
     p.add_argument('--resume');p.add_argument('--resume-sha256')
     p.add_argument('--completed-epochs',type=int,default=0)
+    p.add_argument('--history-repeat-probability',type=float,default=0.)
     return p.parse_args()
 
 def moved(batch,device):return {k:v.to(device,non_blocking=True) for k,v in batch.items()}
@@ -45,6 +46,7 @@ def evaluate(model,data,batch_size,device,rank,world):
 def main():
     a=arguments()
     if min(a.batch_size,a.accumulation,a.epochs)<1 or not math.isfinite(a.world_weight) or a.world_weight<=0:raise ValueError('invalid training configuration')
+    if not math.isfinite(a.history_repeat_probability) or not 0<=a.history_repeat_probability<=1:raise ValueError('invalid history repeat probability')
     if a.diagnostic and os.environ.get('MD_AK_JOB_ID'):raise ValueError('developer diagnostic forbidden in formal cluster job')
     if bool(a.resume)!=bool(a.completed_epochs) or a.completed_epochs<0 or a.completed_epochs+a.epochs>2:raise ValueError('explicit epoch provenance and maximum2 epochs required')
     if a.resume and (not a.resume_sha256 or sha(a.resume)!=a.resume_sha256):raise ValueError('resume hash mismatch')
@@ -97,11 +99,14 @@ def main():
     # Random streams diverge after identical model initialization/DDP synchronization.
     torch.manual_seed(a.seed+rank+10000*a.completed_epochs)
     start=time.monotonic();step=resume_step;phase_steps=math.ceil(len(loader)/a.accumulation)*a.epochs;total_steps=resume_step+phase_steps
+    from wa.wm.history_augmentation import repeat_current_history
+    history_rng=torch.Generator(device=device).manual_seed(a.seed+rank+7919)
     for epoch in range(a.epochs):
         sampler.set_epoch(epoch+a.completed_epochs);wrapped.train();optimizer.zero_grad(set_to_none=True)
         group_log=torch.zeros(4,device=device)
         for i,batch in enumerate(loader):
             batch=moved(batch,device);modes=torch.randint(0,3,(len(batch['pose']),),device=device)
+            batch=repeat_current_history(batch,a.history_repeat_probability,history_rng)
             group_start=i//a.accumulation*a.accumulation
             group_count=min(a.accumulation,len(loader)-group_start)
             sync=(i+1)%a.accumulation==0 or i+1==len(loader)
