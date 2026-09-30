@@ -7,6 +7,9 @@ from wa.wm.diagnostic_agent import DiagnosticAgent
 from evt_full_20260926.common import BENCH,SCENES,sha,scene
 
 def main():
+    if __import__('os').environ.get('WA_REVIEW_VIDEO')=='1':
+        from wa.wm.review_recorder import install
+        install()
     p=argparse.ArgumentParser()
     for k in ('manifest','plan','ready','output'):p.add_argument('--'+k,required=True)
     p.add_argument('--shard',type=int,choices=[0,1],required=True)
