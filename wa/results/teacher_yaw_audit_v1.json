@@ -1,0 +1,25 @@
+{
+  "protocol": "same64 hash-selected episodes per split; oracle cached pose yaw decoded before target guard; differs in objective from instant expert action, not necessarily bug",
+  "splits": {
+    "train": {
+      "n": 4800,
+      "teacher_command_vs_oracle_decoded_MAE": 0.10380598183352156,
+      "teacher_command_vs_observed_step_MAE": 7.55546239870649e-07,
+      "sharp_command_n": 952,
+      "sharp_median_abs_teacher": 0.9176989519454279,
+      "sharp_median_abs_decoded": 0.6871994209896738,
+      "sharp_decoded_less_than_half_fraction": 0.16806722689075632,
+      "sharp_decoded_opposite_fraction": 0.005252100840336135
+    },
+    "heldout": {
+      "n": 4200,
+      "teacher_command_vs_oracle_decoded_MAE": 0.10598433393479526,
+      "teacher_command_vs_observed_step_MAE": 8.196156698540817e-07,
+      "sharp_command_n": 976,
+      "sharp_median_abs_teacher": 0.918677329112163,
+      "sharp_median_abs_decoded": 0.7288870310327815,
+      "sharp_decoded_less_than_half_fraction": 0.1403688524590164,
+      "sharp_decoded_opposite_fraction": 0.005122950819672131
+    }
+  }
+}
