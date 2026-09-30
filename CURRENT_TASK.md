@@ -1,5 +1,6 @@
 # WA-Mobile current task
 
+LATEST10:23: uniformyawgain2 NOT_ADOPTED due pairedregressions and elevatedcommandoscillation (STTregressed flips0->6.29/100steps). Keeporiginalguard; defer independentconfirmation, no gain sweep/epoch3. Next data/model-control diagnosis; details wa/results/yaw_oscillation_59852.json. Supersedes pending-confirmation notes below.
 LATEST yawgain2 59852/70714 COMPLETE09:55:56;16/24vs14 baseline;collisions3vs4;4wins2losses;SR75/62.5/62.5;gateunmet. Candidate not adopted; originalcontroller default. Next oscillation analysis and independent paired confirmation; no new training or gain sweep. Older RUNNING entry below superseded.
 Yawgain2 diagnostic59852/70714 RUNNING2A80009:48:18; frozene7769b48 configb0447514; full24 mixedzero epoch2weights. Only finalnormalizedyaw doubled/clipped; unchangedtranslation/rangeguard/modelinputs. Hypothesis test not adoptedfix/unitcorrection. Compare14/24baseline with SR/CR/oscillation; videoson. Do notduplicate or launch new training before result.
 Paired review59846/70708 SUCCEEDED08:53:33;48video completion records;24initialRGBmatches. WA14/24 LightNav17/24. Videos and steps under job_59846/task_70708/wa_lightnav_review_v1. No new training; do not duplicate.
