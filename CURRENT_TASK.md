@@ -1,13 +1,11 @@
 # Current task
-Updated: 2026-09-30
+Updated: 2026-10-01
 Status: WLA_INTERVENTION_AB_TRAINING / DA3_RETIRED
-
 ## Decision
 - Adopt WLA as the primary tracking route.
 - DA3 collection, training and evaluation are retired. Earlier conditional retraining authorizations are superseded.
 - Do not submit, restart or automatically resume DA3 jobs without a new explicit user instruction.
 - Preserve all NAS data, checkpoints, logs and failure evidence.
-
 ## Current WLA work
 - User permits WLA architecture changes and references to LightNav/USS. WLA remains the research route.
 - Authorized16pairs/32complete rollouts: Job58925/Task69692 SUCCEEDED on4A800;32videos verified.
@@ -23,58 +21,43 @@ Status: WLA_INTERVENTION_AB_TRAINING / DA3_RETIRED
 - [Development evidence and exact collection recipe](docs/wla_target_memory_development.md).
 - Review: http://127.0.0.1:18781 ; tunnel: ssh -N -L 18781:127.0.0.1:18781 nas-a800
 - Plan: [architecture and review](docs/wla_tracking_improvement_plan.md).
-
 ## Outstanding work
 - DA3 Job58613 / Task69363 verified STOPPED at 2026-09-28 19:06:21 Asia/Shanghai after user reauthentication.
 - The19:06all-cluster check found no active/queued DA3 jobs; WLA58638 was RUNNING then.
 - No SUBMITTED, SUBMITTING or SCHEDULED jobs were returned in the all-cluster check.
 - WLA Job58638 scheduler SUCCEEDED; full artifact audit remains pending.
 - GitHub update is authorized for the documentation cleanup. Existing uncommitted experimental source changes remain on NAS.
-
 ## Recording acceptance
 - PASS: scheduler SUCCEEDED2026-09-28 20:03:23; VERIFICATION.json on Baidu NAS.
 - WLA case_02 changed fail-to-success; case_12 changed termination type but remains unsuccessful.
 - Videos are selected diagnostic cases, not benchmark scores or exact historical replays.
-
 ## Retirement acceptance
 - PASS: decision and comparative evidence recorded in docs/tracking_route_decision.md.
 - PASS: current state compacted and prior state preserved under archive/2026-09/da3_retirement/.
 - PASS: scheduler-confirmed DA3 cancellation.
 - PASS: documentation/CSV validation; this change is the authorized GitHub documentation publication.
-
 ## Boundaries
 WLA currently uses text+RGB, whereas DA3 used initial bbox+RGB with UWB missing.
 This selects the current complete system, not a proven backbone-only winner.
 A bbox/UWB WLA interface is separate, unimplemented work.
-
 - 08:29 matched568STT partial: new/baseline SR79.049/79.049%,TR76.372/76.043%,CR8.803/8.099%;initial images/text match. DT/AT pending; no demonstrated SR gain.
-
 User2026-09-29 authorized iterative recovery/return A/B development, formal training and evaluation; A/B may run in parallel after checks. No old59352 restart.
 See [A/B plan and implementation gates](docs/wla_intervention_ab_20260929.md). Job59545/70402 SUCCEEDED;2043/2043 collected and full release/cache audit PASS. A59730/70592 SUCCEEDED00:33:28,full2epochs/3114updates. B59734/70596 RUNNING on4RTX4090;404/404 recorded inversion windows pass. Diagnostic59741/70603 COMPLETE72paired rollouts:AT SR+1/12,STT/DT SRunchanged,DT TRmacro-9.55pp;mixed results. A2 repair59752/70614 COMPLETE3114updates/frozen tensors verified;A2 diagnostic59767/70629 COMPLETE mixed; fixed confirmation59777/70639 RUNNING72 rollouts.
-
 A real dual-GPU updates and A/B serving reset PASS; B inversion24/24PASS (meanADE3.99mm), full B trainer single/dual-GPU PASS; audited data are ready and A formal training has started. No tracking efficacy claim.
-
 2026-09-30 02:03: A2 diagnostic59767/70629 SUCCEEDED,36 matched episodes. AT SR5/12→7/12;STT/DT SRunchanged;DT TRmacro-9.100pp and CR2/12→0. Mixed, not stable improvement; frozen target head did not eliminate DT regression. Fixed A2 reserved confirmation59777/70639 RUNNING4A800: fresh baseline36+A236 complete rollouts, seed7 FP32; no repeated selection on confirmation. B59734 continues full inversion.
-
 2026-09-30 02:27: Confirmation59777/70639 SUCCEEDED02:23:08,72rollouts/36strictpairs. STT baseline/A2 SR83.333/83.333,TRmacro93.892/94.262,CR8.333/8.333;DT SR83.333/66.667,TR78.525/70.931,CR0/0;AT SR58.333/66.667,TR75.169/80.837,CR0/0. Mixed with replicated DT regression; no overall improvement claim. Confirmation is not for further tuning. Latest A2 round1_a package prepared; developer collector verification in progress, NOT submitted. B inversion continues.
-
 2026-09-30 02:41: Latest A2 round1 collection59786/70648 RUNNING4A800,full2043 episodes. Developer completed student-only54actions and separate132action handoff episode:2takeovers/2returns,51teacher windows pass release audit,0fallback. Independent round1_a source SHA256 0ac735b8ea8711a1299090131fdaee94e02f8f1c29f3f3bd67bbe8b3b344d4ee; source immutable during run. B3104 inversion windows/3090pass; no B optimizer or efficacy claim.
-
 2026-09-30 04:35: B59734/70596 FAILED04:21:23 CUDA OOM on24GB4090 during frozen backbone encoding (ranks0/3,22.86GiB allocated). Last progress5504windows/5477pass; optimizer not reached. All partial chunks/logs retained. A800 recovery development check: train5600:5602 had1/2inversion pass, no OOM; expanded contiguous5600:5620 retains failing sample and same95% threshold, currently running; not yet resubmitted. Round1 A59786 remains collecting.
-
 2026-09-30 04:45: B full A800 retry59819/70681 SUBMITTED (not yet running),4A800,unchanged training_source b2501ed49ca9c3169467e7aecf9c2d00f1e8453642e035ef94cb57fa2593e168/config intervention_ab_20260929/train_b_a800.yaml. Full28114 inversion then2epochs,48h. Original4090 failure retained; no partial result reuse. A800 development contiguous train5600:5620 passed19/20;heldout2/2;2actual updates;peak allocated10.161GiB. Earlier2sample failed coverage preserved; expanded check includes same failing sample,95% gate unchanged. Full-run memory/coverage still requires monitoring.
-
 2026-09-30 05:31: B59819/70681 scheduler RUNNING, initializing; no inversion progress or optimizer update yet. A2 round1 completed746/2043 without collection errors.
-
 2026-09-30 10:55: A2 round1 collection59786/70648 SUCCEEDED10:40:14;2043/2043 episodes, RECOVERY_RELEASE_AUDIT_PASS,536 eligible corrections;22666 train/2887 heldout windows. All release/pose/target hashes independently verified; train/heldout scenes disjoint and no final benchmark overlap. Output /data/nas_ray/project/md-ak/users/zeying.gong/job_59786/task_70648/wla_intervention_round1_a_collection; evidence WLA/intervention_ab_20260929/round1_a/COMPLETION_AUDIT.json. B59819/70681 remains RUNNING:7604/28114 inversion windows,7558 passing; optimizer not started. Await full B training, fixed development diagnostic and B round1, then audited union with round0 and normal replay before iterative retraining. Collection completion is not tracking efficacy; confirmation is exhausted and final4215 unused.
-
 2026-09-30 18:41: New A2 scope supersedes independent-query-first: EXISTING MetaQuery predicts current ego-relative ground-plane XY and visibility; invisible position supervision retained. Baseline already supervises log-range/cos/sin bearing; XY alone is not new geometry supervision. Four causal history frames span1.5s; no established persistent target query. Coordinate sign/real checkpoint checks remain pending; NOT TRAINED. See Baidu WLA identity_memory_20260930/SHARED_QUERY_AUDIT.json. B59819/70681 RUNNING,19304/28114 inversion,19175 passing; optimizer not started. Historical A2 action-only/59752 remains distinct; round1_a complete.
-
 2026-09-30 19:23: A2 existing-MetaQuery XY/visibility isolated head passed2 real baseline58346 developer updates on visible+invisible TRAIN windows; query delta2.0027e-5, invisible spatial gradients nonzero, saved query tensors and new auxiliary-head reload outputs exact,12.216GiB peak. No formal training/closed-loop result; no recurrent memory added. Failed attempt before model load (missing replay visibility label) preserved; successful attempt02 sources/checkpoint retained. Full2043 source audit:7035invisible frames,614 beyond1.5s history,max4.912s. Shared round0 train24910 windows:12544 missing visibility,11557 visible,809 invisible; preserve all action/XY rows, mask only missing visibility loss. Simulator lateral-sign/full trainer checks pending. B59819/70681 RUNNING20204/28114 inversion,20071pass,optimizer not started.
-
 2026-09-30 19:58: New A2 existing-MetaQuery XY/visibility formal60058/70920 RUNNING4A800, initialization artifacts verified; optimizer not yet verified. Full24910train/3204heldout,2epochs3114updates,baseline58346,same replay/correction weights and old geometry/action/controller, added .2XY+.1visibility losses; missing visibility masks only that loss. Config WLA/identity_memory_20260930/full_a800.yaml, source manifest414cd2d5509081d9a192b0875ddf5673f20b3fe44771c4d5d9866042017f3239; frozen source immutable. Output /data/nas_ray/project/md-ak/users/zeying.gong/job_60058/task_70920/wla_a2_shared_query_xy_visibility. Single/dual developer2updates,full checkpoint restore/FP32 serving/reset/input exclusion PASS. Recorded simulator direction audit:97.696% screen-left agreement(n29040),99.827% forward-motion agreement(n16195); approximate camera/body references retained, no perfect calibration claim. No long-memory/ReID addition or efficacy claim. After complete: independent fixed36 full paired FP32 diagnostic, reuse59741baseline, launch identity_memory_20260930.eval_server for new checkpoint version; do not reuse exhausted confirmation. B59819 RUNNING21104/28114 inversion,20969pass,optimizer not started.
-
 2026-09-30 20:40: New A2 existing-MetaQuery XY/visibility training60058/70920 SUCCEEDED20:29:18,full3114updates/2epochs; final checkpoint SHA256 59cdfe10fc1efa92ae24568152e2c24baa69a1b91609fc4f823ec625204d713b,version shared_query_xy_visibility_v1; all3204heldout windows evaluated and frozen source checks PASS. Independent fixed36 full FP32 development diagnostic60071/70934 RUNNING4A800,output /data/nas_ray/project/md-ak/users/zeying.gong/job_60071/task_70934/wla_a2_xy_visibility_development_diagnostic; config identity_memory_diagnostic_20260930/full_a800.yaml,source40fcf4e16b4c73b8da1654ca0eb1cd4ff46caa39698fce280f0e3fdb62a94171. Developer3x16steps PASS with48finite XY/visibility predictions and three exact baseline identity/seed/initialRGB matches. Formal full36candidate reuses59741baseline36; samecontroller,finalcheckpoint and originalhistory; per-step auxiliary predictions preserved. No persistent memory/ReID or efficacy claim. Confirmation remains exhausted; final4215 unused. B59819/70681 remainsRUNNING:21904/28114 inversion,21765pass;noiseoptimizer not started.
-
 2026-09-30 21:12: New A2 XY/visibility diagnostic60071/70934 SUCCEEDED20:48:12;36full strict baseline identity/seed/initialRGB pairs. STT baseline/candidate SR91.667/100,TRmacro92.186/94.690,CR0/0; DT SR58.333/58.333,TR76.413/70.611,CR16.667/8.333; AT SR41.667/66.667,TR77.601/81.676,CR16.667/0. Aggregate successes23→27/36,6improvements/2regressions; mixed with DT TR-5.802pp,not stable-generalization evidence. All3214candidate video frames verified;3212recorded auxiliary predictions finite. Original logger drops terminal action records on Lost break:2candidate and2baseline terminal logs missing,explicitly retained; no fabricated values or failure categories. Paired review:9pairs/18complete videos(all success flips+DT TR drops>20pp),HTTP200,framecounts verified at18783/diagnostic_60071/; all36report and traces linked. dt:b6efe... descriptive mean actualdistance3.594m versus predictedXYradius1.607m; pre/post-action alignment differs,not localization MAE or proof of wrong identity. First exact-count audit failure preserved in VIDEO_AUDIT_INITIAL_FAILURE.json. No retuning confirmation/final4215; freeze candidate pending failure review,continue B. B59819/70681 RUNNING22704/28114 inversion,22563pass,optimizer not started.
 2026-09-30 21:36 routine follow-up: B59819 RUNNING23404/28114 inversion,23259pass;optimizer pending. A2 TRAIN_COVERAGE_AUDIT_2135.json audits TRAIN only:809invisible windows carry2.899% original total loss weight;804have a visible observation in the selected4history frames,5have none; all replay visibility labels missing(masked),valid visibility weight50%. Coverage limitation only,not proof of DT failure cause; no model/data/weight change or confirmation use. Candidate/review unchanged.
+
+2026-10-01 01:11: B59819/70681 SUCCEEDED00:52:00; full28114 inversion PASS(train24749/24910,heldout3181/3204); 2epochs50updates; checkpoint SHA913b6b00ae58a1e884a9e07957f13ad2dbb881fb73bc0f9de97b5f4c6bcefd43. Independent cache audit: every index exactly once, finite tensors, original thresholds unchanged. B fixed36 FP32 diagnostic60230/71101 RUNNING4A800; package intervention_diagnostic_b_20261001/full_a800.yaml; source4e4e6f15f1f8ebb4aafd33f872056cf3476e8b4ee8bbb17f291e40025311636a. Developer3x16steps PASS with exact baseline identity/seed/initialRGB. Reuse59741baseline36, full horizons, samecontroller, noGTinput. B efficacy pending; A2 unchanged mixed, confirmation exhausted, final4215 unused.
+
+2026-10-01 01:29: B60230/71101 SUCCEEDED01:20:21;36full strict identity/instruction/seed/initialRGB pairs. Baseline/B STT SR91.667/91.667 TRmacro92.186/91.434 CR0/0; DT SR58.333/58.333 TR76.413/68.787 CR16.667/8.333; AT SR41.667/50 TR77.601/77.254 CR16.667/8.333. Successes23to24/36,mixed with DT_TR-7.626pp,no stable improvement claim;failure categories unannotated. B latest-student round1 full2043 collection60235/71106 RUNNING4A800,output /data/nas_ray/project/md-ak/users/zeying.gong/job_60235/task_71106/wla_intervention_round1_b_collection; config intervention_ab_20260929/round1_b/collection_a800.yaml; source1f1b389f488d4d37a847957c2cfe04c9861744041f4020d11193e085e4237be1. Full TRAIN episode developer check:51student/81teacher actions,2takeovers/2returns,53teacher windows independently audited,0fallback. Preserve original B finalcheckpoint and frozen sources. Full release/cache/scene audit then union round0+historicalA2round1_a+Bround1_b+normalreplay before retraining; no confirmation retuning; final4215 unused.
