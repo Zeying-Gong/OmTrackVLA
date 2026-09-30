@@ -1,5 +1,7 @@
 # WA-Mobile current task
 
+User clarification: retreat to preserve distance AND lateral yielding; accelerate turning near visual edge to retain target. Use actual LightNav/TrackVLA EVT-Bench actuator constraints; do not ask user to restate them.
+Priority next: complete paired24 LightNav action/video recording versus WA; historical58433 LightNav16/24 vs WA14/24 initialRGB24matched. VLzqgDo317F/89 succeeds LightNav all3 and fails WAall3; XB4GS9ShBRE/2 collides bothall3. No old action traces/video found; do not infer successful maneuvers from outcome alone. Inputs differ (LightNavRGB+text vs WA mixed no text).
 Observer diagnostic59842/70704 SUCCEEDED07:31:39; all24 outcomes match59826 (14success); initialRGBmatch. Actual telemetry available offline only; do not rerun.
 Motion audit shows heterogeneous collision mechanisms: severe command/actual displacement mismatch in some cases; DT final retreat matches command but target approaches faster. Need collision/NavMesh constraints and earlier avoidance diagnosis; blind reverse amplification not justified.
 Objective: diagnose and improve JEPA-WA RGB + polar UWB mixed tracking, NO TEXT.
