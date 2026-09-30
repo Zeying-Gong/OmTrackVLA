@@ -1,5 +1,6 @@
 # WA-Mobile current task
 
+Yawgain2 diagnostic59852/70714 RUNNING2A80009:48:18; frozene7769b48 configb0447514; full24 mixedzero epoch2weights. Only finalnormalizedyaw doubled/clipped; unchangedtranslation/rangeguard/modelinputs. Hypothesis test not adoptedfix/unitcorrection. Compare14/24baseline with SR/CR/oscillation; videoson. Do notduplicate or launch new training before result.
 Paired review59846/70708 SUCCEEDED08:53:33;48video completion records;24initialRGBmatches. WA14/24 LightNav17/24. Videos and steps under job_59846/task_70708/wa_lightnav_review_v1. No new training; do not duplicate.
 Behavior stats artifact paired_review_stats_59846.json. Focus VLzqgDo317F/89: LightNav succeeds3tasks while WA fails3; LightNav less reverse/lateral, body bearing stays within0.35rad; WA approaches too close then fails recovery. Descriptive not causal; different controllers/modalities. LightNav DTauFeVz9Go4m/10 changed Collision->Normal from historical run; variability unresolved.
 User clarification: retreat to preserve distance AND lateral yielding; accelerate turning near visual edge to retain target. Use actual LightNav/TrackVLA EVT-Bench actuator constraints; do not ask user to restate them.
