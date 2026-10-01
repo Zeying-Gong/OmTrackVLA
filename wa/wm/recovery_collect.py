@@ -24,7 +24,8 @@ def main():
  entries=[e for i,e in enumerate(m['selection']) if i%a.shards==a.shard]
  if a.development_one:entries=entries[:1]
  out=Path(a.output);out.mkdir(parents=True,exist_ok=False)
- ready=json.loads(Path(a.ready).read_text());assert ready['mode']=='mixed'
+ ready=None if a.audit_only else json.loads(Path(a.ready).read_text())
+ if ready is not None:assert ready['mode']=='mixed'
  results=[]
  for task in ('stt','dt','at'):
   spec=m['sources'][task]
@@ -40,7 +41,8 @@ def main():
   for e in [e for e in entries if e['task']==task]:
    assert e['partition']=='train'
    ep=ds.episodes[e['dataset_index']]
-   assert str(ep.episode_id)==e['episode_id'] and ep.scene_id==e['scene_id']
+   assert str(ep.episode_id)==e['episode_id'],(ep.episode_id,e['episode_id'])
+   assert Path(ep.scene_id).as_posix().endswith(Path(e['scene_id']).as_posix()),(ep.scene_id,e['scene_id'])
    assert np.allclose(ep.start_position,e['source_start_position'],atol=1e-6,rtol=0)
    assert ep.info['instruction']==e['instruction']
    if a.audit_only:continue
