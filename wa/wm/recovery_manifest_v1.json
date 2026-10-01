@@ -1,0 +1,1740 @@
+{
+  "version": "wa_failure_backtrack_v1",
+  "selection": [
+    {
+      "scene_id": "hm3d/train/00319-sjH1uaR68XQ/sjH1uaR68XQ.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 5197,
+      "episode_uid": "95317dae2be8325e743f",
+      "source_start_position": [
+        -5.55488920211792,
+        -3.0602831840515137,
+        0.8514730930328369
+      ],
+      "partition": "train",
+      "instruction": "Follow the person wearing a blue armored vest and white shirt.",
+      "task": "stt",
+      "task_episode_uid": "stt:95317dae2be8325e743f",
+      "shard": 5
+    },
+    {
+      "scene_id": "mp3d/S9hNv5qa7GM/S9hNv5qa7GM.glb",
+      "episode_id": "33",
+      "dataset_index": 6609,
+      "episode_uid": "d2e2e7ac20a290546e51",
+      "source_start_position": [
+        -8.115538597106934,
+        2.9162778854370117,
+        3.0760889053344727
+      ],
+      "partition": "train",
+      "instruction": "Pursue the individual dressed in a blue and red suit with gold embellishments.",
+      "task": "stt",
+      "task_episode_uid": "stt:d2e2e7ac20a290546e51",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00521-1SedVoP7zLu/1SedVoP7zLu.basis.glb",
+      "episode_id": "12",
+      "dataset_index": 6071,
+      "episode_uid": "a84c02a15169bfaefae5",
+      "source_start_position": [
+        8.260995864868164,
+        -1.9048681259155273,
+        -2.0303499698638916
+      ],
+      "partition": "train",
+      "instruction": "Pursue the person in a black suit and white shirt.",
+      "task": "stt",
+      "task_episode_uid": "stt:a84c02a15169bfaefae5",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00622-bxwHR9ipFG8/bxwHR9ipFG8.basis.glb",
+      "episode_id": "10",
+      "dataset_index": 5369,
+      "episode_uid": "42b7f5a80bda4729fdc2",
+      "source_start_position": [
+        9.106350898742676,
+        0.11108905076980591,
+        2.461150646209717
+      ],
+      "partition": "train",
+      "instruction": "Pursue the individual in a brown armored suit and green sleeves.",
+      "task": "stt",
+      "task_episode_uid": "stt:42b7f5a80bda4729fdc2",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00362-o94q92w5PK5/o94q92w5PK5.basis.glb",
+      "episode_id": "6",
+      "dataset_index": 4201,
+      "episode_uid": "3fd4719bf118aa9e4a86",
+      "source_start_position": [
+        5.106873035430908,
+        0.04792614281177521,
+        -10.983806610107422
+      ],
+      "partition": "train",
+      "instruction": "Pursue the person in a bronze and green armored outfit.",
+      "task": "stt",
+      "task_episode_uid": "stt:3fd4719bf118aa9e4a86",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00576-adgwjGh4NQK/adgwjGh4NQK.basis.glb",
+      "episode_id": "1",
+      "dataset_index": 3429,
+      "episode_uid": "89d4b6cb71442683470c",
+      "source_start_position": [
+        -2.221909284591675,
+        0.13061189651489258,
+        0.9209598898887634
+      ],
+      "partition": "train",
+      "instruction": "Go after the man with a black tuxedo and a bow tie.",
+      "task": "stt",
+      "task_episode_uid": "stt:89d4b6cb71442683470c",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00442-tJ7XVoEN82a/tJ7XVoEN82a.basis.glb",
+      "episode_id": "12",
+      "dataset_index": 2235,
+      "episode_uid": "547473d71010a463ad1d",
+      "source_start_position": [
+        -4.785296440124512,
+        0.026828527450561523,
+        3.252732753753662
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the woman wearing a navy blue strapless top and shorts.",
+      "task": "stt",
+      "task_episode_uid": "stt:547473d71010a463ad1d",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00643-ggNAcMh8JPT/ggNAcMh8JPT.basis.glb",
+      "episode_id": "18",
+      "dataset_index": 1988,
+      "episode_uid": "a1c5a422fd4c01d797e9",
+      "source_start_position": [
+        -0.2338288575410843,
+        0.1174783706665039,
+        -5.722291946411133
+      ],
+      "partition": "train",
+      "instruction": "Follow the man wearing a black tuxedo and a bow tie.",
+      "task": "stt",
+      "task_episode_uid": "stt:a1c5a422fd4c01d797e9",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00085-KWoYKrff5L4/KWoYKrff5L4.basis.glb",
+      "episode_id": "7",
+      "dataset_index": 5403,
+      "episode_uid": "01c5ea887f9209d8d65e",
+      "source_start_position": [
+        1.7367610931396484,
+        2.9577908515930176,
+        2.278278112411499
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the person in a navy blue strapless top and shorts combination.",
+      "task": "stt",
+      "task_episode_uid": "stt:01c5ea887f9209d8d65e",
+      "shard": 3
+    },
+    {
+      "scene_id": "hm3d/train/00473-xccdSFAEPau/xccdSFAEPau.basis.glb",
+      "episode_id": "5",
+      "dataset_index": 1469,
+      "episode_uid": "f1dffbab41e7551ce1aa",
+      "source_start_position": [
+        -6.6850385665893555,
+        0.24608591198921204,
+        21.679588317871094
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the person in a gray shirt and dark pants combination.",
+      "task": "stt",
+      "task_episode_uid": "stt:f1dffbab41e7551ce1aa",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00705-2XVvKEDd54w/2XVvKEDd54w.basis.glb",
+      "episode_id": "21",
+      "dataset_index": 4745,
+      "episode_uid": "bf7bee81d311f2e63888",
+      "source_start_position": [
+        2.8047983646392822,
+        -2.8194689750671387,
+        -0.741202175617218
+      ],
+      "partition": "train",
+      "instruction": "Walk after the person with a black and green ensemble and a hat.",
+      "task": "stt",
+      "task_episode_uid": "stt:bf7bee81d311f2e63888",
+      "shard": 3
+    },
+    {
+      "scene_id": "hm3d/train/00706-YHmAkqgwe2p/YHmAkqgwe2p.basis.glb",
+      "episode_id": "7",
+      "dataset_index": 2334,
+      "episode_uid": "7d10ebba1a8402c7deca",
+      "source_start_position": [
+        -1.801741123199463,
+        0.07948863506317139,
+        2.3920257091522217
+      ],
+      "partition": "train",
+      "instruction": "Walk after the person with a shiny blue-green top and shorts.",
+      "task": "stt",
+      "task_episode_uid": "stt:7d10ebba1a8402c7deca",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00236-FcUgaJv6JHA/FcUgaJv6JHA.basis.glb",
+      "episode_id": "9",
+      "dataset_index": 134,
+      "episode_uid": "a94a60d2053df5960972",
+      "source_start_position": [
+        -7.858475685119629,
+        0.03943467140197754,
+        -1.3164559602737427
+      ],
+      "partition": "train",
+      "instruction": "Follow the person dressed in a dark green shirt and black pants.",
+      "task": "stt",
+      "task_episode_uid": "stt:a94a60d2053df5960972",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00503-aqx6EomMgTf/aqx6EomMgTf.basis.glb",
+      "episode_id": "2",
+      "dataset_index": 2019,
+      "episode_uid": "8f3b31634f36fa8d1b7c",
+      "source_start_position": [
+        -2.3347296714782715,
+        2.9010791778564453,
+        4.089054584503174
+      ],
+      "partition": "train",
+      "instruction": "Pursue the woman dressed in a maroon long-sleeve shirt and blue trousers.",
+      "task": "stt",
+      "task_episode_uid": "stt:8f3b31634f36fa8d1b7c",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00152-EgzWe8N3jZG/EgzWe8N3jZG.basis.glb",
+      "episode_id": "14",
+      "dataset_index": 4096,
+      "episode_uid": "69d50bbde3a286fd0f8b",
+      "source_start_position": [
+        -5.653560161590576,
+        -2.8414504528045654,
+        -4.449573516845703
+      ],
+      "partition": "train",
+      "instruction": "Walk after the man with a light gray suit jacket and white shirt.",
+      "task": "stt",
+      "task_episode_uid": "stt:69d50bbde3a286fd0f8b",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00103-gUqgeUmUagL/gUqgeUmUagL.basis.glb",
+      "episode_id": "6",
+      "dataset_index": 5698,
+      "episode_uid": "a43fc81bf0d18acf03c7",
+      "source_start_position": [
+        -17.958999633789062,
+        -0.0370449423789978,
+        5.4016828536987305
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the woman wearing dark-colored clothing, including pants and a shirt.",
+      "task": "stt",
+      "task_episode_uid": "stt:a43fc81bf0d18acf03c7",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00366-fxbzYAGkrtm/fxbzYAGkrtm.basis.glb",
+      "episode_id": "19",
+      "dataset_index": 4582,
+      "episode_uid": "2fcb0ab661de41faa38a",
+      "source_start_position": [
+        -0.9237203598022461,
+        0.033850669860839844,
+        11.731552124023438
+      ],
+      "partition": "train",
+      "instruction": "Go after the woman with a maroon shirt and blue trousers.",
+      "task": "stt",
+      "task_episode_uid": "stt:2fcb0ab661de41faa38a",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00791-JPMDv7zL4bF/JPMDv7zL4bF.basis.glb",
+      "episode_id": "16",
+      "dataset_index": 4397,
+      "episode_uid": "326fb0bfbe7c620d429c",
+      "source_start_position": [
+        -0.4034501016139984,
+        0.0864960104227066,
+        -5.984549522399902
+      ],
+      "partition": "train",
+      "instruction": "Chase the individual in brown leather armor and a blue shirt.",
+      "task": "stt",
+      "task_episode_uid": "stt:326fb0bfbe7c620d429c",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00799-deNrXzuSss5/deNrXzuSss5.basis.glb",
+      "episode_id": "30",
+      "dataset_index": 2110,
+      "episode_uid": "19b39ca21906a005da8a",
+      "source_start_position": [
+        9.560832977294922,
+        0.03634929656982422,
+        -0.14387020468711853
+      ],
+      "partition": "train",
+      "instruction": "Chase the man in a black tuxedo with a white shirt and black bow tie.",
+      "task": "stt",
+      "task_episode_uid": "stt:19b39ca21906a005da8a",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00452-9Ckja165ren/9Ckja165ren.basis.glb",
+      "episode_id": "6",
+      "dataset_index": 5986,
+      "episode_uid": "1a7bc3069eebfda06086",
+      "source_start_position": [
+        9.829547882080078,
+        3.0228238105773926,
+        3.5730981826782227
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the boy wearing gray-colored clothing, including pants and a shirt.",
+      "task": "stt",
+      "task_episode_uid": "stt:1a7bc3069eebfda06086",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00243-BfzKZxFShtq/BfzKZxFShtq.basis.glb",
+      "episode_id": "3",
+      "dataset_index": 4533,
+      "episode_uid": "524b07abb11b657d361c",
+      "source_start_position": [
+        -0.06803391873836517,
+        0.15758001804351807,
+        13.428180694580078
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the individual in a blue and red armored suit with a star emblem on the chest.",
+      "task": "stt",
+      "task_episode_uid": "stt:524b07abb11b657d361c",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00485-yX54kr5c5g9/yX54kr5c5g9.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 75,
+      "episode_uid": "7b51942bd64f9af29f76",
+      "source_start_position": [
+        8.996053695678711,
+        0.17738094925880432,
+        0.5511525273323059
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the individual in a blue and red superhero costume.",
+      "task": "stt",
+      "task_episode_uid": "stt:7b51942bd64f9af29f76",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00040-ZB8o8rMmPdB/ZB8o8rMmPdB.basis.glb",
+      "episode_id": "5",
+      "dataset_index": 1406,
+      "episode_uid": "24e094a332cb7a109c97",
+      "source_start_position": [
+        9.817985534667969,
+        3.132917642593384,
+        6.142991065979004
+      ],
+      "partition": "train",
+      "instruction": "Go after the person with a red and yellow superhero outfit.",
+      "task": "stt",
+      "task_episode_uid": "stt:24e094a332cb7a109c97",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00115-NBWrHFXBF5p/NBWrHFXBF5p.basis.glb",
+      "episode_id": "6",
+      "dataset_index": 4846,
+      "episode_uid": "2ff575a1bcd33411218b",
+      "source_start_position": [
+        10.110589981079102,
+        0.11450281739234924,
+        6.8481903076171875
+      ],
+      "partition": "train",
+      "instruction": "Pursue the person in a red polo shirt and black trousers.",
+      "task": "stt",
+      "task_episode_uid": "stt:2ff575a1bcd33411218b",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00782-oQPVc6vwgaq/oQPVc6vwgaq.basis.glb",
+      "episode_id": "19",
+      "dataset_index": 5116,
+      "episode_uid": "5e06c791b2e4b8626ffc",
+      "source_start_position": [
+        7.253644943237305,
+        0.044228002429008484,
+        1.3143620491027832
+      ],
+      "partition": "train",
+      "instruction": "Pursue the man dressed in a bronze and green armored outfit.",
+      "task": "stt",
+      "task_episode_uid": "stt:5e06c791b2e4b8626ffc",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00712-HZ2iMMBsBQ9/HZ2iMMBsBQ9.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 4071,
+      "episode_uid": "17dcfca5c1e7c7c42382",
+      "source_start_position": [
+        -0.08561111986637115,
+        0.07457730919122696,
+        -0.2651504874229431
+      ],
+      "partition": "train",
+      "instruction": "Pursue the person in a black suit and tie.",
+      "task": "stt",
+      "task_episode_uid": "stt:17dcfca5c1e7c7c42382",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00574-bXu6SSWkJY8/bXu6SSWkJY8.basis.glb",
+      "episode_id": "10",
+      "dataset_index": 2720,
+      "episode_uid": "97c5f6f0d1df8960927a",
+      "source_start_position": [
+        -1.234357237815857,
+        0.047123983502388,
+        -0.42564108967781067
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the person wearing gray-colored clothing, including pants and a shirt.",
+      "task": "stt",
+      "task_episode_uid": "stt:97c5f6f0d1df8960927a",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00546-nS8T59Aw3sf/nS8T59Aw3sf.basis.glb",
+      "episode_id": "9",
+      "dataset_index": 5216,
+      "episode_uid": "88f3186063f52dd18faa",
+      "source_start_position": [
+        8.974370956420898,
+        -2.8445236682891846,
+        -2.9506478309631348
+      ],
+      "partition": "train",
+      "instruction": "Track the person wearing a green and purple superhero costume.",
+      "task": "stt",
+      "task_episode_uid": "stt:88f3186063f52dd18faa",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00284-4GfZ9TTZUwL/4GfZ9TTZUwL.basis.glb",
+      "episode_id": "11",
+      "dataset_index": 1237,
+      "episode_uid": "43e175ae08db39aaa5e7",
+      "source_start_position": [
+        2.7876791954040527,
+        0.1856825351715088,
+        -2.678865671157837
+      ],
+      "partition": "train",
+      "instruction": "Follow the person dressed in a black leather jacket and pants.",
+      "task": "stt",
+      "task_episode_uid": "stt:43e175ae08db39aaa5e7",
+      "shard": 5
+    },
+    {
+      "scene_id": "mp3d/Uxmj2M2itWa/Uxmj2M2itWa.glb",
+      "episode_id": "9",
+      "dataset_index": 6729,
+      "episode_uid": "15a49b176358d6f9fec7",
+      "source_start_position": [
+        0.7536954879760742,
+        0.005729019641876221,
+        -21.82131576538086
+      ],
+      "partition": "train",
+      "instruction": "Follow the person dressed in a blue and red outfit with gold elements.",
+      "task": "stt",
+      "task_episode_uid": "stt:15a49b176358d6f9fec7",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00225-EbiLVt7CHc1/EbiLVt7CHc1.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 6009,
+      "episode_uid": "4a3aa5d5f6b5a8214048",
+      "source_start_position": [
+        1.787294864654541,
+        0.011734038591384888,
+        -0.4763554036617279
+      ],
+      "partition": "train",
+      "instruction": "Pursue the individual in a green tunic and brown belts.",
+      "task": "stt",
+      "task_episode_uid": "stt:4a3aa5d5f6b5a8214048",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00497-AeBfp3hTadB/AeBfp3hTadB.basis.glb",
+      "episode_id": "7",
+      "dataset_index": 2136,
+      "episode_uid": "eaab09e9762755c4c7b0",
+      "source_start_position": [
+        -5.464604377746582,
+        -2.5762696266174316,
+        1.1127122640609741
+      ],
+      "partition": "train",
+      "instruction": "Follow the person dressed in a gold metallic top and brown boots.",
+      "task": "stt",
+      "task_episode_uid": "stt:eaab09e9762755c4c7b0",
+      "shard": 3
+    },
+    {
+      "scene_id": "hm3d/train/00172-bB6nKqfsb1z/bB6nKqfsb1z.basis.glb",
+      "episode_id": "17",
+      "dataset_index": 953,
+      "episode_uid": "0ac17b3996d0032db211",
+      "source_start_position": [
+        5.3224101066589355,
+        -3.2899491786956787,
+        9.226448059082031
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the individual wearing a blue and red superhero costume.",
+      "task": "dt",
+      "task_episode_uid": "dt:0ac17b3996d0032db211",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00779-3YSDRj9kTU7/3YSDRj9kTU7.basis.glb",
+      "episode_id": "11",
+      "dataset_index": 1595,
+      "episode_uid": "220f9a07065bc1d3d40b",
+      "source_start_position": [
+        -5.907779216766357,
+        -2.8678715229034424,
+        -0.6060028672218323
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the man wearing a black suit and white shirt.",
+      "task": "dt",
+      "task_episode_uid": "dt:220f9a07065bc1d3d40b",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00374-j2eqyxdYAFW/j2eqyxdYAFW.basis.glb",
+      "episode_id": "2",
+      "dataset_index": 5429,
+      "episode_uid": "97b953260a2fc67fd9da",
+      "source_start_position": [
+        -2.628849983215332,
+        -2.5576159954071045,
+        -0.8659676909446716
+      ],
+      "partition": "train",
+      "instruction": "Pursue the woman in a green and pink costume.",
+      "task": "dt",
+      "task_episode_uid": "dt:97b953260a2fc67fd9da",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00574-bXu6SSWkJY8/bXu6SSWkJY8.basis.glb",
+      "episode_id": "15",
+      "dataset_index": 2721,
+      "episode_uid": "bad3fcf9663c6058d522",
+      "source_start_position": [
+        -1.0348942279815674,
+        0.047123983502388,
+        3.9275574684143066
+      ],
+      "partition": "train",
+      "instruction": "Walk after the person with a dark blue and gold armored suit.",
+      "task": "dt",
+      "task_episode_uid": "dt:bad3fcf9663c6058d522",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00222-g8Xrdbe9fir/g8Xrdbe9fir.basis.glb",
+      "episode_id": "1",
+      "dataset_index": 4660,
+      "episode_uid": "0fbfc91b72d2591a7055",
+      "source_start_position": [
+        1.634339690208435,
+        0.16506898403167725,
+        1.2934720516204834
+      ],
+      "partition": "train",
+      "instruction": "Follow the person dressed in a black suit and white shirt.",
+      "task": "dt",
+      "task_episode_uid": "dt:0fbfc91b72d2591a7055",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00422-8wJuSPJ9FXG/8wJuSPJ9FXG.basis.glb",
+      "episode_id": "4",
+      "dataset_index": 5539,
+      "episode_uid": "68e76ba78276c96c9062",
+      "source_start_position": [
+        -4.452707290649414,
+        0.18441589176654816,
+        -1.0887138843536377
+      ],
+      "partition": "train",
+      "instruction": "Go after the woman with a black leather bodysuit.",
+      "task": "dt",
+      "task_episode_uid": "dt:68e76ba78276c96c9062",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00270-bDTsgcSK5Qr/bDTsgcSK5Qr.basis.glb",
+      "episode_id": "5",
+      "dataset_index": 669,
+      "episode_uid": "4b6b6364ae5488c3b2b2",
+      "source_start_position": [
+        -5.039186477661133,
+        0.13964052498340607,
+        2.570744752883911
+      ],
+      "partition": "train",
+      "instruction": "Walk after the woman with black pants and a red top.",
+      "task": "dt",
+      "task_episode_uid": "dt:4b6b6364ae5488c3b2b2",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00518-o1F5JVHc6mb/o1F5JVHc6mb.basis.glb",
+      "episode_id": "2",
+      "dataset_index": 3884,
+      "episode_uid": "391622515b1f2a8d34b5",
+      "source_start_position": [
+        8.285314559936523,
+        -2.565328598022461,
+        -6.863846778869629
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the individual wearing a black and green outfit, including a hat.",
+      "task": "dt",
+      "task_episode_uid": "dt:391622515b1f2a8d34b5",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00328-DACaFbApXUe/DACaFbApXUe.basis.glb",
+      "episode_id": "28",
+      "dataset_index": 3253,
+      "episode_uid": "2ef942db7707a438a1dd",
+      "source_start_position": [
+        1.2126638889312744,
+        0.14391350746154785,
+        -4.88200569152832
+      ],
+      "partition": "train",
+      "instruction": "Chase the man in a black tuxedo with a white shirt and black bow tie.",
+      "task": "dt",
+      "task_episode_uid": "dt:2ef942db7707a438a1dd",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00335-janiYDpzM9j/janiYDpzM9j.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 4711,
+      "episode_uid": "2ac7da0f89b212430a7d",
+      "source_start_position": [
+        5.290380001068115,
+        0.12421661615371704,
+        1.2660857439041138
+      ],
+      "partition": "train",
+      "instruction": "Chase the woman in a light blue dress.",
+      "task": "dt",
+      "task_episode_uid": "dt:2ac7da0f89b212430a7d",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00798-bpqKLXHnxei/bpqKLXHnxei.basis.glb",
+      "episode_id": "2",
+      "dataset_index": 2514,
+      "episode_uid": "40ed0d810cfedf06c92e",
+      "source_start_position": [
+        13.583761215209961,
+        0.09833092987537384,
+        2.6462252140045166
+      ],
+      "partition": "train",
+      "instruction": "Pursue the man dressed in a black tuxedo and bow tie.",
+      "task": "dt",
+      "task_episode_uid": "dt:40ed0d810cfedf06c92e",
+      "shard": 3
+    },
+    {
+      "scene_id": "hm3d/train/00765-AuGMayXVFkc/AuGMayXVFkc.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 4105,
+      "episode_uid": "0422e36f420ef401e8af",
+      "source_start_position": [
+        4.184406280517578,
+        0.06821401417255402,
+        4.801036834716797
+      ],
+      "partition": "train",
+      "instruction": "Pursue the man dressed in a black tuxedo and a bow tie.",
+      "task": "dt",
+      "task_episode_uid": "dt:0422e36f420ef401e8af",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00570-kyoZhaD9HuW/kyoZhaD9HuW.basis.glb",
+      "episode_id": "13",
+      "dataset_index": 2307,
+      "episode_uid": "637566505b8af4b62b8c",
+      "source_start_position": [
+        -1.9244180917739868,
+        -3.040968894958496,
+        1.0403636693954468
+      ],
+      "partition": "train",
+      "instruction": "Walk after the person with a blue armored vest and white shirt.",
+      "task": "dt",
+      "task_episode_uid": "dt:637566505b8af4b62b8c",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00120-eAUmfFLZDR3/eAUmfFLZDR3.basis.glb",
+      "episode_id": "6",
+      "dataset_index": 766,
+      "episode_uid": "3e43db88477a39bd808d",
+      "source_start_position": [
+        8.942883491516113,
+        0.1308443546295166,
+        -3.825281858444214
+      ],
+      "partition": "train",
+      "instruction": "Go after the woman with a dark-colored shirt and black trousers.",
+      "task": "dt",
+      "task_episode_uid": "dt:3e43db88477a39bd808d",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00402-zR6kPe1PsyS/zR6kPe1PsyS.basis.glb",
+      "episode_id": "11",
+      "dataset_index": 3159,
+      "episode_uid": "fa3f1f96526ad0b5a8cd",
+      "source_start_position": [
+        4.3142828941345215,
+        0.18326416611671448,
+        -0.33785873651504517
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the man wearing a black suit with gold accents.",
+      "task": "dt",
+      "task_episode_uid": "dt:fa3f1f96526ad0b5a8cd",
+      "shard": 3
+    },
+    {
+      "scene_id": "mp3d/TbHJrupSAjP/TbHJrupSAjP.glb",
+      "episode_id": "2",
+      "dataset_index": 6579,
+      "episode_uid": "bc6ad65b9b613de3379a",
+      "source_start_position": [
+        -0.4686813950538635,
+        0.024399995803833008,
+        -7.334755897521973
+      ],
+      "partition": "train",
+      "instruction": "Pursue the person in a black tuxedo with a white shirt and black bow tie.",
+      "task": "dt",
+      "task_episode_uid": "dt:bc6ad65b9b613de3379a",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00044-kuxpR2xHUBa/kuxpR2xHUBa.basis.glb",
+      "episode_id": "1",
+      "dataset_index": 514,
+      "episode_uid": "9308ac4841d82d37cbbc",
+      "source_start_position": [
+        8.72303295135498,
+        0.19929122924804688,
+        -1.7289342880249023
+      ],
+      "partition": "train",
+      "instruction": "Pursue the individual in a black and silver armored suit.",
+      "task": "dt",
+      "task_episode_uid": "dt:9308ac4841d82d37cbbc",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00486-WypGcNbCdsH/WypGcNbCdsH.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 3119,
+      "episode_uid": "8d48fe4c324cf28d1bd4",
+      "source_start_position": [
+        -15.75633430480957,
+        0.05059202015399933,
+        -3.2979376316070557
+      ],
+      "partition": "train",
+      "instruction": "Go after the man with a black shirt and gray trousers.",
+      "task": "dt",
+      "task_episode_uid": "dt:8d48fe4c324cf28d1bd4",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00215-zWydhyFhvcj/zWydhyFhvcj.basis.glb",
+      "episode_id": "10",
+      "dataset_index": 3851,
+      "episode_uid": "0758110caaa9ed03d514",
+      "source_start_position": [
+        -1.2669429779052734,
+        0.029773235321044922,
+        -1.6393980979919434
+      ],
+      "partition": "train",
+      "instruction": "Follow the person dressed in a pirate costume.",
+      "task": "dt",
+      "task_episode_uid": "dt:0758110caaa9ed03d514",
+      "shard": 3
+    },
+    {
+      "scene_id": "hm3d/train/00769-F1Vhvu3osn6/F1Vhvu3osn6.basis.glb",
+      "episode_id": "9",
+      "dataset_index": 507,
+      "episode_uid": "abab3a6e9b0f52450a7b",
+      "source_start_position": [
+        1.7735024690628052,
+        0.08821006119251251,
+        -2.1791064739227295
+      ],
+      "partition": "train",
+      "instruction": "Chase the man in a military uniform.",
+      "task": "dt",
+      "task_episode_uid": "dt:abab3a6e9b0f52450a7b",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00127-EN7GiDgxdQ2/EN7GiDgxdQ2.basis.glb",
+      "episode_id": "32",
+      "dataset_index": 985,
+      "episode_uid": "57051f89fa71d25b9b4b",
+      "source_start_position": [
+        0.3421076834201813,
+        0.10556507110595703,
+        0.35806769132614136
+      ],
+      "partition": "train",
+      "instruction": "Pursue the man dressed in a light gray suit jacket and white shirt.",
+      "task": "dt",
+      "task_episode_uid": "dt:57051f89fa71d25b9b4b",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00404-QN2dRqwd84J/QN2dRqwd84J.basis.glb",
+      "episode_id": "9",
+      "dataset_index": 3987,
+      "episode_uid": "8cdbea9eb6028e9b7f25",
+      "source_start_position": [
+        1.6161410808563232,
+        0.1914040446281433,
+        -0.7539643049240112
+      ],
+      "partition": "train",
+      "instruction": "Walk after the man with a black tuxedo and bow tie.",
+      "task": "dt",
+      "task_episode_uid": "dt:8cdbea9eb6028e9b7f25",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00045-mt5PhMmTk5m/mt5PhMmTk5m.basis.glb",
+      "episode_id": "4",
+      "dataset_index": 4952,
+      "episode_uid": "a85b35e0514030925ea1",
+      "source_start_position": [
+        -6.534589767456055,
+        0.11329913139343262,
+        3.7915749549865723
+      ],
+      "partition": "train",
+      "instruction": "Track the person wearing a red and black Deadpool costume.",
+      "task": "dt",
+      "task_episode_uid": "dt:a85b35e0514030925ea1",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00153-28FFMGySc6D/28FFMGySc6D.basis.glb",
+      "episode_id": "9",
+      "dataset_index": 3982,
+      "episode_uid": "ee8e46637460ccb16cdd",
+      "source_start_position": [
+        -10.656599044799805,
+        0.11489716172218323,
+        0.8016184568405151
+      ],
+      "partition": "train",
+      "instruction": "Pursue the individual dressed in a purple suit and green vest.",
+      "task": "dt",
+      "task_episode_uid": "dt:ee8e46637460ccb16cdd",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00614-ki6Cu76pWzF/ki6Cu76pWzF.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 1229,
+      "episode_uid": "22a911e921110b99a861",
+      "source_start_position": [
+        2.9454498291015625,
+        3.047213315963745,
+        3.936185359954834
+      ],
+      "partition": "train",
+      "instruction": "Go after the person with a green and pink ensemble.",
+      "task": "dt",
+      "task_episode_uid": "dt:22a911e921110b99a861",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00133-P3kZKzwnEbM/P3kZKzwnEbM.basis.glb",
+      "episode_id": "5",
+      "dataset_index": 445,
+      "episode_uid": "995297b4911f99f85bc0",
+      "source_start_position": [
+        -0.09684029221534729,
+        0.13375899195671082,
+        0.5297749638557434
+      ],
+      "partition": "train",
+      "instruction": "Pursue the person in a green and brown top with a necklace.",
+      "task": "dt",
+      "task_episode_uid": "dt:995297b4911f99f85bc0",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00485-yX54kr5c5g9/yX54kr5c5g9.basis.glb",
+      "episode_id": "6",
+      "dataset_index": 74,
+      "episode_uid": "986dde829837e3cd1731",
+      "source_start_position": [
+        1.725108027458191,
+        0.17738094925880432,
+        4.142404079437256
+      ],
+      "partition": "train",
+      "instruction": "Chase the individual in a black and red armored attire.",
+      "task": "dt",
+      "task_episode_uid": "dt:986dde829837e3cd1731",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00643-ggNAcMh8JPT/ggNAcMh8JPT.basis.glb",
+      "episode_id": "4",
+      "dataset_index": 1980,
+      "episode_uid": "8fed7f691c35c330b9c6",
+      "source_start_position": [
+        0.9969754815101624,
+        0.1174783706665039,
+        0.24477818608283997
+      ],
+      "partition": "train",
+      "instruction": "Go after the woman with a navy blue dress.",
+      "task": "dt",
+      "task_episode_uid": "dt:8fed7f691c35c330b9c6",
+      "shard": 3
+    },
+    {
+      "scene_id": "hm3d/train/00372-GMwtBqNLGBs/GMwtBqNLGBs.basis.glb",
+      "episode_id": "34",
+      "dataset_index": 1515,
+      "episode_uid": "4f5211251a1a6d66bf20",
+      "source_start_position": [
+        5.038657188415527,
+        0.10797107219696045,
+        8.502513885498047
+      ],
+      "partition": "train",
+      "instruction": "Follow the person dressed in a green and brown outfit.",
+      "task": "dt",
+      "task_episode_uid": "dt:4f5211251a1a6d66bf20",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00498-ij6Fizhrr6c/ij6Fizhrr6c.basis.glb",
+      "episode_id": "1",
+      "dataset_index": 2702,
+      "episode_uid": "2337a38af18222e845b6",
+      "source_start_position": [
+        2.1227729320526123,
+        -0.5568361282348633,
+        -6.232359409332275
+      ],
+      "partition": "train",
+      "instruction": "Chase the individual in a white ensemble, including a blouse and skirt.",
+      "task": "dt",
+      "task_episode_uid": "dt:2337a38af18222e845b6",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00781-6TPCFES8fhh/6TPCFES8fhh.basis.glb",
+      "episode_id": "4",
+      "dataset_index": 3880,
+      "episode_uid": "b683b9b2c6ee07179b86",
+      "source_start_position": [
+        -1.0112450122833252,
+        0.18242646753787994,
+        3.668107509613037
+      ],
+      "partition": "train",
+      "instruction": "Pursue the individual dressed in a red and gold bodice and a blue skirt.",
+      "task": "dt",
+      "task_episode_uid": "dt:b683b9b2c6ee07179b86",
+      "shard": 4
+    },
+    {
+      "scene_id": "mp3d/WYY7iVyf5p8/WYY7iVyf5p8.glb",
+      "episode_id": "2",
+      "dataset_index": 6371,
+      "episode_uid": "138c06105a45e9ebcf6a",
+      "source_start_position": [
+        0.7684013843536377,
+        2.9257538318634033,
+        3.377486228942871
+      ],
+      "partition": "train",
+      "instruction": "Follow the person dressed in a light gray shirt and dark pants.",
+      "task": "dt",
+      "task_episode_uid": "dt:138c06105a45e9ebcf6a",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00286-UbsJXeCkJBA/UbsJXeCkJBA.basis.glb",
+      "episode_id": "10",
+      "dataset_index": 2120,
+      "episode_uid": "a754f8d61ca976632c11",
+      "source_start_position": [
+        0.5497727990150452,
+        -2.5822932720184326,
+        -1.6294479370117188
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual in your path.",
+      "task": "at",
+      "task_episode_uid": "at:a754f8d61ca976632c11",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00373-WPzCkWEorzk/WPzCkWEorzk.basis.glb",
+      "episode_id": "11",
+      "dataset_index": 2797,
+      "episode_uid": "6f4f68242eca5ce002b7",
+      "source_start_position": [
+        -7.455294609069824,
+        0.1752932071685791,
+        3.6021320819854736
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the first person you detect.",
+      "task": "at",
+      "task_episode_uid": "at:6f4f68242eca5ce002b7",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00525-iKFn6fzyRqs/iKFn6fzyRqs.basis.glb",
+      "episode_id": "7",
+      "dataset_index": 35,
+      "episode_uid": "5a5ea194d7ef4569e601",
+      "source_start_position": [
+        4.645362377166748,
+        -3.007338523864746,
+        8.002828598022461
+      ],
+      "partition": "train",
+      "instruction": "Chase the person you initially notice.",
+      "task": "at",
+      "task_episode_uid": "at:5a5ea194d7ef4569e601",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00231-4h4JxvG3cip/4h4JxvG3cip.basis.glb",
+      "episode_id": "10",
+      "dataset_index": 5127,
+      "episode_uid": "6b06891bc9092bc9da46",
+      "source_start_position": [
+        -1.0321394205093384,
+        0.07711000740528107,
+        2.46576189994812
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual you encounter.",
+      "task": "at",
+      "task_episode_uid": "at:6b06891bc9092bc9da46",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00588-YWy9hV7RfQB/YWy9hV7RfQB.basis.glb",
+      "episode_id": "5",
+      "dataset_index": 2303,
+      "episode_uid": "74d7f175c503fa4f6695",
+      "source_start_position": [
+        9.790411949157715,
+        0.12184786796569824,
+        7.173135757446289
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual you encounter.",
+      "task": "at",
+      "task_episode_uid": "at:74d7f175c503fa4f6695",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00339-T7nCRmufFNR/T7nCRmufFNR.basis.glb",
+      "episode_id": "18",
+      "dataset_index": 2663,
+      "episode_uid": "db6eac54b5b2c10b1a90",
+      "source_start_position": [
+        -0.38895976543426514,
+        0.06293506920337677,
+        -1.4904148578643799
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual in your path.",
+      "task": "at",
+      "task_episode_uid": "at:db6eac54b5b2c10b1a90",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00614-ki6Cu76pWzF/ki6Cu76pWzF.basis.glb",
+      "episode_id": "16",
+      "dataset_index": 1232,
+      "episode_uid": "9723b6aa2f0ab757ad31",
+      "source_start_position": [
+        4.674394130706787,
+        3.047213315963745,
+        1.0970563888549805
+      ],
+      "partition": "train",
+      "instruction": "Track the person in front of you.",
+      "task": "at",
+      "task_episode_uid": "at:9723b6aa2f0ab757ad31",
+      "shard": 4
+    },
+    {
+      "scene_id": "hm3d/train/00659-ZVPMj4YoZtK/ZVPMj4YoZtK.basis.glb",
+      "episode_id": "6",
+      "dataset_index": 5019,
+      "episode_uid": "f576c1da03efedf17768",
+      "source_start_position": [
+        -2.2321205139160156,
+        0.18027916550636292,
+        7.4256367683410645
+      ],
+      "partition": "train",
+      "instruction": "Chase the person you initially notice.",
+      "task": "at",
+      "task_episode_uid": "at:f576c1da03efedf17768",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00696-DsEJeNPcZtE/DsEJeNPcZtE.basis.glb",
+      "episode_id": "3",
+      "dataset_index": 6190,
+      "episode_uid": "eba28dc71abf487ad496",
+      "source_start_position": [
+        -6.494290828704834,
+        0.004059880971908569,
+        -5.2080078125
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual in your path.",
+      "task": "at",
+      "task_episode_uid": "at:eba28dc71abf487ad496",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00602-XRHpoTZjtj7/XRHpoTZjtj7.basis.glb",
+      "episode_id": "5",
+      "dataset_index": 5256,
+      "episode_uid": "9d472d48f1bf706c9609",
+      "source_start_position": [
+        3.504828691482544,
+        0.1323261260986328,
+        -3.85793399810791
+      ],
+      "partition": "train",
+      "instruction": "Follow the person directly in front of you.",
+      "task": "at",
+      "task_episode_uid": "at:9d472d48f1bf706c9609",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00250-U3oQjwTuMX8/U3oQjwTuMX8.basis.glb",
+      "episode_id": "11",
+      "dataset_index": 5226,
+      "episode_uid": "6688338682c9d6ac8f58",
+      "source_start_position": [
+        -10.916836738586426,
+        0.07911548018455505,
+        -7.697986602783203
+      ],
+      "partition": "train",
+      "instruction": "Follow the first person in your line of sight.",
+      "task": "at",
+      "task_episode_uid": "at:6688338682c9d6ac8f58",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00145-U8F9SkAsqbJ/U8F9SkAsqbJ.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 214,
+      "episode_uid": "dcb2a972aa25af8bad9b",
+      "source_start_position": [
+        4.283475399017334,
+        0.17040085792541504,
+        0.32774487137794495
+      ],
+      "partition": "train",
+      "instruction": "Walk after the first person ahead of you.",
+      "task": "at",
+      "task_episode_uid": "at:dcb2a972aa25af8bad9b",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00380-fdfRpE6Cfsr/fdfRpE6Cfsr.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 3779,
+      "episode_uid": "5c98dd0fda4eb883fd64",
+      "source_start_position": [
+        3.5618460178375244,
+        0.1741430163383484,
+        -0.05203521251678467
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual you encounter.",
+      "task": "at",
+      "task_episode_uid": "at:5c98dd0fda4eb883fd64",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00437-S3BfyR31Wc9/S3BfyR31Wc9.basis.glb",
+      "episode_id": "18",
+      "dataset_index": 5890,
+      "episode_uid": "4e5028229ba15ab45521",
+      "source_start_position": [
+        -12.376644134521484,
+        0.08140522241592407,
+        5.141239166259766
+      ],
+      "partition": "train",
+      "instruction": "Follow the first person in your line of sight.",
+      "task": "at",
+      "task_episode_uid": "at:4e5028229ba15ab45521",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00444-sX9xad6ULKc/sX9xad6ULKc.basis.glb",
+      "episode_id": "18",
+      "dataset_index": 3154,
+      "episode_uid": "57f9aaf6b6f154e404c1",
+      "source_start_position": [
+        -1.4137879610061646,
+        0.08200240880250931,
+        -3.575420379638672
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual you encounter.",
+      "task": "at",
+      "task_episode_uid": "at:57f9aaf6b6f154e404c1",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00463-URjpCob8MGw/URjpCob8MGw.basis.glb",
+      "episode_id": "5",
+      "dataset_index": 3042,
+      "episode_uid": "9b25d9f6311c641db726",
+      "source_start_position": [
+        6.094336986541748,
+        0.04263806343078613,
+        2.7015738487243652
+      ],
+      "partition": "train",
+      "instruction": "Follow the first person in your line of sight.",
+      "task": "at",
+      "task_episode_uid": "at:9b25d9f6311c641db726",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00283-MPPDV4Gvybr/MPPDV4Gvybr.basis.glb",
+      "episode_id": "13",
+      "dataset_index": 2793,
+      "episode_uid": "5d6486f9c4e8edc977a6",
+      "source_start_position": [
+        6.415095329284668,
+        2.9463000297546387,
+        5.2731218338012695
+      ],
+      "partition": "train",
+      "instruction": "Chase the person you initially notice.",
+      "task": "at",
+      "task_episode_uid": "at:5d6486f9c4e8edc977a6",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00176-wcJYziD5pmF/wcJYziD5pmF.basis.glb",
+      "episode_id": "26",
+      "dataset_index": 3232,
+      "episode_uid": "6ff3d4e89aacaab874c0",
+      "source_start_position": [
+        -3.7899320125579834,
+        0.200515016913414,
+        3.664823532104492
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the first person you detect.",
+      "task": "at",
+      "task_episode_uid": "at:6ff3d4e89aacaab874c0",
+      "shard": 1
+    },
+    {
+      "scene_id": "hm3d/train/00556-saBtfCeVoJ4/saBtfCeVoJ4.basis.glb",
+      "episode_id": "8",
+      "dataset_index": 3842,
+      "episode_uid": "8ae5fb0a8c43c799dc4c",
+      "source_start_position": [
+        -3.51090407371521,
+        0.10932421684265137,
+        0.9515504837036133
+      ],
+      "partition": "train",
+      "instruction": "Follow the first person in your line of sight.",
+      "task": "at",
+      "task_episode_uid": "at:8ae5fb0a8c43c799dc4c",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00099-226REUyJh2K/226REUyJh2K.basis.glb",
+      "episode_id": "1",
+      "dataset_index": 3130,
+      "episode_uid": "43d74cee6faf59de41dd",
+      "source_start_position": [
+        -1.1548449993133545,
+        -0.02846813201904297,
+        10.689248085021973
+      ],
+      "partition": "train",
+      "instruction": "Follow the person directly in front of you.",
+      "task": "at",
+      "task_episode_uid": "at:43d74cee6faf59de41dd",
+      "shard": 0
+    },
+    {
+      "scene_id": "hm3d/train/00363-DS3nSAaa3Nr/DS3nSAaa3Nr.basis.glb",
+      "episode_id": "15",
+      "dataset_index": 2542,
+      "episode_uid": "150e483e954b1461e800",
+      "source_start_position": [
+        1.0957809686660767,
+        0.10701942443847656,
+        3.2693490982055664
+      ],
+      "partition": "train",
+      "instruction": "Chase the person you initially notice.",
+      "task": "at",
+      "task_episode_uid": "at:150e483e954b1461e800",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00370-RcuYAHzrjK7/RcuYAHzrjK7.basis.glb",
+      "episode_id": "9",
+      "dataset_index": 6056,
+      "episode_uid": "578d14befb42d6bdd087",
+      "source_start_position": [
+        -3.741848945617676,
+        0.07982799410820007,
+        8.314814567565918
+      ],
+      "partition": "train",
+      "instruction": "Follow the first person in your line of sight.",
+      "task": "at",
+      "task_episode_uid": "at:578d14befb42d6bdd087",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00383-yTgw14aa5ha/yTgw14aa5ha.basis.glb",
+      "episode_id": "16",
+      "dataset_index": 5908,
+      "episode_uid": "13002c8bdbb89ce81f97",
+      "source_start_position": [
+        -1.4525867700576782,
+        2.992278814315796,
+        -0.4769182801246643
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the first person you observe.",
+      "task": "at",
+      "task_episode_uid": "at:13002c8bdbb89ce81f97",
+      "shard": 3
+    },
+    {
+      "scene_id": "hm3d/train/00778-vj4rZPfVjBQ/vj4rZPfVjBQ.basis.glb",
+      "episode_id": "13",
+      "dataset_index": 1710,
+      "episode_uid": "e582affbec0cf09855ab",
+      "source_start_position": [
+        -6.926919937133789,
+        0.015249207615852356,
+        -0.011378990486264229
+      ],
+      "partition": "train",
+      "instruction": "Follow the person directly in front of you.",
+      "task": "at",
+      "task_episode_uid": "at:e582affbec0cf09855ab",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00532-4euAVjDbkz9/4euAVjDbkz9.basis.glb",
+      "episode_id": "13",
+      "dataset_index": 4154,
+      "episode_uid": "ba38476d9406da3f2e2c",
+      "source_start_position": [
+        -1.219519853591919,
+        0.012816190719604492,
+        -0.312267541885376
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the first person you detect.",
+      "task": "at",
+      "task_episode_uid": "at:ba38476d9406da3f2e2c",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00306-Y4L8fjz2yH7/Y4L8fjz2yH7.basis.glb",
+      "episode_id": "14",
+      "dataset_index": 4814,
+      "episode_uid": "38578925f193944ffd29",
+      "source_start_position": [
+        2.2736282348632812,
+        0.18725299835205078,
+        -6.170855522155762
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual you encounter.",
+      "task": "at",
+      "task_episode_uid": "at:38578925f193944ffd29",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00194-JY8e73x9ubE/JY8e73x9ubE.basis.glb",
+      "episode_id": "1",
+      "dataset_index": 3278,
+      "episode_uid": "072bc645f7046603df90",
+      "source_start_position": [
+        1.1802878379821777,
+        -2.3736798763275146,
+        0.1381101906299591
+      ],
+      "partition": "train",
+      "instruction": "Follow the first person you see.",
+      "task": "at",
+      "task_episode_uid": "at:072bc645f7046603df90",
+      "shard": 5
+    },
+    {
+      "scene_id": "hm3d/train/00158-YV9M9gZG3YJ/YV9M9gZG3YJ.basis.glb",
+      "episode_id": "0",
+      "dataset_index": 6079,
+      "episode_uid": "c6c475ae34638cf6df7d",
+      "source_start_position": [
+        3.0452494621276855,
+        0.07795210182666779,
+        6.957180500030518
+      ],
+      "partition": "train",
+      "instruction": "Follow the first person you see.",
+      "task": "at",
+      "task_episode_uid": "at:c6c475ae34638cf6df7d",
+      "shard": 3
+    },
+    {
+      "scene_id": "hm3d/train/00579-9hJwm8k7Gka/9hJwm8k7Gka.basis.glb",
+      "episode_id": "0",
+      "dataset_index": 395,
+      "episode_uid": "58da0db141aa7b504413",
+      "source_start_position": [
+        -2.7916975021362305,
+        -2.478092670440674,
+        -2.858858585357666
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the first person you detect.",
+      "task": "at",
+      "task_episode_uid": "at:58da0db141aa7b504413",
+      "shard": 2
+    },
+    {
+      "scene_id": "hm3d/train/00040-ZB8o8rMmPdB/ZB8o8rMmPdB.basis.glb",
+      "episode_id": "23",
+      "dataset_index": 1417,
+      "episode_uid": "0db81234493db805b724",
+      "source_start_position": [
+        5.301640033721924,
+        0.1329174041748047,
+        4.313066482543945
+      ],
+      "partition": "train",
+      "instruction": "Stay behind the first person you detect.",
+      "task": "at",
+      "task_episode_uid": "at:0db81234493db805b724",
+      "shard": 6
+    },
+    {
+      "scene_id": "hm3d/train/00377-Fgtk7tL8R9Y/Fgtk7tL8R9Y.basis.glb",
+      "episode_id": "3",
+      "dataset_index": 249,
+      "episode_uid": "25eda54cd9d023154304",
+      "source_start_position": [
+        0.7714781761169434,
+        0.05213704705238342,
+        1.7538353204727173
+      ],
+      "partition": "train",
+      "instruction": "Pursue the first individual you encounter.",
+      "task": "at",
+      "task_episode_uid": "at:25eda54cd9d023154304",
+      "shard": 7
+    },
+    {
+      "scene_id": "hm3d/train/00435-rmDFTEWfNcz/rmDFTEWfNcz.basis.glb",
+      "episode_id": "3",
+      "dataset_index": 5534,
+      "episode_uid": "4297faf3234d6a1b05b4",
+      "source_start_position": [
+        6.182387351989746,
+        0.15747395157814026,
+        8.600692749023438
+      ],
+      "partition": "train",
+      "instruction": "Follow the person directly in front of you.",
+      "task": "at",
+      "task_episode_uid": "at:4297faf3234d6a1b05b4",
+      "shard": 0
+    }
+  ],
+  "sources": {
+    "stt": {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/data/datasets/track/STT/train/train.json.gz",
+      "sha256": "294fe412890f9ec55a82e44388efbec49ec0bb8826255d351a469aad40ac385d",
+      "val_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/data/datasets/track/STT/val/val.json.gz",
+      "val_sha256": "8a96fe3be38ab78b0b8985e71645eef337d396be126bbd78ce1c87ffef5a0c63"
+    },
+    "dt": {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/data/datasets/track/DT/train/train.json.gz",
+      "sha256": "676cd4350367ae2d43a6431aa9a7ef2956058e72bd937fab4f1292ee1af721eb",
+      "val_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/data/datasets/track/DT/val/val.json.gz",
+      "val_sha256": "1997a14b2a03fb1319c924a3d38fe5824f1b627130d77b7e3d137633f6b63398"
+    },
+    "at": {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/data/datasets/track/AT/train/train.json.gz",
+      "sha256": "60cf04535a7c187572a4e6455a25a1703e22a5fb98b3e3828ca8b7400cf9e967",
+      "val_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA/data/datasets/track/AT/val/val.json.gz",
+      "val_sha256": "ed4aee0d49c2bd4b0f75e9922c53bd41d7aa50da2aa35fd5f994205c4537b093"
+    }
+  },
+  "source_manifest_sha256": "288d3f7be3a69f06b23861f415e82533c74961e264b1bb695769f279f6fb1abd",
+  "selection_rule": "32 per task SHA-order from existing train partition; exclude all benchmark-val and source-heldout scenes; outcome blind",
+  "excluded_scenes": [
+    "2n8kARJN3HM",
+    "3Ao63EY7J83",
+    "3goH1WRaCYC",
+    "3t8DB4Uzvkt",
+    "4L4peQsMgfR",
+    "4ok3usBNeis",
+    "58NLZxWBSpk",
+    "5cdEh9F2hJL",
+    "5hGmubEE6ZF",
+    "5jp3fCRSRjc",
+    "5uXtMs57HmZ",
+    "5vUupbRRdyH",
+    "6AGcGQf2wof",
+    "6D36GQHuP8H",
+    "6nvpJEZ8ox5",
+    "759xd9YjKW5",
+    "7GAhQPFzMot",
+    "7MXmsvcQjpJ",
+    "7UrtFsADwob",
+    "7dmR22gwQpH",
+    "8CRYizAb6yd",
+    "AENiMBDjVFb",
+    "ANmWrL7Kz7h",
+    "AYpsNQsWncn",
+    "AwL2QGztLwV",
+    "BAbdmeyTvMZ",
+    "BFRyYbPCCPE",
+    "BHXhpBwSMLh",
+    "CrMo8WxCyVb",
+    "D8bT1ambLFc",
+    "DYehNKdT76V",
+    "E9uDoFAP3SH",
+    "F7EAMsdDASd",
+    "FnSn2KSrALj",
+    "GLAQ4DNUx5U",
+    "H1D2FZ8TAv1",
+    "H77MhktmmAF",
+    "HMkoS756sz6",
+    "HY1NcmCgn3n",
+    "HaxA7YrQdEC",
+    "HjxjHvpdeoM",
+    "HsYeeztxPG6",
+    "HxpKQynjfin",
+    "JFgrz9MNz4b",
+    "JXdzHne1mRo",
+    "JmbYfDe2QKZ",
+    "KsD3yx9nZCv",
+    "L53DsRRk4Ch",
+    "LEFTm3JecaC",
+    "LNg5mXe1BDj",
+    "LT9Jq6dN3Ea",
+    "MHPLjHsuG27",
+    "MVStfLiYYQv",
+    "Mre6deDcPCP",
+    "NEVASPhcrxR",
+    "Nfvxx8J5NCo",
+    "PFLHHbjscNN",
+    "PYHRaSotJNh",
+    "PaQrTquNd2v",
+    "QDtpZSqaeyW",
+    "QHhQZWdMpGJ",
+    "QaLdnwvtxbs",
+    "Qpor2mEya8F",
+    "RJaJt8UjXav",
+    "RTV2n6fXB2w",
+    "SByzJLxpRGn",
+    "SQqGpSHzfSr",
+    "SUHsP6z2gcJ",
+    "SiKqEZx7Ejt",
+    "T6nG3E2Uui9",
+    "TEEsavR23oF",
+    "TQSiMZJawkS",
+    "TgWKHxhJAng",
+    "TziyvKgzdAs",
+    "V2XKFyX4ASd",
+    "VBzV5z6i1WS",
+    "VLzqgDo317F",
+    "Vt2qJdWjCF2",
+    "W16Bm4ysK8v",
+    "W7k2QWzBrFY",
+    "WZDzPCybQvS",
+    "X4qjx5vquwH",
+    "XB4GS9ShBRE",
+    "XMHNu9rRQ1y",
+    "XNeHsjL6nBB",
+    "XcA2TqTSSAj",
+    "XokRUNE3gB1",
+    "YFuZgdQ5vWj",
+    "YRUkbU5xsYj",
+    "Yr35Q49vqwV",
+    "ZMojNkEp431",
+    "ZhXWtW1gd6c",
+    "a8BtkwhxdRV",
+    "aYhkzj2fEhP",
+    "ac26ZMwG7aT",
+    "auFeVz9Go4m",
+    "awcRF7AZnJu",
+    "b3WpMbPFB6q",
+    "bCPU9suPUw9",
+    "bxsVRursffK",
+    "bzCsHPLDztK",
+    "c6TFyURFrL4",
+    "cWfRoQnzNiM",
+    "cYkrGrCg2kB",
+    "cvZr5TUy5C5",
+    "dHwjuKfkRUR",
+    "dVW2D7TDctW",
+    "e9zR4mvMWw7",
+    "eF36g7L6Z9M",
+    "fsQtJ8t3nTf",
+    "gTV8FGcVJC9",
+    "gYvKGZ5eRqb",
+    "h1zeeAwLh9Z",
+    "h6nwVLpAKQz",
+    "hkr2MGpHD6B",
+    "hyFzGGJCSYs",
+    "ikChNYDHtRf",
+    "jgPBycuV1Jq",
+    "k17yptqNRAn",
+    "k1cupFYWXJ6",
+    "kJJyRFXVpx2",
+    "knPYW3fibqY",
+    "kxWk8ZMDE1N",
+    "mHXUEKEV6gR",
+    "mma8eWq3nNQ",
+    "mscxX4KEBcB",
+    "mv2HUxq3B53",
+    "nACV8wLu1u5",
+    "nGhNxKrgBPb",
+    "nrA1tAA17Yp",
+    "nzuiinFMXvf",
+    "oLBMNvg9in8",
+    "ochRmQAHtkF",
+    "otTm4oTrHvc",
+    "oz1yTAGPXkh",
+    "p53SfW6mjZe",
+    "pRbA3pwrgk9",
+    "pUneSGJDrvY",
+    "q3hn1WQ12rz",
+    "q5QZSEeHe5g",
+    "qyAac8rV8Zk",
+    "rJhMRvNn4DS",
+    "rXXL6twQiWc",
+    "rrjjmoZhZCo",
+    "rsggHU7g7dh",
+    "sNikFfBW8zM",
+    "svBbv1Pavdk",
+    "tEafuWwhhwr",
+    "tQ5s4ShP627",
+    "tjs8mFdJ7YN",
+    "u1bkiGRVyu9",
+    "u8ug2rtNARf",
+    "u9LiqMn6kA6",
+    "uLz9jNga3kC",
+    "uSKXQ5fFg6u",
+    "uzH9yHazm9t",
+    "vBMLrTe4uLA",
+    "vd3HHTEpmyA",
+    "w7QyjJ3H9Bp",
+    "wcojb4TFT35",
+    "y9hTuugGdiq",
+    "yCCyNxubYcL",
+    "yZME6UR9dUN",
+    "yr17PDCnDDW",
+    "ytXtEYghmvL",
+    "z9YwN9M8FpG",
+    "zJEEFaNaRbB",
+    "ziup5kvtCCR",
+    "zmZvNTCxMZE",
+    "zsNo4HB9uLZ",
+    "zt1RVoi7PcG"
+  ],
+  "backtrack_gap_steps": 5,
+  "positive_rule": "full successful teacher continuation plus repeat success; no failed student prefix supervision",
+  "simulation_state_validation": "prefix RGB exact and all articulated agents transform/joints/time tolerance1e-6",
+  "status": "PREDECLARED_FIRST_COLLECTION_ROUND_NOT_RELEASED"
+}
