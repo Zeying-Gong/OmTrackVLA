@@ -1,6 +1,4 @@
-# WA-Mobile progress
-2026-10-01 20:27+08 recovery mixed training60483/71362 SUBMITTED8RTX4090; frozen64e90c8eb3099299c2abcb1c194349b6b8a4b3fc config6c0270bac78c6bdea920caf0513238b688e8055f51b37b527c527932a82ba4b2. Developer real4updates22708-22711 finite loss/gradient and3mode2window validationPASS (not efficacy). Parent59866 modelANDoptimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d. Original726631+971x16=742167 exposures; cumulative2epoch cap; expected23193newupdates to45900. Originallosses/historyrepeat.25 unchanged. A8003free H100cachemissing;4090sameGPFS verified andcache/parenthashPASS; no crossNAS. Output job_60483/task_71362/wa_recovery_mix_v1. No actual trainingstep yet; fixed24 pairedclosedloop pending; no RL/controllerchange/duplicate.
-Historical record: archive/2026-10/PROGRESS_before_recovery_mix_20261001.md
+# WA-Mobile progress — 2026-10-01: RecoveryMix/train integration implemented; exact exposure and deterministic8rank CPU test PASS, CLI importPASS. Proposed16repeats=15536/742167 exposure. GPUgradient/preflight/formaltraining NOT_DONE. Resume59866 model+optimizer, preserve objective;20minute heartbeat ACTIVE. Prior records below retained.
 2026-10-01 recoverycachev2: matched original evt_text_action_v2 unwrapped-yaw interpolation and causalhistory[-1.5,-1,-.5,0];971/982windows retained under original command/displacement/time filters. Source hashes verified;heldout symlinked unchanged;no teacher text in datasetitems. All11episode realRobotWorldData sampleloads PASS shapes7x4/4x3x224x224. v1 badrelativeindexsymlinks retained;v2 resolvedpaths. Converter wa/tools/build_recovery_cache.py;NAS artifacts/recovery_se2_cache_v2. Retraining NOT_SUBMITTED;next supplemental sampling+initialization+tests+8GPUpreflight then fixed24closedloop.
 2026-10-01 FINAL60322/71197 SUCCEEDED11:36:30;96/96. STT32=26WA+6teacher;DT32=29WA+3teacher;AT32=28WA+2teacher+2unrecovered. Teacher11=9mid-episode/2step0 (corrects earlier1step0 statement). Independent final audit13386frames,7222candidateXYwindows,82failed branches excluded;982unique teacher suffix windows, repeats verification-only. All96 manifest identities/split exclusions/causal prefix checks/labels/meta/actions/image headers verified; hashes in recovery_60322_final_audit.json. Limits:idealUWB;teachertext/studentnotext;observedstate replay not allhiddenstate serialization;same-seed repeat not robustness;gap5 not exact boundary. Collection validated, rawtrainingflags keptfalse; noreadySE2cache/retrain/effectiveness claim. Research continues separately; currentcollection goal complete after GitHub sync and monitor pause.
 2026-10-01 independent audit60322 at14/96:9student successes/5recoveries; accepted and repeat rawprefix RGB/dynamicstate/actions match originalWA; success/collision/init checksPASS. 1159candidate windows independently reconstructed from observed timestamps/worldposes/bodyrotations maxerror4.22e-15m. 96entries/91scenes disjoint171excluded plus fixeddevelopment/confirmation and rehashed benchmarkval. No failed-positive windows or missing teacher-owned predicted trajectory among38finished branches. All trainingrelease flags remainfalse until final96 audit. Script/results committed for reproducibility; frozenworker source untouched.
@@ -100,3 +98,53 @@ Transfer snapshot:538MiB dataset /310MiB original checkpoints; incomplete. GPU/m
 2026-09-29: user authorized8H100 JEPA only. H100 NAS migration actively in progress, not training.
 Copied source/dependencies/audit indices; streaming10660episodes/1050874files and original checkpoints.
 Direct inter-devpod SSH denied; local stream relay has low throughput. No credentials copied.
+H100 isolated torch2.7/cu128+timm1.0.30 environment created; final data/model checks pending.
+Ray preinitialized NCCL guard added;13 regression tests PASS on developer. DINO59568 STOPPED.
+2026-09-29: user selected JEPA-WM only; DINO Job59568 stop request accepted.
+H100 live platform reports26 free GPUs; expected WA dataset cache absent on Alibaba NAS.
+Retain JEPA Job59566 while checking migration; no H100 submission and no duplicate run.
+2026-09-29 16:45+08:00: both formal Pods Pending; no optimizer steps yet.
+K8s FailedScheduling: insufficient CPU/full8GPU placement. Platform requests56CPU/472GiB.
+Keep queued; no duplicate jobs or platform changes. This is scheduling wait, not training failure.
+2026-09-29 16:40/16:41 +08:00: JEPA Job59566 Task70423 and DINO Job59568 Task70425 SUBMITTED.
+Each8RTX4090 on baidu_bj_4090; sourceab3ed46d; full22707 updates plus three-mode heldout.
+wa/jobs/wm_robot_v1_run.json records config hashes and NAS paths; optimizer evidence pending.
+2026-09-29: READY_TO_SUBMIT official JEPA/DINO full robot-domain experiments.
+Action recording order and control saturation verified; actual-dt command adapters added.
+Full v2 audit retains726631 train/73368 heldout; abnormal transitions excluded and recorded.
+Both2A800 real-data optimizer/NCCL tests PASS; peak8.67/8.23GiB;13 regression tests PASS.
+Full recipe and external8H100 lane: wa/wm/ROBOT_TRAINING.md; managed two8RTX4090 tasks.
+Historical probe-only gates below superseded; no job ID claimed until submission evidence.
+2026-09-29: user-approved WLA-compatible route implemented as PARTIAL integration.
+Restored original64 MetaQuery/ActionExpert/target head; official JEPA/DINO strict-loaded.
+Added UWB polar validation and USS-inspired fusion; retained original SE2 flow+geometry.
+Both A800 joint-gradient probes and three-mode world-off inference passed;11 tests passed.
+See wa/wm/README.md and wa/results/wm_integration_v2.json; NOT trained/effective yet.
+Robot action/time adapter pending; no new formal job. Total model385M/388M, not40M.
+Old Job59519 naturally SUCCEEDED; checkpoint and78958-window three-mode offline metrics verified.
+2026-09-29: user selected JEPA-WM mainline; DINO-WM comparison, academic usage.
+Both official PointMaze pretrained models strict-loaded and ran on A800; 39.7M/42.9M.
+Artifacts: wa/results/pretrained_wm_probe_v{1,2}.json; wa/PRETRAINED_WM_PROBE.md.
+PARTIAL: synthetic controls only; no tracking-quality claim. Job59519 still RUNNING.
+2026-09-29: Job 59125 / Task 69896 FAILED before training: source path
+2026-09-29: user requires existing pretrained latent/video world models, not self-built WA.
+Audited pinned official DINO-WM/JEPA-WM/V-JEPA2 clones; report wa/WORLD_MODEL_AUDIT.md.
+Official DINO predictor20,122,600 parameters; causal/gradient developer tests passed.
+12 raw episodes sampled: action records exist; actual dt0.048-0.056s; speed anomaly unresolved.
+Replacement readiness PARTIAL; original Job59519 remains untouched (last seen19400/24375).
+Old baseline records below are historical, not endorsement of its architecture as mainline.
+not visible on Baoding worker. No optimizer steps or trained checkpoint.
+Independent checkout on A800 persistent NAS; branch `wa`.
+Added ResNet18 prompt/temporal baseline, data adapter and two DDP launchers.
+Seven tests and real-data CPU/Gloo checks passed; GPU/Thor remain UNVERIFIED.
+2026-09-29 14:12 +08:00: retry Job59519 Task70376 on baidu_bj_4090, 8 GPUs.
+TRAINING verified: environment.json confirms eight RTX4090 GPUs and clean source4a73fbd6.
+First step 1/24375 loss0.49227056; config170e71e9; completion/effectiveness UNVERIFIED.
+A800 retry configuration was superseded before submission; no duplicate job.
+Effective batch/lr/objectives unchanged; per-rank RNG and GPU numerics may differ.
+External 8xH100 uses the same tools; no access to that machine is assumed.
+All 10,660 episode first-frame identities/timebases passed; checkpoint inference passed.
+NCCL 2-GPU and pretrained 1-GPU developer checks passed; all seven tests passed.
+Official encoder SHA256: f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec.
+Run provenance and persistent output: wa/jobs/wa_full_v1_run.json.
+Next: worker startup and complete train/heldout artifacts. No effectiveness claim.
