@@ -69,6 +69,10 @@ def main():
     return result,json.loads((base/name/'replay.json').read_text())
    original,prefix=run('student')
    report=dict(episode=e,student=original,attempts=[],accepted=None)
+   if a.development_one:
+    k=max(0,len(prefix)//2)
+    probe,_=run('developer_replay_probe',k,prefix)
+    report['developer_probe_only']=dict(step=k,result=probe,training_eligible=False)
    if not original.get('success',False) and original.get('policy_init_valid',True):
     # Descending grid; do not assume teacher recoverability is monotone in time.
     for k in backward_candidates(len(prefix),m['backtrack_gap_steps']):
