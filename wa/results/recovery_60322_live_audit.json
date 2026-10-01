@@ -1,8 +1,8 @@
 {
-  "completed_searches": 14,
-  "student_success": 9,
+  "completed_searches": 19,
+  "student_success": 14,
   "accepted_recoveries": 5,
-  "branches": 38,
+  "branches": 52,
   "failed_branch_window_violations": [],
   "teacher_missing_predictions": [],
   "accepted": [
@@ -49,8 +49,20 @@
   ],
   "paired_validation_errors": [],
   "label_errors": [],
-  "checked_windows": 1159,
+  "checked_windows": 1493,
   "maximum_xy_error_m": 4.218847493575595e-15,
+  "search_errors": [],
+  "unrecovered": 0,
+  "initialization_failures": 0,
+  "task_counts": {
+    "stt": {
+      "completed": 19,
+      "student_success": 14,
+      "recovered": 5,
+      "unrecovered": 0,
+      "initialization_failures": 0
+    }
+  },
   "split_scene_overlap": [],
   "selected_entries": 96,
   "selected_unique_scenes": 91,

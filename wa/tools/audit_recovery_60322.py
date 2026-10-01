@@ -4,6 +4,7 @@ from pathlib import Path
 root=Path('/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1')
 summary=dict(completed_searches=0,student_success=0,accepted_recoveries=0,branches=0,failed_branch_window_violations=[],teacher_missing_predictions=[],accepted=[],paired_validation_errors=[])
 summary.update(label_errors=[],checked_windows=0,maximum_xy_error_m=0.)
+summary.update(search_errors=[],unrecovered=0,initialization_failures=0,task_counts={})
 repo=Path('/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout')
 manifest=json.loads((repo/'wa/wm/recovery_manifest_v1.json').read_text())
 plan=json.loads((repo/'wa/wm/mixed_diagnostic_plan_v1.json').read_text())
@@ -26,6 +27,26 @@ def same(a,b):
     return a==b
 for search in sorted(root.glob('lane*/collection/*/search.json')):
     x=json.loads(search.read_text());summary['completed_searches']+=1
+    task=x['episode']['task'];counts=summary['task_counts'].setdefault(task,dict(completed=0,student_success=0,recovered=0,unrecovered=0,initialization_failures=0))
+    counts['completed']+=1
+    status='student_success' if x['student'].get('success') else 'recovered' if x.get('accepted') else 'initialization_failures' if not x['student'].get('policy_init_valid',True) else 'unrecovered'
+    counts[status]+=1
+    if status in ('unrecovered','initialization_failures'):summary[status]+=1
+    try:
+        assert x['episode'] in manifest['selection']
+        attempts=x['attempts']
+        if not x['student'].get('success') and x['student'].get('policy_init_valid',True):
+            prefix=json.loads((search.parent/'student'/'replay.json').read_text())
+            expected=list(range(len(prefix)-1,-1,-manifest['backtrack_gap_steps']))
+            if expected[-1]!=0:expected.append(0)
+            steps=[v['step'] for v in attempts]
+            assert steps==expected[:len(steps)]
+            if x.get('accepted'):
+                assert steps[-1]==x['accepted']['step']
+                for k in ('result','repeat'):
+                    assert attempts[-1][k]['success'] and not attempts[-1][k]['collision']
+            else:assert steps==expected
+    except Exception as exc:summary['search_errors'].append(dict(search=str(search),error=repr(exc)))
     summary['student_success']+=int(bool(x['student'].get('success')))
     if x.get('accepted'):
         summary['accepted_recoveries']+=1
