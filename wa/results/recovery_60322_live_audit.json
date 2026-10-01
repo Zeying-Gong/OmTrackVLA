@@ -1,0 +1,59 @@
+{
+  "completed_searches": 14,
+  "student_success": 9,
+  "accepted_recoveries": 5,
+  "branches": 38,
+  "failed_branch_window_violations": [],
+  "teacher_missing_predictions": [],
+  "accepted": [
+    {
+      "search": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_01c5ea887f9209d8d65e/search.json",
+      "accepted": {
+        "step": 29,
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_01c5ea887f9209d8d65e/teacher_0029",
+        "repeat_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_01c5ea887f9209d8d65e/teacher_0029_repeat"
+      }
+    },
+    {
+      "search": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_3fd4719bf118aa9e4a86/search.json",
+      "accepted": {
+        "step": 16,
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_3fd4719bf118aa9e4a86/teacher_0016",
+        "repeat_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_3fd4719bf118aa9e4a86/teacher_0016_repeat"
+      }
+    },
+    {
+      "search": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_547473d71010a463ad1d/search.json",
+      "accepted": {
+        "step": 31,
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_547473d71010a463ad1d/teacher_0031",
+        "repeat_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_547473d71010a463ad1d/teacher_0031_repeat"
+      }
+    },
+    {
+      "search": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_7d10ebba1a8402c7deca/search.json",
+      "accepted": {
+        "step": 13,
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_7d10ebba1a8402c7deca/teacher_0013",
+        "repeat_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_7d10ebba1a8402c7deca/teacher_0013_repeat"
+      }
+    },
+    {
+      "search": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_a1c5a422fd4c01d797e9/search.json",
+      "accepted": {
+        "step": 10,
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_a1c5a422fd4c01d797e9/teacher_0010",
+        "repeat_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_a1c5a422fd4c01d797e9/teacher_0010_repeat"
+      }
+    }
+  ],
+  "paired_validation_errors": [],
+  "label_errors": [],
+  "checked_windows": 1159,
+  "maximum_xy_error_m": 4.218847493575595e-15,
+  "split_scene_overlap": [],
+  "selected_entries": 96,
+  "selected_unique_scenes": 91,
+  "training_release": false,
+  "scope": "Partial live audit: does not establish final repeat/state/split/label acceptance."
+}
