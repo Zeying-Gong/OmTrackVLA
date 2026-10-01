@@ -22,6 +22,9 @@ def arguments():
     p.add_argument('--resume');p.add_argument('--resume-sha256')
     p.add_argument('--completed-epochs',type=int,default=0)
     p.add_argument('--history-repeat-probability',type=float,default=0.)
+    p.add_argument('--recovery-cache')
+    p.add_argument('--recovery-index')
+    p.add_argument('--recovery-repeats',type=int,default=16)
     return p.parse_args()
 
 def moved(batch,device):return {k:v.to(device,non_blocking=True) for k,v in batch.items()}
@@ -73,6 +76,23 @@ def main():
     limit=world*a.batch_size*a.accumulation*2 if a.diagnostic else None
     train=RobotWorldData(a.cache,'train',a.index_root,limit,a.data_root,a.source_prefix)
     val=RobotWorldData(a.cache,'heldout',a.index_root,world*a.batch_size if a.diagnostic else None,a.data_root,a.source_prefix)
+    recovery_exposure=None
+    if bool(a.recovery_cache)!=bool(a.recovery_index):raise ValueError('recovery cache/index pair required')
+    if a.recovery_cache:
+        if not a.resume:raise ValueError('recovery stage requires explicit parent checkpoint')
+        from wa.wm.recovery_mix import RecoveryMix
+        recovery_sha=audit(a.recovery_cache)
+        recovery_selection=json.loads((Path(a.recovery_index)/'audit.json').read_text())
+        if recovery_selection['contract']!=CONTRACT or recovery_selection['cache_complete_sha256']!=recovery_sha:raise ValueError('recovery audit mismatch')
+        for part in ('train','heldout'):
+            if sha(Path(a.recovery_index)/f'{part}_valid.npy')!=recovery_selection['splits'][part]['index_sha256']:raise ValueError('recovery index mismatch')
+        for suffix in ('pose.npy','history.npy','episode.npy','episodes.json'):
+            if sha(Path(a.cache)/f'heldout_{suffix}')!=sha(Path(a.recovery_cache)/f'heldout_{suffix}'):raise ValueError('heldout changed')
+        recovery=RobotWorldData(a.recovery_cache,'train',a.recovery_index,limit)
+        train=RecoveryMix(train,recovery,a.recovery_repeats)
+        recovery_exposure=train.exposure|dict(cache_sha256=recovery_sha,index_sha256=sha(Path(a.recovery_index)/'audit.json'))
+        if rank==0:(output/'recovery_exposure.json').write_text(json.dumps(recovery_exposure,indent=2))
+        # Parent model AND optimizer are resumed below; no silent reset or new objective.
     sampler=DistributedSampler(train,num_replicas=world,rank=rank,shuffle=True,seed=a.seed,drop_last=True)
     loader=DataLoader(train,batch_size=a.batch_size,sampler=sampler,drop_last=True,num_workers=a.workers,pin_memory=True)
     model=JointRobotModel(a.root,a.encoder_weight,a.wla_source,a.wla_checkpoint,a.kind).to(device)
