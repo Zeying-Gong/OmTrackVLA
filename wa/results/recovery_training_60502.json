@@ -1,0 +1,46 @@
+{
+  "job": 60502,
+  "task": 71381,
+  "scheduler_status": "SUCCEEDED",
+  "ended_at_beijing": "2026-10-02T06:59:14+08:00",
+  "completed_epochs": 2,
+  "checkpoint_sha256": "20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331",
+  "final_offline_metrics": {
+    "status": "OFFLINE_ONLY",
+    "kind": "jepa",
+    "steps": 45900,
+    "metrics": {
+      "image": {
+        "ADE_m": 0.2710790375490736,
+        "FDE_m": 0.47384056515773404,
+        "yaw_MAE_rad": 0.1276158596884951,
+        "windows": 73368,
+        "SR": null,
+        "collision_rate": null
+      },
+      "point": {
+        "ADE_m": 0.2583052321745423,
+        "FDE_m": 0.452035182286536,
+        "yaw_MAE_rad": 0.11605524772395319,
+        "windows": 73368,
+        "SR": null,
+        "collision_rate": null
+      },
+      "mixed": {
+        "ADE_m": 0.25834089858631504,
+        "FDE_m": 0.45123233924954564,
+        "yaw_MAE_rad": 0.1160224249523933,
+        "windows": 73368,
+        "SR": null,
+        "collision_rate": null
+      }
+    },
+    "closed_loop": false,
+    "edge_latency_verified": false,
+    "point_source": "simulated_uwb",
+    "elapsed_s": 12140.783061631024
+  },
+  "paired_closedloop_artifact": "wa/results/recovery_eval_60509.json",
+  "gate_status": "FAILED",
+  "heartbeat_status": "PAUSED"
+}
