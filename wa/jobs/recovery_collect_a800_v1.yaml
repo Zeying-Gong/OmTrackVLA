@@ -1,0 +1,24 @@
+config_version: 1
+cluster: baidu_a800
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 2
+log_folder: wa_recovery_collect_v1
+tasks:
+  - name: wa_recovery_complete96_v1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 2
+    timeout: 43200
+    cmd: |
+      set -euo pipefail
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_recovery_v1
+      test "$(git rev-parse HEAD)" = 6ba3c609c1c65d480c5381e2c79f650b72603868
+      test -z "$(git status --porcelain)"
+      sha256sum -c wa/wm/closed_loop_dependencies.sha256
+      sha256sum -c wa/wm/full_eval_dependencies.sha256
+      export OMTRACKVLA_XVFB_ROOT="/tmp/wa_recovery_xvfb_${MD_AK_JOB_ID}"
+      source /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/scripts/runtime/install_xvfb_bundle.sh /data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/artifacts/xvfb_bundle
+      if [ ! -e /usr/bin/xkbcomp ]; then ln -s "$XVFB_ROOT/usr/bin/xkbcomp" /usr/bin/xkbcomp; fi
+      if [ ! -e /usr/share/X11/xkb ]; then ln -s "$XVFB_ROOT/usr/share/X11/xkb" /usr/share/X11/xkb; fi
+      OUTPUT_ROOT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_recovery_collect_v1"
+      /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -u wa/tools/recovery_full_launch.py "$OUTPUT_ROOT"

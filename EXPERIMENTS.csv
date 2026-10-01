@@ -1,4 +1,5 @@
 experiment_id,date,status,scope,artifact,notes
+WA_RECOVERY_COLLECT_V1,2026-10-01T10:44:39+08:00,SUBMITTED,2A800 complete96train failurebacktracking,/data/nas_ray/project/md-ak/users/zeying.gong/job_60322,Job60322;source6ba3c609;manifest987bb187;WA59866shaab39144b;LightNavofficial;gap5;successRepeat;noFailedBranchPositives;releasePending
 WA_RECOVERY_DEVELOPER_V3,2026-10-01,REAL_REPLAY_TAKEOVER_PASS,one trainingSTT episode 49steps,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/recovery_developer_v3,studentSuccess;teacherStep24Success;exactRGBandDynamicStatePrefixPASS;notfailedRecovery;noTrainingRelease
 WA_RECOVERY_DEVELOPER_V2,2026-10-01,STUDENT_ROLLOUT_PASS,one trainingSTT episode,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/recovery_developer_v2,49stepsSuccess;noTakeoverTriggered;ownedServicesCleaned
 WA_RECOVERY_DEVELOPER_V1,2026-10-01,FAILED,real model startup and Habitat launch,/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/recovery_developer_v1,XvfbNotOnPATH;modelsLoaded;fixedV2;logsRetained
