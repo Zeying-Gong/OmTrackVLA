@@ -1,5 +1,5 @@
 # WA current task — full mixed closed-loop validation
-Updated: 2026-10-03T18:45+08:00. Status: READY_TO_SUBMIT / FULL_RESULTS_UNVERIFIED.
+Updated: 2026-10-03T18:45+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 
 ## User-authorized scope and acceptance
 - Full existing validation STT1405 + DT1405 + AT1405 =4215; no subset/smoke, no retraining, no new LightNav full evaluation.
@@ -17,9 +17,11 @@ Updated: 2026-10-03T18:45+08:00. Status: READY_TO_SUBMIT / FULL_RESULTS_UNVERIFI
 - A800 aggregate3free checked; prefer2GPU eval to8GPU queue. No crossNAS. Do not interfere with WLA60857/60766.
 - Developer14CPU tests and8x3 real dataset audits PASS; dependency manifests and checkpoint SHA PASS.
 - First developer dataset check used incorrect cwd and hit trained_agent import shadowing; rerun with exact BENCH worker cwd passed. No cluster failure or smoke submitted.
-- Job/Task: retry NOT_SUBMITTED; first60883/71806 FAILED startup0episodes (unset CUDA_VISIBLE_DEVICES incorrectly defaulted8); preserved logs/source. Fixed actual CUDA count,18CPU testsPASS. No current full mixed result.
-- Output follows /data/nas_ray/project/md-ak/users/zeying.gong/job_<JOB>/task_<TASK>/wa_full_mixed_learned_yaw_v2.
-- Next: submit once, check real worker/model readiness and episode counts, report every20min, final completeness/metric/video audit then pause monitor.
+- Job/Task: 60885/71808 RUNNING2A800 (submitted18:49:27); first60883/71806 FAILED startup0episodes (unset CUDA_VISIBLE_DEVICES incorrectly defaulted8); preserved logs/source. Fixed actual CUDA count,18CPU testsPASS. No current full mixed result.
+- Output follows /data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2.
+- Actual 4/4215 complete: STT4 DT0 AT0 at 2026-10-03T18:51+08:00;2A800 model ready contractsPASS. Not fullSR.
+- Monitor wa ACTIVE every20min; follow existing job, then full completeness/metric/video audit and pause.
+- Config SHA0fd597cefa7ed98ee984fe23d6da75a7b1c909ba732f850a4a95bb86bca6f1b6.
 
 ## Prior evidence retained
 - Confirmation WA60770/71649 20/24 vsLightNav60771/71650 17/24; collision2vs3; invalid0; initialRGB24matched.
