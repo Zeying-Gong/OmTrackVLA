@@ -1,5 +1,5 @@
 # WA current task — full mixed closed-loop validation
-Updated: 2026-10-03T19:57+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
+Updated: 2026-10-03T20:20+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 
 ## User-authorized scope and acceptance
 - Full existing validation STT1405 + DT1405 + AT1405 =4215; no subset/smoke, no retraining, no new LightNav full evaluation.
@@ -19,7 +19,7 @@ Updated: 2026-10-03T19:57+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 - First developer dataset check used incorrect cwd and hit trained_agent import shadowing; rerun with exact BENCH worker cwd passed. That developer check did not submit a smoke; subsequent formal startup failure is recorded below.
 - Job/Task: 60885/71808 RUNNING2A800 (submitted18:49:27); first60883/71806 FAILED startup0episodes (unset CUDA_VISIBLE_DEVICES incorrectly defaulted8); preserved logs/source. Fixed actual CUDA count,18CPU testsPASS. No current full mixed result.
 - Output follows /data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2.
-- Actual233/4215 complete: STT233 DT0 AT0 at2026-10-03T19:57+08:00; +64 since19:35; shard00=115 shard01=118. Invalidinit5 all zero initialBBox, retained failures. Workerlogs growing/recent<=17s; no fatal/OOM; summary notyet available.
+- Actual292/4215 complete: STT292 DT0 AT0 at2026-10-03T20:20+08:00; +59 since19:57; shard00=144 shard01=148. Invalidinit12 all zero initialBBox, retained failures. Workerlogs growing/recent<=19s; no fatal/OOM; summary notyet available.
 - Monitor wa ACTIVE every20min; follow existing job, then full completeness/metric/video audit and pause.
 - Config SHA0fd597cefa7ed98ee984fe23d6da75a7b1c909ba732f850a4a95bb86bca6f1b6.
 
