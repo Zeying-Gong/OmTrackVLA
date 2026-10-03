@@ -1,7 +1,7 @@
 """Full4215 mixed evaluation; multiplex eight fixed shards over the allocated GPUs."""
 import concurrent.futures,json,os,signal,subprocess,sys,time,threading
 from pathlib import Path
-from wa.wm.full_mixed_contract import validate_ready,summarize,MANIFEST_SHA
+from wa.wm.full_mixed_contract import validate_ready,summarize,MANIFEST_SHA,allocated_devices
 from wa.wm.loaders import sha
 ROOT=Path('/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928')
 SOURCE=Path.cwd();WLA=ROOT.parent/'WLA-EVT-20260925';BENCH=ROOT.parent/'OmTrackVLA-da3-polar-20260924';ENV=ROOT.parent.parent/'envs'
@@ -9,8 +9,9 @@ MANIFEST=WLA/'evt_full_20260926/manifest.json'
 assert sha(MANIFEST)==MANIFEST_SHA
 assert os.environ.get('WA_DIAG_CONTROLLER')=='learned_yaw_guard_v1'
 OUT=Path(sys.argv[1]);OUT.mkdir(parents=True,exist_ok=False)
-visible=os.environ.get('CUDA_VISIBLE_DEVICES','0,1,2,3,4,5,6,7').split(',')
-if not 1<=len(visible)<=8 or len(set(visible))!=len(visible):raise ValueError('expected1..8 distinct allocated GPUs')
+import torch
+visible=allocated_devices(os.environ.get('CUDA_VISIBLE_DEVICES'),torch.cuda.device_count())
+print('GPU_ALLOCATION',json.dumps(dict(devices=visible,names=[torch.cuda.get_device_name(i) for i in range(len(visible))])),flush=True)
 children=[];lock=threading.Lock();cancel=threading.Event()
 def stop(p):
     if p.poll() is None:

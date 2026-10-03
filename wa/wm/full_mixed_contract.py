@@ -35,3 +35,10 @@ def summarize(rows, manifest):
         episodes=4215,checkpoint_sha256=CHECKPOINT_SHA,checkpoint_step=45900,metrics_percent=results,
         limits=['ideal simulated polar UWB noise0 delay0; no text','existing validation split includes development/confirmation; not untouched test',
                 'HumanCollision is target-person distance ever<0.5m not general obstacle contact','no real-UWB or edge-latency validation'])
+
+def allocated_devices(raw, count):
+    if not 1 <= count <= 8: raise ValueError("expected1..8 actually visible CUDA GPUs")
+    devices = [str(i) for i in range(count)] if raw is None else raw.split(",")
+    if len(devices) != count or len(set(devices)) != count or any(not d.strip() for d in devices):
+        raise ValueError("CUDA_VISIBLE_DEVICES disagrees with actual device count")
+    return devices
