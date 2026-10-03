@@ -12,13 +12,13 @@ Updated: 2026-10-03T18:45+08:00. Status: READY_TO_SUBMIT / FULL_RESULTS_UNVERIFI
 ## Frozen method and submission
 - Same60502/71381 checkpoint step45900 cumulative2epochs, SHA20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331.
 - learned_yaw_guard_v1 retains learned yaw and original translation guard; JEPA/MetaQuery/ActionExpert preserved, world predictor training-only.
-- Frozen source_full_mixed_learned_yaw_v1 commit f0fa5c11b4fd78d291d20fa005853561f8baea8c; independent new entry, old image-only full entry unchanged.
-- Config wa/jobs/full_mixed_learned_yaw_a800_v1.yaml:2A800, timeout86400;8shards multiplexed over2allocated GPUs.
+- Frozen source_full_mixed_learned_yaw_v2 commit d16c5a9efb73a6712306d44a0f2b0a543dd4b4d7; independent new entry, old image-only full entry unchanged.
+- Config wa/jobs/full_mixed_learned_yaw_a800_v2.yaml:2A800, timeout86400;8shards multiplexed over2allocated GPUs.
 - A800 aggregate3free checked; prefer2GPU eval to8GPU queue. No crossNAS. Do not interfere with WLA60857/60766.
 - Developer14CPU tests and8x3 real dataset audits PASS; dependency manifests and checkpoint SHA PASS.
 - First developer dataset check used incorrect cwd and hit trained_agent import shadowing; rerun with exact BENCH worker cwd passed. No cluster failure or smoke submitted.
-- Job/Task: NOT_SUBMITTED. No current full mixed result.
-- Output follows /data/nas_ray/project/md-ak/users/zeying.gong/job_<JOB>/task_<TASK>/wa_full_mixed_learned_yaw_v1.
+- Job/Task: retry NOT_SUBMITTED; first60883/71806 FAILED startup0episodes (unset CUDA_VISIBLE_DEVICES incorrectly defaulted8); preserved logs/source. Fixed actual CUDA count,18CPU testsPASS. No current full mixed result.
+- Output follows /data/nas_ray/project/md-ak/users/zeying.gong/job_<JOB>/task_<TASK>/wa_full_mixed_learned_yaw_v2.
 - Next: submit once, check real worker/model readiness and episode counts, report every20min, final completeness/metric/video audit then pause monitor.
 
 ## Prior evidence retained
