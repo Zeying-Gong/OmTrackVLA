@@ -1,0 +1,3080 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-10-03T04:22:09.248483+00:00",
+  "scope": "Read-only independent confirmation residual audit; no training, evaluation job, controller or threshold changes",
+  "thresholds": {
+    "target_pixels_lower_strict_gt": 3000,
+    "target_pixel_fraction_upper_strict_lt": 0.3,
+    "image_shape": [
+      384,
+      384
+    ]
+  },
+  "observer_only": true,
+  "methods": {
+    "wa": {
+      "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1",
+      "episodes": {
+        "stt:p53SfW6mjZe/4": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 80,
+          "total_step": 80,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "p53SfW6mjZe/4",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "34a4a77094345a61e737fd30c3886e701db411616a33cf8513a637c569257db4",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/stt/_review/p53SfW6mjZe/4/steps.jsonl",
+          "steps_sha256": "414e2cd89073359290467dfc940ae020d81765d05907cee6b9ed23c392ba7ef0",
+          "pre_action_frames": 80,
+          "last_pre_action": {
+            "step": 79,
+            "timestamp_s": 3.840000000000003,
+            "polar": [
+              1.4439006438097102,
+              0.062208579120499326
+            ],
+            "target_visibility": {
+              "target_pixels": 13685,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0928073459201389,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:GLAQ4DNUx5U/20": {
+          "finish": false,
+          "status": "Lost",
+          "success": 0.0,
+          "following_rate": 0.35384615384615387,
+          "following_step": 23,
+          "total_step": 65,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "GLAQ4DNUx5U/20",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "6bc6ba51e5631857d8e155a3a5c68040d73b3f08aed21b1bbdfa33e6249857e2",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/stt/_review/GLAQ4DNUx5U/20/steps.jsonl",
+          "steps_sha256": "3f15c5bccd0dd46b1354e369a72474a38f91143d05a59051200db16a7663aab4",
+          "pre_action_frames": 65,
+          "last_pre_action": {
+            "step": 64,
+            "timestamp_s": 3.1120000000000023,
+            "polar": [
+              4.057884577723168,
+              -0.49542157233779927
+            ],
+            "target_visibility": {
+              "target_pixels": 0,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                24,
+                64
+              ],
+              "timestamp_s": [
+                1.1680000000000008,
+                3.1120000000000023
+              ],
+              "frames": 41,
+              "pixels_min_max": [
+                0,
+                1370
+              ],
+              "range_m_min_max": [
+                2.4796783589570546,
+                5.154324236066441
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.00012582730423353297,
+                0.49542157233779927
+              ]
+            }
+          ],
+          "upper_visibility_runs": []
+        },
+        "stt:SUHsP6z2gcJ/13": {
+          "finish": false,
+          "status": "Collision",
+          "success": 0.0,
+          "following_rate": 0.746268656716418,
+          "following_step": 200,
+          "total_step": 268,
+          "collision": 1.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "SUHsP6z2gcJ/13",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "5a0a6e8f5b5396b4f54d9e5ca77a9cbefa48a773b08091975e3ed349abac78c0",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/stt/_review/SUHsP6z2gcJ/13/steps.jsonl",
+          "steps_sha256": "997285af9cc6f163a3dfe614867256f5a69a09004e9d276ed2756a3861b089ff",
+          "pre_action_frames": 268,
+          "last_pre_action": {
+            "step": 267,
+            "timestamp_s": 12.991999999999637,
+            "polar": [
+              0.5236896317270853,
+              -0.06225344450443663
+            ],
+            "target_visibility": {
+              "target_pixels": 119851,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.8127916124131944,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                33,
+                39
+              ],
+              "timestamp_s": [
+                1.6000000000000012,
+                1.8960000000000015
+              ],
+              "frames": 7,
+              "pixels_min_max": [
+                0,
+                1127
+              ],
+              "range_m_min_max": [
+                1.7569502093875524,
+                2.331029275076249
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.7776588750177588,
+                0.9072306973406081
+              ]
+            },
+            {
+              "steps": [
+                49,
+                61
+              ],
+              "timestamp_s": [
+                2.3840000000000017,
+                2.968000000000002
+              ],
+              "frames": 13,
+              "pixels_min_max": [
+                0,
+                1503
+              ],
+              "range_m_min_max": [
+                1.471372936210852,
+                2.1138206343691444
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.04914832124248295,
+                0.9540854318879369
+              ]
+            },
+            {
+              "steps": [
+                71,
+                79
+              ],
+              "timestamp_s": [
+                3.4480000000000026,
+                3.840000000000003
+              ],
+              "frames": 9,
+              "pixels_min_max": [
+                269,
+                2887
+              ],
+              "range_m_min_max": [
+                1.7548147342795728,
+                2.491334959353117
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.026333053462196623,
+                0.48734223309704694
+              ]
+            },
+            {
+              "steps": [
+                90,
+                90
+              ],
+              "timestamp_s": [
+                4.376000000000003,
+                4.376000000000003
+              ],
+              "frames": 1,
+              "pixels_min_max": [
+                2890,
+                2890
+              ],
+              "range_m_min_max": [
+                2.747794624886757,
+                2.747794624886757
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.07386862279291677,
+                0.07386862279291677
+              ]
+            },
+            {
+              "steps": [
+                149,
+                151
+              ],
+              "timestamp_s": [
+                7.2480000000000055,
+                7.344000000000006
+              ],
+              "frames": 3,
+              "pixels_min_max": [
+                1790,
+                2931
+              ],
+              "range_m_min_max": [
+                1.9007284908386322,
+                2.0386053333509997
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.09122278958703059,
+                0.19114085776460402
+              ]
+            },
+            {
+              "steps": [
+                167,
+                168
+              ],
+              "timestamp_s": [
+                8.119999999999996,
+                8.175999999999991
+              ],
+              "frames": 2,
+              "pixels_min_max": [
+                1278,
+                1354
+              ],
+              "range_m_min_max": [
+                1.7147621556701482,
+                1.7568515338794335
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.3173954582329603,
+                0.40176453594795614
+              ]
+            },
+            {
+              "steps": [
+                178,
+                179
+              ],
+              "timestamp_s": [
+                8.655999999999956,
+                8.703999999999953
+              ],
+              "frames": 2,
+              "pixels_min_max": [
+                2826,
+                2950
+              ],
+              "range_m_min_max": [
+                2.719046758656275,
+                2.7596981484248753
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.039063246905869785,
+                0.06421353498735005
+              ]
+            },
+            {
+              "steps": [
+                200,
+                209
+              ],
+              "timestamp_s": [
+                9.727999999999877,
+                10.167999999999845
+              ],
+              "frames": 10,
+              "pixels_min_max": [
+                0,
+                1017
+              ],
+              "range_m_min_max": [
+                1.5373165234777362,
+                2.0745794681699357
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.3159383170414031,
+                0.9562239107942303
+              ]
+            },
+            {
+              "steps": [
+                211,
+                211
+              ],
+              "timestamp_s": [
+                10.263999999999838,
+                10.263999999999838
+              ],
+              "frames": 1,
+              "pixels_min_max": [
+                2793,
+                2793
+              ],
+              "range_m_min_max": [
+                2.468057671532081,
+                2.468057671532081
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.6672328646269137,
+                0.6672328646269137
+              ]
+            },
+            {
+              "steps": [
+                241,
+                251
+              ],
+              "timestamp_s": [
+                11.72799999999973,
+                12.207999999999695
+              ],
+              "frames": 11,
+              "pixels_min_max": [
+                0,
+                2731
+              ],
+              "range_m_min_max": [
+                1.0655332010204563,
+                1.507982174501878
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.36273231143057594,
+                0.9111117765879945
+              ]
+            },
+            {
+              "steps": [
+                255,
+                256
+              ],
+              "timestamp_s": [
+                12.40799999999968,
+                12.455999999999676
+              ],
+              "frames": 2,
+              "pixels_min_max": [
+                516,
+                847
+              ],
+              "range_m_min_max": [
+                1.1537531046855825,
+                1.1571596066740173
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.7778155078358926,
+                0.8237355543404865
+              ]
+            }
+          ],
+          "upper_visibility_runs": [
+            {
+              "steps": [
+                262,
+                267
+              ],
+              "timestamp_s": [
+                12.743999999999655,
+                12.991999999999637
+              ],
+              "frames": 6,
+              "pixels_min_max": [
+                47868,
+                119851
+              ],
+              "range_m_min_max": [
+                0.5093552371540927,
+                0.813875277743131
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.06225344450443663,
+                0.26121170895178886
+              ]
+            }
+          ]
+        },
+        "stt:7GAhQPFzMot/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 48,
+          "total_step": 48,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "7GAhQPFzMot/3",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "e09693c2f76ff7fb6bf59755340d747ad6a3004ceba843444d2fcfcad1c22d54",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/stt/_review/7GAhQPFzMot/3/steps.jsonl",
+          "steps_sha256": "543e64314bc3f25d8b610f936b78edd7c16c4ccc02809cc49d76601d1104d3bb",
+          "pre_action_frames": 48,
+          "last_pre_action": {
+            "step": 47,
+            "timestamp_s": 2.2800000000000016,
+            "polar": [
+              1.4981982118591048,
+              0.02125567587032631
+            ],
+            "target_visibility": {
+              "target_pixels": 14857,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.10075547960069445,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:p53SfW6mjZe/4": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9666666666666667,
+          "following_step": 87,
+          "total_step": 90,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "p53SfW6mjZe/4",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "9c02fe8b2ae014ee3176fad0b625e57e6a4b7c34e26948d927309db8aac39efb",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/dt/_review/p53SfW6mjZe/4/steps.jsonl",
+          "steps_sha256": "1f8a1c8d062265c6c07275aef6cc632e9c63072dc9ff3ef985225ea6d7e1b259",
+          "pre_action_frames": 90,
+          "last_pre_action": {
+            "step": 89,
+            "timestamp_s": 4.328000000000003,
+            "polar": [
+              1.4378173145821305,
+              -0.059396415976695247
+            ],
+            "target_visibility": {
+              "target_pixels": 15868,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.10761176215277778,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:GLAQ4DNUx5U/20": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.8860759493670886,
+          "following_step": 140,
+          "total_step": 158,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "GLAQ4DNUx5U/20",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "e899e0e13f871f15f15b37048e115c74fa80600ca202fe178d9daf08318ff216",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/dt/_review/GLAQ4DNUx5U/20/steps.jsonl",
+          "steps_sha256": "ffdbb0a69cea26efec6ea28d7033df3e5ca95ed7050a1cddca479655c778b4b2",
+          "pre_action_frames": 158,
+          "last_pre_action": {
+            "step": 157,
+            "timestamp_s": 7.640000000000006,
+            "polar": [
+              1.4078257208326257,
+              0.020135274301587163
+            ],
+            "target_visibility": {
+              "target_pixels": 14655,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.09938557942708333,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:SUHsP6z2gcJ/13": {
+          "finish": false,
+          "status": "Lost",
+          "success": 0.0,
+          "following_rate": 0.21333333333333335,
+          "following_step": 32,
+          "total_step": 150,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "SUHsP6z2gcJ/13",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "98380c74f3ee95a74495993edf71b7f878bf12f39a2603e1d9871597784584a6",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/dt/_review/SUHsP6z2gcJ/13/steps.jsonl",
+          "steps_sha256": "75e270f778f1c2e263b54f01e6cc24ccafbf474787f07b8cc5ca41a8121a2ae4",
+          "pre_action_frames": 150,
+          "last_pre_action": {
+            "step": 149,
+            "timestamp_s": 7.2480000000000055,
+            "polar": [
+              7.132286975070279,
+              -0.5534069328287333
+            ],
+            "target_visibility": {
+              "target_pixels": 0,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                33,
+                149
+              ],
+              "timestamp_s": [
+                1.6000000000000012,
+                7.2480000000000055
+              ],
+              "frames": 117,
+              "pixels_min_max": [
+                0,
+                2270
+              ],
+              "range_m_min_max": [
+                1.65627969842306,
+                7.132286975070279
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.032815972394741814,
+                1.2688523595173349
+              ]
+            }
+          ],
+          "upper_visibility_runs": []
+        },
+        "dt:7GAhQPFzMot/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9795918367346939,
+          "following_step": 48,
+          "total_step": 49,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "7GAhQPFzMot/3",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "e0dad8b4d1806ba7a0fcff8eff6db537c49a0c9d9345f518302f6204459816de",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/dt/_review/7GAhQPFzMot/3/steps.jsonl",
+          "steps_sha256": "d0d4efa09b482c7b7a22c9b26f14090922c69a52204d69b8770468fa35cc3e26",
+          "pre_action_frames": 49,
+          "last_pre_action": {
+            "step": 48,
+            "timestamp_s": 2.3360000000000016,
+            "polar": [
+              1.510653650730938,
+              -0.04417325631530311
+            ],
+            "target_visibility": {
+              "target_pixels": 14072,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0954318576388889,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:p53SfW6mjZe/4": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9102564102564102,
+          "following_step": 71,
+          "total_step": 78,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "p53SfW6mjZe/4",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "dc3922b7d3b86b95fd9a736deec1f24e805103c61972420f600811f61e9a366b",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/at/_review/p53SfW6mjZe/4/steps.jsonl",
+          "steps_sha256": "7479217d1975d3820d3f34dc6249f693f8f85b1a1dc1c37c9e3b2e7c3c041349",
+          "pre_action_frames": 78,
+          "last_pre_action": {
+            "step": 77,
+            "timestamp_s": 3.744000000000003,
+            "polar": [
+              1.4479428892280015,
+              -0.005215228446892934
+            ],
+            "target_visibility": {
+              "target_pixels": 15260,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1034884982638889,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:GLAQ4DNUx5U/20": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9102564102564102,
+          "following_step": 142,
+          "total_step": 156,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "GLAQ4DNUx5U/20",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "db287aeaed6bc7cfa1f7ea2b4c6831926e5da5682cd6e27e1dd5d85222cccb9c",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/at/_review/GLAQ4DNUx5U/20/steps.jsonl",
+          "steps_sha256": "9ac5fa7fe9d6add7e8e689bf1338f1dd01eaa8bf45acce5be43cc2149da8a630",
+          "pre_action_frames": 156,
+          "last_pre_action": {
+            "step": 155,
+            "timestamp_s": 7.536000000000006,
+            "polar": [
+              1.4084965743056022,
+              3.321496200184829e-05
+            ],
+            "target_visibility": {
+              "target_pixels": 14467,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0981106228298611,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:SUHsP6z2gcJ/13": {
+          "finish": false,
+          "status": "Collision",
+          "success": 0.0,
+          "following_rate": 0.8487084870848709,
+          "following_step": 230,
+          "total_step": 271,
+          "collision": 1.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "SUHsP6z2gcJ/13",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "cf6ab9712d7b969f4ab737d88e3df095c3001a2a9996c4fb471d169be84b3926",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/at/_review/SUHsP6z2gcJ/13/steps.jsonl",
+          "steps_sha256": "4fe04e8ff9a4846c206e3c890f3266d201f4ff8e99b476b60eeeb031db1b0a4b",
+          "pre_action_frames": 271,
+          "last_pre_action": {
+            "step": 270,
+            "timestamp_s": 13.135999999999626,
+            "polar": [
+              0.6705938173112466,
+              0.004523409174545084
+            ],
+            "target_visibility": {
+              "target_pixels": 70830,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.4803466796875,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                34,
+                37
+              ],
+              "timestamp_s": [
+                1.6480000000000012,
+                1.8000000000000014
+              ],
+              "frames": 4,
+              "pixels_min_max": [
+                0,
+                751
+              ],
+              "range_m_min_max": [
+                1.8264623735840455,
+                2.15133733697736
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.810606185691549,
+                0.8800365118066945
+              ]
+            },
+            {
+              "steps": [
+                51,
+                56
+              ],
+              "timestamp_s": [
+                2.4800000000000018,
+                2.720000000000002
+              ],
+              "frames": 6,
+              "pixels_min_max": [
+                0,
+                926
+              ],
+              "range_m_min_max": [
+                1.38814548889932,
+                1.5636069848383078
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.28178071739487226,
+                0.7178927809702673
+              ]
+            },
+            {
+              "steps": [
+                149,
+                149
+              ],
+              "timestamp_s": [
+                7.2480000000000055,
+                7.2480000000000055
+              ],
+              "frames": 1,
+              "pixels_min_max": [
+                2984,
+                2984
+              ],
+              "range_m_min_max": [
+                1.9763898828015258,
+                1.9763898828015258
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.13120057104161695,
+                0.13120057104161695
+              ]
+            },
+            {
+              "steps": [
+                164,
+                166
+              ],
+              "timestamp_s": [
+                7.976000000000006,
+                8.072
+              ],
+              "frames": 3,
+              "pixels_min_max": [
+                2045,
+                2332
+              ],
+              "range_m_min_max": [
+                1.7319649320965516,
+                1.8170833989675643
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.22354325449339,
+                0.3562887653345436
+              ]
+            },
+            {
+              "steps": [
+                206,
+                212
+              ],
+              "timestamp_s": [
+                10.023999999999855,
+                10.311999999999834
+              ],
+              "frames": 7,
+              "pixels_min_max": [
+                0,
+                1994
+              ],
+              "range_m_min_max": [
+                1.5254288362593906,
+                1.9214564373128722
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.5339128971018715,
+                0.8680582144443458
+              ]
+            },
+            {
+              "steps": [
+                241,
+                250
+              ],
+              "timestamp_s": [
+                11.72799999999973,
+                12.159999999999698
+              ],
+              "frames": 10,
+              "pixels_min_max": [
+                0,
+                2469
+              ],
+              "range_m_min_max": [
+                1.0818021028923754,
+                1.4884186348925572
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.3596115317718993,
+                0.9335362298302992
+              ]
+            },
+            {
+              "steps": [
+                253,
+                255
+              ],
+              "timestamp_s": [
+                12.311999999999687,
+                12.40799999999968
+              ],
+              "frames": 3,
+              "pixels_min_max": [
+                137,
+                2600
+              ],
+              "range_m_min_max": [
+                1.1765146295415945,
+                1.1985105136926597
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.7781978304681689,
+                0.8318682093584556
+              ]
+            }
+          ],
+          "upper_visibility_runs": [
+            {
+              "steps": [
+                265,
+                270
+              ],
+              "timestamp_s": [
+                12.895999999999644,
+                13.135999999999626
+              ],
+              "frames": 6,
+              "pixels_min_max": [
+                44560,
+                71352
+              ],
+              "range_m_min_max": [
+                0.6624318154524661,
+                0.8436815105207153
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.004523409174545084,
+                0.034016937878229514
+              ]
+            }
+          ]
+        },
+        "at:7GAhQPFzMot/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9130434782608695,
+          "following_step": 42,
+          "total_step": 46,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "7GAhQPFzMot/3",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "57d9e4542f758a287daca805108ae412fbd789f84cc86575000db4e67d84497d",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/at/_review/7GAhQPFzMot/3/steps.jsonl",
+          "steps_sha256": "a1c0e0f9ea16abfd83b4896d67796f4c54ad5d60b5a46cf5812201add18a9a0a",
+          "pre_action_frames": 46,
+          "last_pre_action": {
+            "step": 45,
+            "timestamp_s": 2.1840000000000015,
+            "polar": [
+              1.4747142547922838,
+              -0.05900267203444983
+            ],
+            "target_visibility": {
+              "target_pixels": 25474,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1727566189236111,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:cvZr5TUy5C5/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 49,
+          "total_step": 49,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "cvZr5TUy5C5/3",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "d700b30d1bc76ce4a8184b6f4268439068700f3030aad5bfca2f1955d20472bc",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/stt/_review/cvZr5TUy5C5/3/steps.jsonl",
+          "steps_sha256": "02ff5231a641fdc66eca073835afedf26e0f0237c997ee326b9ae66f56cda022",
+          "pre_action_frames": 49,
+          "last_pre_action": {
+            "step": 48,
+            "timestamp_s": 2.3360000000000016,
+            "polar": [
+              1.4941954996137112,
+              0.08146386938196694
+            ],
+            "target_visibility": {
+              "target_pixels": 12911,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0875583224826389,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:QaLdnwvtxbs/0": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.7480314960629921,
+          "following_step": 95,
+          "total_step": 127,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "QaLdnwvtxbs/0",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "871f29147313e25994dee033e1b8b4511e3ea67c92c8896b16b1572e6891ceaa",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/stt/_review/QaLdnwvtxbs/0/steps.jsonl",
+          "steps_sha256": "2f6e1bc72766d02e07bd4edc2441abed0b59e72119293666131add39a389d3f4",
+          "pre_action_frames": 127,
+          "last_pre_action": {
+            "step": 126,
+            "timestamp_s": 6.1280000000000046,
+            "polar": [
+              1.4564251484100692,
+              0.015902786782060332
+            ],
+            "target_visibility": {
+              "target_pixels": 15950,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.10816786024305555,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:qyAac8rV8Zk/9": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 68,
+          "total_step": 68,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "qyAac8rV8Zk/9",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "44cc75525164563befe613da4fa6283c84d6d70e53d56d4320575b39bbd8f8b3",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/stt/_review/qyAac8rV8Zk/9/steps.jsonl",
+          "steps_sha256": "2d926db3435300ff56d0148357eb1e28539e81c1362920e5620d99c5c8bb56f7",
+          "pre_action_frames": 68,
+          "last_pre_action": {
+            "step": 67,
+            "timestamp_s": 3.2560000000000024,
+            "polar": [
+              1.4807142626206886,
+              -0.08411916714052213
+            ],
+            "target_visibility": {
+              "target_pixels": 13978,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.09479437934027778,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:JmbYfDe2QKZ/10": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.8275862068965517,
+          "following_step": 48,
+          "total_step": 58,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "JmbYfDe2QKZ/10",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "2c5a9d244896f610047cfeb5f44976acec247555b1d9cf98e4d983012143f628",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/stt/_review/JmbYfDe2QKZ/10/steps.jsonl",
+          "steps_sha256": "ae33676b709a9645deb2fe69742b99b7a4df34d91a75f0227a9d8dc1cb52f6d0",
+          "pre_action_frames": 58,
+          "last_pre_action": {
+            "step": 57,
+            "timestamp_s": 2.768000000000002,
+            "polar": [
+              1.502724934140711,
+              -0.04592397262748861
+            ],
+            "target_visibility": {
+              "target_pixels": 14443,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.09794786241319445,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:cvZr5TUy5C5/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.925,
+          "following_step": 74,
+          "total_step": 80,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "cvZr5TUy5C5/3",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "9b43299c30319bdc6f3acee28ac4c44cebbfc4e4a249610a7b0003141461c3ac",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/dt/_review/cvZr5TUy5C5/3/steps.jsonl",
+          "steps_sha256": "b78db4f82123360df0b530fcc149d7cca957a2df7db38f4e5cfe2bc01b55d9d5",
+          "pre_action_frames": 80,
+          "last_pre_action": {
+            "step": 79,
+            "timestamp_s": 3.840000000000003,
+            "polar": [
+              1.3597220706552706,
+              0.1486745078597531
+            ],
+            "target_visibility": {
+              "target_pixels": 19119,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.12965901692708334,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:QaLdnwvtxbs/0": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.8533333333333334,
+          "following_step": 256,
+          "total_step": 300,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "QaLdnwvtxbs/0",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "e4f899a271f59f863dcbcc03d6e02834683a01898d2c5d9b6be6ac2c519b12b2",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/dt/_review/QaLdnwvtxbs/0/steps.jsonl",
+          "steps_sha256": "77008848afbaa1cbe502c7d5adea942364a0098d32f90fcd75e86b8804cc1f68",
+          "pre_action_frames": 300,
+          "last_pre_action": {
+            "step": 299,
+            "timestamp_s": 14.543999999999523,
+            "polar": [
+              1.4826832274603343,
+              0.07697288870176355
+            ],
+            "target_visibility": {
+              "target_pixels": 14263,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.09672715928819445,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:qyAac8rV8Zk/9": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 70,
+          "total_step": 70,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "qyAac8rV8Zk/9",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "1e12174e3960235cd14e1aae1259e5a84e65604057f77b6084ddaae28806aaef",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/dt/_review/qyAac8rV8Zk/9/steps.jsonl",
+          "steps_sha256": "2ba4377f3cec8c557b97a527a81c8650a7641cedbcf55ef9198a69d6176501e5",
+          "pre_action_frames": 70,
+          "last_pre_action": {
+            "step": 69,
+            "timestamp_s": 3.3520000000000025,
+            "polar": [
+              1.5308799377763338,
+              -0.06151095213443501
+            ],
+            "target_visibility": {
+              "target_pixels": 10410,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.07059733072916667,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:JmbYfDe2QKZ/10": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.7704918032786885,
+          "following_step": 47,
+          "total_step": 61,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "JmbYfDe2QKZ/10",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "6de60537bae744ae051812c8a56e4bea7bbec1e5491e97650535f048378d3ee6",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/dt/_review/JmbYfDe2QKZ/10/steps.jsonl",
+          "steps_sha256": "4ac2f602e38e7501c8ffa58599172f69de02e0992aea2cd967a8d7affab5ff36",
+          "pre_action_frames": 61,
+          "last_pre_action": {
+            "step": 60,
+            "timestamp_s": 2.920000000000002,
+            "polar": [
+              1.48589456003183,
+              -0.04455170413639189
+            ],
+            "target_visibility": {
+              "target_pixels": 15107,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1024509006076389,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:cvZr5TUy5C5/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9766666666666667,
+          "following_step": 293,
+          "total_step": 300,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "cvZr5TUy5C5/3",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "8164de90591f267b2c8b292358e656d07c011ca11a3f2d398dbc7cda648f57c2",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/at/_review/cvZr5TUy5C5/3/steps.jsonl",
+          "steps_sha256": "6f8f0a181b30a0098e26b2e2e066835db65e5b800815f1e1b8c93f242dd43084",
+          "pre_action_frames": 300,
+          "last_pre_action": {
+            "step": 299,
+            "timestamp_s": 14.543999999999523,
+            "polar": [
+              1.2766574213205961,
+              -0.045651936332091844
+            ],
+            "target_visibility": {
+              "target_pixels": 18105,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.12278238932291667,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:QaLdnwvtxbs/0": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.7480314960629921,
+          "following_step": 95,
+          "total_step": 127,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "QaLdnwvtxbs/0",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "e4f899a271f59f863dcbcc03d6e02834683a01898d2c5d9b6be6ac2c519b12b2",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/at/_review/QaLdnwvtxbs/0/steps.jsonl",
+          "steps_sha256": "2a391a34583638d7d23801d97c7fc3b9e254b51f93e4edc6bf40f42df8b3ef3e",
+          "pre_action_frames": 127,
+          "last_pre_action": {
+            "step": 126,
+            "timestamp_s": 6.1280000000000046,
+            "polar": [
+              1.4897581917757412,
+              0.005725869960575904
+            ],
+            "target_visibility": {
+              "target_pixels": 14832,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1005859375,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:qyAac8rV8Zk/9": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 68,
+          "total_step": 68,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "qyAac8rV8Zk/9",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "f8f4e86830d8834650d1974eadc4db6e391bc3c6d90bc14c08b35ce6b1945c47",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/at/_review/qyAac8rV8Zk/9/steps.jsonl",
+          "steps_sha256": "ce631038661217f12e90a1fa3883a43a6ca02b71e50fbd20250339ff54c591a8",
+          "pre_action_frames": 68,
+          "last_pre_action": {
+            "step": 67,
+            "timestamp_s": 3.2560000000000024,
+            "polar": [
+              1.513197021214443,
+              -0.06230154284749222
+            ],
+            "target_visibility": {
+              "target_pixels": 12845,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.08711073133680555,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:JmbYfDe2QKZ/10": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9473684210526315,
+          "following_step": 54,
+          "total_step": 57,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "JmbYfDe2QKZ/10",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "initial_rgb_sha256": "8336a79e452ff573071ce2d4b489b152e673efed289da35e67fb6487d24707ba",
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/at/_review/JmbYfDe2QKZ/10/steps.jsonl",
+          "steps_sha256": "364475c66e7f70028ccd7185ab15526755438a862012d69fce25aa122d3b5136",
+          "pre_action_frames": 57,
+          "last_pre_action": {
+            "step": 56,
+            "timestamp_s": 2.720000000000002,
+            "polar": [
+              1.4970350263634813,
+              -0.03829694058786135
+            ],
+            "target_visibility": {
+              "target_pixels": 14791,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1003078884548611,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        }
+      },
+      "observer_frame_coverage": {
+        "total": 2824,
+        "target_pixels_present": 2824
+      },
+      "logs": [
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/server.log",
+          "sha256": "eae2b1162e3efb5e88bdf6453298df53cbfd32a3cefd55b1ab67f8fb648f11fc",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 0,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/worker.log",
+          "sha256": "c98202d89ec87f201a595cd8010e31ce5ae233a648a814ba782973dacf8d7af8",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 12,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard0/xvfb.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 0,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/server.log",
+          "sha256": "eae2b1162e3efb5e88bdf6453298df53cbfd32a3cefd55b1ab67f8fb648f11fc",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 0,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/worker.log",
+          "sha256": "a731397dd778251fc8c38d44c2818f3f212ebeba37b7a1cc47913696cae1cbc6",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 9,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60770/task_71649/wa_learned_yaw_confirmation_v1/mixed_zero_shard1/xvfb.log",
+          "sha256": "8f7562ea7a26c0b273b3c823d6a68f13aaefb3291119b6b2dfd142b6c0ee0cec",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 0,
+          "x11_listener_errors": [
+            "_XSERVTransmkdir: ERROR: Cannot create /tmp/.X11-unix",
+            "_XSERVTransSocketUNIXCreateListener: mkdir(/tmp/.X11-unix) failed, errno = 17",
+            "_XSERVTransMakeAllCOTSServerListeners: failed to create listener for unix"
+          ]
+        }
+      ]
+    },
+    "lightnav": {
+      "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav",
+      "episodes": {
+        "stt:p53SfW6mjZe/4": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.95,
+          "following_step": 76,
+          "total_step": 80,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "p53SfW6mjZe/4",
+          "initial_rgb_sha256": "34a4a77094345a61e737fd30c3886e701db411616a33cf8513a637c569257db4",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/stt/_review/p53SfW6mjZe/4/steps.jsonl",
+          "steps_sha256": "82284e873fb338acd2e02c55b134742cd22229fb1fd98e004efc79059a9328cf",
+          "pre_action_frames": 80,
+          "last_pre_action": {
+            "step": 79,
+            "timestamp_s": 3.840000000000003,
+            "polar": [
+              1.338319944115898,
+              0.0030423135752127724
+            ],
+            "target_visibility": {
+              "target_pixels": 16479,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.11175537109375,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:GLAQ4DNUx5U/20": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.8169014084507042,
+          "following_step": 116,
+          "total_step": 142,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "GLAQ4DNUx5U/20",
+          "initial_rgb_sha256": "6bc6ba51e5631857d8e155a3a5c68040d73b3f08aed21b1bbdfa33e6249857e2",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/stt/_review/GLAQ4DNUx5U/20/steps.jsonl",
+          "steps_sha256": "8e94fbffe656f564522ce46a5b3e4b3a2113d90b813b4804c858ae2da9c503e8",
+          "pre_action_frames": 142,
+          "last_pre_action": {
+            "step": 141,
+            "timestamp_s": 6.856000000000005,
+            "polar": [
+              1.2986279238368226,
+              -0.021768668108398195
+            ],
+            "target_visibility": {
+              "target_pixels": 18292,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1240505642361111,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:SUHsP6z2gcJ/13": {
+          "finish": false,
+          "status": "Collision",
+          "success": 0.0,
+          "following_rate": 0.7840909090909091,
+          "following_step": 207,
+          "total_step": 264,
+          "collision": 1.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "SUHsP6z2gcJ/13",
+          "initial_rgb_sha256": "5a0a6e8f5b5396b4f54d9e5ca77a9cbefa48a773b08091975e3ed349abac78c0",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/stt/_review/SUHsP6z2gcJ/13/steps.jsonl",
+          "steps_sha256": "a798c0dc6130827ea61510f09457310db4397ef90d20c4aa76666601de3217d7",
+          "pre_action_frames": 264,
+          "last_pre_action": {
+            "step": 263,
+            "timestamp_s": 12.791999999999652,
+            "polar": [
+              0.5831975040169339,
+              -0.4711094986612445
+            ],
+            "target_visibility": {
+              "target_pixels": 57437,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.3895195855034722,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                31,
+                42
+              ],
+              "timestamp_s": [
+                1.5040000000000011,
+                2.0400000000000014
+              ],
+              "frames": 12,
+              "pixels_min_max": [
+                0,
+                2855
+              ],
+              "range_m_min_max": [
+                1.2651568298449702,
+                2.1550652507254755
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.7503120038758677,
+                1.2025233160539306
+              ]
+            },
+            {
+              "steps": [
+                49,
+                62
+              ],
+              "timestamp_s": [
+                2.3840000000000017,
+                3.0160000000000022
+              ],
+              "frames": 14,
+              "pixels_min_max": [
+                0,
+                1519
+              ],
+              "range_m_min_max": [
+                1.1628980758473195,
+                2.0612049600494506
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.2530187951717794,
+                1.153285684559127
+              ]
+            },
+            {
+              "steps": [
+                131,
+                131
+              ],
+              "timestamp_s": [
+                6.368000000000005,
+                6.368000000000005
+              ],
+              "frames": 1,
+              "pixels_min_max": [
+                1203,
+                1203
+              ],
+              "range_m_min_max": [
+                1.4263392155241625,
+                1.4263392155241625
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.8153831924455981,
+                0.8153831924455981
+              ]
+            },
+            {
+              "steps": [
+                200,
+                208
+              ],
+              "timestamp_s": [
+                9.727999999999877,
+                10.119999999999848
+              ],
+              "frames": 9,
+              "pixels_min_max": [
+                0,
+                2714
+              ],
+              "range_m_min_max": [
+                1.1485953649810525,
+                1.7406256911027245
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.29528527789993003,
+                1.04722601372487
+              ]
+            },
+            {
+              "steps": [
+                242,
+                260
+              ],
+              "timestamp_s": [
+                11.775999999999726,
+                12.647999999999662
+              ],
+              "frames": 19,
+              "pixels_min_max": [
+                0,
+                2537
+              ],
+              "range_m_min_max": [
+                0.8210649331714144,
+                1.301904816643247
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.852666416855884,
+                2.1167445936504485
+              ]
+            }
+          ],
+          "upper_visibility_runs": [
+            {
+              "steps": [
+                263,
+                263
+              ],
+              "timestamp_s": [
+                12.791999999999652,
+                12.791999999999652
+              ],
+              "frames": 1,
+              "pixels_min_max": [
+                57437,
+                57437
+              ],
+              "range_m_min_max": [
+                0.5831975040169339,
+                0.5831975040169339
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.4711094986612445,
+                0.4711094986612445
+              ]
+            }
+          ]
+        },
+        "stt:7GAhQPFzMot/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 48,
+          "total_step": 48,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "7GAhQPFzMot/3",
+          "initial_rgb_sha256": "e09693c2f76ff7fb6bf59755340d747ad6a3004ceba843444d2fcfcad1c22d54",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/stt/_review/7GAhQPFzMot/3/steps.jsonl",
+          "steps_sha256": "499223ed7554f2d4c41f3310280fb41f850b7cd2f4d6743d1a4114c2e215acd9",
+          "pre_action_frames": 48,
+          "last_pre_action": {
+            "step": 47,
+            "timestamp_s": 2.2800000000000016,
+            "polar": [
+              1.440505269029846,
+              -0.004830300587057002
+            ],
+            "target_visibility": {
+              "target_pixels": 16416,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.111328125,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:p53SfW6mjZe/4": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9666666666666667,
+          "following_step": 87,
+          "total_step": 90,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "p53SfW6mjZe/4",
+          "initial_rgb_sha256": "9c02fe8b2ae014ee3176fad0b625e57e6a4b7c34e26948d927309db8aac39efb",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/dt/_review/p53SfW6mjZe/4/steps.jsonl",
+          "steps_sha256": "d4849abb2c61494f0bbe1ff77a31c603c2d818a5a7f5609769a7da73415264b9",
+          "pre_action_frames": 90,
+          "last_pre_action": {
+            "step": 89,
+            "timestamp_s": 4.328000000000003,
+            "polar": [
+              1.4905790301873354,
+              0.03570220818101201
+            ],
+            "target_visibility": {
+              "target_pixels": 14360,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0973849826388889,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:GLAQ4DNUx5U/20": {
+          "finish": false,
+          "status": "Lost",
+          "success": 0.0,
+          "following_rate": 0.32142857142857145,
+          "following_step": 18,
+          "total_step": 56,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "GLAQ4DNUx5U/20",
+          "initial_rgb_sha256": "e899e0e13f871f15f15b37048e115c74fa80600ca202fe178d9daf08318ff216",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/dt/_review/GLAQ4DNUx5U/20/steps.jsonl",
+          "steps_sha256": "412c46e7b8276924531af95442839bf21ebcec97f668a1dd00c53888109363be",
+          "pre_action_frames": 56,
+          "last_pre_action": {
+            "step": 55,
+            "timestamp_s": 2.672000000000002,
+            "polar": [
+              4.709809652870686,
+              -0.08254073913437274
+            ],
+            "target_visibility": {
+              "target_pixels": 0,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                3,
+                9
+              ],
+              "timestamp_s": [
+                0.14400000000000004,
+                0.4320000000000003
+              ],
+              "frames": 7,
+              "pixels_min_max": [
+                0,
+                1543
+              ],
+              "range_m_min_max": [
+                2.3012214988839568,
+                2.5375220362216644
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.7520171210500146,
+                0.9656324966154004
+              ]
+            },
+            {
+              "steps": [
+                26,
+                55
+              ],
+              "timestamp_s": [
+                1.264000000000001,
+                2.672000000000002
+              ],
+              "frames": 30,
+              "pixels_min_max": [
+                0,
+                2065
+              ],
+              "range_m_min_max": [
+                2.494451444334528,
+                4.709809652870686
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.012499149194164684,
+                0.8771671123865062
+              ]
+            }
+          ],
+          "upper_visibility_runs": []
+        },
+        "dt:SUHsP6z2gcJ/13": {
+          "finish": false,
+          "status": "Lost",
+          "success": 0.0,
+          "following_rate": 0.2616822429906542,
+          "following_step": 28,
+          "total_step": 107,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "SUHsP6z2gcJ/13",
+          "initial_rgb_sha256": "98380c74f3ee95a74495993edf71b7f878bf12f39a2603e1d9871597784584a6",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/dt/_review/SUHsP6z2gcJ/13/steps.jsonl",
+          "steps_sha256": "93ea6efd78d0d8d590af2eeef3a010df62398721b38d2e181832a84f3b3764ee",
+          "pre_action_frames": 107,
+          "last_pre_action": {
+            "step": 106,
+            "timestamp_s": 5.152000000000004,
+            "polar": [
+              6.221782154432442,
+              -2.0972678013608523
+            ],
+            "target_visibility": {
+              "target_pixels": 0,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                28,
+                44
+              ],
+              "timestamp_s": [
+                1.360000000000001,
+                2.1360000000000015
+              ],
+              "frames": 17,
+              "pixels_min_max": [
+                0,
+                2621
+              ],
+              "range_m_min_max": [
+                1.2746922611184641,
+                2.3091169261162876
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.6184592752511765,
+                1.2506393631452148
+              ]
+            },
+            {
+              "steps": [
+                46,
+                106
+              ],
+              "timestamp_s": [
+                2.2320000000000015,
+                5.152000000000004
+              ],
+              "frames": 61,
+              "pixels_min_max": [
+                0,
+                2867
+              ],
+              "range_m_min_max": [
+                1.3541997748434424,
+                6.221782154432442
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.02157425250193592,
+                2.8636205486940214
+              ]
+            }
+          ],
+          "upper_visibility_runs": []
+        },
+        "dt:7GAhQPFzMot/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9795918367346939,
+          "following_step": 48,
+          "total_step": 49,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "7GAhQPFzMot/3",
+          "initial_rgb_sha256": "e0dad8b4d1806ba7a0fcff8eff6db537c49a0c9d9345f518302f6204459816de",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/dt/_review/7GAhQPFzMot/3/steps.jsonl",
+          "steps_sha256": "8689e7ff731132f0132466b2943bf1f6b2bed634fd1f5015ee6fad37f7cd1756",
+          "pre_action_frames": 49,
+          "last_pre_action": {
+            "step": 48,
+            "timestamp_s": 2.3360000000000016,
+            "polar": [
+              1.4832118790475368,
+              -0.00782016937429286
+            ],
+            "target_visibility": {
+              "target_pixels": 14713,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.09977891710069445,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:p53SfW6mjZe/4": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9036144578313253,
+          "following_step": 75,
+          "total_step": 83,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "p53SfW6mjZe/4",
+          "initial_rgb_sha256": "dc3922b7d3b86b95fd9a736deec1f24e805103c61972420f600811f61e9a366b",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/at/_review/p53SfW6mjZe/4/steps.jsonl",
+          "steps_sha256": "76e7026e04346c7005ec5977c60b8120f08976b7fa5fb47f2a55f5e9fe643fb2",
+          "pre_action_frames": 83,
+          "last_pre_action": {
+            "step": 82,
+            "timestamp_s": 3.984000000000003,
+            "polar": [
+              1.473177527412509,
+              -0.0009684128039755679
+            ],
+            "target_visibility": {
+              "target_pixels": 14600,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.09901258680555555,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:GLAQ4DNUx5U/20": {
+          "finish": false,
+          "status": "Lost",
+          "success": 0.0,
+          "following_rate": 0.3971631205673759,
+          "following_step": 56,
+          "total_step": 141,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "GLAQ4DNUx5U/20",
+          "initial_rgb_sha256": "db287aeaed6bc7cfa1f7ea2b4c6831926e5da5682cd6e27e1dd5d85222cccb9c",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/at/_review/GLAQ4DNUx5U/20/steps.jsonl",
+          "steps_sha256": "76f2003824f1592c5e381ad3c784c809eab84ca549f82a43b7205197dff49620",
+          "pre_action_frames": 141,
+          "last_pre_action": {
+            "step": 140,
+            "timestamp_s": 6.808000000000005,
+            "polar": [
+              4.333683860190143,
+              -0.6367882755552701
+            ],
+            "target_visibility": {
+              "target_pixels": 11720,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.07948133680555555,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                3,
+                17
+              ],
+              "timestamp_s": [
+                0.14400000000000004,
+                0.8240000000000006
+              ],
+              "frames": 15,
+              "pixels_min_max": [
+                0,
+                2595
+              ],
+              "range_m_min_max": [
+                2.1132067755958226,
+                2.675507001669529
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.7341474317940511,
+                1.6449603939526605
+              ]
+            },
+            {
+              "steps": [
+                25,
+                41
+              ],
+              "timestamp_s": [
+                1.2160000000000009,
+                1.9920000000000015
+              ],
+              "frames": 17,
+              "pixels_min_max": [
+                0,
+                2977
+              ],
+              "range_m_min_max": [
+                2.3302170385365395,
+                3.4921523650162256
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.012253100227629283,
+                0.9818230311888526
+              ]
+            },
+            {
+              "steps": [
+                47,
+                57
+              ],
+              "timestamp_s": [
+                2.2800000000000016,
+                2.768000000000002
+              ],
+              "frames": 11,
+              "pixels_min_max": [
+                0,
+                2722
+              ],
+              "range_m_min_max": [
+                1.486524927674088,
+                2.1085355759972275
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.15988077679146512,
+                0.9177377558280245
+              ]
+            },
+            {
+              "steps": [
+                86,
+                88
+              ],
+              "timestamp_s": [
+                4.184000000000003,
+                4.280000000000003
+              ],
+              "frames": 3,
+              "pixels_min_max": [
+                839,
+                2385
+              ],
+              "range_m_min_max": [
+                1.6304186322097622,
+                1.7141503803192162
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.17451737319433516,
+                0.4481305065779348
+              ]
+            },
+            {
+              "steps": [
+                115,
+                117
+              ],
+              "timestamp_s": [
+                5.592000000000004,
+                5.688000000000004
+              ],
+              "frames": 3,
+              "pixels_min_max": [
+                1866,
+                2566
+              ],
+              "range_m_min_max": [
+                4.170889899234482,
+                4.208340037416376
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.011816443927483933,
+                0.1057746975316033
+              ]
+            }
+          ],
+          "upper_visibility_runs": [
+            {
+              "steps": [
+                103,
+                114
+              ],
+              "timestamp_s": [
+                5.008000000000004,
+                5.544000000000004
+              ],
+              "frames": 12,
+              "pixels_min_max": [
+                52355,
+                147456
+              ],
+              "range_m_min_max": [
+                3.013503153164927,
+                4.1759098145356885
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.004792550866923007,
+                0.05085917116138783
+              ]
+            }
+          ]
+        },
+        "at:SUHsP6z2gcJ/13": {
+          "finish": false,
+          "status": "Collision",
+          "success": 0.0,
+          "following_rate": 0.8426966292134831,
+          "following_step": 225,
+          "total_step": 267,
+          "collision": 1.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "SUHsP6z2gcJ/13",
+          "initial_rgb_sha256": "cf6ab9712d7b969f4ab737d88e3df095c3001a2a9996c4fb471d169be84b3926",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/at/_review/SUHsP6z2gcJ/13/steps.jsonl",
+          "steps_sha256": "00145974d0fb7b3489bf350ecb69731f64bfaa7af69355cf801b81bed27e0285",
+          "pre_action_frames": 267,
+          "last_pre_action": {
+            "step": 266,
+            "timestamp_s": 12.94399999999964,
+            "polar": [
+              0.7166012823448611,
+              0.11904657916559366
+            ],
+            "target_visibility": {
+              "target_pixels": 56786,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.3851047092013889,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                30,
+                40
+              ],
+              "timestamp_s": [
+                1.456000000000001,
+                1.9440000000000015
+              ],
+              "frames": 11,
+              "pixels_min_max": [
+                0,
+                1605
+              ],
+              "range_m_min_max": [
+                1.3731752897062115,
+                2.1827491742903984
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.7845657594380239,
+                1.0275642215021101
+              ]
+            },
+            {
+              "steps": [
+                51,
+                59
+              ],
+              "timestamp_s": [
+                2.4800000000000018,
+                2.864000000000002
+              ],
+              "frames": 9,
+              "pixels_min_max": [
+                0,
+                2208
+              ],
+              "range_m_min_max": [
+                1.1031133100837853,
+                1.3735468784318734
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.4244794185352552,
+                0.9667875936421716
+              ]
+            },
+            {
+              "steps": [
+                162,
+                164
+              ],
+              "timestamp_s": [
+                7.880000000000006,
+                7.976000000000006
+              ],
+              "frames": 3,
+              "pixels_min_max": [
+                637,
+                2879
+              ],
+              "range_m_min_max": [
+                1.7933425524048028,
+                1.8382753568516739
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.21482348970946,
+                0.37236202182395867
+              ]
+            },
+            {
+              "steps": [
+                204,
+                210
+              ],
+              "timestamp_s": [
+                9.927999999999862,
+                10.215999999999841
+              ],
+              "frames": 7,
+              "pixels_min_max": [
+                0,
+                1501
+              ],
+              "range_m_min_max": [
+                1.2918316423360774,
+                2.240232799465417
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.7333685432575153,
+                1.0393066211834012
+              ]
+            },
+            {
+              "steps": [
+                245,
+                253
+              ],
+              "timestamp_s": [
+                11.919999999999716,
+                12.311999999999687
+              ],
+              "frames": 9,
+              "pixels_min_max": [
+                0,
+                1915
+              ],
+              "range_m_min_max": [
+                0.9558136078318199,
+                1.0728496052178476
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.9165492834904664,
+                1.3781135049442577
+              ]
+            }
+          ],
+          "upper_visibility_runs": [
+            {
+              "steps": [
+                265,
+                266
+              ],
+              "timestamp_s": [
+                12.895999999999644,
+                12.94399999999964
+              ],
+              "frames": 2,
+              "pixels_min_max": [
+                51269,
+                56786
+              ],
+              "range_m_min_max": [
+                0.7166012823448611,
+                0.7641128344640434
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.07792772069437176,
+                0.11904657916559366
+              ]
+            }
+          ]
+        },
+        "at:7GAhQPFzMot/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9347826086956522,
+          "following_step": 43,
+          "total_step": 46,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "7GAhQPFzMot/3",
+          "initial_rgb_sha256": "57d9e4542f758a287daca805108ae412fbd789f84cc86575000db4e67d84497d",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/at/_review/7GAhQPFzMot/3/steps.jsonl",
+          "steps_sha256": "8b72fd986cd6266132695b9d828e394292a6bc7d90ee4a038d261d385c88b1e2",
+          "pre_action_frames": 46,
+          "last_pre_action": {
+            "step": 45,
+            "timestamp_s": 2.1840000000000015,
+            "polar": [
+              1.4354232525562607,
+              -0.006406870234218377
+            ],
+            "target_visibility": {
+              "target_pixels": 23875,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.16191270616319445,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:cvZr5TUy5C5/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.8775510204081632,
+          "following_step": 43,
+          "total_step": 49,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "cvZr5TUy5C5/3",
+          "initial_rgb_sha256": "d700b30d1bc76ce4a8184b6f4268439068700f3030aad5bfca2f1955d20472bc",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/stt/_review/cvZr5TUy5C5/3/steps.jsonl",
+          "steps_sha256": "2cf670bb24d7c5021121d73672ffa987df615889a0ab591a0c472754a0c345a0",
+          "pre_action_frames": 49,
+          "last_pre_action": {
+            "step": 48,
+            "timestamp_s": 2.3360000000000016,
+            "polar": [
+              1.452462060318862,
+              -0.031019581505326247
+            ],
+            "target_visibility": {
+              "target_pixels": 13667,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0926852756076389,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:QaLdnwvtxbs/0": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.6614173228346457,
+          "following_step": 84,
+          "total_step": 127,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "QaLdnwvtxbs/0",
+          "initial_rgb_sha256": "871f29147313e25994dee033e1b8b4511e3ea67c92c8896b16b1572e6891ceaa",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/stt/_review/QaLdnwvtxbs/0/steps.jsonl",
+          "steps_sha256": "93f65b2f767730924637e4eb9cd969abb92eb381ec7650fc62ce8e92b4fd94be",
+          "pre_action_frames": 127,
+          "last_pre_action": {
+            "step": 126,
+            "timestamp_s": 6.1280000000000046,
+            "polar": [
+              1.4568132596183854,
+              -0.014263373888496743
+            ],
+            "target_visibility": {
+              "target_pixels": 15916,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1079372829861111,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:qyAac8rV8Zk/9": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 68,
+          "total_step": 68,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "qyAac8rV8Zk/9",
+          "initial_rgb_sha256": "44cc75525164563befe613da4fa6283c84d6d70e53d56d4320575b39bbd8f8b3",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/stt/_review/qyAac8rV8Zk/9/steps.jsonl",
+          "steps_sha256": "1f45a2a6fc3eee294bb18df94a0c3a21c79ef2d0acad2e4f90b2092ce1b2c6c6",
+          "pre_action_frames": 68,
+          "last_pre_action": {
+            "step": 67,
+            "timestamp_s": 3.2560000000000024,
+            "polar": [
+              1.4461283945578876,
+              0.00499035752893172
+            ],
+            "target_visibility": {
+              "target_pixels": 14912,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.10112847222222222,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "stt:JmbYfDe2QKZ/10": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.8275862068965517,
+          "following_step": 48,
+          "total_step": 58,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "stt",
+          "key": "JmbYfDe2QKZ/10",
+          "initial_rgb_sha256": "2c5a9d244896f610047cfeb5f44976acec247555b1d9cf98e4d983012143f628",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/stt/_review/JmbYfDe2QKZ/10/steps.jsonl",
+          "steps_sha256": "51069647e86e0b8af181c95d59f1c482d5f0ff87a9845e6ebe8798d643918317",
+          "pre_action_frames": 58,
+          "last_pre_action": {
+            "step": 57,
+            "timestamp_s": 2.768000000000002,
+            "polar": [
+              1.332347403660781,
+              -0.0007016968883447753
+            ],
+            "target_visibility": {
+              "target_pixels": 19622,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.13307020399305555,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:cvZr5TUy5C5/3": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9156626506024096,
+          "following_step": 76,
+          "total_step": 83,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "cvZr5TUy5C5/3",
+          "initial_rgb_sha256": "9b43299c30319bdc6f3acee28ac4c44cebbfc4e4a249610a7b0003141461c3ac",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/dt/_review/cvZr5TUy5C5/3/steps.jsonl",
+          "steps_sha256": "3f83db8457721b02b1588a0efe9128b86c9c98239f51b32b3a7f45e152ce0361",
+          "pre_action_frames": 83,
+          "last_pre_action": {
+            "step": 82,
+            "timestamp_s": 3.984000000000003,
+            "polar": [
+              1.3242260057761333,
+              -0.0490812873020812
+            ],
+            "target_visibility": {
+              "target_pixels": 19726,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.13377549913194445,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:QaLdnwvtxbs/0": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.8733333333333333,
+          "following_step": 262,
+          "total_step": 300,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "QaLdnwvtxbs/0",
+          "initial_rgb_sha256": "e4f899a271f59f863dcbcc03d6e02834683a01898d2c5d9b6be6ac2c519b12b2",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/dt/_review/QaLdnwvtxbs/0/steps.jsonl",
+          "steps_sha256": "fd197159290414d0ed0b4153cb9d1902390bfafc14c71555a944c87852e82a7d",
+          "pre_action_frames": 300,
+          "last_pre_action": {
+            "step": 299,
+            "timestamp_s": 14.543999999999523,
+            "polar": [
+              1.3344975431089543,
+              -0.007560107935338093
+            ],
+            "target_visibility": {
+              "target_pixels": 18566,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1259087456597222,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:qyAac8rV8Zk/9": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 70,
+          "total_step": 70,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "qyAac8rV8Zk/9",
+          "initial_rgb_sha256": "1e12174e3960235cd14e1aae1259e5a84e65604057f77b6084ddaae28806aaef",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/dt/_review/qyAac8rV8Zk/9/steps.jsonl",
+          "steps_sha256": "4c50f0ca342ddcfd2fc91cdd00f44c5024b9a41252556f714355b771bfacc17c",
+          "pre_action_frames": 70,
+          "last_pre_action": {
+            "step": 69,
+            "timestamp_s": 3.3520000000000025,
+            "polar": [
+              1.3454651849752965,
+              -0.008710080627617457
+            ],
+            "target_visibility": {
+              "target_pixels": 14738,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0999484592013889,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "dt:JmbYfDe2QKZ/10": {
+          "finish": false,
+          "status": "Lost",
+          "success": 0.0,
+          "following_rate": 0.05714285714285714,
+          "following_step": 2,
+          "total_step": 35,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "dt",
+          "key": "JmbYfDe2QKZ/10",
+          "initial_rgb_sha256": "6de60537bae744ae051812c8a56e4bea7bbec1e5491e97650535f048378d3ee6",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/dt/_review/JmbYfDe2QKZ/10/steps.jsonl",
+          "steps_sha256": "ebd139e68766f31ffe169d14b4a0dafce60d5fbd4857a3f0ba2ade5eda916959",
+          "pre_action_frames": 35,
+          "last_pre_action": {
+            "step": 34,
+            "timestamp_s": 1.6480000000000012,
+            "polar": [
+              6.575540696551403,
+              0.40365161036770814
+            ],
+            "target_visibility": {
+              "target_pixels": 96,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.0006510416666666666,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [
+            {
+              "steps": [
+                3,
+                34
+              ],
+              "timestamp_s": [
+                0.14400000000000004,
+                1.6480000000000012
+              ],
+              "frames": 32,
+              "pixels_min_max": [
+                0,
+                2937
+              ],
+              "range_m_min_max": [
+                2.219019196162038,
+                6.602536440780772
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.40365161036770814,
+                2.525500210375784
+              ]
+            }
+          ],
+          "upper_visibility_runs": []
+        },
+        "at:cvZr5TUy5C5/3": {
+          "finish": false,
+          "status": "Collision",
+          "success": 0.0,
+          "following_rate": 0.7,
+          "following_step": 7,
+          "total_step": 10,
+          "collision": 1.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "cvZr5TUy5C5/3",
+          "initial_rgb_sha256": "8164de90591f267b2c8b292358e656d07c011ca11a3f2d398dbc7cda648f57c2",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/at/_review/cvZr5TUy5C5/3/steps.jsonl",
+          "steps_sha256": "c0170c40e344e29f3396f4d7f95fb6133593d0a8bbe8ad24c0a743f1e7586a33",
+          "pre_action_frames": 10,
+          "last_pre_action": {
+            "step": 9,
+            "timestamp_s": 0.4320000000000003,
+            "polar": [
+              0.5238275448707689,
+              0.15461857657822056
+            ],
+            "target_visibility": {
+              "target_pixels": 118152,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.80126953125,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          },
+          "lower_visibility_runs": [],
+          "upper_visibility_runs": [
+            {
+              "steps": [
+                8,
+                9
+              ],
+              "timestamp_s": [
+                0.38400000000000023,
+                0.4320000000000003
+              ],
+              "frames": 2,
+              "pixels_min_max": [
+                58525,
+                118152
+              ],
+              "range_m_min_max": [
+                0.5238275448707689,
+                0.7512935145678122
+              ],
+              "abs_body_bearing_rad_min_max": [
+                0.07454126283444269,
+                0.15461857657822056
+              ]
+            }
+          ]
+        },
+        "at:QaLdnwvtxbs/0": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.7244094488188977,
+          "following_step": 92,
+          "total_step": 127,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "QaLdnwvtxbs/0",
+          "initial_rgb_sha256": "e4f899a271f59f863dcbcc03d6e02834683a01898d2c5d9b6be6ac2c519b12b2",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/at/_review/QaLdnwvtxbs/0/steps.jsonl",
+          "steps_sha256": "dcbf98f2153a85bf9650aac60e196957fe2b93ffb0e42db2d6d39d88925054cc",
+          "pre_action_frames": 127,
+          "last_pre_action": {
+            "step": 126,
+            "timestamp_s": 6.1280000000000046,
+            "polar": [
+              1.310572754414297,
+              0.03073271202487313
+            ],
+            "target_visibility": {
+              "target_pixels": 20717,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.1404961480034722,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:qyAac8rV8Zk/9": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 1.0,
+          "following_step": 68,
+          "total_step": 68,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "qyAac8rV8Zk/9",
+          "initial_rgb_sha256": "f8f4e86830d8834650d1974eadc4db6e391bc3c6d90bc14c08b35ce6b1945c47",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/at/_review/qyAac8rV8Zk/9/steps.jsonl",
+          "steps_sha256": "1fb1063edd60b9bac61a2ca46c3d6273c6ab86ba6f13b0cf3fd7d47e40bf96b9",
+          "pre_action_frames": 68,
+          "last_pre_action": {
+            "step": 67,
+            "timestamp_s": 3.2560000000000024,
+            "polar": [
+              1.3603241523333809,
+              -0.002164652549350174
+            ],
+            "target_visibility": {
+              "target_pixels": 17729,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.12023247612847222,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        },
+        "at:JmbYfDe2QKZ/10": {
+          "finish": true,
+          "status": "Normal",
+          "success": 1.0,
+          "following_rate": 0.9824561403508771,
+          "following_step": 56,
+          "total_step": 57,
+          "collision": 0.0,
+          "policy_init_valid": true,
+          "task": "at",
+          "key": "JmbYfDe2QKZ/10",
+          "initial_rgb_sha256": "8336a79e452ff573071ce2d4b489b152e673efed289da35e67fb6487d24707ba",
+          "released_fallback_count": 0,
+          "steps_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/at/_review/JmbYfDe2QKZ/10/steps.jsonl",
+          "steps_sha256": "87bd1f04e7f40844c9fe10617e2941facd4ec8c2eb394b5f15bafa05fd8569d9",
+          "pre_action_frames": 57,
+          "last_pre_action": {
+            "step": 56,
+            "timestamp_s": 2.720000000000002,
+            "polar": [
+              1.3562070532062935,
+              -0.005700098818222508
+            ],
+            "target_visibility": {
+              "target_pixels": 19060,
+              "image_shape": [
+                384,
+                384
+              ],
+              "target_pixel_fraction": 0.12925889756944445,
+              "timing": "pre_action_not_final_post_action",
+              "usage": "observer_only_not_policy_input"
+            }
+          }
+        }
+      },
+      "observer_frame_coverage": {
+        "total": 2425,
+        "target_pixels_present": 2425
+      },
+      "logs": [
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/server.log",
+          "sha256": "ee3c5087fe4f881f403bca0ec0a1a66887cc731c7258ec41b2602a9bdb1bd6ac",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 0,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/worker.log",
+          "sha256": "2c69c789d0527971ada530519b5d352a9a576b42fa6734a1783ec34fac5f56ce",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 12,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_0/xvfb.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 0,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/server.log",
+          "sha256": "2a8201bb7f5a0a5de2284e7418d1fe0c1847dca047a8907e06215c2ee5e5cd66",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 0,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/worker.log",
+          "sha256": "1736638f4673746637ecb36bc3b1bd60f764216ffdec3de7f8160602dae38033",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 9,
+          "x11_listener_errors": []
+        },
+        {
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60771/task_71650/wa_lightnav_confirmation_v1/lightnav/shard_1/xvfb.log",
+          "sha256": "8f7562ea7a26c0b273b3c823d6a68f13aaefb3291119b6b2dfd142b6c0ee0cec",
+          "fatal_signature_lines": [],
+          "semantic_ssd_load_failure_count": 0,
+          "x11_listener_errors": [
+            "_XSERVTransmkdir: ERROR: Cannot create /tmp/.X11-unix",
+            "_XSERVTransSocketUNIXCreateListener: mkdir(/tmp/.X11-unix) failed, errno = 17",
+            "_XSERVTransMakeAllCOTSServerListeners: failed to create listener for unix"
+          ]
+        }
+      ]
+    }
+  },
+  "disagreements": {
+    "wa_only_success": [
+      "dt:GLAQ4DNUx5U/20",
+      "at:GLAQ4DNUx5U/20",
+      "dt:JmbYfDe2QKZ/10",
+      "at:cvZr5TUy5C5/3"
+    ],
+    "lightnav_only_success": [
+      "stt:GLAQ4DNUx5U/20"
+    ]
+  },
+  "wa_failure_notes": {
+    "stt:GLAQ4DNUx5U/20": {
+      "category": "Lost: sustained low target pixels with constrained translation",
+      "low_pixel_span": {
+        "steps": [
+          24,
+          64
+        ],
+        "timestamp_s": [
+          1.168,
+          3.112
+        ],
+        "frames": 41,
+        "pixel_min_max": [
+          0,
+          1370
+        ]
+      },
+      "strong_constrained_translation_count": {
+        "wa": 26,
+        "lightnav": 0
+      },
+      "evidence": "WA steps24-27 command forward0.162-0.184m while measured forward about-0.002 to0.002m; low target pixels persisted. LightNav succeeds. This supports visibility-loss with constrained translation, not a diagnosed particular doorway or universally insufficient yaw."
+    },
+    "dt:SUHsP6z2gcJ/13": {
+      "category": "Lost: sustained low target pixels, later constrained translation",
+      "low_pixel_span": {
+        "steps": [
+          33,
+          149
+        ],
+        "timestamp_s": [
+          1.6,
+          7.248
+        ],
+        "frames": 117,
+        "pixel_min_max": [
+          0,
+          2270
+        ]
+      },
+      "strong_constrained_translation_count": {
+        "wa": 6,
+        "lightnav": 2
+      },
+      "evidence": "WA constraints only steps143-148, much later than low-pixel onset at33; cannot attribute entire failure to late blocking. Both methods fail."
+    },
+    "stt:SUHsP6z2gcJ/13": {
+      "category": "Collision: retreat executed but approaching target closes distance",
+      "upper_pixel_span": {
+        "steps": [
+          262,
+          267
+        ],
+        "timestamp_s": [
+          12.744,
+          12.992
+        ],
+        "pixel_min_max": [
+          47868,
+          119851
+        ]
+      },
+      "strong_constrained_translation_count": {
+        "wa": 0,
+        "lightnav": 0
+      },
+      "radial_examples_m_per_transition": [
+        {
+          "step": 263,
+          "command_robot": -0.006,
+          "measured_robot": -0.006,
+          "measured_target": -0.255
+        },
+        {
+          "step": 264,
+          "command_robot": -0.017,
+          "measured_robot": -0.017,
+          "measured_target": -0.065
+        }
+      ],
+      "evidence": "Recorded robot retreat approximately matches command, yet target inward motion is larger. Both methods collide. These data do not support wall-blocked retreat."
+    },
+    "at:SUHsP6z2gcJ/13": {
+      "category": "Collision: retreat executed but approaching target closes distance",
+      "upper_pixel_span": {
+        "steps": [
+          265,
+          270
+        ],
+        "timestamp_s": [
+          12.896,
+          13.136
+        ],
+        "pixel_min_max": [
+          44560,
+          71352
+        ]
+      },
+      "strong_constrained_translation_count": {
+        "wa": 0,
+        "lightnav": 0
+      },
+      "radial_examples_m_per_transition": [
+        {
+          "step": 265,
+          "command_robot": -0.053,
+          "measured_robot": -0.053,
+          "measured_target": -0.179
+        },
+        {
+          "step": 266,
+          "command_robot": -0.082,
+          "measured_robot": -0.082,
+          "measured_target": -0.114
+        }
+      ],
+      "evidence": "Recorded robot retreat approximately matches command. Both methods collide. Last pre-action range0.670594m is not terminal post-action range."
+    }
+  },
+  "strong_translation_constraint_definition": "Across adjacent recorded robot poses, command translation length>0.03m and measured translation length<25% commanded; diagnostic heuristic, not contact sensor or identified obstacle geometry.",
+  "method_disagreement_notes": {
+    "at:GLAQ4DNUx5U/20": "WA recovers intermittent visibility failure and succeeds; LightNav initially commands negative yaw while WA commands positive yaw; LightNav later fails, whereas WA succeeds. Modalities differ so not solely a backbone attribution. LightNav upper pixel span103-114 occurs at range3.014-4.176m: upper pixel fraction alone must not be universally interpreted as near base distance.",
+    "dt:GLAQ4DNUx5U/20": "WA recovers temporary low-pixel intervals and succeeds; LightNav low-pixel steps26-55 persists to Lost.",
+    "dt:JmbYfDe2QKZ/10": "WA recovers pixel-zero steps9-12 with small absolute body bearing0.005-0.062rad; LightNav lower-bound violation steps3-34 persists to Lost. Body bearing alone is not rendered visibility.",
+    "at:cvZr5TUy5C5/3": "WA recovers early upper-bound violations and succeeds; LightNav ends Collision after10frames, last pre-action pixels118152 and range0.523828m."
+  },
+  "log_assessment": "No Traceback, FATAL, CUDA OOM or RuntimeError in inspected worker/server logs. Both methods have matching21 SSD semantic descriptor load failure messages(12 shard0,9 shard1) and shard1 X11 unix-listener warnings. All24 episodes completed per method; do not label run anomaly-free. LightNav released_fallback_count is0 in all24 episode records.",
+  "limits": [
+    "Observer pixels/poses are pre-action, not the final post-action observation; last recorded frame is not proof of the exact terminating criterion.",
+    "Recorded body bearing is not camera visibility or human_following; pixel thresholds cannot be substituted with heading.",
+    "Pixel counts are observer-only diagnostics and must not be fed to policy RPC or used as future target/GT inputs.",
+    "No unseen geometry is inferred; constrained translation does not identify which obstacle was contacted.",
+    "WA RGB+simulated polar UWB and released LightNav inputs differ; paired environment comparison is not a same-modality architecture ablation.",
+    "HumanCollision in evt_bench/additional_metric.py is distance_to_leader<0.5m or historical occurrence. It is target-proximity collision, not a general static/dynamic obstacle contact metric.",
+    "Shared SSD semantic warnings and occasional full-frame target-pixel values limit visual causality claims; completed matched runs alone do not prove semantic rendering error absent.",
+    "Independent confirmation must not become recovery training data. Any next intervention requires training-only examples and a separately held-out future validation.",
+    "The existing971 teacher windows contain useful near-target recovery but no AT windows at absolute bearing>=0.78rad; naive repetition cannot add absent coverage. Continuous target-pixel labels are not present in that cache."
+  ]
+}
