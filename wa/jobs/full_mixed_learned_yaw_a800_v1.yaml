@@ -1,0 +1,21 @@
+config_version: 1
+cluster: baidu_a800
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 2
+log_folder: wa_full_mixed_learned_yaw_v1
+tasks:
+  - name: wa_full_mixed_4215_v1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 2
+    timeout: 86400
+    cmd: |
+      set -euo pipefail
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_full_mixed_learned_yaw_v1
+      test "$(git rev-parse HEAD)" = f0fa5c11b4fd78d291d20fa005853561f8baea8c
+      test -z "$(git status --porcelain)"
+      export WA_DIAG_CONTROLLER=learned_yaw_guard_v1 WA_DIAG_OBSERVER_STATE=1 WA_REVIEW_VIDEO=1
+      export WA_DIAG_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_60502/task_71381/wa_recovery_mix_a800_v1/checkpoint.pt
+      /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -c 'import os; from wa.wm.loaders import sha; assert sha(os.environ["WA_DIAG_CHECKPOINT"])=="20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331"'
+      OUTPUT_ROOT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_full_mixed_learned_yaw_v1"
+      bash wa/scripts/eval_full_mixed.sh "$OUTPUT_ROOT"
