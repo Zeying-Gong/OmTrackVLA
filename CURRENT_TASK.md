@@ -1,5 +1,5 @@
 # WA current task — full mixed closed-loop validation
-Updated: 2026-10-04T03:05+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
+Updated: 2026-10-04T03:27+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 
 ## User-authorized scope and acceptance
 - Full existing validation STT1405 + DT1405 + AT1405 =4215; no subset/smoke, no retraining, no new LightNav full evaluation.
@@ -19,8 +19,8 @@ Updated: 2026-10-04T03:05+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 - First developer dataset check used incorrect cwd and hit trained_agent import shadowing; rerun with exact BENCH worker cwd passed. That developer check did not submit a smoke; subsequent formal startup failure is recorded below.
 - Job/Task: 60885/71808 RUNNING2A800 (submitted18:49:27); first60883/71806 FAILED startup0episodes (unset CUDA_VISIBLE_DEVICES incorrectly defaulted8); preserved logs/source. Fixed actual CUDA count,18CPU testsPASS. No current full mixed result.
 - Output follows /data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2.
-- Actual1326/4215 unique complete: STT622 DT352 AT352 at2026-10-04T03:05+08:00; +59 since02:43. shard00/01 COMPLETE.json528each;active02=133/03=137. Invalidinit49 allsuccess0 retained. Activeworkerlogs growing/recent<=30s; no fatal/OOM; no summaryyet.
-- Runtime watch:elapsed8h16m/1326 extrapolates~26.3h,above86400s cap;notreliableETA. Check throughput;do not silently change runningconfig or duplicatejobs. Completion marker is COMPLETE.json.
+- Actual1384/4215 unique complete: STT680 DT352 AT352 at2026-10-04T03:27+08:00; +58 since03:05. shard00/01 COMPLETE.json528each;active02=163/03=165. Invalidinit55 allsuccess0 retained. Activeworkerlogs growing/recent<=22s; no fatal/OOM; no summaryyet.
+- Runtime watch:elapsed8h38m/1384 extrapolates~26.3h,above86400s cap;notreliableETA. Check throughput;do not silently change runningconfig or duplicatejobs. Completion marker is COMPLETE.json.
 - Monitor wa ACTIVE every20min; follow existing job, then full completeness/metric/video audit and pause.
 - Config SHA0fd597cefa7ed98ee984fe23d6da75a7b1c909ba732f850a4a95bb86bca6f1b6.
 
