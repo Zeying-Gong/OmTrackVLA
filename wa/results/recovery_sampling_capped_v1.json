@@ -1,0 +1,575 @@
+{
+  "schema": "wa_recovery_sampling_capped_v1",
+  "status": "PLAN_ONLY_NOT_USED_BY_TRAINING",
+  "provenance": {
+    "cache": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/recovery_se2_cache_v2",
+    "complete_sha256": "59b2774e278deb6032f07720bfbbe7d730aa08c7ce69e4ece52ad894387879d3",
+    "valid_index_sha256": "d981e9d6a3846ad09a6bdedd780fd36c3a4b3a09430b694c25d44843f8703b8a",
+    "index_audit_sha256": "bb7aa8d554a856fdabea0cc5746c1c0239e61082ecb4fcfd7816673b1bcdbc3e",
+    "raw_episode_evidence": [
+      {
+        "episode": 0,
+        "episode_uid": "dt:0fbfc91b72d2591a7055",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/dt_0fbfc91b72d2591a7055/teacher_0015",
+        "takeover_step": 15,
+        "takeover_observation_index": 15,
+        "source_sha256": {
+          "metadata.json": "53f6b4d77cc0fd933f65a8812f560af5397164071c8ce5b0158a0f6f34d131d3",
+          "observations.json": "137c536fb92f14e5157b938750d2840ef0818d613ca60ebf79511caf65cbfb26",
+          "actions.json": "85301a666d28399aa9f079924c3b239f5ca59a0d566ad1b6b2974cba951e3701"
+        }
+      },
+      {
+        "episode": 1,
+        "episode_uid": "dt:a85b35e0514030925ea1",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/dt_a85b35e0514030925ea1/teacher_0015",
+        "takeover_step": 15,
+        "takeover_observation_index": 15,
+        "source_sha256": {
+          "metadata.json": "a562df609da85f35d60fbe876726412ee95e1812f78f92f4acd10796a7ddf704",
+          "observations.json": "485f0513b09af6d8c1d7292cedd55267db90fb6f95a769cb6804332a5774e488",
+          "actions.json": "cb2dc974a0143033646f1bc91ffeecd02ff73d51377909c4e5acbddd577ebb99"
+        }
+      },
+      {
+        "episode": 2,
+        "episode_uid": "dt:fa3f1f96526ad0b5a8cd",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/dt_fa3f1f96526ad0b5a8cd/teacher_0001",
+        "takeover_step": 1,
+        "takeover_observation_index": 1,
+        "source_sha256": {
+          "metadata.json": "6d0ea6c199e5f0cb8a976a4d6420bff7fa333ffc4a4d7fa8c22255eab87aacd8",
+          "observations.json": "cd29a2827ffd1d8ca2833c4f28e60bc423bc324996bde7d7493be9b4fbd20912",
+          "actions.json": "95ad0731e07ffdfb6f0b59b6a367a3b9657894ad5360b457fef778f350d034f9"
+        }
+      },
+      {
+        "episode": 3,
+        "episode_uid": "stt:01c5ea887f9209d8d65e",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_01c5ea887f9209d8d65e/teacher_0029",
+        "takeover_step": 29,
+        "takeover_observation_index": 29,
+        "source_sha256": {
+          "metadata.json": "1c802b76e55ccd25e508c2fdd49abc98a0b305b9213f62d2e5c7b9941a94d94e",
+          "observations.json": "219480f75f00ce83c2fc0864b91c6ce244d012f1e1b31ac83782f6a850d364a9",
+          "actions.json": "1617ab8f250478b8d04f41521387b4c506d5ee69d7a8d6236876c55db04a625f"
+        }
+      },
+      {
+        "episode": 4,
+        "episode_uid": "stt:3fd4719bf118aa9e4a86",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_3fd4719bf118aa9e4a86/teacher_0016",
+        "takeover_step": 16,
+        "takeover_observation_index": 16,
+        "source_sha256": {
+          "metadata.json": "4940eec632fd06070564e658e6cdf0276c91c2ab88c1db88d36e6bbeb904ae30",
+          "observations.json": "8ba78cd9709981f4cb832ae5ca9c33201c6e01f6493b6b02e3250748ef1eab58",
+          "actions.json": "6473a9b28f6dfcef8d20e9f7afdf38eb87d2e0d8ec681b17ac1b816d07cb2746"
+        }
+      },
+      {
+        "episode": 5,
+        "episode_uid": "stt:547473d71010a463ad1d",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane0/collection/stt_547473d71010a463ad1d/teacher_0031",
+        "takeover_step": 31,
+        "takeover_observation_index": 31,
+        "source_sha256": {
+          "metadata.json": "32bb41d3c94076beab6f48712bb8848266b93e12420bb363134c4569f51b8373",
+          "observations.json": "ba7d1e72782ab0cf07566a1ec09430637ee40d8c9e822f7e69959bf232368c63",
+          "actions.json": "99b38a8ad86c0bd0c01598aa1c128dbe3e13fdc28eab1baab0bdcd20a26cb8d6"
+        }
+      },
+      {
+        "episode": 6,
+        "episode_uid": "at:4297faf3234d6a1b05b4",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/at_4297faf3234d6a1b05b4/teacher_0000",
+        "takeover_step": 0,
+        "takeover_observation_index": 0,
+        "source_sha256": {
+          "metadata.json": "f200e66e36578230eec5de3c17e33bece9f701d746723b347ca7292ee4f0420f",
+          "observations.json": "92b2a4b1e661e918b075c455bb8284b8e83dd8f45155a75e70f381ed3b728e99",
+          "actions.json": "c6b502212dc0c78d05309d2864b0854e51aa19e65515d1b15f9bf9cc16470c46"
+        }
+      },
+      {
+        "episode": 7,
+        "episode_uid": "at:6f4f68242eca5ce002b7",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/at_6f4f68242eca5ce002b7/teacher_0040",
+        "takeover_step": 40,
+        "takeover_observation_index": 40,
+        "source_sha256": {
+          "metadata.json": "bdb2890371ffda2b782ffebe66025ff0fa9b233ced11d672236463326b14785f",
+          "observations.json": "6b2f8cf76ad7192e492bd3914e753944475bf8ca36bc119c5700bc180c97445a",
+          "actions.json": "0145608af21d43f94baa004acd8ad2eebe4e580104a408c0d763b322139e2ec1"
+        }
+      },
+      {
+        "episode": 8,
+        "episode_uid": "stt:1a7bc3069eebfda06086",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_1a7bc3069eebfda06086/teacher_0000",
+        "takeover_step": 0,
+        "takeover_observation_index": 0,
+        "source_sha256": {
+          "metadata.json": "d7cd78aa82e3983d464c57b8d8ad572f7131964be0c5783a9b4a964ec00c8c24",
+          "observations.json": "289ff3f799f0e393a43d5f5b2866b411a771dd5cf9cbb4319322fe5ac4c699c0",
+          "actions.json": "c0e9d13a5a86e140a03d1654d3ba86effe6586caaa67c27a7ed959626d04db1c"
+        }
+      },
+      {
+        "episode": 9,
+        "episode_uid": "stt:7d10ebba1a8402c7deca",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_7d10ebba1a8402c7deca/teacher_0013",
+        "takeover_step": 13,
+        "takeover_observation_index": 13,
+        "source_sha256": {
+          "metadata.json": "5efc886d035356aa072fd175708eb5512ce9db1e44f70395e292c33740b07481",
+          "observations.json": "a0db8ed7fd3e4d4f31464e64fd2a353b090822fb143927cfc4c1a1adf31e8a1f",
+          "actions.json": "52668d38d5b826bc0ed602fc024d2d771018198b1fd65ef547134fc3d28e7de7"
+        }
+      },
+      {
+        "episode": 10,
+        "episode_uid": "stt:a1c5a422fd4c01d797e9",
+        "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60322/task_71197/wa_recovery_collect_v1/lane1/collection/stt_a1c5a422fd4c01d797e9/teacher_0010",
+        "takeover_step": 10,
+        "takeover_observation_index": 10,
+        "source_sha256": {
+          "metadata.json": "85605973cd2acf5a4c8297cb0ca8d8c0f7946615ac6973ee10023bdfed8b07f9",
+          "observations.json": "c7b879080d6dfca99bcf14b2c2f3ae84e665c302abb8315ad1093815fae74579",
+          "actions.json": "af6c816de20efe0047c6333785ffa8f3ef6aae9d3026b89086308d9e5eeffd9c"
+        }
+      }
+    ],
+    "no_data_mutation": true,
+    "policy_input_change": false
+  },
+  "plan": {
+    "seed": 42,
+    "budget_pre_ddp": 15536,
+    "max_repeat_cap": 32,
+    "early_seconds": 1.0,
+    "early_boundary": "age <= threshold; late > threshold",
+    "episode_order": [
+      "at:4297faf3234d6a1b05b4",
+      "at:6f4f68242eca5ce002b7",
+      "dt:0fbfc91b72d2591a7055",
+      "dt:a85b35e0514030925ea1",
+      "dt:fa3f1f96526ad0b5a8cd",
+      "stt:01c5ea887f9209d8d65e",
+      "stt:1a7bc3069eebfda06086",
+      "stt:3fd4719bf118aa9e4a86",
+      "stt:547473d71010a463ad1d",
+      "stt:7d10ebba1a8402c7deca",
+      "stt:a1c5a422fd4c01d797e9"
+    ],
+    "episodes": [
+      {
+        "episode_uid": "at:4297faf3234d6a1b05b4",
+        "episode": 6,
+        "task": "at",
+        "category": "teacher_from_start",
+        "unique_windows": 281,
+        "capacity": 8992,
+        "exposures": 1735,
+        "saturated": false,
+        "early_unique": 17,
+        "late_unique": 264,
+        "desired_extra_early": 727,
+        "desired_extra_late": 727,
+        "allocated_extra_early": 527,
+        "allocated_extra_late": 927,
+        "early_exposures": 544,
+        "late_exposures": 1191,
+        "layer_reallocation": 200,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 4,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "at:6f4f68242eca5ce002b7",
+        "episode": 7,
+        "task": "at",
+        "category": "mid_episode_recovery",
+        "unique_windows": 89,
+        "capacity": 2848,
+        "exposures": 1735,
+        "saturated": false,
+        "early_unique": 21,
+        "late_unique": 68,
+        "desired_extra_early": 823,
+        "desired_extra_late": 823,
+        "allocated_extra_early": 651,
+        "allocated_extra_late": 995,
+        "early_exposures": 672,
+        "late_exposures": 1063,
+        "layer_reallocation": 172,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 15,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "dt:0fbfc91b72d2591a7055",
+        "episode": 0,
+        "task": "dt",
+        "category": "mid_episode_recovery",
+        "unique_windows": 21,
+        "capacity": 672,
+        "exposures": 672,
+        "saturated": true,
+        "early_unique": 21,
+        "late_unique": 0,
+        "desired_extra_early": 326,
+        "desired_extra_late": 325,
+        "allocated_extra_early": 651,
+        "allocated_extra_late": 0,
+        "early_exposures": 672,
+        "late_exposures": 0,
+        "layer_reallocation": 325,
+        "empty_early": false,
+        "empty_late": true,
+        "min_repeat": 32,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "dt:a85b35e0514030925ea1",
+        "episode": 1,
+        "task": "dt",
+        "category": "mid_episode_recovery",
+        "unique_windows": 87,
+        "capacity": 2784,
+        "exposures": 1735,
+        "saturated": false,
+        "early_unique": 21,
+        "late_unique": 66,
+        "desired_extra_early": 824,
+        "desired_extra_late": 824,
+        "allocated_extra_early": 651,
+        "allocated_extra_late": 997,
+        "early_exposures": 672,
+        "late_exposures": 1063,
+        "layer_reallocation": 173,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 16,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "dt:fa3f1f96526ad0b5a8cd",
+        "episode": 2,
+        "task": "dt",
+        "category": "mid_episode_recovery",
+        "unique_windows": 149,
+        "capacity": 4768,
+        "exposures": 1735,
+        "saturated": false,
+        "early_unique": 18,
+        "late_unique": 131,
+        "desired_extra_early": 793,
+        "desired_extra_late": 793,
+        "allocated_extra_early": 558,
+        "allocated_extra_late": 1028,
+        "early_exposures": 576,
+        "late_exposures": 1159,
+        "layer_reallocation": 235,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 8,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "stt:01c5ea887f9209d8d65e",
+        "episode": 3,
+        "task": "stt",
+        "category": "mid_episode_recovery",
+        "unique_windows": 33,
+        "capacity": 1056,
+        "exposures": 1056,
+        "saturated": true,
+        "early_unique": 21,
+        "late_unique": 12,
+        "desired_extra_early": 512,
+        "desired_extra_late": 511,
+        "allocated_extra_early": 651,
+        "allocated_extra_late": 372,
+        "early_exposures": 672,
+        "late_exposures": 384,
+        "layer_reallocation": 139,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 32,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "stt:1a7bc3069eebfda06086",
+        "episode": 8,
+        "task": "stt",
+        "category": "teacher_from_start",
+        "unique_windows": 41,
+        "capacity": 1312,
+        "exposures": 1312,
+        "saturated": true,
+        "early_unique": 17,
+        "late_unique": 24,
+        "desired_extra_early": 636,
+        "desired_extra_late": 635,
+        "allocated_extra_early": 527,
+        "allocated_extra_late": 744,
+        "early_exposures": 544,
+        "late_exposures": 768,
+        "layer_reallocation": 109,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 32,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "stt:3fd4719bf118aa9e4a86",
+        "episode": 4,
+        "task": "stt",
+        "category": "mid_episode_recovery",
+        "unique_windows": 129,
+        "capacity": 4128,
+        "exposures": 1735,
+        "saturated": false,
+        "early_unique": 21,
+        "late_unique": 108,
+        "desired_extra_early": 803,
+        "desired_extra_late": 803,
+        "allocated_extra_early": 651,
+        "allocated_extra_late": 955,
+        "early_exposures": 672,
+        "late_exposures": 1063,
+        "layer_reallocation": 152,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 9,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "stt:547473d71010a463ad1d",
+        "episode": 5,
+        "task": "stt",
+        "category": "mid_episode_recovery",
+        "unique_windows": 11,
+        "capacity": 352,
+        "exposures": 352,
+        "saturated": true,
+        "early_unique": 11,
+        "late_unique": 0,
+        "desired_extra_early": 170,
+        "desired_extra_late": 171,
+        "allocated_extra_early": 341,
+        "allocated_extra_late": 0,
+        "early_exposures": 352,
+        "late_exposures": 0,
+        "layer_reallocation": 171,
+        "empty_early": false,
+        "empty_late": true,
+        "min_repeat": 32,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "stt:7d10ebba1a8402c7deca",
+        "episode": 9,
+        "task": "stt",
+        "category": "mid_episode_recovery",
+        "unique_windows": 59,
+        "capacity": 1888,
+        "exposures": 1735,
+        "saturated": false,
+        "early_unique": 21,
+        "late_unique": 38,
+        "desired_extra_early": 838,
+        "desired_extra_late": 838,
+        "allocated_extra_early": 651,
+        "allocated_extra_late": 1025,
+        "early_exposures": 672,
+        "late_exposures": 1063,
+        "layer_reallocation": 187,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 27,
+        "max_repeat": 32
+      },
+      {
+        "episode_uid": "stt:a1c5a422fd4c01d797e9",
+        "episode": 10,
+        "task": "stt",
+        "category": "mid_episode_recovery",
+        "unique_windows": 71,
+        "capacity": 2272,
+        "exposures": 1734,
+        "saturated": false,
+        "early_unique": 21,
+        "late_unique": 50,
+        "desired_extra_early": 832,
+        "desired_extra_late": 831,
+        "allocated_extra_early": 651,
+        "allocated_extra_late": 1012,
+        "early_exposures": 672,
+        "late_exposures": 1062,
+        "layer_reallocation": 181,
+        "empty_early": false,
+        "empty_late": false,
+        "min_repeat": 21,
+        "max_repeat": 32
+      }
+    ],
+    "unique_windows": 971,
+    "min_repeat": 4,
+    "max_repeat": 32,
+    "pre_ddp": {
+      "exposures": 15536,
+      "unique_covered": 971,
+      "missing_local_indices": [],
+      "min_repeat": 4,
+      "max_repeat": 32,
+      "per_task": {
+        "dt": 4142,
+        "stt": 7924,
+        "at": 3470
+      },
+      "per_category": {
+        "mid_episode_recovery": 12489,
+        "teacher_from_start": 3047
+      },
+      "per_episode": {
+        "dt:0fbfc91b72d2591a7055": 672,
+        "dt:a85b35e0514030925ea1": 1735,
+        "dt:fa3f1f96526ad0b5a8cd": 1735,
+        "stt:01c5ea887f9209d8d65e": 1056,
+        "stt:3fd4719bf118aa9e4a86": 1735,
+        "stt:547473d71010a463ad1d": 352,
+        "at:4297faf3234d6a1b05b4": 1735,
+        "at:6f4f68242eca5ce002b7": 1735,
+        "stt:1a7bc3069eebfda06086": 1312,
+        "stt:7d10ebba1a8402c7deca": 1735,
+        "stt:a1c5a422fd4c01d797e9": 1734
+      },
+      "early_late": {
+        "early": 6720,
+        "late": 8816
+      }
+    }
+  },
+  "ddp": {
+    "exposures": 15536,
+    "unique_covered": 971,
+    "missing_local_indices": [],
+    "min_repeat": 4,
+    "max_repeat": 32,
+    "per_task": {
+      "dt": 4142,
+      "stt": 7924,
+      "at": 3470
+    },
+    "per_category": {
+      "mid_episode_recovery": 12489,
+      "teacher_from_start": 3047
+    },
+    "per_episode": {
+      "dt:0fbfc91b72d2591a7055": 672,
+      "dt:a85b35e0514030925ea1": 1735,
+      "dt:fa3f1f96526ad0b5a8cd": 1735,
+      "stt:01c5ea887f9209d8d65e": 1056,
+      "stt:3fd4719bf118aa9e4a86": 1735,
+      "stt:547473d71010a463ad1d": 352,
+      "at:4297faf3234d6a1b05b4": 1735,
+      "at:6f4f68242eca5ce002b7": 1735,
+      "stt:1a7bc3069eebfda06086": 1312,
+      "stt:7d10ebba1a8402c7deca": 1735,
+      "stt:a1c5a422fd4c01d797e9": 1734
+    },
+    "early_late": {
+      "early": 6720,
+      "late": 8816
+    },
+    "seed": 42,
+    "epoch": 1,
+    "world_size": 8,
+    "batch_size": 2,
+    "sampler_drop_last": true,
+    "loader_drop_last": true,
+    "torch_version": "2.8.0+cu128",
+    "combined_pre_ddp": 742167,
+    "combined_actual": 742160,
+    "dropped_total": 7,
+    "base_pre_ddp": 726631,
+    "base_actual": 726624,
+    "base_dropped": 7,
+    "recovery_dropped": 0,
+    "ranks": [
+      {
+        "rank": 0,
+        "sampler_rows": 92770,
+        "loader_rows": 92770,
+        "base_rows": 90837,
+        "recovery_rows": 1933,
+        "loader_dropped": 0
+      },
+      {
+        "rank": 1,
+        "sampler_rows": 92770,
+        "loader_rows": 92770,
+        "base_rows": 90892,
+        "recovery_rows": 1878,
+        "loader_dropped": 0
+      },
+      {
+        "rank": 2,
+        "sampler_rows": 92770,
+        "loader_rows": 92770,
+        "base_rows": 90721,
+        "recovery_rows": 2049,
+        "loader_dropped": 0
+      },
+      {
+        "rank": 3,
+        "sampler_rows": 92770,
+        "loader_rows": 92770,
+        "base_rows": 90871,
+        "recovery_rows": 1899,
+        "loader_dropped": 0
+      },
+      {
+        "rank": 4,
+        "sampler_rows": 92770,
+        "loader_rows": 92770,
+        "base_rows": 90964,
+        "recovery_rows": 1806,
+        "loader_dropped": 0
+      },
+      {
+        "rank": 5,
+        "sampler_rows": 92770,
+        "loader_rows": 92770,
+        "base_rows": 90755,
+        "recovery_rows": 2015,
+        "loader_dropped": 0
+      },
+      {
+        "rank": 6,
+        "sampler_rows": 92770,
+        "loader_rows": 92770,
+        "base_rows": 90780,
+        "recovery_rows": 1990,
+        "loader_dropped": 0
+      },
+      {
+        "rank": 7,
+        "sampler_rows": 92770,
+        "loader_rows": 92770,
+        "base_rows": 90804,
+        "recovery_rows": 1966,
+        "loader_dropped": 0
+      }
+    ]
+  },
+  "source_sha256": "061c4122c3a95c29aaa60ad5423ebe5f6fb3dd2b9c8d9946a6029035c99a229d",
+  "sampling_only": true,
+  "architecture_loss_optimizer_controller_unchanged": true,
+  "full_manifest_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/recovery_sampling_capped_v1.json",
+  "full_manifest_sha256": "6cba15c17dbf6a72c092cebd6dcb1e88c3cee5e8a0d729e46ed82b2c660bc146"
+}
