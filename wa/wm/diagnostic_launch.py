@@ -4,6 +4,8 @@ from pathlib import Path
 import torch
 ROOT=Path('/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928')
 SOURCE=Path.cwd();WLA=ROOT.parent/'WLA-EVT-20260925';BENCH=ROOT.parent/'OmTrackVLA-da3-polar-20260924';ENV=ROOT.parent.parent/'envs'
+SPLIT=os.environ.get('WA_DIAG_SPLIT','development')
+if SPLIT not in ('development','confirmation'):raise ValueError('WA_DIAG_SPLIT must be development or confirmation')
 OUT=Path(sys.argv[1]);OUT.mkdir(parents=True,exist_ok=False)
 MANIFEST=WLA/'evt_full_20260926/manifest.json';PLAN=SOURCE/'wa/wm/mixed_diagnostic_plan_v1.json'
 visible=os.environ.get('CUDA_VISIBLE_DEVICES',','.join(str(i) for i in range(torch.cuda.device_count()))).split(',')
@@ -42,7 +44,7 @@ def lane(slot,variant,shard):
         env['PYTHONPATH']=':'.join(map(str,[BENCH/'artifacts/official_runtime',BENCH/'torch_overlay',BENCH,BENCH/'habitat-lab',SOURCE,WLA]))
         env['OMTRACKVLA_XVFB_DISPLAY_NUM']=str(410+slot);env['OMTRACKVLA_HAB_SIM_GLX_ROOT']=str(BENCH);env['OMTRACKVLA_XVFB_LOG']=str(dest/'xvfb.log')
         worker=spawn([str(BENCH/'scripts/runtime/run_xvfb.sh'),str(ENV/'habitat/bin/python'),'-u','-m','wa.wm.diagnostic_eval',
-            '--manifest',str(MANIFEST),'--plan',str(PLAN),'--output',str(dest),'--shard',str(shard),'--ready',str(ready)],env,dest/'worker.log',BENCH)
+            '--manifest',str(MANIFEST),'--plan',str(PLAN),'--output',str(dest),'--shard',str(shard),'--ready',str(ready),'--split',SPLIT],env,dest/'worker.log',BENCH)
         if worker.wait()!=0:raise RuntimeError('simulator failed; preserve logs')
     finally:
         if worker:stop(worker)
@@ -63,6 +65,7 @@ try:
         rows=[]
         for s in range(2):
             dest=OUT/f'{variant}_shard{s}';assert (dest/'COMPLETE.json').exists()
+            assert json.loads((dest/'COMPLETE.json').read_text())['split']==SPLIT,'worker split mismatch'
             rows.extend(json.loads(line) for line in (dest/'episodes.jsonl').read_text().splitlines())
         assert len(rows)==24 and len({(r['task'],r['key']) for r in rows})==24
         results[variant]={}
@@ -79,7 +82,7 @@ try:
             for line in f.read_text().splitlines():
                 r=json.loads(line);reference[(r['task'],r['key'])]={r['initial_rgb_sha256']}
         assert reference==initial,'baseline initial RGB mismatch'
-    (OUT/'summary.json').write_text(json.dumps(dict(status='COMPLETE_PAIRED_DEVELOPMENT_DIAGNOSTIC',episodes=24*len(variants),results=results,
+    (OUT/'summary.json').write_text(json.dumps(dict(status='COMPLETE_PAIRED_'+SPLIT.upper()+'_DIAGNOSTIC',split=SPLIT,episodes=24*len(variants),results=results,
         initial_rgb_pairs_equal=True,baseline=baseline,controller=os.environ.get('WA_DIAG_CONTROLLER','learned_target_guard_v3'),uwb='ideal_simulated_uwb',real_uwb_verified=False),indent=2))
     print('DIAGNOSTIC_COMPLETE',json.dumps(results),flush=True)
 finally:
