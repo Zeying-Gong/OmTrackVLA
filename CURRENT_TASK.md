@@ -1,5 +1,5 @@
 # WA current task — full mixed closed-loop validation
-Updated: 2026-10-04T00:48+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
+Updated: 2026-10-04T01:13+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 
 ## User-authorized scope and acceptance
 - Full existing validation STT1405 + DT1405 + AT1405 =4215; no subset/smoke, no retraining, no new LightNav full evaluation.
@@ -19,8 +19,8 @@ Updated: 2026-10-04T00:48+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 - First developer dataset check used incorrect cwd and hit trained_agent import shadowing; rerun with exact BENCH worker cwd passed. That developer check did not submit a smoke; subsequent formal startup failure is recorded below.
 - Job/Task: 60885/71808 RUNNING2A800 (submitted18:49:27); first60883/71806 FAILED startup0episodes (unset CUDA_VISIBLE_DEVICES incorrectly defaulted8); preserved logs/source. Fixed actual CUDA count,18CPU testsPASS. No current full mixed result.
 - Output follows /data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2.
-- Actual957/4215 complete: STT352 DT352 AT253 at2026-10-04T00:48+08:00; +48 since00:26; shard00=477 shard01=480. Invalidinit35 allzero initialBBox retained. Workerlogs growing/recent<=22s; no fatal/OOM; summary notyet available.
-- Runtime watch:elapsed5h59m/957 extrapolates~26.3h,above86400s cap;fullshards incomplete/notreliableETA. Check all3task throughput;do not silently change runningconfig or duplicatejobs.
+- Actual1007/4215 complete: STT352 DT352 AT303 at2026-10-04T01:13+08:00; +50 since00:48; shard00=502 shard01=505. Invalidinit40 allzero initialBBox retained. Workerlogs growing/recent<=54s; no fatal/OOM; summary notyet available.
+- Runtime watch:elapsed6h24m/1007 extrapolates~26.8h,above86400s cap;fullshards incomplete/notreliableETA. Check all3task throughput;do not silently change runningconfig or duplicatejobs.
 - Monitor wa ACTIVE every20min; follow existing job, then full completeness/metric/video audit and pause.
 - Config SHA0fd597cefa7ed98ee984fe23d6da75a7b1c909ba732f850a4a95bb86bca6f1b6.
 
