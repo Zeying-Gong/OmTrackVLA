@@ -38,11 +38,18 @@ class DiagnosticAgent(WAAgent):
             raw=pose_action(d['xy'],d['yaw'],self.action_scales,self.action_dt,self.integration_dt)
             result,info=measured_guard(raw,d['uwb']['polar'],self.action_scales,self.action_dt,self.integration_dt)
             self.diagnostics=dict(d,controller=controller,control_info=info,normalized_action=result)
+        elif controller=='learned_yaw_guard_v1' and not self.policy_failure_reason:
+            from wa.wm.learned_yaw_control import learned_yaw_control
+            from evt_text_action_v3.control import pose_action
+            d=self.diagnostics
+            raw=pose_action(d['xy'],d['yaw'],self.action_scales,self.action_dt,self.integration_dt)
+            result,info=learned_yaw_control(raw,d['target_geometry'],self.action_scales,self.action_dt,self.integration_dt)
+            self.diagnostics=dict(d,controller=controller,control_info=info,normalized_action=result)
         elif controller=='yaw_gain2_v1' and not self.policy_failure_reason:
             from wa.wm.yaw_response import yaw_gain2
             result=yaw_gain2(result)
             self.diagnostics=dict(self.diagnostics,controller=controller,normalized_action=result,yaw_gain=2.0)
-        elif controller not in ('learned_target_guard_v3','uwb_heading_v1','yaw_gain2_v1'):raise ValueError('unknown controller')
+        elif controller not in ('learned_target_guard_v3','uwb_heading_v1','yaw_gain2_v1','learned_yaw_guard_v1'):raise ValueError('unknown controller')
         with self.trace.open('a') as f:
             f.write(json.dumps(dict(step=self.sim_step,mode=self.mode,diagnostics=self.diagnostics,
                 failure=self.policy_failure_reason,action=result,observer_state=observer_state),allow_nan=False)+'\n')

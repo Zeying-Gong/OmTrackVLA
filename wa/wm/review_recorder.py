@@ -17,6 +17,14 @@ class ReviewRecorder:
         p=np.asarray(robot.base_pos,dtype=float);r=np.asarray(robot.sim_obj.transformation.rotation(),dtype=float);t=np.asarray(target.base_pos,dtype=float)
         local=(t-p)@r
         self.row=dict(step=int(step),timestamp_s=float(timestamp),robot_position_world=p.tolist(),robot_rotation_world_from_body=r.tolist(),target_position_world=t.tolist(),polar=[float(np.hypot(local[0],local[2])),float(np.arctan2(-local[2],local[0]))],usage='observer_only_not_policy_input')
+        # Raw semantic visibility is observer-only and never sent to policy RPC.
+        panoptic=obs.get('agent_1_articulated_agent_jaw_panoptic')
+        if panoptic is not None:
+            panoptic=np.asarray(panoptic);h,w=panoptic.shape[:2]
+            count=int(np.count_nonzero(panoptic==episode.info['main_human_semantic_id']))
+            self.row['target_visibility']=dict(target_pixels=count,image_shape=[h,w],
+                target_pixel_fraction=count/(h*w),timing='pre_action_not_final_post_action',
+                usage='observer_only_not_policy_input')
         if self.writer is None:self.writer=imageio.get_writer(str(self.directory/'review.mp4'),fps=20,codec='libx264',quality=7,macro_block_size=16)
     def record_action(self,step,action,trajectory):
         assert int(step)==self.row['step']
