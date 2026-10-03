@@ -1,0 +1,49 @@
+{
+  "status": "OBSERVER_DIAGNOSIS_NOT_CAUSAL_PROOF",
+  "run": 60767,
+  "timing": "0-based pre-action; final post-action not captured",
+  "pixel_rule": {
+    "lower_strict": 3000,
+    "upper_strict": 44236.8,
+    "shape": [
+      384,
+      384
+    ]
+  },
+  "remaining_failures": [
+    {
+      "task": "at",
+      "key": "VLzqgDo317F/89",
+      "evidence": "step23 area42.66% at range.758m;steps26-56 pixels<=3000 bearing.794..1.274 andrange.757->5.707; close oversize followed by low visibility and loss"
+    },
+    {
+      "task": "at",
+      "key": "auFeVz9Go4m/10",
+      "evidence": "lastpreaction step96 pixels70270 area47.65% range1.473 bearing-.050; not a simple heading failure"
+    },
+    {
+      "task": "dt",
+      "key": "3t8DB4Uzvkt/20",
+      "evidence": "steps66-68 pixels2545->150 at range1.471->1.431 andabsbearing<=.046; supports visibility/occlusion not simple heading"
+    },
+    {
+      "task": "at",
+      "key": "3t8DB4Uzvkt/20",
+      "evidence": "steps54-66 area34.93..98.82%;lastpreaction75.07% at range1.244 bearing.063"
+    }
+  ],
+  "training_coverage": {
+    "valid_windows": 971,
+    "range_lt1_5": 428,
+    "absbearing_ge0_35": 131,
+    "at_absbearing_ge0_35": 10,
+    "absbearing_ge0_78": 24,
+    "at_absbearing_ge0_78": 0,
+    "near_and_absbearing_ge0_35": 34,
+    "at_near_and_absbearing_ge0_35": 1,
+    "continuous_panoptic_available": false,
+    "panoptic_frames": 11
+  },
+  "interpretation": "Balanced sampling can reduce existing long-retreat bias but cannot create missing AT large-angle recovery; do not train from development/confirmation. Continuous visibility labels absent. Any new demonstrations must use training scenes and successful teacher branches only. Preserve benchmark thresholds.",
+  "motion_caution": "Yaw variation and flips rose compared with60509; no physical robot smoothness/safety validation. See learned_yaw_60767.json for per-episode quantitative metrics."
+}
