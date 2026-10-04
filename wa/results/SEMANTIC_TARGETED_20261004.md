@@ -40,3 +40,18 @@ Invalids remain in denominators. CR means target-person distance ever<0.5m, not 
 TR reference-step normalized; macro_TR separate.
 Full validation includes development/confirmation; no unseen-test or LightNav-superiority claim.
 2/2 prior failures recovered is not evidence all165 recover.
+
+## Priority165 completion (2026-10-04 17:46 Beijing)
+
+2026-10-04T17:46+08:00 PRIORITY165_COMPLETE:158 initialized,138 closed-loop success,7 stillinvalid,20 initialized-but-failed (8 terminalCollision/3Lost/9NormalBelowCriterion). STT52/57 DT45/57 AT41/51 successes; invalid2/2/3. All7 invalid in pRbA3pwrgk9 (STT27,38;DT27,38;AT27,38,71), cause UNVERIFIED. HumanCollision12 differs from8 terminalCollision failures. All165 initialRGB match baseline and165 newvideo ffprobe metadata/durationPASS, not full-frame human review.61171/72191 RUNNING new197/2125(STT89 DT57 AT51),lanes25/25/25/24/24/25/24/25;8PRIORITY_COMPLETE,now otherMP3D. All197 unique/disjoint fromreuse andRGBmatch; frozenplan sourcehashesPASS;8A800 ready; logs growing ages0..19s nofatal/OOM. PairedHTML18795 verified HTTP200/UI165 andinvalidfilter7; artifacts/semantic_priority_review_61171/report.json. These are priority-subset results, not fullSR or training improvement.
+
+| Task | Old invalid | Now initialized | Closed-loop success | Still invalid | Later failure |
+|---|---:|---:|---:|---:|---:|
+| STT |57|55|52|2|3|
+| DT |57|55|45|2|10|
+| AT |51|48|41|3|7|
+| Total |165|158|138|7|20|
+
+Paired old/new video page: http://127.0.0.1:18795/ . Forward with `ssh -N -L 18795:127.0.0.1:18795 devpod-a800`.
+NAS report: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/semantic_priority_review_61171/report.json.
+The seven residual invalid cases require diagnosis; do not infer occlusion or discard them from SR denominators. Evaluation continues with unchanged frozen source.

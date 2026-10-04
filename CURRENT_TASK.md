@@ -1,5 +1,5 @@
 # WA current task — targeted MP3D semantic re-evaluation
-Updated:2026-10-04 17:24+08. Status:61171/72191 RUNNING_PRIORITY_STAGE.
+Updated:2026-10-04 17:46+08. Status:61171/72191 RUNNING_OTHER_MP3D; PRIORITY165_COMPLETE.
 
 ## Authorized scope
 - User explicitly requested MP3D-only rerun with old165 invalid starts first; reuse unaffected HM3D and preserve all complete results.
@@ -11,7 +11,8 @@ Updated:2026-10-04 17:24+08. Status:61171/72191 RUNNING_PRIORITY_STAGE.
 - Report priority165 immediately after stage completion: initrecovery separately fromclosedloopsuccess/collision/otherfailure; no all165success claim.
 
 ## Active run
-- 61171/72191 submitted2026-10-04 17:21:29 Beijing, baidu_bj_a8008GPU, actual8 A800-SXM4-80GB readycontractsPASS. New16completed alloldinvalidpriority;14initvalid+closedloopsuccess,2invalid. Including2prior:18/165 reviewed,16success2invalid; no fatal/OOM.
+- 61171/72191 submitted2026-10-04 17:21:29 Beijing; actual8 A800-SXM4-80GB readycontractsPASS. At17:46 new197/2125 (STT89 DT57 AT51),8prioritybarriers complete; otherMP3D underway, logs growing nofatal/OOM.
+- Priority165:158initialized,138success,7stillinvalid,20laterfailures; successesSTT52/57 DT45/57 AT41/51. All7invalid pRbA3pwrgk9 STT27/38 DT27/38 AT27/38/71; causeUNVERIFIED. All165initialRGBmatch andnewvideo metadataPASS.
 - Source /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_semantic_targeted_v1 commit d6d3a8052539ba2ac419bc836f531b63d7017e09 cleanfrozen.
 - Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
 - Plan /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/semantic_targeted_plan_20261004_v1.json SHA7ad7697df1a29b6cd5589b784390a31c4483e4118a1dbff79a57e944a38be458 immutable.
@@ -36,4 +37,4 @@ Updated:2026-10-04 17:24+08. Status:61171/72191 RUNNING_PRIORITY_STAGE.
 - Priorfull60989/71912 combined60885+60989 completed4215, oldSR3420/4215=81.138790%; historicalfaultysemanticprotocol, notoverwrite.
 - PriorconfirmationWA20/24 vsLightNav17/24 hasdifferentinputs andsmallN.
 - Prior currentstate archived archive/2026-10/CURRENT_TASK_before_semantic_targeted_20261004.md.
-- OldHTML18794 remainsoldprotocol; newindependentHTML pending. Finalaudit/report thenpausemonitor; researchcompletion separate.
+- Priority pairedHTML18795 verified; artifacts/semantic_priority_review_61171/report.json. ssh -N -L 18795:127.0.0.1:18795 devpod-a800 then http://127.0.0.1:18795/. Old18794 remainsoldprotocol; finalfullHTML pending. Finalaudit/report thenpausemonitor; researchcompletion separate.
