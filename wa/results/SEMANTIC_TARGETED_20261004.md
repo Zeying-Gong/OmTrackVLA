@@ -1,5 +1,5 @@
 # Targeted semantic re-evaluation — 2026-10-04
-Status: RUNNING61171/72191; 2026-10-04 18:37 Beijing new645/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
+Status: RUNNING61171/72191; 2026-10-04 18:59 Beijing new822/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
 Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
 Frozen source_semantic_targeted_v1 d6d3a8052539ba2ac419bc836f531b63d7017e09.
 Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
@@ -63,3 +63,7 @@ The seven residual invalid cases require diagnosis; do not infer occlusion or di
 ## Monitor 18:37 Beijing
 
 2026-10-04T18:37+08:00 MONITOR61171/72191 RUNNING8A800:645/2125 unique newMP3D completed(+195vs18:14),STT537 DT57 AT51,lanes81/79/83/80/83/80/80/79. Invalid7 unchanged;8prioritybarriers,0finalCOMPLETE;otherMP3D phase. Readycontracts/unique/disjointfromreuse/all645initialRGB/semanticrepaired PASS. Workerbytes215986/204639/219519/214482/221584/222028/212433/208565 allincreased;lastwrite4..24s,noTraceback/FATAL/CUDAoutofmemory/segfault.649mp4files includesactive. Frozen2090reuse+645new=2735/4215 available,NOTfullSR. Remaining1480MP3D;priority165 remains158initialized138success7invalid20laterfailures;residual7causeUNVERIFIED. No running source/model/config changes or newjobs.
+
+## Monitor 18:59 Beijing
+
+2026-10-04T18:59+08:00 MONITOR61171/72191 RUNNING8A800:822/2125 unique newMP3D completed(+177vs18:37),STT683 DT88 AT51,lanes103/101/106/103/105/105/100/99. DTnonpriority nowprogressing. Invalid7 unchanged;8prioritybarriers,0finalCOMPLETE. Readycontracts/unique/disjointfromreuse/all822initialRGB/semanticrepaired PASS. Workerbytes277970/264207/281935/277718/278966/291968/270221/262701 allincreased;lastwrite0..56s,noTraceback/FATAL/CUDAoutofmemory/segfault.827mp4files includesactive. Frozen2090reuse+822new=2912/4215 available,NOTfullSR. Remaining1303MP3D;priority165 outcomeunchanged;residual7causeUNVERIFIED. No runtime/model/config changes or newjobs.
