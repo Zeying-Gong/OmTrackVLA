@@ -1,5 +1,5 @@
 # Targeted semantic re-evaluation — 2026-10-04
-Status: RUNNING61171/72191; 2026-10-04 21:39 Beijing new1939/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
+Status: RUNNING61171/72191; 2026-10-04 22:01 Beijing new2084/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
 Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
 Frozen source_semantic_targeted_v1 d6d3a8052539ba2ac419bc836f531b63d7017e09.
 Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
@@ -95,3 +95,7 @@ The seven residual invalid cases require diagnosis; do not infer occlusion or di
 ## Monitor 21:39 Beijing
 
 2026-10-04T21:39+08:00 MONITOR61171/72191 RUNNING8A800:1939/2125 unique newMP3D completed(+197vs21:11),STT683 DT721 AT535,lanes245/234/250/244/241/247/243/235. Remaining186AT only. Invalid7 unchanged;8prioritybarriers,0finalCOMPLETE. Readycontracts/unique/disjointfromreuse/all1939initialRGB/semanticrepaired PASS. Workerbytes593402/568473/594802/588170/580970/608826/586265/561408 allincreased;lastwrite8..66s,noTraceback/FATAL/CUDAoutofmemory/segfault.1947mp4files includesactive. Frozen2090reuse+1939new=4029/4215 available,NOTfullSR. Priority165 outcomeunchanged;residual7causeUNVERIFIED. No runtime/model/config changes or newjobs.
+
+## Monitor 22:01 Beijing
+
+2026-10-04T22:01+08:00 MONITOR61171/72191 RUNNING8A800:2084/2125 unique newMP3D completed(+145vs21:39),STT683 DT721 AT680,lanes266/253/266/263/260/263/262/251. Remaining41AT only. Shards00/02 COMPLETE;other6 workerlogs growing ages0..38s;completed02log age253s expected. Invalid7 unchanged. Readycontracts/unique/disjointfromreuse/all2084initialRGB/semanticrepaired PASS. Workerbytes627347/597384/618600/618975/613682/634162/616233/586727;noTraceback/FATAL/CUDAoutofmemory/segfault.2087mp4files includesactive. Frozen2090reuse+2084new=4174/4215 available,NOTfullSR. Final8COMPLETE/summary/video audit pending. Priority165 outcomeunchanged;residual7causeUNVERIFIED. No runtime/model/config changes or newjobs.
