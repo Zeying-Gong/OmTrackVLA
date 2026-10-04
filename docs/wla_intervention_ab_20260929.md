@@ -202,3 +202,4 @@ Full configuration and acceptance are frozen on A800 NAS in a3_test_scene_rl_202
 Initial61020worker:727source+210protocol checks PASS; formal768TRAIN/96heldout representation probe completed60updates with exact checkpoint reload. Online SAC updates not yet verified; this is not closed-loop efficacy.
 
 First formal ONLINE_SAC snapshot:1300 real environment transitions,11 complete adaptation episodes,70 actual SAC updates; actor/readout gradients finite and nonzero, terminal targets exact. This supersedes 'online optimizer not yet verified'; no efficacy conclusion.
+Routine2026-10-04 11:54 China: A3_61020 RUNNING 21100transitions/5020SACupdates,207/8430adapt episodes; exploratory online 107/207 is not fixed-policy SR. Four frozen servers ~9.90GiB,evidence[0,0],no traceback. B60996 RUNNING 1441/4215; no complete audit. No model/reward/source/job changes; no validated A3 full4215 or peak SR yet.
