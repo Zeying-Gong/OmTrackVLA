@@ -1,6 +1,6 @@
 # Current task
-Updated: 2026-10-04 11:10 China
-Status: A3_RLT_DSRL_SAC_61020_RUNNING / B_FULL4215_60996_RUNNING / DA3_RETIRED
+Updated: 2026-10-04 17:31 China
+Status: A3_RLT_DSRL_SAC_61020_RUNNING / B_FULL4215_60996_AUDITED / DA3_RETIRED
 
 ## Current authorization
 - User approved A3 after reviewing two complete episode/reward/policy previews: “我同意你的方法，赶紧实验。”
@@ -28,13 +28,13 @@ Status: A3_RLT_DSRL_SAC_61020_RUNNING / B_FULL4215_60996_RUNNING / DA3_RETIRED
 - Developer losses/two-episode results are not efficacy evidence. Initial layer-interface/Xvfb/checker-assumption failures retained.
 - Preview preserved: http://127.0.0.1:18785/a3_pretrain_20261004/ ; ssh -N -L 18785:127.0.0.1:18783 nas-a800.
 
-## B active evaluation
+## B completed evaluation
 - User stopped remaining inversion60766/71645 at09:23:27; do not resume full78769 route or fixed36 requirement.
 - Partial B60994/71917 SUCCEEDED:63488 durable TRAIN windows,63127pass;2epochs124updates, noheldout validation.
 - Checkpoint SHAd4987b0aa961d971c30095c1b914224fff4b4dcc4b604655bb6113cd0f6f2883.
-- B60996/71919 full4215 RUNNING8A800 since09:28:40; keep running, no duplicate.
+- B60996/71919 SUCCEEDED17:24:52; independent4215 audit/strict A2 pairing PASS. No duplicate.
 - Output: /data/nas_ray/project/md-ak/users/zeying.gong/job_60996/task_71919/wla_b_partial_full4215.
-- Wrapper A directories belong to B_partial_cache_60994. Require1405each/source identity/seed7/initialRGB/fullhorizon/finite audit.
+- Wrapper A directories belong to B_partial_cache_60994;1405each/source identity/seed7/initialRGB/fullhorizon/finite audit PASS.
 
 ## Completed reference state
 - A2_60058 full4215 evaluation60857 SUCCEEDED: STT1143/1405 SR81.3523%;AT696/1405 SR49.5374%;DT796/1405 SR56.6548%.
@@ -51,4 +51,5 @@ Status: A3_RLT_DSRL_SAC_61020_RUNNING / B_FULL4215_60996_RUNNING / DA3_RETIRED
 - Authoritative NAS RUN/source manifests, bothCSV ledgers and docs/wla_intervention_ab_20260929.md.
 - Only explicit task Markdown is committed/pushed; existing dirty research source/CSV stays on NAS.
 - A800 preferred; no unverified cross-NAS migration. Routine heartbeat quiet; notify milestones/failure/material changes.
-Routine2026-10-04 16:18 China: A3_61020 RUNNING 153800transitions/38195SACupdates,1451/8430adapt episodes; exploratory online 870/1451 is not fixed-policy SR. Four frozen servers ~9.90GiB,evidence[0,0],no traceback. B60996 RUNNING 3878/4215; no complete audit. No model/reward/source/job changes; no validated A3 full4215 or peak SR yet.
+
+2026-10-04 17:31 China: B partial-cache60994 full evaluation60996/71919 SUCCEEDED17:24:52; independent4215 strict pairs with A2_60058 PASS (each task1405 exactly once, source identity/instruction/seed7/initialRGB/full horizon, checkpoint/result/trace hashes and finite values). B STT1169/1405 SR83.202847 TR_macro87.186117 CR4.982206; AT728/1405 SR51.814947 TR_macro75.449817 CR9.537367; DT787/1405 SR56.014235 TR_macro68.297166 CR10.177936. Overall2684/4215 SR63.677343 versus A2_60058 2635/4215 SR62.514828, +1.162515pp; task SR delta STT+1.850534/AT+2.277580/DT-0.640569pp,307 success improvements/258 regressions.455740 contiguous frames,454984 finite policy records,756 Lost terminal omissions retained; failure categories UNANNOTATED. Checkpoint60994 epoch-2.pt SHAd4987b0aa961d971c30095c1b914224fff4b4dcc4b604655bb6113cd0f6f2883. Highest measured full frozen SR among current A2/B comparison is B63.677343%; not all historical methods or A3 upper bound. B trained63488 durable TRAIN prefix rows/noheldout, not full78769 or a single-factor ablation. Evidence intervention_b_full_20261004/INDEPENDENT_COMPLETION_AUDIT.json. A3_61020 remains RUNNING:190000transitions/47245SACupdates/1783adapt episodes at17:31;8430adapt and frozen4215 evaluation pending. No A3 frozen SR yet; keep model/reward/frozen727source unchanged, no duplicate jobs/resume60766.
