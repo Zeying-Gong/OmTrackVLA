@@ -1,5 +1,5 @@
 """Full STT/DT/AT mixed validation; fixed shards, current frozen learned-yaw controller."""
-import argparse,copy,json,math,random
+import argparse,copy,json,math,random,os
 from pathlib import Path
 import numpy as np
 import torch,habitat,evt_bench,trained_agent
@@ -12,9 +12,12 @@ def main():
     p.add_argument('--shard',required=True,type=int);p.add_argument('--ready');p.add_argument('--audit-only',action='store_true');a=p.parse_args()
     if not 0<=a.shard<8:raise ValueError('eight shards required')
     out=Path(a.output);m=json.loads(Path(a.manifest).read_text());assert m['shards']==8 and m['seed_each_episode']==7
+    plan=None
+    if os.environ.get('WA_RESUME_PLAN'):
+        from wa.wm.full_mixed_resume import load_plan
+        plan=load_plan(os.environ['WA_RESUME_PLAN'],m,os.environ['WA_RESUME_PLAN_SHA'])
     total=0
     if not a.audit_only:
-        import os
         assert os.environ.get('WA_DIAG_CONTROLLER')=='learned_yaw_guard_v1'
         ready=json.loads(Path(a.ready).read_text());validate_ready(ready)
         if os.environ.get('WA_REVIEW_VIDEO')=='1':
@@ -29,7 +32,12 @@ def main():
         actual={scene(dict(scene_id=e.scene_id))+'/'+str(e.episode_id):e for e in ds.episodes}
         assert len(actual)==1405 and len(spec['episodes'])==1405
         assert set(actual)=={e['key'] for e in spec['episodes']}
-        selected=[e for e in spec['episodes'] if e['shard']==a.shard]
+        if plan is None:
+            selected=[e for e in spec['episodes'] if e['shard']==a.shard]
+        else:
+            keys={e['key'] for e in plan['lanes'][a.shard] if e['task']==task}
+            selected=[e for e in spec['episodes'] if e['key'] in keys]
+            assert len(selected)==len(keys)
         for e in selected:assert actual[e['key']].info['instruction']==e['instruction']
         if a.audit_only:print('DATASET_AUDIT_PASS',task,len(actual),len(selected),flush=True);continue
         dest=out/task;dest.mkdir(parents=True,exist_ok=True)

@@ -7,8 +7,14 @@ ROOT=Path('/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-202
 SOURCE=Path.cwd();WLA=ROOT.parent/'WLA-EVT-20260925';BENCH=ROOT.parent/'OmTrackVLA-da3-polar-20260924';ENV=ROOT.parent.parent/'envs'
 MANIFEST=WLA/'evt_full_20260926/manifest.json'
 assert sha(MANIFEST)==MANIFEST_SHA
+manifest=json.loads(MANIFEST.read_text());plan=None
+if os.environ.get('WA_RESUME_PLAN'):
+    from wa.wm.full_mixed_resume import load_plan,verify_new_rows
+    plan=load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
 assert os.environ.get('WA_DIAG_CONTROLLER')=='learned_yaw_guard_v1'
 OUT=Path(sys.argv[1]);OUT.mkdir(parents=True,exist_ok=False)
+if plan is not None:
+    (OUT/'resume_plan.json').write_text(json.dumps(plan,indent=2,allow_nan=False))
 import torch
 visible=allocated_devices(os.environ.get('CUDA_VISIBLE_DEVICES'),torch.cuda.device_count())
 print('GPU_ALLOCATION',json.dumps(dict(devices=visible,names=[torch.cuda.get_device_name(i) for i in range(len(visible))])),flush=True)
@@ -55,8 +61,21 @@ try:
     manifest=json.loads(MANIFEST.read_text());rows=[]
     for i in range(8):
         dest=OUT/f'shard_{i:02d}';assert (dest/'COMPLETE.json').exists()
-        rows.extend(json.loads(x) for x in (dest/'episodes.jsonl').read_text().splitlines())
+        part=[json.loads(x) for x in (dest/'episodes.jsonl').read_text().splitlines()]
+        if plan is not None:
+            assert {(r['task'],r['key']) for r in part}=={(e['task'],e['key']) for e in plan['lanes'][i]}
+            assert len(part)==len(plan['lanes'][i])
+            assert json.loads((dest/'COMPLETE.json').read_text())['episodes']==len(part)
+            for r in part:r['artifact_root']=str(dest)
+        rows.extend(part)
+    if plan is not None:
+        verify_new_rows(rows,plan)
+        load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
+        rows=plan['completed_rows']+rows
     report=summarize(rows,manifest)
+    if plan is not None:
+        report['continuation']=dict(parent_job=60885,parent_task=71808,reused=len(plan['completed_rows']),new=len(rows)-len(plan['completed_rows']),plan_sha256=os.environ['WA_RESUME_PLAN_SHA'])
+        (OUT/'combined_episodes.jsonl').write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in rows))
     (OUT/'summary.json').write_text(json.dumps(report,indent=2,allow_nan=False))
     print('FULL_MIXED_EVALUATION_COMPLETE',json.dumps(report),flush=True)
 finally:
