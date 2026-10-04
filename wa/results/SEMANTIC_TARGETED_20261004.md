@@ -1,5 +1,5 @@
 # Targeted semantic re-evaluation — 2026-10-04
-Status: RUNNING61171/72191; 2026-10-04 22:01 Beijing new2084/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
+Status: SUCCEEDED_AUDITED61171/72191; ended2026-10-04 22:17:30 Beijing;4215complete with auditedreuse.
 Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
 Frozen source_semantic_targeted_v1 d6d3a8052539ba2ac419bc836f531b63d7017e09.
 Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
@@ -99,3 +99,18 @@ The seven residual invalid cases require diagnosis; do not infer occlusion or di
 ## Monitor 22:01 Beijing
 
 2026-10-04T22:01+08:00 MONITOR61171/72191 RUNNING8A800:2084/2125 unique newMP3D completed(+145vs21:39),STT683 DT721 AT680,lanes266/253/266/263/260/263/262/251. Remaining41AT only. Shards00/02 COMPLETE;other6 workerlogs growing ages0..38s;completed02log age253s expected. Invalid7 unchanged. Readycontracts/unique/disjointfromreuse/all2084initialRGB/semanticrepaired PASS. Workerbytes627347/597384/618600/618975/613682/634162/616233/586727;noTraceback/FATAL/CUDAoutofmemory/segfault.2087mp4files includesactive. Frozen2090reuse+2084new=4174/4215 available,NOTfullSR. Final8COMPLETE/summary/video audit pending. Priority165 outcomeunchanged;residual7causeUNVERIFIED. No runtime/model/config changes or newjobs.
+
+## Final audited report
+
+2026-10-04 FINAL61171/72191 SUCCEEDED22:17:30;8COMPLETE new2125+frozen2090=4215unique each1405. Sourcecommitd6d3a805 clean;configfc119a34 andplan/sourcehashesPASS;new/reused disjoint;MP3D2163repaired HM3D2052unaffectedreuse;combinedrows and recomputedsummary exact. All4215 initialimage fileSHA andoldRGBpairsPASS;4215video ffprobe metadata/durationPASS(not everyframe decoded). SR STT1275/1405=90.747331 DT1157/1405=82.348754 AT1192/1405=84.839858;overall3624/4215=85.978648%. TRreference-normalized87.533505/78.665741/85.166987;macro_TR92.393361/81.353472/88.007583;each52missingreference usesexistingactual-stepfallback. HumanCollisionCR4.412811/6.761566/4.768683%;invalid2/2/3retained. OldSR81.138790 preserved;semanticprotocol repair nottraininggain;no fullLightNav/unseen-test claim. No workerfatal/OOM. HTML artifacts/semantic_full_review_61171 at18796 verifiedHTTP200/UI4215. Priority165158initialized138success7invalid20laterfailures;remaining7pRbA3pwrgk9 causeUNVERIFIED. Phaseevaluation complete,overallresearchPARTIAL;pausemonitor afterreport.
+
+|Task|Success /1405|SR %|TR %|HumanCollision CR %|Invalid|
+|---|---:|---:|---:|---:|---:|
+|STT|1275|90.747331|87.533505|4.412811|2|
+|DT|1157|82.348754|78.665741|6.761566|2|
+|AT|1192|84.839858|85.166987|4.768683|3|
+
+Overall3624/4215=85.978648%. Oldprotocol3420/4215=81.138790% remains historical; +204successes is not a trained-model gain. This run only repairs semantic rendering and scoring/initialization protocol.
+HTML: http://127.0.0.1:18796/ . Forward: `ssh -N -L 18796:127.0.0.1:18796 devpod-a800`.
+NAS audit: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/semantic_full_review_61171/audit.json.
+Allsuccess denominators include invalids. Each task52missingreference steps uses established actualstepfallback;macro_TR is separately stored. No fullLightNav pairedcomparison or untouchedtest claim.

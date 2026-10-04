@@ -1,40 +1,26 @@
-# WA current task — targeted MP3D semantic re-evaluation
-Updated:2026-10-04 22:01+08. Status:61171/72191 RUNNING_OTHER_MP3D; PRIORITY165_COMPLETE.
+# WA current task — semantic targeted evaluation completed
+Updated:2026-10-04 22:30+08. Status: SUCCEEDED_AUDITED; overall research PARTIAL.
 
-## Authorized scope
-- User explicitly requested MP3D-only rerun with old165 invalid starts first; reuse unaffected HM3D and preserve all complete results.
-- 61144/72164 deliberately STOPPED17:13:41;722complete retained=684HM3D+38repairedMP3D. No original output deleted/overwritten.
-- All684 completedHM3D new/old metrics/status/initialRGB exact; HM3D prepare_episode no-op, each episode seed reset, readycontracts unchanged.
-- Plan reuses2090=722fresh+1368oldHM3D. New2125MP3D only; final4215unique eachtask1405, MP3D2163 HM3D2052.
-- Old165invalid two alreadyrecovered andclosedloopsuccessful: STT oLBMNvg9in8/55 and2n8kARJN3HM/157.
-- First stage remaining163 (21/21/21/20/20/20/20/20). Eight PRIORITY_COMPLETE barriers before any ofother1962MP3D.
-- Report priority165 immediately after stage completion: initrecovery separately fromclosedloopsuccess/collision/otherfailure; no all165success claim.
+## Final outcome
+- 2026-10-04 FINAL61171/72191 SUCCEEDED22:17:30;8COMPLETE new2125+frozen2090=4215unique each1405. Sourcecommitd6d3a805 clean;configfc119a34 andplan/sourcehashesPASS;new/reused disjoint;MP3D2163repaired HM3D2052unaffectedreuse;combinedrows and recomputedsummary exact. All4215 initialimage fileSHA andoldRGBpairsPASS;4215video ffprobe metadata/durationPASS(not everyframe decoded). SR STT1275/1405=90.747331 DT1157/1405=82.348754 AT1192/1405=84.839858;overall3624/4215=85.978648%. TRreference-normalized87.533505/78.665741/85.166987;macro_TR92.393361/81.353472/88.007583;each52missingreference usesexistingactual-stepfallback. HumanCollisionCR4.412811/6.761566/4.768683%;invalid2/2/3retained. OldSR81.138790 preserved;semanticprotocol repair nottraininggain;no fullLightNav/unseen-test claim. No workerfatal/OOM. HTML artifacts/semantic_full_review_61171 at18796 verifiedHTTP200/UI4215. Priority165158initialized138success7invalid20laterfailures;remaining7pRbA3pwrgk9 causeUNVERIFIED. Phaseevaluation complete,overallresearchPARTIAL;pausemonitor afterreport.
+- 61171/72191 submitted17:21:29, ended22:17:30 Beijing; elapsed4h56m01s,8A800.
+- Full output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
+- Independent HTML/audit /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/semantic_full_review_61171.
+- Access: ssh -N -L 18796:127.0.0.1:18796 devpod-a800 then http://127.0.0.1:18796/.
+- Old18794 remains oldprotocol;18795 remains priority165 pairedreview. No old result overwritten.
 
-## Active run
-- 61171/72191 submitted2026-10-04 17:21:29 Beijing; actual8 A800-SXM4-80GB readycontractsPASS. At22:01 new2084/2125 (STT683 DT721 AT680),+145; remaining41AT;shards00/02COMPLETE;invalid7 unchanged,8prioritybarriers complete; otherMP3D underway, logs growing nofatal/OOM.
-- Priority165:158initialized,138success,7stillinvalid,20laterfailures; successesSTT52/57 DT45/57 AT41/51. All7invalid pRbA3pwrgk9 STT27/38 DT27/38 AT27/38/71; causeUNVERIFIED. All165initialRGBmatch andnewvideo metadataPASS.
-- Source /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_semantic_targeted_v1 commit d6d3a8052539ba2ac419bc836f531b63d7017e09 cleanfrozen.
+## Immutable protocol and provenance
+- Plan artifacts/semantic_targeted_plan_20261004_v1.json SHA7ad7697df1a29b6cd5589b784390a31c4483e4118a1dbff79a57e944a38be458.
+- Frozen source_semantic_targeted_v1 commitd6d3a8052539ba2ac419bc836f531b63d7017e09.
 - Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
-- Plan /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/semantic_targeted_plan_20261004_v1.json SHA7ad7697df1a29b6cd5589b784390a31c4483e4118a1dbff79a57e944a38be458 immutable.
-- Eightlane totals266/266/266/266/266/265/265/265, full2125task notcluster smoke.
-- Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
-- 36CPU tests/eight-way barrier/8lane x2phase x3task realHabitat loads PASS; dependencies/checkpointSHA verified; A80025freebefore submission. No crossNAS.
-- Monitorwa ACTIVE20min; each reportactualnew/prioritycounts anderrors, no inference fromRUNNING alone.
-- No new training, LightNavfull, model/controller/loss/physics/threshold change orotherjob interference.
+- 61144/72164 user-authorized STOPPED17:13:41;722retained(38repairedMP3D684HM3D),plus1368oldunaffectedHM3D;not4215fresh rerun.
+- Fixed60502/71381step45900 SHA20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331.
+- RGB+firstGTBBox+idealpolarUWB noise0delay0;no text/laterGTboxes. JEPA/MetaQuery/ActionExpert;JEPAtrainingauxonly,noMPC.
+- mp3d_semantic_ply_v1 semanticYup only,RGB/collisionZup unchanged;no controller/physics/model/loss/threshold changes.
+- CR targetperson distanceever<0.5m,notwall/doorframe. Existingvalidation includesdev/confirmation,notuntouchedtest.
+- Full report wa/results/SEMANTIC_TARGETED_20261004.md;historical60883failed60885stopped60989complete retained.
 
-## Model and repair contract
-- Fixed60502/71381 checkpointstep45900 SHA20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331; learned_yaw_guard_v1 mixedzero sampling4 seed7.
-- RGB+firstGTBBox+ideal currentpose polarUWB noise0delay0; no text orlaterGTBBox. JEPA/MetaQuery/ActionExpert retained; predictor training-only noMPC.
-- mp3d_semantic_ply_v1 semanticYup only; render/collision Zup unchanged. SemanticconfigSHA1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6.
-- Five pairedstaticcases exactRGB/camera/poses; STTdepthsame DTATdepthabsent. STT55 pixels0->5198.
-- See wa/results/SEMANTIC_PLY_FIX_20261004.md and wa/results/SEMANTIC_TARGETED_20261004.md.
-
-## Acceptance and history
-- New8COMPLETE2125 +frozen2090 =4215unique; scopes/protocol/sourcehashes/initialRGB/video audit; no old affectedMP3D reused. Per-row artifact_root/reuse_reason preserved.
-- Report as affected-scope rerun plus audited unaffected reuse, not4215allfresh. SR/TR/CR/invalid per task, allinvalid retained.
-- CRtargetperson distanceever<0.5m, not wall/doorframe. TRreference-step normalized;macro_TR separate.
-- Existing validation includesdevelopment/confirmation, notuntouchedtest; no generalLightNav superiority ortraining improvementclaim.
-- Priorfull60989/71912 combined60885+60989 completed4215, oldSR3420/4215=81.138790%; historicalfaultysemanticprotocol, notoverwrite.
-- PriorconfirmationWA20/24 vsLightNav17/24 hasdifferentinputs andsmallN.
-- Prior currentstate archived archive/2026-10/CURRENT_TASK_before_semantic_targeted_20261004.md.
-- Priority pairedHTML18795 verified; artifacts/semantic_priority_review_61171/report.json. ssh -N -L 18795:127.0.0.1:18795 devpod-a800 then http://127.0.0.1:18795/. Old18794 remainsoldprotocol; finalfullHTML pending. Finalaudit/report thenpausemonitor; researchcompletion separate.
+## Remaining boundary
+- Seven residualinvalid pRbA3pwrgk9 STT27/38 DT27/38 AT27/38/71 remain counted;causeUNVERIFIED.
+- No further training,LightNavfull,policytuning orrerun initiated. New research direction requires user direction.
+- Final phase monitor to be paused after report; no claim whole research or real-world deployment complete.
