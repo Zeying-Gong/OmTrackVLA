@@ -1,5 +1,5 @@
 # Targeted semantic re-evaluation — 2026-10-04
-Status: RUNNING61171/72191; 2026-10-04 18:59 Beijing new822/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
+Status: RUNNING61171/72191; 2026-10-04 19:21 Beijing new980/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
 Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
 Frozen source_semantic_targeted_v1 d6d3a8052539ba2ac419bc836f531b63d7017e09.
 Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
@@ -67,3 +67,7 @@ The seven residual invalid cases require diagnosis; do not infer occlusion or di
 ## Monitor 18:59 Beijing
 
 2026-10-04T18:59+08:00 MONITOR61171/72191 RUNNING8A800:822/2125 unique newMP3D completed(+177vs18:37),STT683 DT88 AT51,lanes103/101/106/103/105/105/100/99. DTnonpriority nowprogressing. Invalid7 unchanged;8prioritybarriers,0finalCOMPLETE. Readycontracts/unique/disjointfromreuse/all822initialRGB/semanticrepaired PASS. Workerbytes277970/264207/281935/277718/278966/291968/270221/262701 allincreased;lastwrite0..56s,noTraceback/FATAL/CUDAoutofmemory/segfault.827mp4files includesactive. Frozen2090reuse+822new=2912/4215 available,NOTfullSR. Remaining1303MP3D;priority165 outcomeunchanged;residual7causeUNVERIFIED. No runtime/model/config changes or newjobs.
+
+## Monitor 19:21 Beijing
+
+2026-10-04T19:21+08:00 MONITOR61171/72191 RUNNING8A800:980/2125 unique newMP3D completed(+158vs18:59),STT683 DT246 AT51,lanes123/118/130/121/123/124/123/118. DTnonpriority progressing;STTnew683 complete (plus38reusedrepaired=721MP3D). Invalid7 unchanged;8prioritybarriers,0finalCOMPLETE. Readycontracts/unique/disjointfromreuse/all980initialRGB/semanticrepaired PASS. Workerbytes332090/312339/345488/327812/330081/345100/329416/310474 allincreased;lastwrite8..72s,noTraceback/FATAL/CUDAoutofmemory/segfault.987mp4files includesactive. Frozen2090reuse+980new=3070/4215 available,NOTfullSR. Remaining1145MP3D;priority165 outcomeunchanged;residual7causeUNVERIFIED. No runtime/model/config changes or newjobs.
