@@ -1,5 +1,5 @@
 # WA current task — eight-GPU continuation of full mixed validation
-Updated: 2026-10-04T09:19+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
+Updated: 2026-10-04T09:40+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 
 ## Scope and acceptance
 - User2026-10-04 authorized more GPUs to accelerate full4215 existing validation: STT/DT/AT1405each; no new training or LightNav full evaluation.
@@ -21,7 +21,7 @@ Updated: 2026-10-04T09:19+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 - Fixed60502/71381 checkpoint step45900 SHA20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331; learned_yaw_guard_v1 mixedzero,4samplingsteps. JEPA/MetaQuery/ActionExpert unchanged, worldpredictor training-only.
 - Resourcecheck baidu_bj_a80033free before submit; sameNAS, no migration, no effect on otherWLAjobs.
 - Developer16CPU tests+8x3real Habitat dataset audits PASS. Evidence /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/full_mixed_resume_preflight_20261004; dependency/checkpoint hashesPASS.
-- 2026-10-04T09:19+08:00: new10/1977 lanes[2, 1, 0, 2, 1, 2, 1, 1]; combined2248/4215 STT840 DT704 AT704. First worker start is not episode completion. Final metrics unavailable.
+- 2026-10-04T09:40+08:00 MONITOR60989/71912 RUNNING8A800-SXM4-80GB: new298/1977 lanes[38,40,35,39,35,37,36,38], combined2536/4215(STT1128 DT704 AT704), +281 since last user report2255. All8workers progressingSTT; workerbytes[99537,101907,95069,103998,96122,101450,98000,102306], ages0..37s, no fatal/OOM/Traceback. All8ready modelcontractsPASS; frozen2238/sourcehashesunchanged; newoldkeysdisjoint. Invalidinit90(total;7new),allfailure retained. New305mp4files includes active recordings, not completed-video audit. No laneCOMPLETE or fullsummary yet. No code/config/checkpoint mutations or newjobs; next continue8lane monitor then4215 audit/HTML.
 - Completion: require8new COMPLETE with1977rows, no overlap with2238snapshot, then combined_episodes.jsonl and summary.json; artifact_root identifies old/new video path. Old8COMPLETE requirement superseded by interrupted parent snapshot.
 - Monitorwa updated every20min to60989/71912 and combinedcounts; finalreport/audit thenpause. No duplicatejobs or changing running sources/configs.
 - First60883/71806 startupFAILED0episodes retained. Original60885 stop is intentional acceleration, not model failure.
