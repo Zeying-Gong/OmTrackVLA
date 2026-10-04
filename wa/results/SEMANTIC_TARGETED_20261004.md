@@ -1,5 +1,5 @@
 # Targeted semantic re-evaluation — 2026-10-04
-Status: RUNNING61171/72191; 2026-10-04 20:49 Beijing new1580/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
+Status: RUNNING61171/72191; 2026-10-04 21:11 Beijing new1742/2125 complete. Priority165 complete:158initialized138success7invalid20laterfailures. Full result pending.
 Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
 Frozen source_semantic_targeted_v1 d6d3a8052539ba2ac419bc836f531b63d7017e09.
 Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
@@ -87,3 +87,7 @@ The seven residual invalid cases require diagnosis; do not infer occlusion or di
 ## Monitor 20:49 Beijing
 
 2026-10-04T20:49+08:00 MONITOR61171/72191 RUNNING8A800:1580/2125 unique newMP3D completed(+153vs20:27),STT683 DT721 AT176,lanes201/190/204/196/197/201/199/192. DTcomplete;remainingAT only. Invalid7 unchanged;8prioritybarriers,0finalCOMPLETE. Readycontracts/unique/disjointfromreuse/all1580initialRGB/semanticrepaired PASS. Workerbytes523124/496099/517644/511036/512221/532815/519444/490671 allincreased;lastwrite0..31s,noTraceback/FATAL/CUDAoutofmemory/segfault.1585mp4files includesactive. Frozen2090reuse+1580new=3670/4215 available,NOTfullSR. Remaining545AT;priority165 outcomeunchanged;residual7causeUNVERIFIED. No runtime/model/config changes or newjobs.
+
+## Monitor 21:11 Beijing
+
+2026-10-04T21:11+08:00 MONITOR61171/72191 RUNNING8A800:1742/2125 unique newMP3D completed(+162vs20:49),STT683 DT721 AT338,lanes218/211/221/219/216/223/220/214. Remaining383AT only. Invalid7 unchanged;8prioritybarriers,0finalCOMPLETE. Readycontracts/unique/disjointfromreuse/all1742initialRGB/semanticrepaired PASS. Workerbytes550050/530959/546302/548587/542127/569608/550101/528499 allincreased;lastwrite25..104s,noTraceback/FATAL/CUDAoutofmemory/segfault.1750mp4files includesactive. Frozen2090reuse+1742new=3832/4215 available,NOTfullSR. Priority165 outcomeunchanged;residual7causeUNVERIFIED. No runtime/model/config changes or newjobs.
