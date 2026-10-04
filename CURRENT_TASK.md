@@ -1,5 +1,5 @@
 # WA current task — eight-GPU continuation of full mixed validation
-Updated: 2026-10-04T10:03+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
+Updated: 2026-10-04T10:26+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 
 ## Scope and acceptance
 - User2026-10-04 authorized more GPUs to accelerate full4215 existing validation: STT/DT/AT1405each; no new training or LightNav full evaluation.
@@ -21,7 +21,7 @@ Updated: 2026-10-04T10:03+08:00. Status: RUNNING / FULL_RESULTS_UNVERIFIED.
 - Fixed60502/71381 checkpoint step45900 SHA20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331; learned_yaw_guard_v1 mixedzero,4samplingsteps. JEPA/MetaQuery/ActionExpert unchanged, worldpredictor training-only.
 - Resourcecheck baidu_bj_a80033free before submit; sameNAS, no migration, no effect on otherWLAjobs.
 - Developer16CPU tests+8x3real Habitat dataset audits PASS. Evidence /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/full_mixed_resume_preflight_20261004; dependency/checkpoint hashesPASS.
-- 2026-10-04T10:03+08:00 MONITOR60989/71912 RUNNING8A800-SXM4-80GB: new523/1977 lanes[65,70,60,67,64,66,64,67], combined2761/4215(STT1353 DT704 AT704), +225 since09:40. All8workers progressingSTT; workerbytes[170424,177871,162295,180375,171535,177518,171387,181102] increased from prior snapshot, ages3..33s, no fatal/OOM/Traceback. All8ready modelcontractsPASS; frozen2238/sourcehashesunchanged; newoldkeysdisjoint. Invalidinit105(total;22new),allfailure retained. New528mp4files includes active recordings, not completed-video audit. No laneCOMPLETE or fullsummary yet. No code/config/checkpoint mutations or newjobs; continue existing8lane eval then4215 audit/HTML.
+- 2026-10-04T10:26+08:00 MONITOR60989/71912 RUNNING8A800-SXM4-80GB: new781/1977 lanes[101,105,87,97,101,94,97,99], combined3019/4215(STT1405 DT910 AT704), +258 since10:03. STT all1405manifestkeys unique:1204success SR85.693950%,TR81.424200%(reference-step denominator),71HumanCollision CR5.053381%,invalid57 retained. This completed category is not full3task result. All8workers nowDT; workerbytes[258351,266004,225997,253744,262541,248536,253481,259480] increased; ages3..71s,no fatal/OOM/Traceback. All8ready modelcontractsPASS; frozen2238/sourcehashesunchanged; newoldkeysdisjoint. Invalidinit111(total;28new),allfailure retained. New789mp4files includes active recordings; final video audit pending. No laneCOMPLETE/fullsummary yet. No runningcode/config/checkpoint mutations or newjobs; continueDT/AT thenfull4215audit/HTML.
 - Completion: require8new COMPLETE with1977rows, no overlap with2238snapshot, then combined_episodes.jsonl and summary.json; artifact_root identifies old/new video path. Old8COMPLETE requirement superseded by interrupted parent snapshot.
 - Monitorwa updated every20min to60989/71912 and combinedcounts; finalreport/audit thenpause. No duplicatejobs or changing running sources/configs.
 - First60883/71806 startupFAILED0episodes retained. Original60885 stop is intentional acceleration, not model failure.
