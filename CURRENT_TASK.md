@@ -51,4 +51,4 @@ Status: A3_RLT_DSRL_SAC_61020_RUNNING / B_FULL4215_60996_RUNNING / DA3_RETIRED
 - Authoritative NAS RUN/source manifests, bothCSV ledgers and docs/wla_intervention_ab_20260929.md.
 - Only explicit task Markdown is committed/pushed; existing dirty research source/CSV stays on NAS.
 - A800 preferred; no unverified cross-NAS migration. Routine heartbeat quiet; notify milestones/failure/material changes.
-Routine2026-10-04 15:32 China: A3_61020 RUNNING 130800transitions/32445SACupdates,1233/8430adapt episodes; exploratory online 733/1233 is not fixed-policy SR. Four frozen servers ~9.90GiB,evidence[0,0],no traceback. B60996 RUNNING 3514/4215; no complete audit. No model/reward/source/job changes; no validated A3 full4215 or peak SR yet.
+Routine2026-10-04 16:18 China: A3_61020 RUNNING 153800transitions/38195SACupdates,1451/8430adapt episodes; exploratory online 870/1451 is not fixed-policy SR. Four frozen servers ~9.90GiB,evidence[0,0],no traceback. B60996 RUNNING 3878/4215; no complete audit. No model/reward/source/job changes; no validated A3 full4215 or peak SR yet.
