@@ -200,3 +200,5 @@ Config: WLA/intervention_confirmation_a2_20260930/full_a800.yaml; source manifes
 Full configuration and acceptance are frozen on A800 NAS in a3_test_scene_rl_20261004/{EXPERIMENT_PLAN.md,DEVELOPMENT_PASS.json,DEVELOPMENT_MATH.json,full_a800.yaml,source.sha256}. The earlier two-episode preview remains historical A2 initialization evidence; its approval gate is superseded. Formal run begins with fresh TRAIN representation initialization, without reusing developer-adapted weights.
 
 Initial61020worker:727source+210protocol checks PASS; formal768TRAIN/96heldout representation probe completed60updates with exact checkpoint reload. Online SAC updates not yet verified; this is not closed-loop efficacy.
+
+First formal ONLINE_SAC snapshot:1300 real environment transitions,11 complete adaptation episodes,70 actual SAC updates; actor/readout gradients finite and nonzero, terminal targets exact. This supersedes 'online optimizer not yet verified'; no efficacy conclusion.

@@ -20,7 +20,7 @@ Status: A3_RLT_DSRL_SAC_61020_RUNNING / B_FULL4215_60996_RUNNING / DA3_RETIRED
 - One central learner,4simulator/model lanes; no B-style inversion. Actual control transitions, gamma1, replay50000.
 - Approved reward F_after/300 + terminal(10S-2C-2Lost); GT reward/scoring-only, actor RGB/text/time.
 - Two complete4215 adaptation passes(8430episodes), then frozen deterministic4215 with environment/history reset.
-- Worker727source+210protocol hashes PASS;768TRAIN/96heldout representation warmup completed60updates,exact reload. Online SAC updates not yet verified.
+- Worker727source+210protocol hashes PASS;768TRAIN/96heldout representation warmup completed60updates,exact reload. Online SAC verified:1300 real transitions/11 complete episodes/70updates; no efficacy claim.
 - Output: /data/nas_ray/project/md-ak/users/zeying.gong/job_61020/task_71943/wla_a3_rlt_dsrl_sac.
 - Read run/STATE.json,run/warmup/COMPLETE.json,run/learner/progress.json,run/adapt/lane_*/progress.json.
 - Then run/FROZEN_POLICY.json,run/eval/lane_*/progress.json,run/COMPLETION_AUDIT.json.
