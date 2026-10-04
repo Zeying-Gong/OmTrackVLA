@@ -55,3 +55,7 @@ Full validation includes development/confirmation; no unseen-test or LightNav-su
 Paired old/new video page: http://127.0.0.1:18795/ . Forward with `ssh -N -L 18795:127.0.0.1:18795 devpod-a800`.
 NAS report: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/semantic_priority_review_61171/report.json.
 The seven residual invalid cases require diagnosis; do not infer occlusion or discard them from SR denominators. Evaluation continues with unchanged frozen source.
+
+## Monitor 18:14 Beijing
+
+2026-10-04T18:14+08:00 MONITOR61171/72191 RUNNING8A800:450/2125 unique newMP3D completed(+253vs17:46),STT342 DT57 AT51,lanes57/54/58/57/57/56/56/55. All8prioritybarriers complete;otherMP3D phase,0finalCOMPLETE. Invalid7 unchanged;priority165 outcome unchanged158initialized138success7invalid20laterfailures. Readycontracts/unique/disjointfromreuse/all450initialRGB/semanticrepaired PASS. Workerbytes147298/138405/149303/153201/152808/153085/145389/142002 allincreased;lastwrite0..47s,noTraceback/FATAL/CUDAoutofmemory/segfault.454mp4files includesactive,not454completed. Frozen2090reuse+450new=2540/4215 records available,NOTfullSR. No job/source/config/model/threshold changes. Continue remaining1675MP3D;prioritypairedHTML18795 remains subset only;residual7causeUNVERIFIED.
