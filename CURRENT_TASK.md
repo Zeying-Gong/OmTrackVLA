@@ -1,13 +1,14 @@
 # WA current task — repair MP3D semantic rendering and fresh full validation
-Updated: 2026-10-04. Status: SEMANTIC_FIX_IMPLEMENTED_TESTED / FRESH_FULL_EVAL_PENDING.
+Updated: 2026-10-04 16:25+08. Status: SEMANTIC_FIX_IMPLEMENTED_TESTED / FRESH_FULL_EVAL_RUNNING61144.
 
 ## Active repair
 - User requested immediate repair of invalid initialization; prior165 allMP3D. Fixed duplicate semantic PLY stage rotation with independent mp3d_semantic_ply_v1 config; RGB/collision frame retained, no shared asset/runtime changes.
 - Five paired real static cases across STT/DT/AT +HM3D: RGB/camera/allagent poses/nonsemantic stage identical; STTdepth identical; DT/ATdepth absent.55 target0->5198;AT299 0->3427. Not new SR.
-- 18CPUtests PASS;4215 real episode definitions PASS(each721MP3D+684HM3D). Weights/controllers/success criterion unchanged. Report wa/results/SEMANTIC_PLY_FIX_20261004.md.
+- 28CPUtests PASS;4215 real episode definitions PASS(each721MP3D+684HM3D). Weights/controllers/success criterion unchanged. Report wa/results/SEMANTIC_PLY_FIX_20261004.md.
 - Old full81.138790% remains pre-fix protocol evidence; semantic detector also affects HumanFollowing. Need fresh4215, never merge old rows or only replace165.
-- Next freeze independent source and submit full8A800 with WA_SEMANTIC_PLY_FIX=mp3d_semantic_ply_v1; no training or LightNav full run. Record scheduler IDs before reporting running.
-- Prior full-result monitor remains paused until new full job is verified.
+- Active61144/72164 submitted16:19:26 Beijing, actual8 A800-SXM4-80GB readycontractsPASS;16:25 completed57/4215 unique(STT57 DT0 AT0), invalid0 so far, eightlogs recent/no fatal or OOM. Not finalSR or all165recovered.
+- Frozen source_semantic_ply_full_v1 commit e6bfc056f57ccc187441699ad475bbf3be66fe39; config wa/jobs/full_semantic_ply_v1.yaml SHA dddfac49c3b1feee845a41c26efd8b5bd17fb69b163522699d48a130a9ed53a0; output /data/nas_ray/project/md-ak/users/zeying.gong/job_61144/task_72164/wa_full_semantic_ply_v1.
+- Monitorwa ACTIVE every20min for61144; no training or LightNav full run. Final8shards4215fresh audit+pairedinitialRGB+newHTML thenpause. Old18794 remains oldprotocol page.
 
 ## Scope and acceptance
 - User2026-10-04 authorized more GPUs to accelerate full4215 existing validation: STT/DT/AT1405each; no new training or LightNav full evaluation.
