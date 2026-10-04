@@ -1,5 +1,5 @@
 # WA current task — targeted MP3D semantic re-evaluation
-Updated:2026-10-04 20:27+08. Status:61171/72191 RUNNING_OTHER_MP3D; PRIORITY165_COMPLETE.
+Updated:2026-10-04 20:49+08. Status:61171/72191 RUNNING_OTHER_MP3D; PRIORITY165_COMPLETE.
 
 ## Authorized scope
 - User explicitly requested MP3D-only rerun with old165 invalid starts first; reuse unaffected HM3D and preserve all complete results.
@@ -11,7 +11,7 @@ Updated:2026-10-04 20:27+08. Status:61171/72191 RUNNING_OTHER_MP3D; PRIORITY165_
 - Report priority165 immediately after stage completion: initrecovery separately fromclosedloopsuccess/collision/otherfailure; no all165success claim.
 
 ## Active run
-- 61171/72191 submitted2026-10-04 17:21:29 Beijing; actual8 A800-SXM4-80GB readycontractsPASS. At20:27 new1427/2125 (STT683 DT687 AT57),+147; ATnonpriority started;invalid7 unchanged,8prioritybarriers complete; otherMP3D underway, logs growing nofatal/OOM.
+- 61171/72191 submitted2026-10-04 17:21:29 Beijing; actual8 A800-SXM4-80GB readycontractsPASS. At20:49 new1580/2125 (STT683 DT721 AT176),+153; remaining545AT;invalid7 unchanged,8prioritybarriers complete; otherMP3D underway, logs growing nofatal/OOM.
 - Priority165:158initialized,138success,7stillinvalid,20laterfailures; successesSTT52/57 DT45/57 AT41/51. All7invalid pRbA3pwrgk9 STT27/38 DT27/38 AT27/38/71; causeUNVERIFIED. All165initialRGBmatch andnewvideo metadataPASS.
 - Source /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_semantic_targeted_v1 commit d6d3a8052539ba2ac419bc836f531b63d7017e09 cleanfrozen.
 - Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
