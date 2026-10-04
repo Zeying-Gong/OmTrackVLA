@@ -1,0 +1,54 @@
+{
+  "status": "COMPLETE_FULL_VALIDATION",
+  "mode": "mixed",
+  "noise_mode": "zero",
+  "controller": "learned_yaw_guard_v1",
+  "episodes": 4215,
+  "checkpoint_sha256": "20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331",
+  "checkpoint_step": 45900,
+  "metrics_percent": {
+    "stt": {
+      "episodes": 1405,
+      "SR": 85.69395017793595,
+      "CR": 5.05338078291815,
+      "TR": 81.42419997050582,
+      "macro_TR": 85.81908171231564,
+      "finish": 88.68327402135232,
+      "invalid_init_count": 57,
+      "reference_missing": 52
+    },
+    "dt": {
+      "episodes": 1405,
+      "SR": 77.72241992882562,
+      "CR": 7.259786476868327,
+      "TR": 74.0584129778672,
+      "macro_TR": 75.75264588915884,
+      "finish": 84.98220640569394,
+      "invalid_init_count": 57,
+      "reference_missing": 52
+    },
+    "at": {
+      "episodes": 1405,
+      "SR": 80.0,
+      "CR": 5.622775800711744,
+      "TR": 79.94968220338983,
+      "macro_TR": 82.34148658433224,
+      "finish": 87.47330960854093,
+      "invalid_init_count": 51,
+      "reference_missing": 52
+    }
+  },
+  "limits": [
+    "ideal simulated polar UWB noise0 delay0; no text",
+    "existing validation split includes development/confirmation; not untouched test",
+    "HumanCollision is target-person distance ever<0.5m not general obstacle contact",
+    "no real-UWB or edge-latency validation"
+  ],
+  "continuation": {
+    "parent_job": 60885,
+    "parent_task": 71808,
+    "reused": 2238,
+    "new": 1977,
+    "plan_sha256": "66bb0c34f3d44b0a238911e21b21a29502cc85d7076e9a59b2f9048aef1ed33b"
+  }
+}

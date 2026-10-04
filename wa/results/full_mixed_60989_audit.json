@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "episodes": 4215,
+  "reused": 2238,
+  "new": 1977,
+  "initial_rgb_sha256_verified": 4215,
+  "video_metadata_verified": 4215,
+  "video_check_scope": "ffprobe metadata/duration; not every frame decoded",
+  "invalid_init_count": 165,
+  "combined_sha256": "d2d69547ea47aab503bbac7807afcc60e46a9ead4bd61c3b4fd695e202435aad",
+  "summary_sha256": "beee6bc5a012309031886eb70800d4f8cb4185d76c971736fa6d2be9d99ecb54"
+}
