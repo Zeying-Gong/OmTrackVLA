@@ -1,5 +1,8 @@
 # Targeted semantic re-evaluation — 2026-10-04
-Status: PREFLIGHT_PASS / submission pending.
+Status: SUBMITTED61171/72191 at2026-10-04 17:21:29 Beijing; startupverified17:24 with8A800;16newprioritycomplete,14initvalid+success,2invalid; plus2previoussuccess=18/165 reviewed. No full recoveryclaim.
+Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
+Frozen source_semantic_targeted_v1 d6d3a8052539ba2ac419bc836f531b63d7017e09.
+Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
 User explicitly authorized replacing full rerun with old165 invalid-first priority and affected MP3D only.
 
 ## Immutable accounting
