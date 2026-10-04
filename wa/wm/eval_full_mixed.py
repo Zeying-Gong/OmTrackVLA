@@ -22,6 +22,11 @@ def main():
     if os.environ.get('WA_RESUME_PLAN'):
         from wa.wm.full_mixed_resume import load_plan
         plan=load_plan(os.environ['WA_RESUME_PLAN'],m,os.environ['WA_RESUME_PLAN_SHA'])
+    targeted=bool(os.environ.get('WA_TARGETED_PLAN'))
+    if targeted:
+        if not semantic_fix or plan is not None:raise ValueError('targeted plan requires semantic-only protocol')
+        from wa.wm.semantic_targeted import load_targeted,priority_barrier
+        plan=load_targeted(os.environ['WA_TARGETED_PLAN'],m,os.environ['WA_TARGETED_PLAN_SHA'])
     total=0
     if not a.audit_only:
         assert os.environ.get('WA_DIAG_CONTROLLER')=='learned_yaw_guard_v1'
@@ -29,7 +34,9 @@ def main():
         if os.environ.get('WA_REVIEW_VIDEO')=='1':
             from wa.wm.review_recorder import install
             install()
-    for task in ['stt','dt','at']:
+    schedule=[(phase,task) for phase in ([True,False] if targeted else [None]) for task in ['stt','dt','at']]
+    for phase,task in schedule:
+        if targeted and phase is False and task=='stt' and not a.audit_only:priority_barrier(out)
         spec=m['tasks'][task];assert sha(spec['path'])==spec['sha256']
         config=habitat.get_config(str(BENCH/f'habitat-lab/habitat/config/benchmark/nav/track/track_infer_{task}.yaml'),[
             'habitat.simulator.habitat_sim_v0.gpu_device_id=0','habitat.environment.iterator_options.shuffle=false',
@@ -41,7 +48,7 @@ def main():
         if plan is None:
             selected=[e for e in spec['episodes'] if e['shard']==a.shard]
         else:
-            keys={e['key'] for e in plan['lanes'][a.shard] if e['task']==task}
+            keys={e['key'] for e in plan['lanes'][a.shard] if e['task']==task and (not targeted or e['priority']==phase)}
             selected=[e for e in spec['episodes'] if e['key'] in keys]
             assert len(selected)==len(keys)
         for e in selected:assert actual[e['key']].info['instruction']==e['instruction']

@@ -16,6 +16,12 @@ if semantic_fix:
 if os.environ.get('WA_RESUME_PLAN'):
     from wa.wm.full_mixed_resume import load_plan,verify_new_rows
     plan=load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
+targeted=bool(os.environ.get('WA_TARGETED_PLAN'))
+if targeted:
+    if not semantic_fix or plan is not None:raise ValueError('targeted plan requires semantic-only protocol')
+    from wa.wm.semantic_targeted import load_targeted
+    from wa.wm.full_mixed_resume import verify_new_rows
+    plan=load_targeted(os.environ['WA_TARGETED_PLAN'],manifest,os.environ['WA_TARGETED_PLAN_SHA'])
 assert os.environ.get('WA_DIAG_CONTROLLER')=='learned_yaw_guard_v1'
 OUT=Path(sys.argv[1]);OUT.mkdir(parents=True,exist_ok=False)
 if plan is not None:
@@ -77,14 +83,16 @@ try:
         rows.extend(part)
     if plan is not None:
         verify_new_rows(rows,plan)
-        load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
+        if targeted:load_targeted(os.environ['WA_TARGETED_PLAN'],manifest,os.environ['WA_TARGETED_PLAN_SHA'])
+        else:load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
         rows=plan['completed_rows']+rows
     report=summarize(rows,manifest)
     if semantic_fix:
         report['semantic_protocol']=provenance()
         (OUT/'combined_episodes.jsonl').write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in rows))
     if plan is not None:
-        report['continuation']=dict(parent_job=60885,parent_task=71808,reused=len(plan['completed_rows']),new=len(rows)-len(plan['completed_rows']),plan_sha256=os.environ['WA_RESUME_PLAN_SHA'])
+        report['continuation']=dict(parent_job=plan['parent_job'],parent_task=plan['parent_task'],reused=len(plan['completed_rows']),new=len(rows)-len(plan['completed_rows']),plan_sha256=os.environ['WA_TARGETED_PLAN_SHA'] if targeted else os.environ['WA_RESUME_PLAN_SHA'])
+        if targeted:report['continuation'].update(scope='MP3D re-evaluation plus audited unaffected HM3D reuse',reuse_counts=plan['reuse_counts'])
         (OUT/'combined_episodes.jsonl').write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in rows))
     (OUT/'summary.json').write_text(json.dumps(report,indent=2,allow_nan=False))
     print('FULL_MIXED_EVALUATION_COMPLETE',json.dumps(report),flush=True)
