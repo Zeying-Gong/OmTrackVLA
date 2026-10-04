@@ -57,3 +57,6 @@ Browser verified4215 records andATinvalid51 filter; videos linked directly to bo
 Forward: ssh -N -L 18794:127.0.0.1:18794 devpod-a800
 Open http://127.0.0.1:18794/ . Server bound127.0.0.1 only.
 Monitorwa PAUSED after completion/audit; no new GPU work submitted.
+
+## Post-audit caveat (2026-10-04)
+Structural/data-integrity audit remains valid, but a semantic-rendering/initialization validity issue was subsequently identified. See INIT_BBOX_DIAGNOSIS_20261004.md. Original metrics remain unchanged; do not interpret all165 invalid starts as ordinary model tracking failures. Exact renderer/asset mechanism remains unresolved.

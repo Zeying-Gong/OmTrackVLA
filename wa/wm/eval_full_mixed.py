@@ -13,6 +13,12 @@ def main():
     if not 0<=a.shard<8:raise ValueError('eight shards required')
     out=Path(a.output);m=json.loads(Path(a.manifest).read_text());assert m['shards']==8 and m['seed_each_episode']==7
     plan=None
+    semantic_fix=os.environ.get('WA_SEMANTIC_PLY_FIX','')
+    if semantic_fix:
+        from wa.wm.semantic_scene import VERSION,prepare_episode,provenance,is_mp3d_ply_scene
+        if semantic_fix!=VERSION:raise ValueError('unknown semantic repair version')
+        if os.environ.get('WA_RESUME_PLAN'):raise ValueError('cannot merge old semantic protocol results')
+        write(out/'semantic_protocol.json',provenance())
     if os.environ.get('WA_RESUME_PLAN'):
         from wa.wm.full_mixed_resume import load_plan
         plan=load_plan(os.environ['WA_RESUME_PLAN'],m,os.environ['WA_RESUME_PLAN_SHA'])
@@ -47,6 +53,7 @@ def main():
         for entry in selected:
             agent=DiagnosticAgent(ready['url'],config.habitat.task.actions.agent_1_base_velocity,'mixed',dest/(entry['key'].replace('/','_')+'.trace.jsonl'))
             ep=actual[entry['key']];random.seed(7);np.random.seed(7);torch.manual_seed(7);torch.cuda.manual_seed_all(7)
+            if semantic_fix:ep=prepare_episode(ep,BENCH)
             subset=copy.copy(ds);subset.episodes=[ep];print('EPISODE_START',task,entry['key'],flush=True)
             trained_agent.evaluate_agent(copy.deepcopy(config),subset,str(dest),agent_factory=lambda _:agent)
             result=json.loads((dest/(entry['key']+'.json')).read_text())
@@ -54,6 +61,8 @@ def main():
             # Invalid first-frame bbox remains a recorded failure, never filtered/replaced.
             result.pop('instruction',None)
             result.update(task=task,key=entry['key'],mode='mixed',noise_mode='zero',controller='learned_yaw_guard_v1',initial_rgb_sha256=sha(dest/'_live'/entry['key']/'step_0000.jpg'))
+            if semantic_fix:
+                result.update(semantic_protocol=semantic_fix,semantic_ply_repaired=is_mp3d_ply_scene(ep.scene_id))
             with (out/'episodes.jsonl').open('a') as f:f.write(json.dumps(result,allow_nan=False)+'\n')
             total+=1;write(out/'progress.json',dict(completed=total,task=task,last=entry['key']))
             print('EPISODE_RESULT',json.dumps(result),flush=True)

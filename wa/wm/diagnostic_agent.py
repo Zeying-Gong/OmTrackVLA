@@ -9,6 +9,11 @@ class DiagnosticAgent(WAAgent):
         super().__init__(url,action_config)
     def bind_environment(self,env):
         super().bind_environment(env)
+        if os.environ.get('WA_SEMANTIC_PLY_FIX'):
+            from wa.wm.semantic_scene import VERSION,validate_runtime
+            if os.environ['WA_SEMANTIC_PLY_FIX']!=VERSION:
+                raise ValueError('unknown semantic repair version')
+            validate_runtime(env.sim,env.current_episode)
         self.diagnostic_env=env
         self.uwb_sensor=SimulatedUWB(env) if self.mode=='mixed' else None
     def rpc(self,path,data):

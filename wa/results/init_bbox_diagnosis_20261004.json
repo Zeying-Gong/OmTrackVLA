@@ -1,0 +1,2887 @@
+{
+  "status": "PARTIAL_ROOT_CAUSE_ISOLATED_NOT_FIXED",
+  "counts": {
+    "stt": {
+      "invalid": 57,
+      "later_visible": 35
+    },
+    "dt": {
+      "invalid": 57,
+      "later_visible": 37
+    },
+    "at": {
+      "invalid": 51,
+      "later_visible": 35
+    }
+  },
+  "zero_box_count": 165,
+  "later_visible_count": 107,
+  "records": [
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/55",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0190559235792787,
+        -0.17921006717604027
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.7280000000000005,
+      "status": "Normal",
+      "total_step": 68
+    },
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/2",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6426720695829187,
+        0.13318573751748014
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 33
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/299",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.769267562612109,
+        0.20238270355450316
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 50
+    },
+    {
+      "task": "stt",
+      "key": "ac26ZMwG7aT/32",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6556754294764633,
+        -0.17154795007660228
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 38
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/35",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.8291815926852037,
+        0.22456161438543548
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 31
+    },
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/73",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.598634375017432,
+        -0.26076971504464636
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.2400000000000001,
+      "status": "Collision",
+      "total_step": 18
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/331",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3892618268366985,
+        -0.07185268785352006
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.19200000000000006,
+      "status": "Lost",
+      "total_step": 63
+    },
+    {
+      "task": "dt",
+      "key": "oLBMNvg9in8/55",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0190559235792787,
+        -0.17921006717604027
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Normal",
+      "total_step": 68
+    },
+    {
+      "task": "dt",
+      "key": "oLBMNvg9in8/2",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6426720695829187,
+        0.13318573751748014
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 33
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/299",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.769267562612109,
+        0.20238270355450316
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 50
+    },
+    {
+      "task": "dt",
+      "key": "ac26ZMwG7aT/32",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6556754294764633,
+        -0.17154795007660228
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 39
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/35",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.8291815926852037,
+        0.22456161438543548
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 31
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/331",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3892618268366985,
+        -0.07185268785352006
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.3360000000000002,
+      "status": "Lost",
+      "total_step": 62
+    },
+    {
+      "task": "at",
+      "key": "oLBMNvg9in8/55",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0190559235792787,
+        -0.17921006717604027
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Normal",
+      "total_step": 65
+    },
+    {
+      "task": "at",
+      "key": "oLBMNvg9in8/2",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6426720695829187,
+        0.13318573751748014
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 1.456000000000001,
+      "status": "Lost",
+      "total_step": 32
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/299",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.769267562612109,
+        0.20238270355450316
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 50
+    },
+    {
+      "task": "at",
+      "key": "ac26ZMwG7aT/32",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6556754294764633,
+        -0.17154795007660228
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 37
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/35",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.8291815926852037,
+        0.22456161438543548
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 32
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/331",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3892618268366985,
+        -0.07185268785352006
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.28800000000000014,
+      "status": "Lost",
+      "total_step": 58
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/157",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.494268613640874,
+        -0.01995705368879401
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 40
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/244",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5723932632918847,
+        -0.2745961729793246
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 35
+    },
+    {
+      "task": "stt",
+      "key": "JmbYfDe2QKZ/28",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.6928367057855662,
+        -0.09832673618345535
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Collision",
+      "total_step": 17
+    },
+    {
+      "task": "stt",
+      "key": "pRbA3pwrgk9/27",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3665156750202643,
+        0.18235805968702737
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.9680000000000007,
+      "status": "Normal",
+      "total_step": 65
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/5",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.851783100077099,
+        0.23127012387982088
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 61
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/51",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.947491333232564,
+        -0.012294504175097537
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 37
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/106",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.5540448876867752,
+        -0.23925706575595884
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Collision",
+      "total_step": 16
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/40",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.4951409476507953,
+        -0.06383187694634015
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.7280000000000005,
+      "status": "Lost",
+      "total_step": 58
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/157",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.494268613640874,
+        -0.01995705368879401
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 39
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/244",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5723932632918847,
+        -0.2745961729793246
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 34
+    },
+    {
+      "task": "dt",
+      "key": "JmbYfDe2QKZ/28",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.6928367057855662,
+        -0.09832673618345535
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Collision",
+      "total_step": 14
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/27",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3665156750202643,
+        0.18235805968702737
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 1.1680000000000008,
+      "status": "Normal",
+      "total_step": 65
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/5",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.851783100077099,
+        0.23127012387982088
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.3360000000000002,
+      "status": "Lost",
+      "total_step": 59
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/51",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.947491333232564,
+        -0.012294504175097537
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 36
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/106",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.5540448876867752,
+        -0.23925706575595884
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Collision",
+      "total_step": 14
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/40",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.4951409476507953,
+        -0.06383187694634015
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Lost",
+      "total_step": 57
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/244",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5723932632918847,
+        -0.2745961729793246
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 35
+    },
+    {
+      "task": "at",
+      "key": "JmbYfDe2QKZ/28",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.6928367057855662,
+        -0.09832673618345535
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Collision",
+      "total_step": 13
+    },
+    {
+      "task": "at",
+      "key": "pRbA3pwrgk9/27",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3665156750202643,
+        0.18235805968702737
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.9680000000000007,
+      "status": "Normal",
+      "total_step": 63
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/5",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.851783100077099,
+        0.23127012387982088
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4320000000000003,
+      "status": "Lost",
+      "total_step": 58
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/51",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.947491333232564,
+        -0.012294504175097537
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 37
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/106",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.5540448876867752,
+        -0.23925706575595884
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Collision",
+      "total_step": 16
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/40",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.4951409476507953,
+        -0.06383187694634015
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6800000000000005,
+      "status": "Lost",
+      "total_step": 58
+    },
+    {
+      "task": "stt",
+      "key": "pRbA3pwrgk9/38",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.1767105943100904,
+        0.08124331297365257
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Collision",
+      "total_step": 21
+    },
+    {
+      "task": "stt",
+      "key": "pRbA3pwrgk9/76",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9532966125363322,
+        -0.07549939515202132
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Collision",
+      "total_step": 17
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/223",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.441615902589419,
+        -0.05685232995251882
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 50
+    },
+    {
+      "task": "stt",
+      "key": "ac26ZMwG7aT/184",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.8122508259069923,
+        0.0526676397823618
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 38
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/66",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.7685392768308672,
+        0.08307618288905098
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 38
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/89",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6106503572992996,
+        -0.07036762069650579
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Lost",
+      "total_step": 71
+    },
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/18",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.762397440402535,
+        0.11343877440960509
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 44
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/205",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0311374523482115,
+        -0.30794478003569603
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 40
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/10",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.7033666214392915,
+        0.1858930640784286
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 68
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/28",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.959875452065083,
+        -0.09390070868397382
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Collision",
+      "total_step": 17
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/38",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.1767105943100904,
+        0.08124331297365257
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Collision",
+      "total_step": 19
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/76",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9532966125363322,
+        -0.07549939515202132
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6800000000000005,
+      "status": "Collision",
+      "total_step": 15
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/223",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.441615902589419,
+        -0.05685232995251882
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 47
+    },
+    {
+      "task": "dt",
+      "key": "ac26ZMwG7aT/184",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.8122508259069923,
+        0.0526676397823618
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 36
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/66",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.7685392768308672,
+        0.08307618288905098
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 37
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/89",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6106503572992996,
+        -0.07036762069650579
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Lost",
+      "total_step": 73
+    },
+    {
+      "task": "dt",
+      "key": "oLBMNvg9in8/18",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.762397440402535,
+        0.11343877440960509
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 43
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/205",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0311374523482115,
+        -0.30794478003569603
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 41
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/28",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.959875452065083,
+        -0.09390070868397382
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Collision",
+      "total_step": 17
+    },
+    {
+      "task": "at",
+      "key": "pRbA3pwrgk9/38",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.1767105943100904,
+        0.08124331297365257
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Collision",
+      "total_step": 21
+    },
+    {
+      "task": "at",
+      "key": "pRbA3pwrgk9/76",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9532966125363322,
+        -0.07549939515202132
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Collision",
+      "total_step": 15
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/223",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.441615902589419,
+        -0.05685232995251882
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 47
+    },
+    {
+      "task": "at",
+      "key": "ac26ZMwG7aT/184",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.8122508259069923,
+        0.0526676397823618
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 38
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/66",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.7685392768308672,
+        0.08307618288905098
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 38
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/89",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6106503572992996,
+        -0.07036762069650579
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Lost",
+      "total_step": 72
+    },
+    {
+      "task": "at",
+      "key": "oLBMNvg9in8/18",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.762397440402535,
+        0.11343877440960509
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 44
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/205",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0311374523482115,
+        -0.30794478003569603
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 39
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/28",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.959875452065083,
+        -0.09390070868397382
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Collision",
+      "total_step": 15
+    },
+    {
+      "task": "stt",
+      "key": "V2XKFyX4ASd/65",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.4405152294305386,
+        -0.024308231329387038
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 66
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/273",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.7963924057155567,
+        -0.021276184336627434
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 42
+    },
+    {
+      "task": "stt",
+      "key": "XcA2TqTSSAj/29",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5288056094409206,
+        -0.1427439561107366
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Normal",
+      "total_step": 49
+    },
+    {
+      "task": "stt",
+      "key": "ac26ZMwG7aT/246",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3747246155798343,
+        -0.3203379437118229
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4320000000000003,
+      "status": "Collision",
+      "total_step": 13
+    },
+    {
+      "task": "dt",
+      "key": "V2XKFyX4ASd/65",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.4405152294305386,
+        -0.024308231329387038
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 61
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/273",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.7963924057155567,
+        -0.021276184336627434
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 42
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/260",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.839434424786846,
+        -0.26251996758934165
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 98
+    },
+    {
+      "task": "dt",
+      "key": "XcA2TqTSSAj/29",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5288056094409206,
+        -0.1427439561107366
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Normal",
+      "total_step": 48
+    },
+    {
+      "task": "dt",
+      "key": "ac26ZMwG7aT/246",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3747246155798343,
+        -0.3203379437118229
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.38400000000000023,
+      "status": "Collision",
+      "total_step": 16
+    },
+    {
+      "task": "at",
+      "key": "V2XKFyX4ASd/65",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.4405152294305386,
+        -0.024308231329387038
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 66
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/273",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.7963924057155567,
+        -0.021276184336627434
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.9200000000000007,
+      "status": "Lost",
+      "total_step": 41
+    },
+    {
+      "task": "at",
+      "key": "XcA2TqTSSAj/29",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5288056094409206,
+        -0.1427439561107366
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5280000000000004,
+      "status": "Normal",
+      "total_step": 48
+    },
+    {
+      "task": "at",
+      "key": "ac26ZMwG7aT/246",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60885/task_71808/wa_full_mixed_learned_yaw_v2/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3747246155798343,
+        -0.3203379437118229
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4320000000000003,
+      "status": "Collision",
+      "total_step": 13
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/79",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.865205718791905,
+        -0.2252018013899313
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 40
+    },
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/33",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.962336364987819,
+        -0.35101373381085166
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4320000000000003,
+      "status": "Normal",
+      "total_step": 59
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/376",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.002809699898864,
+        -0.006103167945557959
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Collision",
+      "total_step": 20
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/68",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.221617172109288,
+        0.20997718042097607
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Collision",
+      "total_step": 20
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/110",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.9420810053293134,
+        -0.20900698963778755
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 38
+    },
+    {
+      "task": "at",
+      "key": "oLBMNvg9in8/30",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.685676252312422,
+        -0.12996944843565464
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.8720000000000007,
+      "status": "Lost",
+      "total_step": 43
+    },
+    {
+      "task": "at",
+      "key": "pRbA3pwrgk9/58",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.672715584176668,
+        -0.27326988062686336
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Collision",
+      "total_step": 17
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/7",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_00",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5921689833721735,
+        -0.1781215609545824
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 35
+    },
+    {
+      "task": "stt",
+      "key": "pRbA3pwrgk9/3",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.061088720495503,
+        -0.25084519475154665
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.14400000000000004,
+      "status": "Collision",
+      "total_step": 10
+    },
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/22",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.7423205675095605,
+        0.05699803519687628
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 44
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/219",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.340249649726328,
+        -0.34572951246363526
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 53
+    },
+    {
+      "task": "stt",
+      "key": "pRbA3pwrgk9/71",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9964201555098888,
+        0.20332808286573653
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Collision",
+      "total_step": 12
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/160",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0493407881218086,
+        0.039644910222903416
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 57
+    },
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/39",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3359532515449,
+        -0.012534185243165416
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Collision",
+      "total_step": 16
+    },
+    {
+      "task": "stt",
+      "key": "pRbA3pwrgk9/18",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.81216148856401,
+        -0.11499652205009672
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.7760000000000006,
+      "status": "Collision",
+      "total_step": 22
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/246",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.639217767894203,
+        -0.16013842121216423
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 61
+    },
+    {
+      "task": "stt",
+      "key": "XcA2TqTSSAj/26",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.224559515312672,
+        -0.32998791291704416
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6800000000000005,
+      "status": "Collision",
+      "total_step": 19
+    },
+    {
+      "task": "dt",
+      "key": "oLBMNvg9in8/99",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.256873592509458,
+        0.11877619379266291
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 44
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/249",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9321992087776907,
+        0.12984766839059406
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Lost",
+      "total_step": 58
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/319",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.087388613212207,
+        -0.07825713123939905
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 47
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/324",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0213582295064354,
+        -0.12548225057932255
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.7280000000000005,
+      "status": "Lost",
+      "total_step": 58
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/136",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6839930837289168,
+        -0.19656432866029952
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 44
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/169",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_01",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.943610455077649,
+        -0.19193695642942218
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 29
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/24",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9661557196549093,
+        -0.3049439249750994
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.2400000000000001,
+      "status": "Lost",
+      "total_step": 53
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/40",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.6391870989610606,
+        -0.03854276634606703
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5280000000000004,
+      "status": "Lost",
+      "total_step": 52
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/286",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.2388642686140114,
+        0.004572298729490661
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.2400000000000001,
+      "status": "Lost",
+      "total_step": 57
+    },
+    {
+      "task": "stt",
+      "key": "XcA2TqTSSAj/10",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.279068301553417,
+        -0.26764113505572334
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Normal",
+      "total_step": 46
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/126",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.849609262522816,
+        0.060179589536975955
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 56
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/10",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.191467156927426,
+        -0.23076847536756803
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 54
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/79",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.865205718791905,
+        -0.2252018013899313
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6800000000000005,
+      "status": "Lost",
+      "total_step": 38
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/376",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_02",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.002809699898864,
+        -0.006103167945557959
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Collision",
+      "total_step": 19
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/110",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.9420810053293134,
+        -0.20900698963778755
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 37
+    },
+    {
+      "task": "dt",
+      "key": "oLBMNvg9in8/30",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.685676252312422,
+        -0.12996944843565464
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.9680000000000007,
+      "status": "Lost",
+      "total_step": 46
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/58",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.672715584176668,
+        -0.27326988062686336
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Collision",
+      "total_step": 19
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/7",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5921689833721735,
+        -0.1781215609545824
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 33
+    },
+    {
+      "task": "at",
+      "key": "pRbA3pwrgk9/3",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.061088720495503,
+        -0.25084519475154665
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.14400000000000004,
+      "status": "Collision",
+      "total_step": 12
+    },
+    {
+      "task": "at",
+      "key": "oLBMNvg9in8/22",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.7423205675095605,
+        0.05699803519687628
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 1.7520000000000013,
+      "status": "Lost",
+      "total_step": 47
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/219",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.340249649726328,
+        -0.34572951246363526
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 55
+    },
+    {
+      "task": "at",
+      "key": "pRbA3pwrgk9/71",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9964201555098888,
+        0.20332808286573653
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Collision",
+      "total_step": 12
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/160",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0493407881218086,
+        0.039644910222903416
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.19200000000000006,
+      "status": "Lost",
+      "total_step": 58
+    },
+    {
+      "task": "at",
+      "key": "pRbA3pwrgk9/18",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.81216148856401,
+        -0.11499652205009672
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.7280000000000005,
+      "status": "Collision",
+      "total_step": 22
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/246",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.639217767894203,
+        -0.16013842121216423
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 61
+    },
+    {
+      "task": "at",
+      "key": "XcA2TqTSSAj/26",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_03",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.224559515312672,
+        -0.32998791291704416
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Normal",
+      "total_step": 47
+    },
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/99",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.256873592509458,
+        0.11877619379266291
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 47
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/249",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9321992087776907,
+        0.12984766839059406
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 52
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/319",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.087388613212207,
+        -0.07825713123939905
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 48
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/324",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0213582295064354,
+        -0.12548225057932255
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Lost",
+      "total_step": 57
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/136",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6839930837289168,
+        -0.19656432866029952
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 55
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/169",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.943610455077649,
+        -0.19193695642942218
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 29
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/24",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9661557196549093,
+        -0.3049439249750994
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.2400000000000001,
+      "status": "Lost",
+      "total_step": 55
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/40",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.6391870989610606,
+        -0.03854276634606703
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5280000000000004,
+      "status": "Lost",
+      "total_step": 53
+    },
+    {
+      "task": "at",
+      "key": "E9uDoFAP3SH/286",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.2388642686140114,
+        0.004572298729490661
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.28800000000000014,
+      "status": "Lost",
+      "total_step": 61
+    },
+    {
+      "task": "at",
+      "key": "XcA2TqTSSAj/10",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_04",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.279068301553417,
+        -0.26764113505572334
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Normal",
+      "total_step": 46
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/126",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_05",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.849609262522816,
+        0.060179589536975955
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5280000000000004,
+      "status": "Lost",
+      "total_step": 61
+    },
+    {
+      "task": "stt",
+      "key": "pRbA3pwrgk9/10",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_05",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.191467156927426,
+        -0.23076847536756803
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 49
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/79",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_05",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.865205718791905,
+        -0.2252018013899313
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 35
+    },
+    {
+      "task": "dt",
+      "key": "oLBMNvg9in8/33",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_05",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.962336364987819,
+        -0.35101373381085166
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.38400000000000023,
+      "status": "Normal",
+      "total_step": 52
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/376",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_05",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.002809699898864,
+        -0.006103167945557959
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Collision",
+      "total_step": 18
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/110",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.9420810053293134,
+        -0.20900698963778755
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 38
+    },
+    {
+      "task": "stt",
+      "key": "oLBMNvg9in8/30",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.685676252312422,
+        -0.12996944843565464
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.8720000000000007,
+      "status": "Lost",
+      "total_step": 43
+    },
+    {
+      "task": "stt",
+      "key": "pRbA3pwrgk9/58",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.672715584176668,
+        -0.27326988062686336
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Collision",
+      "total_step": 19
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/7",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.5921689833721735,
+        -0.1781215609545824
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 35
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/3",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.061088720495503,
+        -0.25084519475154665
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.19200000000000006,
+      "status": "Collision",
+      "total_step": 11
+    },
+    {
+      "task": "dt",
+      "key": "oLBMNvg9in8/22",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.7423205675095605,
+        0.05699803519687628
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 50
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/219",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.340249649726328,
+        -0.34572951246363526
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 55
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/71",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9964201555098888,
+        0.20332808286573653
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6320000000000005,
+      "status": "Collision",
+      "total_step": 14
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/160",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0493407881218086,
+        0.039644910222903416
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5280000000000004,
+      "status": "Lost",
+      "total_step": 54
+    },
+    {
+      "task": "dt",
+      "key": "oLBMNvg9in8/39",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.3359532515449,
+        -0.012534185243165416
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Collision",
+      "total_step": 14
+    },
+    {
+      "task": "dt",
+      "key": "pRbA3pwrgk9/18",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.81216148856401,
+        -0.11499652205009672
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.7280000000000005,
+      "status": "Collision",
+      "total_step": 20
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/246",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.639217767894203,
+        -0.16013842121216423
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 59
+    },
+    {
+      "task": "dt",
+      "key": "XcA2TqTSSAj/26",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.224559515312672,
+        -0.32998791291704416
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.5840000000000004,
+      "status": "Normal",
+      "total_step": 46
+    },
+    {
+      "task": "at",
+      "key": "oLBMNvg9in8/99",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.256873592509458,
+        0.11877619379266291
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 47
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/249",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_06",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9321992087776907,
+        0.12984766839059406
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6800000000000005,
+      "status": "Lost",
+      "total_step": 61
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/324",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.0213582295064354,
+        -0.12548225057932255
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.6800000000000005,
+      "status": "Lost",
+      "total_step": 57
+    },
+    {
+      "task": "stt",
+      "key": "2n8kARJN3HM/136",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.6839930837289168,
+        -0.19656432866029952
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 45
+    },
+    {
+      "task": "stt",
+      "key": "E9uDoFAP3SH/169",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.943610455077649,
+        -0.19193695642942218
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Lost",
+      "total_step": 30
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/24",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.9661557196549093,
+        -0.3049439249750994
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.28800000000000014,
+      "status": "Lost",
+      "total_step": 52
+    },
+    {
+      "task": "dt",
+      "key": "2n8kARJN3HM/40",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.6391870989610606,
+        -0.03854276634606703
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 49
+    },
+    {
+      "task": "dt",
+      "key": "E9uDoFAP3SH/286",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.2388642686140114,
+        0.004572298729490661
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.3360000000000002,
+      "status": "Lost",
+      "total_step": 58
+    },
+    {
+      "task": "dt",
+      "key": "XcA2TqTSSAj/10",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.279068301553417,
+        -0.26764113505572334
+      ],
+      "all_actions_zero": true,
+      "later_visible": false,
+      "first_visible_time_s": null,
+      "status": "Normal",
+      "total_step": 44
+    },
+    {
+      "task": "at",
+      "key": "2n8kARJN3HM/126",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        1.849609262522816,
+        0.060179589536975955
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.4800000000000003,
+      "status": "Lost",
+      "total_step": 59
+    },
+    {
+      "task": "at",
+      "key": "pRbA3pwrgk9/10",
+      "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_60989/task_71912/wa_full_mixed_resume_8gpu_v1/shard_07",
+      "failure_reason": "invalid_initialization_bbox: Invalid EVT initialization bbox: [0.0, 0.0, 0.0, 0.0]",
+      "first_pixels": 0,
+      "first_polar": [
+        2.191467156927426,
+        -0.23076847536756803
+      ],
+      "all_actions_zero": true,
+      "later_visible": true,
+      "first_visible_time_s": 0.048,
+      "status": "Lost",
+      "total_step": 57
+    }
+  ],
+  "probe_failure": {
+    "episode": "stt/oLBMNvg9in8/55",
+    "expected": 1098,
+    "model": "male_64",
+    "target_nodes": [],
+    "cameras": {
+      "agent_1_articulated_agent_jaw_rgb": [
+        [
+          0.9999130964279175,
+          0.0,
+          0.013191436417400837,
+          0.17244839668273926
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.7939132452011108
+        ],
+        [
+          -0.013191436417400837,
+          0.0,
+          0.9999130964279175,
+          0.270923376083374
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "agent_1_articulated_agent_jaw_panoptic": [
+        [
+          0.9999130964279175,
+          0.0,
+          0.013191436417400837,
+          0.17244839668273926
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.7939132452011108
+        ],
+        [
+          -0.013191436417400837,
+          0.0,
+          0.9999130964279175,
+          0.270923376083374
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "semantic_object_160": [
+      {
+        "id": "0_5_160",
+        "category": "ceiling",
+        "center": [
+          0.17817294597625732,
+          -0.20678499341011047,
+          -0.689172089099884
+        ],
+        "sizes": [
+          3.4666597843170166,
+          0.14311599731445312,
+          3.859879970550537
+        ]
+      }
+    ],
+    "frames": [
+      {
+        "index": 0,
+        "semantic_counts": {
+          "160": 147456
+        },
+        "box": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "index": 1,
+        "semantic_counts": {
+          "160": 147456
+        },
+        "box": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "probe_control": {
+    "episode": "stt/oLBMNvg9in8/12",
+    "expected": 1088,
+    "model": "male_57",
+    "target_nodes": [],
+    "cameras": {
+      "agent_1_articulated_agent_jaw_rgb": [
+        [
+          -0.4065253436565399,
+          0.0,
+          0.9136395454406738,
+          3.4383974075317383
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -1.4700038433074951
+        ],
+        [
+          -0.9136395454406738,
+          0.0,
+          -0.4065253436565399,
+          4.764451503753662
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "agent_1_articulated_agent_jaw_panoptic": [
+        [
+          -0.4065253436565399,
+          0.0,
+          0.9136395454406738,
+          3.4383974075317383
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -1.4700038433074951
+        ],
+        [
+          -0.9136395454406738,
+          0.0,
+          -0.4065253436565399,
+          4.764451503753662
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "semantic_object_160": [
+      {
+        "id": "0_5_160",
+        "category": "ceiling",
+        "center": [
+          0.17817294597625732,
+          -0.20678499341011047,
+          -0.689172089099884
+        ],
+        "sizes": [
+          3.4666597843170166,
+          0.14311599731445312,
+          3.859879970550537
+        ]
+      }
+    ],
+    "frames": [
+      {
+        "index": 0,
+        "semantic_counts": {
+          "0": 140430,
+          "56": 62,
+          "58": 4,
+          "72": 2,
+          "84": 6,
+          "86": 112,
+          "89": 61,
+          "105": 14,
+          "215": 1,
+          "241": 1,
+          "247": 33,
+          "1088": 6730
+        },
+        "box": [
+          227.0,
+          92.0,
+          291.0,
+          281.0
+        ]
+      },
+      {
+        "index": 1,
+        "semantic_counts": {
+          "0": 140430,
+          "56": 62,
+          "58": 4,
+          "72": 2,
+          "84": 6,
+          "86": 112,
+          "89": 61,
+          "105": 14,
+          "215": 1,
+          "241": 1,
+          "247": 33,
+          "1088": 6730
+        },
+        "box": [
+          227.0,
+          92.0,
+          291.0,
+          281.0
+        ]
+      }
+    ]
+  }
+}

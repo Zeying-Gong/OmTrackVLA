@@ -1,0 +1,26 @@
+{
+  "stages": {
+    "default_attributes": {
+      "up": [
+        0,
+        0,
+        1
+      ],
+      "front": [
+        0,
+        1,
+        0
+      ],
+      "semantic_up": [
+        0,
+        1,
+        0
+      ],
+      "semantic_front": [
+        0,
+        0,
+        -1
+      ]
+    }
+  }
+}

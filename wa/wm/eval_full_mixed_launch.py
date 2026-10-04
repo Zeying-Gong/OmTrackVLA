@@ -8,6 +8,11 @@ SOURCE=Path.cwd();WLA=ROOT.parent/'WLA-EVT-20260925';BENCH=ROOT.parent/'OmTrackV
 MANIFEST=WLA/'evt_full_20260926/manifest.json'
 assert sha(MANIFEST)==MANIFEST_SHA
 manifest=json.loads(MANIFEST.read_text());plan=None
+semantic_fix=os.environ.get('WA_SEMANTIC_PLY_FIX','')
+if semantic_fix:
+    from wa.wm.semantic_scene import VERSION,provenance
+    if semantic_fix!=VERSION:raise ValueError('unknown semantic repair version')
+    if os.environ.get('WA_RESUME_PLAN'):raise ValueError('fresh semantic protocol requires all episodes')
 if os.environ.get('WA_RESUME_PLAN'):
     from wa.wm.full_mixed_resume import load_plan,verify_new_rows
     plan=load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
@@ -67,12 +72,17 @@ try:
             assert len(part)==len(plan['lanes'][i])
             assert json.loads((dest/'COMPLETE.json').read_text())['episodes']==len(part)
             for r in part:r['artifact_root']=str(dest)
+        if semantic_fix:
+            for r in part:r['artifact_root']=str(dest)
         rows.extend(part)
     if plan is not None:
         verify_new_rows(rows,plan)
         load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
         rows=plan['completed_rows']+rows
     report=summarize(rows,manifest)
+    if semantic_fix:
+        report['semantic_protocol']=provenance()
+        (OUT/'combined_episodes.jsonl').write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in rows))
     if plan is not None:
         report['continuation']=dict(parent_job=60885,parent_task=71808,reused=len(plan['completed_rows']),new=len(rows)-len(plan['completed_rows']),plan_sha256=os.environ['WA_RESUME_PLAN_SHA'])
         (OUT/'combined_episodes.jsonl').write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in rows))
