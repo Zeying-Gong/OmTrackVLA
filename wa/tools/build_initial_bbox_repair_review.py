@@ -40,6 +40,7 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
     checked=list(pool.map(audit,rows))
 print('AUDIT_PASS',len(checked),flush=True)
 OUT.mkdir(exist_ok=False)
+(OUT/'first_frame_review.png').symlink_to(R/'artifacts/initial_bbox_repair_v2/first_frame_review.png')
 for root,label in roots.items():(OUT/label).symlink_to(root,target_is_directory=True)
 (OUT/'episodes.json').write_text(json.dumps(checked))
 (OUT/'summary.json').write_text(json.dumps(summary,indent=2))
@@ -63,6 +64,7 @@ for(const r of f.slice(page*12,page*12+12)){const a=document.createElement('arti
 for(const el of [task,outcome,search])el.addEventListener('input',()=>{page=0;render()});document.getElementById('prev').onclick=()=>{page--;render()};document.getElementById('next').onclick=()=>{page++;render()};fetch('episodes.json').then(r=>r.json()).then(r=>{rows=r.sort((a,b)=>a.task.localeCompare(b.task)||a.key.localeCompare(b.key));render()}).catch(e=>document.getElementById('count').textContent='加载失败 '+e);
 </script></html>'''.replace('TABLE',table)
 page=page.replace("61257 / 72334",D.parents[1].name.removeprefix("job_")+" / "+D.parent.name.removeprefix("task_"))
+page=page.replace('<a href="summary.json">','<a href="first_frame_review.png">7条修复首帧框</a> · <a href="summary.json">')
 (OUT/'index.html').write_text(page)
 print(json.dumps(summary,indent=2),flush=True)
 print(OUT,flush=True)

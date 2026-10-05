@@ -1,33 +1,31 @@
-# WA current task — repair seven residual initializations only
-Updated:2026-10-05 10:03+08. Status: RUNNING_7_ONLY; actual completion pending.
-- User authorized only7 replacements; preserve4208 other rows and baseline4215. No full rerun.
-- 61259/72336 submitted10:03:45,2A800,only7. Output job_61259/task_72336/wa_initial_bbox_repair_v2.
-- Source_initial_bbox_repair_v2 commit1efe5e6131e16bda712c6d5d5ee6a4a1f633a973;config05c74fcb.
-- Lighting-matched plan artifacts/initial_bbox_repair_v2/plan.json SHA6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a.
-- Seven paired static andbaselineJPEG checks PASS; actualevaluate_agent firstcall7/7 PASS beforeactions;CPU5boundary+4merge checks PASS.
-- FirstGTbbox only; latersemanticmetrics unchanged. Report wa/results/INITIAL_BBOX_REPAIR_20261005.md.
-- 61257/72334 FAILED0completed due staticprobe lighting mismatch; immutablelogs/source/plan retained; no baseline overwrite.
+# WA current task — seven initialization repairs completed
+Updated:2026-10-05 10:12+08. Status: SUCCEEDED_AUDITED_7_ONLY; broader research PARTIAL.
 
-## Final outcome
-- 2026-10-04 FINAL61171/72191 SUCCEEDED22:17:30;8COMPLETE new2125+frozen2090=4215unique each1405. Sourcecommitd6d3a805 clean;configfc119a34 andplan/sourcehashesPASS;new/reused disjoint;MP3D2163repaired HM3D2052unaffectedreuse;combinedrows and recomputedsummary exact. All4215 initialimage fileSHA andoldRGBpairsPASS;4215video ffprobe metadata/durationPASS(not everyframe decoded). SR STT1275/1405=90.747331 DT1157/1405=82.348754 AT1192/1405=84.839858;overall3624/4215=85.978648%. TRreference-normalized87.533505/78.665741/85.166987;macro_TR92.393361/81.353472/88.007583;each52missingreference usesexistingactual-stepfallback. HumanCollisionCR4.412811/6.761566/4.768683%;invalid2/2/3retained. OldSR81.138790 preserved;semanticprotocol repair nottraininggain;no fullLightNav/unseen-test claim. No workerfatal/OOM. HTML artifacts/semantic_full_review_61171 at18796 verifiedHTTP200/UI4215. Priority165158initialized138success7invalid20laterfailures;remaining7pRbA3pwrgk9 causeUNVERIFIED. Phaseevaluation complete,overallresearchPARTIAL;pausemonitor afterreport.
-- 61171/72191 submitted17:21:29, ended22:17:30 Beijing; elapsed4h56m01s,8A800.
-- Full output /data/nas_ray/project/md-ak/users/zeying.gong/job_61171/task_72191/wa_semantic_targeted_v1.
-- Independent HTML/audit /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/semantic_full_review_61171.
-- Access: ssh -N -L 18796:127.0.0.1:18796 devpod-a800 then http://127.0.0.1:18796/.
-- Old18794 remains oldprotocol;18795 remains priority165 pairedreview. No old result overwritten.
+## Current result
+- User requested only7 initialization replacements, no full rerun. 61259/72336 SUCCEEDED10:07:05 after10:03:45 submission (3m20s),2actual NVIDIA A800-SXM4-80GB.
+- All7 initialization valid;3closed-loop success (STT/DT/AT pRbA3pwrgk9/38);3 pRbA3pwrgk9/27 below following criterion;AT/71 HumanCollision. No change to failure/success thresholds.
+- Replaced exactly7 rows;4208 rows unchanged,4215unique each1405. Overall3627/4215=86.049822% versus3624/4215=85.978648%.
+- SR STT90.818505 DT82.419929 AT84.911032%;TR87.573986/78.697793/85.206358%;HumanCollisionCR4.341637/6.690391/4.697509%;invalid0/0/0.
+- Two lanes COMPLETE4+3;modelcontracts/plan/source/initialRGB PASS. All4215 imageSHA andvideo ffprobe metadata/duration PASS (not full-frame decode).
+- Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61259/task_72336/wa_initial_bbox_repair_v2.
+- New HTML artifacts/initial_bbox_repair_review_job_61259 at18797;HTTP andUI7-filter verified. Old18796 auditedbaseline remains.
+- Access: ssh -N -L 18797:127.0.0.1:18797 devpod-a800 then http://127.0.0.1:18797/.
+- Full report wa/results/INITIAL_BBOX_REPAIR_20261005.md;no active WA evaluation/training from this request. Existing monitor remains paused;no automatic further runs.
 
-## Immutable protocol and provenance
-- Plan artifacts/semantic_targeted_plan_20261004_v1.json SHA7ad7697df1a29b6cd5589b784390a31c4483e4118a1dbff79a57e944a38be458.
-- Frozen source_semantic_targeted_v1 commitd6d3a8052539ba2ac419bc836f531b63d7017e09.
-- Config wa/jobs/semantic_targeted_v1.yaml SHAfc119a34fef91892a1fba27a20a911ae632ed465df603c7dac0426f37f282ab5.
-- 61144/72164 user-authorized STOPPED17:13:41;722retained(38repairedMP3D684HM3D),plus1368oldunaffectedHM3D;not4215fresh rerun.
+## Repair boundary and immutable provenance
+- Cause evidence: semanticPLY occluded RGB-visible human in7firstframes. Isolated RGB-scene-graph semantic rendering recoveredGTboxes;pairedRGB/camera/poses identical.
+- Only initialGTbox annotation repaired using exact firstRGB SHA; no laterGTbox oralternate semantic renderer in closedloop. Subsequent HumanFollowing semantic metrics unchanged;not claiming all visibility errors fixed.
+- Plan artifacts/initial_bbox_repair_v2/plan.json SHA6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a.
+- Frozen source_initial_bbox_repair_v2 commit1efe5e6131e16bda712c6d5d5ee6a4a1f633a973;configwa/jobs/initial_bbox_repair_v2.yaml SHA05c74fcbb6c9273b077b3661ec34c4b03373eac6cd65ddad70b51318475c5b15.
+- 7staticlight-pairs/7oldJPEG/7actualfirstcall checks PASS;CPU5boundary+4merge cases PASS.
+- 61257/72334 FAILED0completed due staticprobe missingformalLightInfo setup;rawRGBguard rejected beforeaction. Failedsource60e0d7df/config2a881ef1/plan2c163cd4/logs retained;no relaxed checks.
 - Fixed60502/71381step45900 SHA20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331.
 - RGB+firstGTBBox+idealpolarUWB noise0delay0;no text/laterGTboxes. JEPA/MetaQuery/ActionExpert;JEPAtrainingauxonly,noMPC.
-- mp3d_semantic_ply_v1 semanticYup only,RGB/collisionZup unchanged;no controller/physics/model/loss/threshold changes.
-- CR targetperson distanceever<0.5m,notwall/doorframe. Existingvalidation includesdev/confirmation,notuntouchedtest.
-- Full report wa/results/SEMANTIC_TARGETED_20261004.md;historical60883failed60885stopped60989complete retained.
+- mp3d_semantic_ply_v1 configSHA1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6 retained. No physics/model/loss/controller change.
+- CR targetperson distanceever<0.5m,notwall/doorframe. TRreference-step normalized with52missingreferences/task usingexistingactual-stepfallback;macroTR separate.
+- Existingvalidation includesdev/confirmation,notuntouchedtest;no fullLightNavcomparison orrealUWB claim. Scorechange is annotation repair,nottraininggain.
 
-## Remaining boundary
-- Seven residualinvalid pRbA3pwrgk9 STT27/38 DT27/38 AT27/38/71 remain counted;causeUNVERIFIED.
-- No further training,LightNavfull,policytuning orrerun initiated. New research direction requires user direction.
-- Final phase monitor wa PAUSED via app tool after audit/report completion; no claim whole research or real-world deployment complete.
+## Preserved baseline
+- 61171/72191 SUCCEEDED2026-10-04 22:17:30,8A800,new2125+reused2090=4215. Source d6d3a805/configfc119a34/plan7ad7697d.
+- Baseline3624success/4215;invalid7;MP3D2163repaired+HM3D2052unaffected. Full audit/page18796 preserved.
+- Older faultysemantic protocol81.138790%,61144stopped722complete,60883failed/60885stopped/60989complete retained;never mixed as newmodel gains.

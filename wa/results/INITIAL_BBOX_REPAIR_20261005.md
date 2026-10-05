@@ -1,5 +1,5 @@
 # Residual seven initialization repair — 2026-10-05
-Status: STATIC_VERIFIED; seven-only closed-loop evaluation pending.
+Status: SUCCEEDED_AUDITED_7_ONLY (61259/72336); broader research PARTIAL. Earlier preparation/failure history retained below.
 User authorized repairing/replacing only seven residual invalid rows; no full rerun.
 ## Evidence
 All seven belong to pRbA3pwrgk9: STT27/38, DT27/38, AT27/38/71.
@@ -27,3 +27,39 @@ CPU5 tests pass incl first-only forwarding; two real dataset lane audits select4
 Lighting-aligned seven paired static renders now all pass; bbox pixel geometry unchanged. Re-encoding all seven original static frames using the same imageio/JPEG path exactly matches audited61171 first-frame JPEG SHA.
 New immutable plan artifacts/initial_bbox_repair_v2/plan.json SHA6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a. Checkpoint full SHA reconfirmed20cc84b3;CPU5boundary tests+4merge cases PASS.
 Added actual evaluate_agent first-call check that validates hash/bbox and exits before any action. Must pass all7 before resubmission; no relaxed hash gate or full rerun.
+
+## Final result — 61259/72336
+Submitted2026-10-05 10:03:45 Beijing;SUCCEEDED10:07:05,elapsed3m20s,2NVIDIA A800-SXM4-80GB.
+Frozen source_initial_bbox_repair_v2 commit1efe5e6131e16bda712c6d5d5ee6a4a1f633a973;configSHA05c74fcbb6c9273b077b3661ec34c4b03373eac6cd65ddad70b51318475c5b15;plan6535f7b9 unchanged.
+Seven firstcall tests passed before submission;two worker lanes COMPLETE4+3;no worker Traceback/FATAL/CUDA OOM.
+All seven initialized successfully. No claim all seven closed-loop success.
+
+| Task | Episode | Init valid | Success | HumanCollision | Following rate | End |
+|---|---|---|---|---|---|---|
+| STT |27|true|0|0|0.338462|Normal, below criterion|
+| STT |38|true|1|0|0.809524|Normal|
+| DT |27|true|0|0|0.323077|Normal, below criterion|
+| DT |38|true|1|0|0.788732|Normal|
+| AT |27|true|0|0|0.333333|Normal, below criterion|
+| AT |38|true|1|0|0.800000|Normal|
+| AT |71|true|0|1|0.880000|Collision|
+
+Exactly7 replacements +4208 unmodified rows =4215unique,1405/task.
+Total3627success/4215=86.049822% (baseline3624/4215=85.978648%). This is first-frame annotation repair, not training improvement.
+
+| Task | SR % | reference-normalized TR % | HumanCollision CR % | Invalid | macro_TR % |
+|---|---:|---:|---:|---:|---:|
+| STT |90.818505|87.573986|4.341637|0|92.475068|
+| DT |82.419929|78.697793|6.690391|0|81.432605|
+| AT |84.911032|85.206358|4.697509|0|88.150881|
+
+All4215 source-image fileSHA/oldRGBpairs andvideo ffprobe metadata/duration PASS (not everyframe decoded).
+All4208 unchanged row dictionaries and7 replacement keys checked;summary recomputed identically. Failure rows remain in denominator.
+Subsequent semantic visibility scoring deliberately retains previous protocol; residual three27 failures are below the current following criterion, NOT proof that all remaining failures are purely policy failures. No wider metric repair evaluated.
+CombinedSHA517937840d3e5da9b42717cf3c16dadbce499bf1c6c203173badb6c8f3b9c08e.
+SummarySHA3c6ef1a2039e557aa564a7bdbca7ce0e3a616246f5c483991b137c640138b3c2.
+Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61259/task_72336/wa_initial_bbox_repair_v2.
+New page/audit /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_review_job_61259.
+HTTP200 andbrowser7-filter verified. Original videos unedited; separate first-frame annotated-mask contact sheet shows repairedboxes. Existing recorder sees original semantic sensor, not the substituted policy-only initialbbox.
+Access: `ssh -N -L 18797:127.0.0.1:18797 devpod-a800`, then http://127.0.0.1:18797/.
+Old18796 andbaseline4215 preserved;failed61257 kept. No further task or training launched;monitor remains paused.
