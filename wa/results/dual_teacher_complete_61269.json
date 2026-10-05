@@ -1,0 +1,33 @@
+{
+  "experiment": "evaluation_set_adaptation_v1",
+  "job_task": "61269/72346",
+  "status": "SUCCEEDED_PAIRED_AUDIT_PASS",
+  "completed_beijing": "2026-10-06 01:21:51",
+  "paired_starts": 4215,
+  "frozen_prior_pairs": 279,
+  "new_pairs": 3936,
+  "task_order": ["stt", "dt", "at"],
+  "episodes_per_task": [1405, 1405, 1405],
+  "lightnav": {
+    "SR_percent": [90.6049822064057, 80.2846975088968, 67.18861209964413],
+    "CR_percent": [2.9893238434163703, 6.192170818505338, 7.758007117437723],
+    "TR_percent": [86.5653454494241, 79.43670518568118, 75.75913507891971],
+    "macro_TR_percent": [90.55998668618389, 81.6249872368484, 81.85511682733235],
+    "invalid_init": [0, 0, 0], "fallback_episodes": [4, 5, 2]
+  },
+  "oracle": {
+    "SR_percent": [91.17437722419929, 86.12099644128114, 87.25978647686833],
+    "CR_percent": [2.9181494661921707, 2.9181494661921707, 2.5622775800711746],
+    "TR_percent": [80.9425541397774, 76.4746023601847, 83.06225753583801],
+    "macro_TR_percent": [83.84418110510411, 77.56046060626167, 83.8761830955745],
+    "invalid_init": [0, 0, 0], "fallback_episodes": [0, 0, 0]
+  },
+  "selection_counts": {"lightnav": 2865, "oracle": 1125, "neither": 225},
+  "demonstrations_after_excluding_5_selected_fallbacks": 3985,
+  "student_training_started_at_report": false,
+  "full_report": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/teacher_report.json",
+  "full_report_sha256": "5a7c97ca70ba4fd7b4e1cc7f2d9cf32d68dce8aac46ef598f850cc5f7801be6f",
+  "paired_audit_sha256": "7d49433f23b3379059359ae77dcc8b7136b5ff88a6afb2635232d3319c300459",
+  "manifest_sha256": "a1f515534153ccaa720f787f01ea23b9097c174fe25020f756c7d7947eedf98f",
+  "limits": ["Teacher scores, not new WA scores or guaranteed student performance.", "Success first; both successful choose higher following_rate; ties choose LightNav.", "CR means target-person distance ever below 0.5m, not obstacle contact.", "TR is reference-step normalized; each task has 52 missing references using actual-step fallback. macro_TR is separate.", "Official LightNav fallback remains in reference scores; selected fallback branches are not demonstrations.", "Evaluation-set adaptation, not untouched-test generalization. Original60502 baseline unchanged."]
+}
