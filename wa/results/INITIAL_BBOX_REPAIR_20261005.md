@@ -21,3 +21,9 @@ Review: same directory/first_frame_review.png.
 Paired reports: artifacts/residual7_no_semantic_mesh_v2_{task}_pRbA3pwrgk9_{episode}/report.json.
 Baseline: job61171/task72191/wa_semantic_targeted_v1/combined_episodes.jsonl, immutable SHA in plan.
 CPU5 tests pass incl first-only forwarding; two real dataset lane audits select4+3 episodes total7. Dependency hashes pass. Checkpoint hash recheck pending completion.
+
+## First submission retained; lighting-aligned revision
+61257/72334 FAILED09:54:52 Beijing,2actualA800,0completed. Strict rawRGBguard failed before first policy action: static probe lacked evaluate_agent's four directional LightInfo entries. Old source60e0d7df and config2a881ef1/plan2c163cd4 remain immutable.
+Lighting-aligned seven paired static renders now all pass; bbox pixel geometry unchanged. Re-encoding all seven original static frames using the same imageio/JPEG path exactly matches audited61171 first-frame JPEG SHA.
+New immutable plan artifacts/initial_bbox_repair_v2/plan.json SHA6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a. Checkpoint full SHA reconfirmed20cc84b3;CPU5boundary tests+4merge cases PASS.
+Added actual evaluate_agent first-call check that validates hash/bbox and exits before any action. Must pass all7 before resubmission; no relaxed hash gate or full rerun.
