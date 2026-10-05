@@ -1,0 +1,18 @@
+{
+  "scope": "STT_ONLY_NOT_FULL4215",
+  "experiment": "evaluation_set_adaptation_v1",
+  "source_job": "61269/72346 plus frozen279 from61264",
+  "paired_count": 1405,
+  "checks": ["exact manifest STT key set", "stored pair_start runtime hashes", "dynamic start state tolerance1e-6", "canonical state SHA", "persisted first RGB pixel equality", "recomputed selection", "stored result.json equality"],
+  "counts": {
+    "lightnav": {"success":1273,"collision":42,"invalid":0,"fallback":4},
+    "oracle": {"success":1281,"collision":41,"invalid":0,"fallback":0}
+  },
+  "choices": {"lightnav":1155,"oracle":205,"neither":45},
+  "demonstration_candidates":1358,
+  "selected_fallback_excluded":2,
+  "training_released":false,
+  "student_result":false,
+  "boundary":"Teacher success union is not a student performance guarantee. DT/AT and full4215 final audit pending. Same data used for later adaptation, not unseen-test generalization.",
+  "collision_definition":"target person distance ever below0.5m; not general obstacle contact"
+}
