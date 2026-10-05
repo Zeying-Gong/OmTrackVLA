@@ -48,7 +48,11 @@ def main():
     en=dict(env,PYTHONPATH=str(L/"src"),PYTHONSAFEPATH="1")
     en["LD_LIBRARY_PATH"]=":".join(map(str,(E/"lightnav/lib").glob("python*/site-packages/nvidia/*/lib")))+":"+env.get("LD_LIBRARY_PATH","")
     ready=dest/"teacher.ready"
-    server=spawn([str(E/"lightnav/bin/python"),"-P",str(W/"lightnav_transport_20260927/server_transport.py"),
+    transport=W/"lightnav_transport_20260927/server_transport.py"
+    if os.environ.get("WA_CUDA_MOUNT_COMPAT") == "1":
+     transport=S/"wa/tools/lightnav_server_compat.py"
+     en["PYTHONPATH"]=str(L/"src")+":"+str(S)
+    server=spawn([str(E/"lightnav/bin/python"),"-P",str(transport),
       "--task","tracking","--model_path",str(L/"checkpoints/LightNav-0"),"--backend","vllm_local",
       "--gpu_memory_utilization","0.45","--max_batch_size","1","--host","127.0.0.1","--port",str(port),
       "--ready_file",str(ready)],en,"teacher.log",B)
