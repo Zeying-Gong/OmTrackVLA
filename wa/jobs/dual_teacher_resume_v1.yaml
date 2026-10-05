@@ -1,0 +1,17 @@
+cluster: baidu_a800
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 8
+log_folder: wa_dual_teacher_resume_v1
+tasks:
+  - name: wa_dual_teacher_remaining3936_v1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 8
+    timeout: 172800
+    cmd: |
+      set -euo pipefail
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_dual_teacher_resume_v1
+      test "$(git rev-parse HEAD)" = 16feffa435f4f848ee408c4a1783923070c18233
+      test -z "$(git status --porcelain)"
+      OUTPUT_ROOT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_dual_teacher_resume_v1"
+      bash wa/scripts/dual_teacher_collect.sh "$OUTPUT_ROOT" --resume-plan /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_resume_20261005_v1.json --resume-sha ad074042a27e3b7d4470019e1b1090ed12f9f5dd37538a7070c925dc0d3328a9
