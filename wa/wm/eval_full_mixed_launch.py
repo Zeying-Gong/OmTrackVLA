@@ -15,6 +15,10 @@ if semantic_fix:
     from wa.wm.semantic_scene import VERSION,provenance
     if semantic_fix!=VERSION:raise ValueError('unknown semantic repair version')
     if os.environ.get('WA_RESUME_PLAN'):raise ValueError('fresh semantic protocol requires all episodes')
+if contract:
+    from wa.wm.student_eval_finalize import load_teachers,validate_shard,finalize
+    teacher_path=os.environ['WA_EVAL_TEACHER_SELECTIONS']
+    load_teachers(teacher_path)
 if os.environ.get('WA_RESUME_PLAN'):
     from wa.wm.full_mixed_resume import load_plan,verify_new_rows
     plan=load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
@@ -75,6 +79,8 @@ try:
     for i in range(8):
         dest=OUT/f'shard_{i:02d}';assert (dest/'COMPLETE.json').exists()
         part=[json.loads(x) for x in (dest/'episodes.jsonl').read_text().splitlines()]
+        if contract:
+            validate_shard(part,json.loads((dest/'COMPLETE.json').read_text()),manifest,i)
         if plan is not None:
             assert {(r['task'],r['key']) for r in part}=={(e['task'],e['key']) for e in plan['lanes'][i]}
             assert len(part)==len(plan['lanes'][i])
@@ -91,6 +97,9 @@ try:
     validate_student_rows(rows,contract)
     report=summarize(rows,manifest,**contract)
     if contract:
+        comparison,pair_audit=finalize(rows,manifest,teacher_path)
+        (OUT/'student_teacher_pair_audit.json').write_text(json.dumps(pair_audit,allow_nan=False))
+        report.update(comparison)
         report.update(experiment='evaluation_set_adaptation_v1',initialization_repair_plan_sha256=os.environ['WA_INIT_REPAIR_PLAN_SHA'])
         report['limits'].append('Trained on this evaluation set; not unseen generalization')
     if semantic_fix:
