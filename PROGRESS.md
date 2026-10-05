@@ -1,4 +1,6 @@
 # WA-Mobile progress
+2026-10-05 cacheadmission nowrequires full4215 actualpersistedpair evidence+sourcehashes,checkedbeforeconversion;paired auditor performs RGB/state verification directly.68testsPASS plusreal4090developer1pair re-auditPASS. Failedmanualdirectscript import correctedwith -m; no rolloutsrerun/runningsourcechange. Fullpostcollectionaudit/cache/training remainpending.
+Latest2026-10-05 boundedDTcheck32hash-selected pairsPASS (start/RGB/stateSHA/selection/storedresults). Snapshot1887unique(STT1405DT482AT0),artifact dual_teacher_dt_bounded_20261005T084042Z.json;notfullaudit/trainingrelease. No newjob/stop.
 Updated2026-10-05. Full previous log: archive/2026-10/PROGRESS_before_partition_runtime_20261005.md.
 ## Active objective
 Evaluation-set adaptation explicitly authorized: WA STT/DT/AT SR each exceeds same-protocol LightNav. Not untouched-test generalization.

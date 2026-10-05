@@ -7,6 +7,7 @@ import argparse, hashlib, json, math
 from collections import Counter
 from pathlib import Path
 from wa.wm.dual_teacher_selection import select_teacher, EXPERIMENT
+from wa.wm.dual_teacher_pair_evidence import verify_pair_evidence
 
 def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def audit(root, expected, resume_plan=None, resume_sha=None, partition_index=0, partition_count=1, partition_roots=None):
@@ -50,6 +51,7 @@ def audit(root, expected, resume_plan=None, resume_sha=None, partition_index=0, 
     if expected==4215 and Counter(t for t,k in keys)!=dict(stt=1405,dt=1405,at=1405):
         raise ValueError("task counts differ")
     summaries={};accepted=[];rejected=[];choices=Counter();fallback_rejected=[]
+    pair_evidence={}
     for task in ("stt","dt","at"):
         taskrows=[r for r in rows if r["pair"]["task"]==task]
         summaries[task]={}
@@ -60,6 +62,7 @@ def audit(root, expected, resume_plan=None, resume_sha=None, partition_index=0, 
                 collision=sum(bool(r["collision"]) for r in results),
                 macro_following_rate=sum(r["following_rate"] for r in results)/n if n else None)
     for row in rows:
+        pair_evidence[row['pair']['task']+':'+row['pair']['key']]=verify_pair_evidence(row)
         check=select_teacher(row["branches"]["lightnav"],row["branches"]["oracle"])
         if any(check[k]!=row[k] for k in ("pair","selected_teacher","reason","results")):
             raise ValueError("selection changed")
@@ -102,6 +105,7 @@ def audit(root, expected, resume_plan=None, resume_sha=None, partition_index=0, 
         with (Path(root)/'combined_selections.jsonl').open('x') as f:
             for row in rows:f.write(json.dumps(row)+'\n')
     return dict(experiment=EXPERIMENT,paired_outcomes_validated=True,expected=expected,
+        persisted_pair_evidence=pair_evidence,persisted_pair_evidence_count=len(pair_evidence),
         partition_index=partition_index,partition_count=partition_count,
         partial_partition=partition_count>1 and not bool(partition_roots),
         partition_roots=[str(p) for p in roots] if partition_roots else None,

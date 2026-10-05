@@ -6,12 +6,29 @@ from wa.data import sha
 from wa.wm.robot_data import transition_records, CONTRACT
 from wa.wm.dual_teacher_selection import EXPERIMENT
 
+def validate_persisted_release(m):
+    evidence=m.get('persisted_pair_evidence',{})
+    if m.get('persisted_pair_evidence_count')!=4215 or len(evidence)!=4215:
+        raise ValueError('full persisted paired-start evidence required')
+    if not m.get('source_files'):raise ValueError('audited source hashes required')
+    for filename,h in m['source_files'].items():
+        if sha(filename)!=h:raise ValueError('audited source changed')
+    for pair,teachers in evidence.items():
+        if set(teachers)!={'lightnav','oracle'}:raise ValueError('missing teacher evidence')
+        for files in teachers.values():
+            if len(files)!=3:raise ValueError('incomplete persisted start evidence')
+            for filename,h in files.items():
+                if sha(filename)!=h:raise ValueError('persisted pair evidence changed')
+    if any(e['task']+':'+e['key'] not in evidence for e in m['teacher_demonstrations']):
+        raise ValueError('demonstration missing paired evidence')
+
 def convert(release, base, baseindex, out, development=False):
     release,base,baseindex,out=map(lambda p:Path(p).resolve(),(release,base,baseindex,out))
     m=json.loads(release.read_text())
     if m["experiment"]!=EXPERIMENT or not m["paired_outcomes_validated"]:
         raise ValueError("explicit audited in-set release required")
     if not development and m["expected"]!=4215:raise ValueError("full paired collection required")
+    if not development:validate_persisted_release(m)
     entries=m["teacher_demonstrations"]
     if not entries or len({(e["task"],e["key"]) for e in entries})!=len(entries):
         raise ValueError("empty or duplicate demonstrations")

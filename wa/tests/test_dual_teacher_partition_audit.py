@@ -1,5 +1,7 @@
 """Small synthetic audit fixtures; never formal dataset admission."""
 import json
+import hashlib
+from PIL import Image
 import tempfile
 import unittest
 from pathlib import Path
@@ -20,6 +22,12 @@ class PartitionAuditTests(unittest.TestCase):
                 for name in ('lightnav','oracle'):
                     b=branch(name,False);b.update(task=t,key=str(i))
                     p=self.base/'artifacts'/t/str(i)/name;p.mkdir(parents=True)
+                    state=dict(timestamp=0.,agents=[dict(transform=[[1.,0.],[0.,1.]],joints=[0.])])
+                    b['takeover_step']=0
+                    b['takeover_state_sha256']=hashlib.sha256(json.dumps(state,sort_keys=True).encode()).hexdigest()
+                    (p/'pair_start.json').write_text(json.dumps(dict(rgb=b['initial_rgb_sha256'],state=state)))
+                    (p/'observations.json').write_text(json.dumps([dict(sim_step=0,timestamp_s=0.,frame='first.png')]))
+                    Image.new('RGB',(4,4),(1,2,3)).save(p/'first.png')
                     (p/'result.json').write_text(json.dumps(b['result']))
                     (p/'windows.json').write_text('[]');b['artifact_root']=str(p)
                     branches[name]=b
@@ -68,6 +76,12 @@ class PartitionAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'selection'):self.run_audit()
         self.assertFalse((self.out/'combined_selections.jsonl').exists())
     def test_changed_source_rejected(self):
+        target=self.base/'artifacts/stt/1/oracle/first.png'
+        Image.new('RGB',(4,4),(9,9,9)).save(target)
+        with self.assertRaisesRegex(ValueError,'pixels differ'):self.run_audit()
+        self.assertFalse((self.out/'combined_selections.jsonl').exists())
+
+    def test_changed_source_hash_rejected(self):
         target=str(self.roots[0]/'lane0/collection/selections.jsonl');calls=[]
         def changing(p):
             if str(p)==target:
