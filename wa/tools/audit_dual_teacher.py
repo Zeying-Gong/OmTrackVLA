@@ -9,22 +9,42 @@ from pathlib import Path
 from wa.wm.dual_teacher_selection import select_teacher, EXPERIMENT
 
 def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-def audit(root, expected, resume_plan=None, resume_sha=None):
-    files=sorted(Path(root).glob("lane*/collection/selections.jsonl"))
+def audit(root, expected, resume_plan=None, resume_sha=None, partition_index=0, partition_count=1, partition_roots=None):
+    from wa.wm.dual_teacher_partitions import workload
+    roots=[Path(p) for p in partition_roots] if partition_roots else [Path(root)]
+    if len(set(p.resolve() for p in roots))!=len(roots):raise ValueError('duplicate partition roots')
+    if partition_roots and (len(roots)!=partition_count or partition_count<2 or partition_index!=0):
+        raise ValueError('partition root count/index mismatch')
+    if (partition_count!=1 or partition_index!=0 or partition_roots) and not resume_plan:
+        raise ValueError('partition audit requires resume plan')
+    files=[f for p in roots for f in sorted(p.glob("lane*/collection/selections.jsonl"))]
+    before={str(f):digest(f) for f in files}
     rows=[json.loads(line) for f in files for line in f.read_text().splitlines() if line]
+    combined=False
     if resume_plan:
         from wa.wm.dual_teacher_resume import load_resume
         plan=load_resume(resume_plan,resume_sha,verify_artifacts=True)
+        jobs=[workload(plan,i,partition_count) for i in range(partition_count)] if partition_roots else [workload(plan,partition_index,partition_count)]
+        for dest,job in zip(roots,jobs):
+            for i,lane in enumerate(job['lanes']):
+                p=dest/f'lane{i}/collection'
+                if json.loads((p/'COMPLETE.json').read_text())['pairs']!=len(lane):
+                    raise ValueError('incomplete resumed lane')
+                local=[json.loads(s) for s in (p/'selections.jsonl').read_text().splitlines() if s]
+                localkeys=[(r['pair']['task'],r['pair']['key']) for r in local]
+                if len(localkeys)!=len(lane) or set(localkeys)!={(r['task'],r['key']) for r in lane}:
+                    raise ValueError('partition lane assignment mismatch')
         newkeys=[(r['pair']['task'],r['pair']['key']) for r in rows]
-        needed={(r['task'],r['key']) for r in plan['remaining']}
+        needed={(r['task'],r['key']) for job in jobs for r in job['remaining']}
         if len(newkeys)!=len(needed) or set(newkeys)!=needed:raise ValueError('new rows differ from remainder')
-        for i,lane in enumerate(plan['lanes']):
-            p=Path(root)/f'lane{i}/collection/COMPLETE.json'
-            if json.loads(p.read_text())['pairs']!=len(lane):raise ValueError('incomplete resumed lane')
-        rows=plan['completed_rows']+rows
-        with (Path(root)/'combined_selections.jsonl').open('x') as f:
-            for row in rows:f.write(json.dumps(row)+'\n')
+        if partition_roots or partition_count==1:
+            if needed!={(r['task'],r['key']) for r in plan['remaining']}:raise ValueError('global remainder missing')
+            rows=plan['completed_rows']+rows
+            combined=True
+        else:
+            expected=len(needed)
         files += [Path(resume_plan)]
+        before[str(resume_plan)]=resume_sha
     keys=[(r["pair"]["task"],r["pair"]["key"]) for r in rows]
     if len(rows)!=expected or len(set(keys))!=expected:raise ValueError("incomplete or duplicate pairs")
     if expected==4215 and Counter(t for t,k in keys)!=dict(stt=1405,dt=1405,at=1405):
@@ -77,7 +97,14 @@ def audit(root, expected, resume_plan=None, resume_sha=None):
         accepted.append(dict(task=check["pair"]["task"],key=check["pair"]["key"],teacher=choice,
             branch=str(branch),takeover_step=0,window_indices=[w["current_index"] for w in windows],
             hashes={name:digest(branch/name) for name in names}))
+    if before!={str(f):digest(f) for f in files}:raise ValueError('source changed during audit')
+    if combined:
+        with (Path(root)/'combined_selections.jsonl').open('x') as f:
+            for row in rows:f.write(json.dumps(row)+'\n')
     return dict(experiment=EXPERIMENT,paired_outcomes_validated=True,expected=expected,
+        partition_index=partition_index,partition_count=partition_count,
+        partial_partition=partition_count>1 and not bool(partition_roots),
+        partition_roots=[str(p) for p in roots] if partition_roots else None,
         summaries=summaries,choices=dict(choices),teacher_demonstrations=accepted,
         rejected_templates=rejected,rejected_selected_fallback=fallback_rejected,training_released=False,
         pending="SE2 conversion, source-image hashes and real student-loader checks",
@@ -86,8 +113,10 @@ def audit(root, expected, resume_plan=None, resume_sha=None):
 def main():
     p=argparse.ArgumentParser();p.add_argument("root");p.add_argument("--expected",type=int,default=4215)
     p.add_argument("--output",required=True);p.add_argument("--resume-plan");p.add_argument("--resume-sha")
+    p.add_argument("--partition-index",type=int,default=0);p.add_argument("--partition-count",type=int,default=1)
+    p.add_argument("--partition-root",action="append",default=None)
     a=p.parse_args()
-    result=audit(a.root,a.expected,a.resume_plan,a.resume_sha)
+    result=audit(a.root,a.expected,a.resume_plan,a.resume_sha,a.partition_index,a.partition_count,a.partition_root)
     with Path(a.output).open("x") as f:json.dump(result,f,indent=2)
-    print(json.dumps(dict(pairs=a.expected,choices=result["choices"],demonstrations=len(result["teacher_demonstrations"]),rejected_templates=len(result["rejected_templates"]))))
+    print(json.dumps(dict(pairs=result['expected'],choices=result["choices"],demonstrations=len(result["teacher_demonstrations"]),rejected_templates=len(result["rejected_templates"]))))
 if __name__=="__main__":main()

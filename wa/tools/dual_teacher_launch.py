@@ -10,14 +10,20 @@ def main():
  p.add_argument("--development-three",action="store_true")
  p.add_argument("--development-key")
  p.add_argument("--resume-plan");p.add_argument("--resume-sha")
+ p.add_argument("--partition-index",type=int,default=0)
+ p.add_argument("--partition-count",type=int,default=1)
  p.add_argument("--audit-only",action="store_true");a=p.parse_args()
  if not a.formal:assert not os.environ.get("MD_AK_JOB_ID")
  if a.development_key:assert not a.formal and not a.development_three
  resume=None
  if bool(a.resume_plan)!=bool(a.resume_sha):raise ValueError('resume plan/hash required together')
+ if (a.partition_index != 0 or a.partition_count != 1) and not a.resume_plan:
+  raise ValueError('partition requires frozen resume plan')
  if a.resume_plan:
   from wa.wm.dual_teacher_resume import load_resume
   resume=load_resume(a.resume_plan,a.resume_sha,verify_artifacts=True)
+  from wa.wm.dual_teacher_partitions import workload
+  resume=workload(resume,a.partition_index,a.partition_count)
  out=Path(a.output);out.mkdir(parents=True,exist_ok=False)
  if a.formal:
   import torch
@@ -74,6 +80,7 @@ def main():
    elif not a.formal:cmd+=["--development-three" if a.development_three else "--development-one"]
    if a.development_key:cmd+=["--development-key",a.development_key]
    if resume:cmd+=["--resume-plan",a.resume_plan,"--resume-sha",a.resume_sha]
+   if resume:cmd+=["--partition-index",str(a.partition_index),"--partition-count",str(a.partition_count)]
    worker=spawn(cmd,en,"worker.log",B)
    deadline=time.monotonic()+(170000 if a.formal else 600)
    while worker.poll() is None:

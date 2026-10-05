@@ -44,3 +44,16 @@ def partition(remaining, count):
         groups.append([assigned[j::8] for j in range(8)])
     validate(remaining, groups)
     return groups
+
+def workload(plan, index=0, count=1):
+    """Derive one task's workload from an already hash-validated full plan."""
+    if type(index) is not int or type(count) is not int or not 1 <= count <= 8 or not 0 <= index < count:
+        raise ValueError('invalid partition index/count')
+    lanes = plan['lanes'] if count == 1 else partition(plan['remaining'], count)[index]
+    result = dict(plan)
+    result['lanes'] = lanes
+    result['remaining'] = [r for lane in lanes for r in lane]
+    result['remaining_count'] = len(result['remaining'])
+    result['partition_index'] = index
+    result['partition_count'] = count
+    return result

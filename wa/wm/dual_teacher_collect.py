@@ -93,14 +93,19 @@ def main():
     p.add_argument("--audit-only",action="store_true")
     p.add_argument("--resume-plan")
     p.add_argument("--resume-sha")
+    p.add_argument("--partition-index",type=int,default=0)
+    p.add_argument("--partition-count",type=int,default=1)
     a=p.parse_args()
     resume=None
     if bool(a.resume_plan)!=bool(a.resume_sha):raise ValueError('resume plan/hash required together')
     if a.resume_plan:
+        from wa.wm.dual_teacher_partitions import workload
         from wa.wm.dual_teacher_resume import load_resume
-        resume=load_resume(a.resume_plan,a.resume_sha)
+        resume=workload(load_resume(a.resume_plan,a.resume_sha),a.partition_index,a.partition_count)
         if a.shards!=8 or a.development_one or a.development_three:raise ValueError('resume requires eight complete lanes')
     if a.development_key and not a.development_one:raise ValueError("key override only in developer one-pair check")
+    if (a.partition_index != 0 or a.partition_count != 1) and not a.resume_plan:
+        raise ValueError('partition requires frozen resume plan')
     if a.development_one or a.development_three:
         import os
         assert os.environ.get("WA_DEVELOPMENT")=="1" and not os.environ.get("MD_AK_JOB_ID")
