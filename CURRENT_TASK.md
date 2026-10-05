@@ -1,6 +1,6 @@
 # Current task
 Updated: 2026-10-04 17:31 China
-Status: A3_RLT_DSRL_SAC_61020_RUNNING / B_FULL4215_60996_AUDITED / DA3_RETIRED
+Status: A3_RLT_DSRL_SAC_61020_FROZEN_EVALUATION / B_FULL4215_60996_AUDITED / DA3_RETIRED
 
 ## Current authorization
 - User approved A3 after reviewing two complete episode/reward/policy previews: “我同意你的方法，赶紧实验。”
@@ -50,6 +50,7 @@ Status: A3_RLT_DSRL_SAC_61020_RUNNING / B_FULL4215_60996_AUDITED / DA3_RETIRED
 - Natural Lost/Collision finish=false allowed; never fabricate missing terminal logs in old results.
 - Authoritative NAS RUN/source manifests, bothCSV ledgers and docs/wla_intervention_ab_20260929.md.
 - Only explicit task Markdown is committed/pushed; existing dirty research source/CSV stays on NAS.
-- A800 preferred; no unverified cross-NAS migration. Routine heartbeat quiet; notify milestones/failure/material changes.
+- A800 preferred; no unverified cross-NAS migration. User requires progress and STT/DT/AT partial success rates every20min until full evaluation and audit complete.
 
 2026-10-04 17:31 China: B partial-cache60994 full evaluation60996/71919 SUCCEEDED17:24:52; independent4215 strict pairs with A2_60058 PASS (each task1405 exactly once, source identity/instruction/seed7/initialRGB/full horizon, checkpoint/result/trace hashes and finite values). B STT1169/1405 SR83.202847 TR_macro87.186117 CR4.982206; AT728/1405 SR51.814947 TR_macro75.449817 CR9.537367; DT787/1405 SR56.014235 TR_macro68.297166 CR10.177936. Overall2684/4215 SR63.677343 versus A2_60058 2635/4215 SR62.514828, +1.162515pp; task SR delta STT+1.850534/AT+2.277580/DT-0.640569pp,307 success improvements/258 regressions.455740 contiguous frames,454984 finite policy records,756 Lost terminal omissions retained; failure categories UNANNOTATED. Checkpoint60994 epoch-2.pt SHAd4987b0aa961d971c30095c1b914224fff4b4dcc4b604655bb6113cd0f6f2883. Highest measured full frozen SR among current A2/B comparison is B63.677343%; not all historical methods or A3 upper bound. B trained63488 durable TRAIN prefix rows/noheldout, not full78769 or a single-factor ablation. Evidence intervention_b_full_20261004/INDEPENDENT_COMPLETION_AUDIT.json. A3_61020 remains RUNNING:190000transitions/47245SACupdates/1783adapt episodes at17:31;8430adapt and frozen4215 evaluation pending. No A3 frozen SR yet; keep model/reward/frozen727source unchanged, no duplicate jobs/resume60766.
+Routine2026-10-05 17:03 China: A3_61020 remains in frozen evaluation; latest scheduler read16:59 RUNNING and208/4215 completed. Independent all8430 adaptation reward/terminal audit PASS across886589steps, including2173Lost terminals. Full durable replay audit PASS:1732chunks, all886589action IDs exactly once, executed latent/reward/done exact,phase tolerance1e-7,chunk hashes/finite/terminal next-feature zeros verified. Evidence ADAPTATION_REWARD_AUDIT_20261005.json and ADAPTATION_REPLAY_AUDIT_20261005.json. Final4215 coverage/paired metrics remain pending; no model/source/job changes. User now requires20min progress and per-task partialSR reports.
