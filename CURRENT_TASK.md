@@ -1,10 +1,12 @@
 # WA current task — repair seven residual initializations only
-Updated:2026-10-05. Status: STATIC_VERIFIED; seven-only closed-loop pending.
-
+Updated:2026-10-05 10:03+08. Status: RUNNING_7_ONLY; actual completion pending.
 - User authorized only7 replacements; preserve4208 other rows and baseline4215. No full rerun.
-- Seven paired static renders restore valid GT firstboxes with identicalRGB/poses/cameras. Scoped first-call annotation repair; later semantic metrics unchanged.
-- Plan artifacts/initial_bbox_repair_v1/plan.json SHA2c163cd46a539480c486d9225d477c6e9354f2fd416d9203c7e0e8d5c3f2fcf8; report wa/results/INITIAL_BBOX_REPAIR_20261005.md.
-- CPU5 boundary tests and2lane real data audit4+3 PASS; no formal repair job submitted yet.
+- 61259/72336 submitted10:03:45,2A800,only7. Output job_61259/task_72336/wa_initial_bbox_repair_v2.
+- Source_initial_bbox_repair_v2 commit1efe5e6131e16bda712c6d5d5ee6a4a1f633a973;config05c74fcb.
+- Lighting-matched plan artifacts/initial_bbox_repair_v2/plan.json SHA6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a.
+- Seven paired static andbaselineJPEG checks PASS; actualevaluate_agent firstcall7/7 PASS beforeactions;CPU5boundary+4merge checks PASS.
+- FirstGTbbox only; latersemanticmetrics unchanged. Report wa/results/INITIAL_BBOX_REPAIR_20261005.md.
+- 61257/72334 FAILED0completed due staticprobe lighting mismatch; immutablelogs/source/plan retained; no baseline overwrite.
 
 ## Final outcome
 - 2026-10-04 FINAL61171/72191 SUCCEEDED22:17:30;8COMPLETE new2125+frozen2090=4215unique each1405. Sourcecommitd6d3a805 clean;configfc119a34 andplan/sourcehashesPASS;new/reused disjoint;MP3D2163repaired HM3D2052unaffectedreuse;combinedrows and recomputedsummary exact. All4215 initialimage fileSHA andoldRGBpairsPASS;4215video ffprobe metadata/durationPASS(not everyframe decoded). SR STT1275/1405=90.747331 DT1157/1405=82.348754 AT1192/1405=84.839858;overall3624/4215=85.978648%. TRreference-normalized87.533505/78.665741/85.166987;macro_TR92.393361/81.353472/88.007583;each52missingreference usesexistingactual-stepfallback. HumanCollisionCR4.412811/6.761566/4.768683%;invalid2/2/3retained. OldSR81.138790 preserved;semanticprotocol repair nottraininggain;no fullLightNav/unseen-test claim. No workerfatal/OOM. HTML artifacts/semantic_full_review_61171 at18796 verifiedHTTP200/UI4215. Priority165158initialized138success7invalid20laterfailures;remaining7pRbA3pwrgk9 causeUNVERIFIED. Phaseevaluation complete,overallresearchPARTIAL;pausemonitor afterreport.
