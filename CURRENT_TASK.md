@@ -1,6 +1,14 @@
 # WA current task — dual-teacher in-set adaptation
-Updated:2026-10-05 11:12+08. Status: COLLECTION_SUBMITTED 61264/72341; no training yet.
-Submitted11:11:27 Beijing,8requestedA800,baidu_bj_a800;RUNNING scheduler only,actualworker/progress pending.
+Updated:2026-10-05 12:09+08. Status: RESUME_SUBMITTED61269/72346 at12:07:45;8requestedA800 baidu_bj_a800,schedulerRUNNING;workerprogress pending. No training yet.
+New source_dual_teacher_resume_v1 commit16feffa435f4f848ee408c4a1783923070c18233 clean;configwa/jobs/dual_teacher_resume_v1.yaml SHAc767438a17287a7a26c2b4bda63e7658720a0880836ecda12540561c2c5dd377. Output job_61269/task_72346/wa_dual_teacher_resume_v1.
+User explicitly approved stop and remaining-only resume. Old61264/72341 STOPPED11:55:27;frozen279complete+3936remaining8x492. OldfailureSTT5cdEh9F2hJL/7 andpartialbranches retained/excluded. Totalprogress279 until newuniquecompletions verified;do notduplicate submit.
+Plan artifacts/dual_teacher_resume_20261005_v1.json SHAad074042a27e3b7d4470019e1b1090ed12f9f5dd37538a7070c925dc0d3328a9;fullpairedselection/artifact hashes frozen by freeze_dual_teacher_resume.py with STOPPED check. Do notoverwrite.
+Developmentfix keeps officialLightNav fallback for benchmarkscore,records events,excludes selectedfallbackbranch from demonstrations without relabeling its success.26selection/data/bridge tests+3Habitat faultinjection testsPASS. Actualfailedkey rerun:LNsuccessTR.4 OracleSuccessTR.666667 ->Oracle;no fallback recurred,notclaiming actualerrorreproduced. artifacts/dual_teacher_fallback_developer_v1/audit.json retained,notreuseformal.
+Resume/combinedaudit implemented;33CPU+3Habitatfaultinjection testsPASS,8lane realdefinitionaudits492eachPASS,100externaldependencySHA PASS. Monitor8workerstartup andnewuniquecompletedpairs;fullcombinedaudit/cache/training pending.
+Real joint diagnostic v1 PASS4optimizersteps22708..22711 from59866 model+optimizer;8base+8teacher windows,peak7.31GiB,no checkpoint saved.25CPUtestsPASS including actualpolicy condition builder label/text/oraclefuture exclusion. This is development validation,not model performance gain.
+Development8rank sampler137teacherunique/exposures137,max1,no rank overlap. Explicit adaptationtraining CLI and realjointmodel shortcheckPASS. Fullcache/exposure still pending;do not infer formalratio from developmentfixture.
+Development-only cache149candidate/137valid windows across3episodes;all137 actualstudentloader checks PASS,finite/causal/inputkeys;formal admission rejects developmentcache. Full collection/cache release still pending.
+Cachebuilder andexplicit DualTeacherData committed16feffa4;originalTrackingData retains strict defaultidentity guard. GitHubpush announced to user before syncing;old frozen sources and60502 weights unchanged.
 Source source_dual_teacher_v1 commit47822500c1492217c9ba272f40c06bfda31f1db8;configSHA0ff0e1fa776b90e88800ebb2effad161abb18044756234e2271271b57d20bea7.
 Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61264/task_72341/wa_dual_teacher_inset_v1. Do not duplicate submission.
 User explicitly authorizes learning on the existing evaluation split to test in-set attainable performance.
