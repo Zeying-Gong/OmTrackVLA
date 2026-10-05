@@ -9,14 +9,27 @@ from pathlib import Path
 from wa.wm.dual_teacher_selection import select_teacher, EXPERIMENT
 
 def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-def audit(root, expected):
+def audit(root, expected, resume_plan=None, resume_sha=None):
     files=sorted(Path(root).glob("lane*/collection/selections.jsonl"))
     rows=[json.loads(line) for f in files for line in f.read_text().splitlines() if line]
+    if resume_plan:
+        from wa.wm.dual_teacher_resume import load_resume
+        plan=load_resume(resume_plan,resume_sha,verify_artifacts=True)
+        newkeys=[(r['pair']['task'],r['pair']['key']) for r in rows]
+        needed={(r['task'],r['key']) for r in plan['remaining']}
+        if len(newkeys)!=len(needed) or set(newkeys)!=needed:raise ValueError('new rows differ from remainder')
+        for i,lane in enumerate(plan['lanes']):
+            p=Path(root)/f'lane{i}/collection/COMPLETE.json'
+            if json.loads(p.read_text())['pairs']!=len(lane):raise ValueError('incomplete resumed lane')
+        rows=plan['completed_rows']+rows
+        with (Path(root)/'combined_selections.jsonl').open('x') as f:
+            for row in rows:f.write(json.dumps(row)+'\n')
+        files += [Path(resume_plan)]
     keys=[(r["pair"]["task"],r["pair"]["key"]) for r in rows]
     if len(rows)!=expected or len(set(keys))!=expected:raise ValueError("incomplete or duplicate pairs")
     if expected==4215 and Counter(t for t,k in keys)!=dict(stt=1405,dt=1405,at=1405):
         raise ValueError("task counts differ")
-    summaries={};accepted=[];rejected=[];choices=Counter()
+    summaries={};accepted=[];rejected=[];choices=Counter();fallback_rejected=[]
     for task in ("stt","dt","at"):
         taskrows=[r for r in rows if r["pair"]["task"]==task]
         summaries[task]={}
@@ -35,9 +48,15 @@ def audit(root, expected):
             p=Path(b["artifact_root"])
             stored=json.loads((p/"result.json").read_text())
             if stored!=b["result"]:raise ValueError("result artifact mismatch")
+            if b.get("transport_fallback"):
+                if json.loads((p/"fallback_events.json").read_text())!=b["fallback_events"]:
+                    raise ValueError("fallback evidence mismatch")
+                if json.loads((p/"windows.json").read_text()):raise ValueError("fallback branch contains admitted windows")
             if not stored["success"] and json.loads((p/"windows.json").read_text()):
                 raise ValueError("failed teacher contains admitted windows")
         if choice is None:continue
+        if not check["demonstration_candidate"]:
+            fallback_rejected.append(check["pair"]);continue
         branch=Path(row["branches"][choice]["artifact_root"])
         meta=json.loads((branch/"metadata.json").read_text())
         if meta["experiment"]!=EXPERIMENT or meta["partition"]!="evaluation_adaptation":
@@ -60,14 +79,15 @@ def audit(root, expected):
             hashes={name:digest(branch/name) for name in names}))
     return dict(experiment=EXPERIMENT,paired_outcomes_validated=True,expected=expected,
         summaries=summaries,choices=dict(choices),teacher_demonstrations=accepted,
-        rejected_templates=rejected,training_released=False,
+        rejected_templates=rejected,rejected_selected_fallback=fallback_rejected,training_released=False,
         pending="SE2 conversion, source-image hashes and real student-loader checks",
         source_files={str(f):digest(f) for f in files})
 
 def main():
     p=argparse.ArgumentParser();p.add_argument("root");p.add_argument("--expected",type=int,default=4215)
-    p.add_argument("--output",required=True);a=p.parse_args()
-    result=audit(a.root,a.expected)
+    p.add_argument("--output",required=True);p.add_argument("--resume-plan");p.add_argument("--resume-sha")
+    a=p.parse_args()
+    result=audit(a.root,a.expected,a.resume_plan,a.resume_sha)
     with Path(a.output).open("x") as f:json.dump(result,f,indent=2)
     print(json.dumps(dict(pairs=a.expected,choices=result["choices"],demonstrations=len(result["teacher_demonstrations"]),rejected_templates=len(result["rejected_templates"]))))
 if __name__=="__main__":main()

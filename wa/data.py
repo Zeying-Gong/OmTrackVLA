@@ -50,6 +50,10 @@ class TrackingData(Dataset):
     def __len__(self):
         return self.length
 
+    def validate_identity(self, meta, root):
+        if not meta.get("camera_alignment_verified") or meta.get("initial_bbox_status") != "VERIFIED_CONFIG_AND_SEMANTIC":
+            raise ValueError("Unverified first-frame identity: "+str(root))
+
     @lru_cache(maxsize=16)
     def episode_info(self, index):
         entry = self.episodes[index]
@@ -57,8 +61,7 @@ class TrackingData(Dataset):
         if self.data_root:
             root = self.data_root / root.relative_to(self.source_prefix)
         meta = json.loads((root/"metadata.json").read_text())
-        if not meta.get("camera_alignment_verified") or meta.get("initial_bbox_status") != "VERIFIED_CONFIG_AND_SEMANTIC":
-            raise ValueError("Unverified first-frame identity: "+str(root))
+        self.validate_identity(meta, root)
         obs = json.loads((root/"observations.json").read_text())
         times = np.array([o["timestamp_s"] for o in obs])
         if not np.isfinite(times).all() or not np.all(np.diff(times)>0):

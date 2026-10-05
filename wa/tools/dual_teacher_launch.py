@@ -1,5 +1,5 @@
 """One bounded developer pair, or all allocated lanes of the full collection."""
-import argparse, concurrent.futures, json, os, signal, subprocess, sys, time
+import argparse, concurrent.futures, json, os, signal, subprocess, sys, time, threading
 from pathlib import Path
 R=Path("/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928")
 S=Path(__file__).resolve().parents[2];B=R.parent/"OmTrackVLA-da3-polar-20260924"
@@ -8,8 +8,16 @@ W=R.parent/"WLA-EVT-20260925";E=R.parent.parent/"envs";L=R.parent/"LightNav-0"
 def main():
  p=argparse.ArgumentParser();p.add_argument("output");p.add_argument("--formal",action="store_true")
  p.add_argument("--development-three",action="store_true")
+ p.add_argument("--development-key")
+ p.add_argument("--resume-plan");p.add_argument("--resume-sha")
  p.add_argument("--audit-only",action="store_true");a=p.parse_args()
  if not a.formal:assert not os.environ.get("MD_AK_JOB_ID")
+ if a.development_key:assert not a.formal and not a.development_three
+ resume=None
+ if bool(a.resume_plan)!=bool(a.resume_sha):raise ValueError('resume plan/hash required together')
+ if a.resume_plan:
+  from wa.wm.dual_teacher_resume import load_resume
+  resume=load_resume(a.resume_plan,a.resume_sha,verify_artifacts=True)
  out=Path(a.output);out.mkdir(parents=True,exist_ok=False)
  if a.formal:
   import torch
@@ -17,6 +25,7 @@ def main():
   assert count==8,("formal collection requires8 actual GPUs",count)
   devices=os.environ.get("CUDA_VISIBLE_DEVICES","").split(",") if os.environ.get("CUDA_VISIBLE_DEVICES") else [str(i) for i in range(count)]
  else:devices=[os.environ.get("CUDA_VISIBLE_DEVICES","3")]
+ stopping=threading.Event()
  def lane(i):
   dest=out/f"lane{i}";dest.mkdir()
   children=[]
@@ -45,6 +54,7 @@ def main():
       "--ready_file",str(ready)],en,"teacher.log",B)
     deadline=time.monotonic()+600
     while not ready.exists():
+     if stopping.is_set():raise RuntimeError("another collection lane failed")
      if server.poll() is not None:raise RuntimeError("LightNav server exited")
      if time.monotonic()>deadline:raise TimeoutError("LightNav startup")
      time.sleep(2)
@@ -58,9 +68,18 @@ def main():
      "--teacher-url",f"ws://127.0.0.1:{port}","--shard",str(i),"--shards",str(len(devices))]
    if a.audit_only:cmd+=["--audit-only"]
    elif not a.formal:cmd+=["--development-three" if a.development_three else "--development-one"]
+   if a.development_key:cmd+=["--development-key",a.development_key]
+   if resume:cmd+=["--resume-plan",a.resume_plan,"--resume-sha",a.resume_sha]
    worker=spawn(cmd,en,"worker.log",B)
-   rc=worker.wait(timeout=170000 if a.formal else 600)
+   deadline=time.monotonic()+(170000 if a.formal else 600)
+   while worker.poll() is None:
+    if stopping.is_set():raise RuntimeError("another collection lane failed")
+    if time.monotonic()>deadline:raise TimeoutError("collection worker timeout")
+    time.sleep(1)
+   rc=worker.returncode
    if rc:raise RuntimeError(f"worker failed: {rc}; {dest}")
+  except BaseException:
+   stopping.set();raise
   finally:
    for proc in reversed(children):
     if proc.poll() is None:
@@ -70,7 +89,8 @@ def main():
  with concurrent.futures.ThreadPoolExecutor(max_workers=len(devices)) as pool:list(pool.map(lane,range(len(devices))))
  if not a.audit_only:
   counts=[json.loads((out/f"lane{i}/collection/COMPLETE.json").read_text())["pairs"] for i in range(len(devices))]
-  assert sum(counts)==(4215 if a.formal else (3 if a.development_three else 1)),counts
+  assert sum(counts)==(resume['remaining_count'] if resume else (4215 if a.formal else (3 if a.development_three else 1))),counts
+  if resume:assert counts==[len(x) for x in resume['lanes']],counts
   (out/"COMPLETE.json").write_text(json.dumps(dict(pairs=sum(counts),formal=a.formal,training_released=False)))
  print("LAUNCH_COMPLETE",str(out),flush=True)
 if __name__=="__main__":main()

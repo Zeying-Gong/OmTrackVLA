@@ -40,6 +40,19 @@ class SelectionTests(unittest.TestCase):
             b=branch("oracle");b["result"][key]=val
             with self.assertRaises(ValueError):select_teacher(branch("lightnav"),b)
     def test_no_mutation_or_release(self):
+        a=branch("lightnav",rate=.95)
+        a.update(transport_fallback=True,fallback_policy="released_lightnav_client_v1",
+                 fallback_events=[dict(step=5,action=[0.,0.,1.],error={"rc":500})])
+        result=select_teacher(a,branch("oracle"))
+        self.assertEqual(result["selected_teacher"],"lightnav")
+        self.assertTrue(result["results"]["lightnav"]["success"])
+        self.assertFalse(result["demonstration_candidate"])
+        self.assertTrue(result["selected_branch_has_fallback"])
+        result=select_teacher(a,branch("oracle",rate=1.))
+        self.assertEqual(result["selected_teacher"],"oracle")
+        self.assertTrue(result["demonstration_candidate"])
+
+    def test_inputs_unchanged(self):
         a,b=branch("lightnav"),branch("oracle")
         before=copy.deepcopy((a,b));r=select_teacher(a,b)
         self.assertEqual((a,b),before)

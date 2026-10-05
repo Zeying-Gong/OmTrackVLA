@@ -25,6 +25,9 @@ def arguments():
     p.add_argument('--recovery-cache')
     p.add_argument('--recovery-index')
     p.add_argument('--recovery-repeats',type=int,default=16)
+    p.add_argument('--dual-teacher-cache')
+    p.add_argument('--dual-teacher-repeats',type=int)
+    p.add_argument('--evaluation-set-adaptation',action='store_true')
     return p.parse_args()
 
 def moved(batch,device):return {k:v.to(device,non_blocking=True) for k,v in batch.items()}
@@ -53,6 +56,11 @@ def main():
     if a.diagnostic and os.environ.get('MD_AK_JOB_ID'):raise ValueError('developer diagnostic forbidden in formal cluster job')
     if bool(a.resume)!=bool(a.completed_epochs) or a.completed_epochs<0 or a.completed_epochs+a.epochs>2:raise ValueError('explicit epoch provenance and maximum2 epochs required')
     if a.resume and (not a.resume_sha256 or sha(a.resume)!=a.resume_sha256):raise ValueError('resume hash mismatch')
+    if bool(a.dual_teacher_cache)!=a.evaluation_set_adaptation:raise ValueError('explicit evaluation-set adaptation flag/cache pair required')
+    if a.dual_teacher_cache:
+        if a.recovery_cache or not a.resume:raise ValueError('independent teacher stage requires parent and excludes legacy recovery mix')
+        if a.dual_teacher_repeats is None or not 1<=a.dual_teacher_repeats<=32:raise ValueError('explicit bounded teacher exposure required')
+    elif a.dual_teacher_repeats is not None:raise ValueError('teacher repeats without cache')
     rank=int(os.environ.get('RANK',0));world=int(os.environ.get('WORLD_SIZE',1));local=int(os.environ.get('LOCAL_RANK',0))
     if not a.diagnostic and world!=8:raise ValueError('full recipe requires8 ranks')
     torch.cuda.set_device(local);device=torch.device('cuda',local)
@@ -93,6 +101,23 @@ def main():
         recovery_exposure=train.exposure|dict(cache_sha256=recovery_sha,index_sha256=sha(Path(a.recovery_index)/'audit.json'))
         if rank==0:(output/'recovery_exposure.json').write_text(json.dumps(recovery_exposure,indent=2))
         # Parent model AND optimizer are resumed below; no silent reset or new objective.
+    if a.dual_teacher_cache:
+        from wa.wm.dual_teacher_data import DualTeacherData
+        from wa.wm.recovery_mix import RecoveryMix
+        from wa.wm.dual_teacher_selection import EXPERIMENT
+        teachers=DualTeacherData(a.dual_teacher_cache,development=a.diagnostic)
+        if a.diagnostic:
+            teachers=Subset(teachers,np.linspace(0,len(teachers)-1,min(limit,len(teachers)),dtype=int).tolist())
+        for suffix in ('pose.npy','history.npy','episode.npy','episodes.json'):
+            if sha(Path(a.cache)/f'heldout_{suffix}')!=sha(Path(a.dual_teacher_cache)/f'heldout_{suffix}'):raise ValueError('original heldout files changed')
+        train=RecoveryMix(train,teachers,a.dual_teacher_repeats)
+        teacher_exposure=dict(experiment=EXPERIMENT,base_windows=len(train.base),teacher_unique_windows=len(teachers),
+            teacher_repeats=a.dual_teacher_repeats,teacher_exposures=len(teachers)*a.dual_teacher_repeats,
+            total_windows=len(train),teacher_fraction=len(teachers)*a.dual_teacher_repeats/len(train),
+            cache_sha256=sha(Path(a.dual_teacher_cache)/'complete.json'),
+            evaluation_interpretation='in-set adaptation; unchanged heldout files do NOT establish unseen generalization',
+            note='Pre-DDP exposure; sampler and batch drop_last discard final rows; audit actual rank exposure before submission.')
+        if rank==0:(output/'dual_teacher_exposure.json').write_text(json.dumps(teacher_exposure,indent=2))
     sampler=DistributedSampler(train,num_replicas=world,rank=rank,shuffle=True,seed=a.seed,drop_last=True)
     loader=DataLoader(train,batch_size=a.batch_size,sampler=sampler,drop_last=True,num_workers=a.workers,pin_memory=True)
     model=JointRobotModel(a.root,a.encoder_weight,a.wla_source,a.wla_checkpoint,a.kind).to(device)

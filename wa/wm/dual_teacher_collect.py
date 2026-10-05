@@ -19,10 +19,13 @@ class BoundTeacher:
     initialization_valid = True
     policy_failure_reason = None
     last_trajectory = None
-    def __init__(self, teacher):
+    def __init__(self, teacher, allow_released_fallback=False):
         self.teacher = teacher
         self.environment = None
         self.fallback_count = 0
+        self.allow_released_fallback = allow_released_fallback
+        self.fallback_events = []
+        self.action_step = 0
     def bind_environment(self, env):
         self.environment = env
         if hasattr(self.teacher, "bind_environment"):
@@ -31,9 +34,13 @@ class BoundTeacher:
         self.teacher.reset(*args, **kwargs)
     def act(self, observations, detector, episode_id, instruction=None):
         action = np.asarray(self.teacher.act(observations, detector, episode_id, instruction), dtype=float)
-        if getattr(self.teacher, "reply_error", None) is not None or getattr(self.teacher, "episode_fallback_count", 0):
-            self.fallback_count += 1
-            raise RuntimeError("TEACHER_TRANSPORT_FALLBACK")
+        count=getattr(self.teacher,"episode_fallback_count",0)
+        if count>self.fallback_count or getattr(self.teacher,"reply_error",None) is not None:
+            if not self.allow_released_fallback:raise RuntimeError("TEACHER_TRANSPORT_FALLBACK")
+            self.fallback_events.append(dict(step=self.action_step,action=action.tolist(),
+                error=getattr(self.teacher,"reply_error",None)))
+        self.fallback_count=count
+        self.action_step+=1
         if action.shape != (3,) or not np.isfinite(action).all() or (abs(action)>1).any():
             raise ValueError("invalid teacher action")
         self.last_trajectory = getattr(self.teacher, "last_trajectory", None)
@@ -65,7 +72,8 @@ class AdaptationRecorder(TeacherRecorder):
         path=self.root/"windows.json"
         windows=json.loads(path.read_text())
         (self.root/"raw_windows.json").write_text(json.dumps(windows))
-        if not result["success"] or result["collision"]:
+        (self.root/"fallback_events.json").write_text(json.dumps(self.agent.fallback_events))
+        if not result["success"] or result["collision"] or self.agent.fallback_events:
             path.write_text("[]")
         (self.root/"pair_start.json").write_text(json.dumps(self.first))
         (self.root/"admission.json").write_text(json.dumps(dict(
@@ -77,17 +85,29 @@ def main():
     for name in ("manifest","output","repair-plan","repair-sha"):
         p.add_argument("--"+name,required=True)
     p.add_argument("--development-one",action="store_true")
+    p.add_argument("--development-key")
     p.add_argument("--development-three",action="store_true")
     p.add_argument("--teacher-url")
     p.add_argument("--shard",type=int,default=0)
     p.add_argument("--shards",type=int,default=8)
     p.add_argument("--audit-only",action="store_true")
+    p.add_argument("--resume-plan")
+    p.add_argument("--resume-sha")
     a=p.parse_args()
+    resume=None
+    if bool(a.resume_plan)!=bool(a.resume_sha):raise ValueError('resume plan/hash required together')
+    if a.resume_plan:
+        from wa.wm.dual_teacher_resume import load_resume
+        resume=load_resume(a.resume_plan,a.resume_sha)
+        if a.shards!=8 or a.development_one or a.development_three:raise ValueError('resume requires eight complete lanes')
+    if a.development_key and not a.development_one:raise ValueError("key override only in developer one-pair check")
     if a.development_one or a.development_three:
         import os
         assert os.environ.get("WA_DEVELOPMENT")=="1" and not os.environ.get("MD_AK_JOB_ID")
     assert 0<=a.shard<a.shards
     m=json.loads(Path(a.manifest).read_text())
+    if resume and sha(a.manifest)!=resume['manifest_sha256']:raise ValueError('resume data differs')
+    planned={(r['task'],r['key']) for r in resume['lanes'][a.shard]} if resume else None
     repairs=load_plan(a.repair_plan,a.repair_sha)
     fixes={(r["task"],r["key"]):r for r in repairs["repairs"]}
     out=Path(a.output);out.mkdir(parents=True,exist_ok=False)
@@ -108,8 +128,11 @@ def main():
         actual={scene(dict(scene_id=e.scene_id))+"/"+str(e.episode_id):e for e in ds.episodes}
         assert len(actual)==1405 and set(actual)=={e["key"] for e in spec["episodes"]}
         entries=[e for i,e in enumerate(spec["episodes"]) if i%a.shards==a.shard]
+        if planned is not None:
+            entries=[e for e in spec['episodes'] if (task,e['key']) in planned]
         for entry in entries:
             key=entry["key"];assert actual[key].info["instruction"]==entry["instruction"]
+            if a.development_key and key!=a.development_key:continue
             if a.development_three and key!="pRbA3pwrgk9/38":continue
             if a.development_one and count>0:continue
             count+=1
@@ -119,7 +142,7 @@ def main():
             for name in ("lightnav","oracle"):
                 random.seed(7);np.random.seed(7);torch.manual_seed(7);torch.cuda.manual_seed_all(7)
                 teacher=LightNav(str(base/"lightnav_client"),a.teacher_url) if name=="lightnav" else OracleTeacher()
-                agent=BoundTeacher(teacher)
+                agent=BoundTeacher(teacher,allow_released_fallback=name=="lightnav")
                 rec=AdaptationRecorder(base/name,dict(experiment=EXPERIMENT,partition="evaluation_adaptation",
                     task=task,key=key,teacher=name,camera_alignment_verified=True,
                     scene_id=actual[key].scene_id,episode_id=str(actual[key].episode_id),
@@ -136,6 +159,8 @@ def main():
                 result=json.loads((base/name/"result.json").read_text())
                 branches[name]=dict(experiment=EXPERIMENT,teacher=name,complete=True,replay_verified=True,
                     transport_fallback=bool(agent.fallback_count),task=task,key=key,takeover_step=0,seed=7,
+                    fallback_policy="released_lightnav_client_v1" if name=="lightnav" else None,
+                    fallback_events=agent.fallback_events,
                     protocol_sha256=protocol,initial_rgb_sha256=first["rgb"],takeover_state_sha256=state_sha,
                     result=result,artifact_root=str(base/name))
             selection=select_teacher(branches["lightnav"],branches["oracle"])
@@ -143,6 +168,7 @@ def main():
             (base/"selection.json").write_text(json.dumps(selection,indent=2))
             with (out/"selections.jsonl").open("a") as f:f.write(json.dumps(selection)+"\n")
             print("PAIR_COMPLETE",task,key,selection["selected_teacher"],flush=True)
+    if planned is not None and count!=len(planned):raise ValueError('resume lane incomplete')
     (out/("AUDIT_PASS.json" if a.audit_only else "COMPLETE.json")).write_text(
         json.dumps(dict(pairs=count,experiment=EXPERIMENT,training_released=False)))
 if __name__=="__main__":main()

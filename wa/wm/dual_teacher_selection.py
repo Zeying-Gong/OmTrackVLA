@@ -19,7 +19,14 @@ def select_teacher(lightnav, oracle):
         if branch.get("complete") is not True or branch.get("replay_verified") is not True:
             raise ValueError("incomplete or unverified branch")
         if branch.get("transport_fallback", False):
-            raise ValueError("teacher fallback invalidates comparison")
+            events=branch.get("fallback_events", [])
+            if name!="lightnav" or branch.get("fallback_policy")!="released_lightnav_client_v1" or not events:
+                raise ValueError("unverified teacher fallback invalidates comparison")
+            for event in events:
+                action=event.get("action", [])
+                if len(action)!=3 or not all(isinstance(v,(int,float)) and math.isfinite(v) and abs(v)<=1 for v in action):
+                    raise ValueError("invalid released fallback action")
+            if len({e["step"] for e in events})!=len(events):raise ValueError("duplicate fallback events")
         for field in PAIR_FIELDS:
             if field not in branch or branch[field] is None:
                 raise ValueError("missing pairing evidence: " + field)
@@ -53,7 +60,8 @@ def select_teacher(lightnav, oracle):
         "selected_teacher": selected,
         "reason": reason,
         "results": {name: dict(b["result"]) for name, b in branches.items()},
-        "demonstration_candidate": selected is not None,
+        "demonstration_candidate": selected is not None and not branches[selected].get("transport_fallback",False),
+        "selected_branch_has_fallback": selected is not None and bool(branches[selected].get("transport_fallback",False)),
         "training_released": False,
         "pending": "continuous successful suffix, executed-pose labels and input-boundary audit",
     }
