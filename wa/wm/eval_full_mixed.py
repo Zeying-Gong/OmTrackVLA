@@ -5,6 +5,7 @@ import numpy as np
 import torch,habitat,evt_bench,trained_agent
 from wa.wm.diagnostic_agent import DiagnosticAgent
 from wa.wm.full_mixed_contract import validate_ready
+from wa.wm.student_eval_contract import model_contract
 from evt_full_20260926.common import BENCH,SCENES,sha,scene,write
 
 def main():
@@ -13,6 +14,12 @@ def main():
     if not 0<=a.shard<8:raise ValueError('eight shards required')
     out=Path(a.output);m=json.loads(Path(a.manifest).read_text());assert m['shards']==8 and m['seed_each_episode']==7
     plan=None
+    contract=model_contract(os.environ);repairs={}
+    if contract:
+        from wa.wm.initial_bbox_repair import load_plan,VERSION as REPAIR_VERSION
+        from wa.wm.initial_bbox_repair_agent import InitialBBoxRepairAgent
+        repair_plan=load_plan(os.environ['WA_INIT_REPAIR_PLAN'],os.environ['WA_INIT_REPAIR_PLAN_SHA'])
+        repairs={(r['task'],r['key']):r for r in repair_plan['repairs']}
     semantic_fix=os.environ.get('WA_SEMANTIC_PLY_FIX','')
     if semantic_fix:
         from wa.wm.semantic_scene import VERSION,prepare_episode,provenance,is_mp3d_ply_scene
@@ -30,7 +37,7 @@ def main():
     total=0
     if not a.audit_only:
         assert os.environ.get('WA_DIAG_CONTROLLER')=='learned_yaw_guard_v1'
-        ready=json.loads(Path(a.ready).read_text());validate_ready(ready)
+        ready=json.loads(Path(a.ready).read_text());validate_ready(ready,**contract)
         if os.environ.get('WA_REVIEW_VIDEO')=='1':
             from wa.wm.review_recorder import install
             install()
@@ -58,7 +65,9 @@ def main():
         (dest/'simulator_config.yaml').write_text(OmegaConf.to_yaml(config))
         ready=json.loads(Path(a.ready).read_text());write(out/'model.json',ready)
         for entry in selected:
-            agent=DiagnosticAgent(ready['url'],config.habitat.task.actions.agent_1_base_velocity,'mixed',dest/(entry['key'].replace('/','_')+'.trace.jsonl'))
+            repair=repairs.get((task,entry['key']))
+            args=(ready['url'],config.habitat.task.actions.agent_1_base_velocity,'mixed',dest/(entry['key'].replace('/','_')+'.trace.jsonl'))
+            agent=InitialBBoxRepairAgent(*args,repair=repair) if repair is not None else DiagnosticAgent(*args)
             ep=actual[entry['key']];random.seed(7);np.random.seed(7);torch.manual_seed(7);torch.cuda.manual_seed_all(7)
             if semantic_fix:ep=prepare_episode(ep,BENCH)
             subset=copy.copy(ds);subset.episodes=[ep];print('EPISODE_START',task,entry['key'],flush=True)
@@ -66,6 +75,12 @@ def main():
             result=json.loads((dest/(entry['key']+'.json')).read_text())
             assert all(math.isfinite(float(result[k])) for k in ['success','collision','following_rate','following_step','total_step'])
             # Invalid first-frame bbox remains a recorded failure, never filtered/replaced.
+            if contract:
+                result.update(checkpoint_sha256=contract['checkpoint_sha'],checkpoint_step=contract['step'])
+            if repair is not None:
+                if not agent.repair_applied:raise ValueError('frozen repair was not applied')
+                result.update(initialization_repair=REPAIR_VERSION,
+                    initialization_repair_plan_sha256=os.environ['WA_INIT_REPAIR_PLAN_SHA'])
             result.pop('instruction',None)
             result.update(task=task,key=entry['key'],mode='mixed',noise_mode='zero',controller='learned_yaw_guard_v1',initial_rgb_sha256=sha(dest/'_live'/entry['key']/'step_0000.jpg'))
             if semantic_fix:

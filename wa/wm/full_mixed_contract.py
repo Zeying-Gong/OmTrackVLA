@@ -1,15 +1,23 @@
 """Pure CPU validation of full-evaluation model and metric contracts."""
-import math
+import math,re
 CHECKPOINT_SHA='20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331'
 MANIFEST_SHA='a1f515534153ccaa720f787f01ea23b9097c174fe25020f756c7d7947eedf98f'
 TASKS=('stt','dt','at')
 
-def validate_ready(r):
-    checks={'checkpoint_sha256':CHECKPOINT_SHA,'step':45900,'mode':'mixed','noise_mode':'zero','sampling_steps':4,'text_used':False,'world_predictor_inference':False}
+def validate_checkpoint_identity(checkpoint_sha,step):
+    if not isinstance(checkpoint_sha,str) or re.fullmatch('[0-9a-f]{64}',checkpoint_sha) is None:
+        raise ValueError('explicit checkpoint SHA256 required')
+    if type(step) is not int or step<1:
+        raise ValueError('explicit positive checkpoint step required')
+
+def validate_ready(r,*,checkpoint_sha=CHECKPOINT_SHA,step=45900):
+    validate_checkpoint_identity(checkpoint_sha,step)
+    checks={'checkpoint_sha256':checkpoint_sha,'step':step,'mode':'mixed','noise_mode':'zero','sampling_steps':4,'text_used':False,'world_predictor_inference':False}
     for key,value in checks.items():
         if key not in r or r[key]!=value: raise ValueError('wrong model contract '+key)
 
-def summarize(rows, manifest):
+def summarize(rows, manifest,*,checkpoint_sha=CHECKPOINT_SHA,step=45900):
+    validate_checkpoint_identity(checkpoint_sha,step)
     if len(rows)!=4215 or len({(r['task'],r['key']) for r in rows})!=4215:
         raise ValueError('missing or duplicate episode')
     results={}
@@ -32,7 +40,7 @@ def summarize(rows, manifest):
             invalid_init_count=sum(not r['policy_init_valid'] for r in part),
             reference_missing=sum(r['key'] not in ref for r in part))
     return dict(status='COMPLETE_FULL_VALIDATION',mode='mixed',noise_mode='zero',controller='learned_yaw_guard_v1',
-        episodes=4215,checkpoint_sha256=CHECKPOINT_SHA,checkpoint_step=45900,metrics_percent=results,
+        episodes=4215,checkpoint_sha256=checkpoint_sha,checkpoint_step=step,metrics_percent=results,
         limits=['ideal simulated polar UWB noise0 delay0; no text','existing validation split includes development/confirmation; not untouched test',
                 'HumanCollision is target-person distance ever<0.5m not general obstacle contact','no real-UWB or edge-latency validation'])
 

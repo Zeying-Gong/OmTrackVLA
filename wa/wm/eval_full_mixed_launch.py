@@ -3,6 +3,8 @@ import concurrent.futures,json,os,signal,subprocess,sys,time,threading
 from pathlib import Path
 from wa.wm.full_mixed_contract import validate_ready,summarize,MANIFEST_SHA,allocated_devices
 from wa.wm.loaders import sha
+from wa.wm.student_eval_contract import model_contract,validate_student_rows
+contract=model_contract(os.environ)
 ROOT=Path('/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928')
 SOURCE=Path.cwd();WLA=ROOT.parent/'WLA-EVT-20260925';BENCH=ROOT.parent/'OmTrackVLA-da3-polar-20260924';ENV=ROOT.parent.parent/'envs'
 MANIFEST=WLA/'evt_full_20260926/manifest.json'
@@ -55,7 +57,7 @@ def lane(index,slot):
             if cancel.is_set() or server.poll() is not None:raise RuntimeError(f'server{index} failed')
             if time.monotonic()>deadline:raise TimeoutError('server startup')
             time.sleep(3)
-        validate_ready(json.loads(ready.read_text()))
+        validate_ready(json.loads(ready.read_text()),**contract)
         env['PYTHONPATH']=':'.join(map(str,[BENCH/'artifacts/official_runtime',BENCH/'torch_overlay',BENCH,BENCH/'habitat-lab',SOURCE,WLA]))
         env['OMTRACKVLA_XVFB_DISPLAY_NUM']=str(510+slot);env['OMTRACKVLA_HAB_SIM_GLX_ROOT']=str(BENCH);env['OMTRACKVLA_XVFB_LOG']=str(dest/'xvfb.log')
         worker=spawn([str(BENCH/'scripts/runtime/run_xvfb.sh'),str(ENV/'habitat/bin/python'),'-u','-m','wa.wm.eval_full_mixed','--manifest',str(MANIFEST),'--output',str(dest),'--shard',str(index),'--ready',str(ready)],env,dest/'worker.log',BENCH)
@@ -86,7 +88,11 @@ try:
         if targeted:load_targeted(os.environ['WA_TARGETED_PLAN'],manifest,os.environ['WA_TARGETED_PLAN_SHA'])
         else:load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
         rows=plan['completed_rows']+rows
-    report=summarize(rows,manifest)
+    validate_student_rows(rows,contract)
+    report=summarize(rows,manifest,**contract)
+    if contract:
+        report.update(experiment='evaluation_set_adaptation_v1',initialization_repair_plan_sha256=os.environ['WA_INIT_REPAIR_PLAN_SHA'])
+        report['limits'].append('Trained on this evaluation set; not unseen generalization')
     if semantic_fix:
         report['semantic_protocol']=provenance()
         (OUT/'combined_episodes.jsonl').write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in rows))
