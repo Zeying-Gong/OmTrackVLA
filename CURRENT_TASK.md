@@ -1,5 +1,8 @@
 # WA current task — dual-teacher in-set adaptation
-Updated:2026-10-05. Status: PREFLIGHT_PASSED; full paired collection submission next, no training yet.
+Updated:2026-10-05 11:12+08. Status: COLLECTION_SUBMITTED 61264/72341; no training yet.
+Submitted11:11:27 Beijing,8requestedA800,baidu_bj_a800;RUNNING scheduler only,actualworker/progress pending.
+Source source_dual_teacher_v1 commit47822500c1492217c9ba272f40c06bfda31f1db8;configSHA0ff0e1fa776b90e88800ebb2effad161abb18044756234e2271271b57d20bea7.
+Output /data/nas_ray/project/md-ak/users/zeying.gong/job_61264/task_72341/wa_dual_teacher_inset_v1. Do not duplicate submission.
 User explicitly authorizes learning on the existing evaluation split to test in-set attainable performance.
 Goal: WA SR individually exceeds same-protocol LightNav in STT/DT/AT; not untouched-test generalization.
 Teacher rule: only successful branch eligible; both success choose higher following_rate; exact tie LightNav; both fail neither.
