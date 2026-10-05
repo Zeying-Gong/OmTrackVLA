@@ -1,0 +1,27 @@
+config_version: 1
+cluster: baidu_a800
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 2
+log_folder: wa_initial_bbox_repair_v2
+tasks:
+  - name: wa_seven_initial_bbox_repair
+    type: shell
+    workload_backend: k8s
+    num_gpus: 2
+    timeout: 7200
+    cmd: |
+      set -euo pipefail
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_initial_bbox_repair_v2
+      test "$(git rev-parse HEAD)" = 1efe5e6131e16bda712c6d5d5ee6a4a1f633a973
+      test -z "$(git status --porcelain)"
+      test -f /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/firstcall_check/PASS.json
+      unset WA_RESUME_PLAN WA_RESUME_PLAN_SHA WA_TARGETED_PLAN WA_TARGETED_PLAN_SHA
+      export WA_INIT_REPAIR_PLAN=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json
+      export WA_INIT_REPAIR_PLAN_SHA=6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a
+      export WA_SEMANTIC_PLY_FIX=mp3d_semantic_ply_v1
+      export WA_DIAG_CONTROLLER=learned_yaw_guard_v1 WA_DIAG_OBSERVER_STATE=1 WA_REVIEW_VIDEO=1
+      export WA_DIAG_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_60502/task_71381/wa_recovery_mix_a800_v1/checkpoint.pt
+      /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -c 'import os; from wa.wm.loaders import sha; assert sha(os.environ["WA_DIAG_CHECKPOINT"])=="20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331"; from wa.wm.initial_bbox_repair import load_plan; load_plan(os.environ["WA_INIT_REPAIR_PLAN"],os.environ["WA_INIT_REPAIR_PLAN_SHA"])'
+      /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -c 'import torch; assert torch.cuda.device_count()==2; print([torch.cuda.get_device_name(i) for i in range(2)])'
+      OUTPUT_ROOT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_initial_bbox_repair_v2"
+      bash wa/scripts/eval_initial_bbox_repair.sh "$OUTPUT_ROOT"
