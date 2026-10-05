@@ -7,6 +7,7 @@ from wa.wm.dual_teacher_metrics import summarize_teachers
 from wa.wm.dual_teacher_resume import load_resume
 from wa.wm.dual_teacher_selection import EXPERIMENT
 from wa.wm.full_mixed_contract import MANIFEST_SHA
+from wa.wm.dual_teacher_pair_evidence import verify_pair_evidence
 
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -31,7 +32,9 @@ def build_report(audit_path, manifest_path):
             if plan['manifest_sha256']!=MANIFEST_SHA:raise ValueError('resume manifest mismatch')
             rows.extend(plan['completed_rows'])
     if len(rows)!=4215:raise ValueError('not a full collection')
+    pair_evidence={}
     for row in rows:
+        pair_evidence[row['pair']['task']+':'+row['pair']['key']]=verify_pair_evidence(row)
         for branch in row['branches'].values():
             path=Path(branch['artifact_root'])/'result.json'
             if json.loads(path.read_text())!=branch['result']:
@@ -43,6 +46,7 @@ def build_report(audit_path, manifest_path):
     if digest(audit_path)!=audit_sha:raise ValueError('audit changed during report')
     report.update(audit_path=str(audit_path),audit_sha256=audit_sha,
                   manifest_sha256=MANIFEST_SHA,source_files=audit['source_files'])
+    report.update(persisted_pair_evidence=pair_evidence,persisted_pair_evidence_count=len(pair_evidence))
     return report
 
 def main():
