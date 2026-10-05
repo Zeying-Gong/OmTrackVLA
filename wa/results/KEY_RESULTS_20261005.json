@@ -1,0 +1,115 @@
+{
+  "updated_date": "2026-10-05",
+  "source_job_task": "61259/72336",
+  "source_output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61259/task_72336/wa_initial_bbox_repair_v2",
+  "source_sha256": {
+    "combined_episodes.jsonl": "517937840d3e5da9b42717cf3c16dadbce499bf1c6c203173badb6c8f3b9c08e",
+    "summary.json": "3c6ef1a2039e557aa564a7bdbca7ce0e3a616246f5c483991b137c640138b3c2"
+  },
+  "counts": {
+    "stt": {
+      "episodes": 1405,
+      "success": 1276,
+      "human_collision": 61,
+      "invalid_init": 0
+    },
+    "dt": {
+      "episodes": 1405,
+      "success": 1158,
+      "human_collision": 94,
+      "invalid_init": 0
+    },
+    "at": {
+      "episodes": 1405,
+      "success": 1193,
+      "human_collision": 66,
+      "invalid_init": 0
+    }
+  },
+  "total_success": 3627,
+  "total_episodes": 4215,
+  "overall_sr_percent": 86.04982206405694,
+  "summary": {
+    "status": "COMPLETE_FULL_VALIDATION",
+    "mode": "mixed",
+    "noise_mode": "zero",
+    "controller": "learned_yaw_guard_v1",
+    "episodes": 4215,
+    "checkpoint_sha256": "20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331",
+    "checkpoint_step": 45900,
+    "metrics_percent": {
+      "stt": {
+        "episodes": 1405,
+        "SR": 90.8185053380783,
+        "CR": 4.341637010676156,
+        "TR": 87.57398627305459,
+        "macro_TR": 92.47506823453423,
+        "finish": 92.02846975088968,
+        "invalid_init_count": 0,
+        "reference_missing": 52
+      },
+      "dt": {
+        "episodes": 1405,
+        "SR": 82.41992882562278,
+        "CR": 6.690391459074733,
+        "TR": 78.69779251735932,
+        "macro_TR": 81.4326047013935,
+        "finish": 88.18505338078292,
+        "invalid_init_count": 0,
+        "reference_missing": 52
+      },
+      "at": {
+        "episodes": 1405,
+        "SR": 84.91103202846975,
+        "CR": 4.697508896797153,
+        "TR": 85.20635820550778,
+        "macro_TR": 88.15088103839898,
+        "finish": 90.74733096085409,
+        "invalid_init_count": 0,
+        "reference_missing": 52
+      }
+    },
+    "limits": [
+      "ideal simulated polar UWB noise0 delay0; no text",
+      "existing validation split includes development/confirmation; not untouched test",
+      "HumanCollision is target-person distance ever<0.5m not general obstacle contact",
+      "no real-UWB or edge-latency validation"
+    ],
+    "initialization_repair": {
+      "version": "initial_rgb_mesh_bbox_v1",
+      "new": 7,
+      "reused_unchanged": 4208,
+      "plan_sha256": "6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a",
+      "scope": "first GT bbox only; subsequent semantic metrics unchanged"
+    },
+    "semantic_protocol": {
+      "version": "mp3d_semantic_ply_v1",
+      "config_sha256": "1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6",
+      "scope": "MP3D GLB + semantic PLY with default episode scene config",
+      "changes": "semantic stage orientation only; RGB/collision Z-up retained",
+      "requires_fresh_metrics": true
+    }
+  },
+  "audit": {
+    "status": "PASS",
+    "episodes": 4215,
+    "reused_unchanged": 4208,
+    "new": 7,
+    "old_initial_rgb_pairs": 4215,
+    "repaired_mp3d": 2163,
+    "unaffected_hm3d": 2052,
+    "initial_rgb_sha256_verified": 4215,
+    "video_metadata_verified": 4215,
+    "video_check_scope": "ffprobe metadata/duration; not every frame decoded",
+    "invalid_init_count": 0,
+    "combined_sha256": "517937840d3e5da9b42717cf3c16dadbce499bf1c6c203173badb6c8f3b9c08e",
+    "summary_sha256": "3c6ef1a2039e557aa564a7bdbca7ce0e3a616246f5c483991b137c640138b3c2"
+  },
+  "interpretation": [
+    "Existing validation, not untouched test; no full LightNav comparison.",
+    "Seven actual replacement outcomes plus 4208 unchanged baseline rows.",
+    "First GT bbox repair only; subsequent semantic visibility scoring unchanged.",
+    "Score changes across annotation protocols are not training gains.",
+    "TR retains actual-step fallback for 52 missing references per task; macro_TR is separate."
+  ]
+}
