@@ -21,6 +21,12 @@ class DiagnosticAgent(WAAgent):
             data=dict(data,uwb=self.uwb_sensor.sample(data['timestamp_s']))
         return super().rpc(path,data)
     def act(self,*args,**kwargs):
+        if os.environ.get('WA_STUDENT_EVAL') and self.sim_step==0:
+            from wa.wm.recovery_replay import rgb_hash,dynamic_state
+            observations=args[0] if args else kwargs['observations']
+            self.initial_pair_evidence=dict(
+                rgb=rgb_hash(observations['agent_1_articulated_agent_jaw_rgb']),
+                state=dynamic_state(self.diagnostic_env))
         # Observer-only evidence. Never include this object in predict RPC.
         observer_state=None
         if os.environ.get('WA_DIAG_OBSERVER_STATE')=='1':

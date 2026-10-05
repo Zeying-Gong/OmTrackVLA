@@ -59,7 +59,10 @@ def main():
             selected=[e for e in spec['episodes'] if e['key'] in keys]
             assert len(selected)==len(keys)
         for e in selected:assert actual[e['key']].info['instruction']==e['instruction']
-        if a.audit_only:print('DATASET_AUDIT_PASS',task,len(actual),len(selected),flush=True);continue
+        if a.audit_only:
+            total+=len(selected)
+            print('DATASET_AUDIT_PASS',task,len(actual),len(selected),flush=True)
+            continue
         dest=out/task;dest.mkdir(parents=True,exist_ok=True)
         from omegaconf import OmegaConf
         (dest/'simulator_config.yaml').write_text(OmegaConf.to_yaml(config))
@@ -77,6 +80,8 @@ def main():
             # Invalid first-frame bbox remains a recorded failure, never filtered/replaced.
             if contract:
                 result.update(checkpoint_sha256=contract['checkpoint_sha'],checkpoint_step=contract['step'])
+                if not hasattr(agent,'initial_pair_evidence'):raise ValueError('missing student paired-start evidence')
+                result['initial_pair_evidence']=agent.initial_pair_evidence
             if repair is not None:
                 if not agent.repair_applied:raise ValueError('frozen repair was not applied')
                 result.update(initialization_repair=REPAIR_VERSION,
