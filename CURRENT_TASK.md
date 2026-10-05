@@ -1,4 +1,16 @@
-# WA current task — seven initialization repairs completed
+# WA current task — dual-teacher in-set adaptation
+Updated:2026-10-05. Status: PREFLIGHT_PASSED; full paired collection submission next, no training yet.
+User explicitly authorizes learning on the existing evaluation split to test in-set attainable performance.
+Goal: WA SR individually exceeds same-protocol LightNav in STT/DT/AT; not untouched-test generalization.
+Teacher rule: only successful branch eligible; both success choose higher following_rate; exact tie LightNav; both fail neither.
+Pairing requires same task/key/seed/protocol/RGB/replayed dynamic takeover state. Select continuous branch, not action-level splicing.
+Preserve baseline60502 weights and audited3627/4215 result. Student input remains RGB/initialBBox/currentUWB only.
+Implementation: wa/wm/dual_teacher_selection.py; legacy training-only collector guards remain unchanged.
+Oracle adapter real8rollouts PASS: HM3D1pair and MP3D3task pairs;all selected LightNav by higherTR or exacttie.
+Data definition4215/cameraalignment PASS;12unit tests PASS;100 external model/runtime dependencies hashed.
+Fullcollection scope:4215 paired starts (8430teacher branches),8A800,successful branch first then higherfollowing_rate.
+No demonstration released to training until fullpair/record/SE2/cache/input-boundary audit. This is in-set adaptation, not generalization.
+## Prior completed phase (immutable baseline)
 Updated:2026-10-05 10:12+08. Status: SUCCEEDED_AUDITED_7_ONLY; broader research PARTIAL.
 
 ## Current result
