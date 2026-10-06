@@ -4,7 +4,9 @@ from pathlib import Path
 from wa.wm.full_mixed_contract import validate_ready,summarize,MANIFEST_SHA,allocated_devices
 from wa.wm.loaders import sha
 from wa.wm.student_eval_contract import model_contract,validate_student_rows
+from wa.wm.student_eval_partition import task_scope,write_partition
 contract=model_contract(os.environ)
+tasks=task_scope(os.environ)
 ROOT=Path('/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928')
 SOURCE=Path.cwd();WLA=ROOT.parent/'WLA-EVT-20260925';BENCH=ROOT.parent/'OmTrackVLA-da3-polar-20260924';ENV=ROOT.parent.parent/'envs'
 MANIFEST=WLA/'evt_full_20260926/manifest.json'
@@ -80,7 +82,7 @@ try:
         dest=OUT/f'shard_{i:02d}';assert (dest/'COMPLETE.json').exists()
         part=[json.loads(x) for x in (dest/'episodes.jsonl').read_text().splitlines()]
         if contract:
-            validate_shard(part,json.loads((dest/'COMPLETE.json').read_text()),manifest,i)
+            validate_shard(part,json.loads((dest/'COMPLETE.json').read_text()),manifest,i,tasks)
         if plan is not None:
             assert {(r['task'],r['key']) for r in part}=={(e['task'],e['key']) for e in plan['lanes'][i]}
             assert len(part)==len(plan['lanes'][i])
@@ -94,6 +96,10 @@ try:
         if targeted:load_targeted(os.environ['WA_TARGETED_PLAN'],manifest,os.environ['WA_TARGETED_PLAN_SHA'])
         else:load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
         rows=plan['completed_rows']+rows
+    if len(tasks)==1:
+        write_partition(OUT,rows,manifest,contract,tasks[0])
+        print('STUDENT_TASK_PARTITION_COMPLETE',tasks[0],len(rows),flush=True)
+        sys.exit(0)
     validate_student_rows(rows,contract)
     report=summarize(rows,manifest,**contract)
     if contract:

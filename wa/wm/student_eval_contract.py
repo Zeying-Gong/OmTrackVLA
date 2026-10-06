@@ -23,10 +23,11 @@ def model_contract(env):
         raise ValueError('student requires frozen seven-bbox plan')
     return dict(checkpoint_sha=h,step=step)
 
-def validate_student_rows(rows,contract):
+def validate_student_rows(rows,contract,tasks=('stt','dt','at')):
     if not contract:return
     seen=set();repaired=set()
     for r in rows:
+        if r['task'] not in tasks:raise ValueError('foreign task in student partition')
         key=(r['task'],r['key'])
         if key in seen:raise ValueError('duplicate student row')
         seen.add(key)
@@ -39,4 +40,4 @@ def validate_student_rows(rows,contract):
             repaired.add(key)
         elif r.get('initialization_repair'):
             raise ValueError('unexpected repair outside seven keys')
-    if repaired!=KEYS:raise ValueError('incomplete seven-key coverage')
+    if repaired!={k for k in KEYS if k[0] in tasks}:raise ValueError('incomplete seven-key coverage')

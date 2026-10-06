@@ -6,6 +6,7 @@ import torch,habitat,evt_bench,trained_agent
 from wa.wm.diagnostic_agent import DiagnosticAgent
 from wa.wm.full_mixed_contract import validate_ready
 from wa.wm.student_eval_contract import model_contract
+from wa.wm.student_eval_partition import task_scope
 from evt_full_20260926.common import BENCH,SCENES,sha,scene,write
 
 def main():
@@ -41,7 +42,7 @@ def main():
         if os.environ.get('WA_REVIEW_VIDEO')=='1':
             from wa.wm.review_recorder import install
             install()
-    schedule=[(phase,task) for phase in ([True,False] if targeted else [None]) for task in ['stt','dt','at']]
+    schedule=[(phase,task) for phase in ([True,False] if targeted else [None]) for task in task_scope(os.environ)]
     for phase,task in schedule:
         if targeted and phase is False and task=='stt' and not a.audit_only:priority_barrier(out)
         spec=m['tasks'][task];assert sha(spec['path'])==spec['sha256']

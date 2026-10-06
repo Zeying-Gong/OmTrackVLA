@@ -12,8 +12,8 @@ def load_teachers(path):
         raise ValueError('teacher reference differs from frozen full collection')
     return [json.loads(line) for line in data.splitlines() if line]
 
-def validate_shard(rows,complete,manifest,index):
-    expected={(task,e['key']) for task in ('stt','dt','at')
+def validate_shard(rows,complete,manifest,index,tasks=('stt','dt','at')):
+    expected={(task,e['key']) for task in tasks
               for e in manifest['tasks'][task]['episodes'] if e['shard']==index}
     keys=[(r['task'],r['key']) for r in rows]
     if len(keys)!=len(expected) or set(keys)!=expected:
