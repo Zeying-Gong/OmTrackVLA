@@ -1,44 +1,50 @@
 # Current task
 Updated: 2026-10-06 China
-Status: A4_DEVELOPMENT_PASS_FORMAL_COLLECTION_APPROVAL_PENDING / A3_FULL4215_AUDITED / DA3_RETIRED
+Status: A4_DATA_INTERFACE_PASS_MODEL_DEVELOPMENT_PENDING / A3_FULL4215_AUDITED / DA3_RETIRED
 
-## Current user authorization
-- User explicitly requests A4 to raise A-method SR on the same4215 TEST episodes, with repeated learning/tuning/model selection allowed. A2 plus RL or other WLA-compatible method is authorized.
-- First target: exceed A2 2635/4215=62.514828%; next exceed B60994 2684/4215=63.677343%. Keep highest actually full-tested candidate.
-- This is TEST_SCENE_ADAPTATION_NOT_HELDOUT, an empirical fixed-budget ceiling search; no heldout-generalization or global-optimum claim.
-- User broadly authorized A4 SR improvement. Auto-review on2026-10-06 rejected specific8A80048h formal collection because exact resource authorization was not recognized;explicit question sent. Read A4 APPROVAL_BLOCK.json;do not retry/submit indirectly without clear approval.
-- Inference remains causal RGB+original text+timestamp. GT is training labels/scoring only; no episode lookup or oracle policy routing.
-- Old A2/B/A3 weights/results and failed/STOPPED runs remain immutable. No DA3,59352,60766 restart.
+## Latest user objective
+- Raise A-method frozen full4215 SR by reusing A3 data and mixing offline learning with direct online RL from A2.
+- User allows repeated TEST learning/tuning/selection. Label TEST_SCENE_ADAPTATION_NOT_HELDOUT; do not claim heldout generalization or global optimum.
+- First target>A2 2635/4215=62.514828%; next>B60994 2684/4215=63.677343%. Preserve highest actually full-tested executable candidate.
+- This latest request supersedes making full4215 expert recollection a prerequisite. The old flow-finetuning alternative and all developer evidence remain preserved.
+- Inference causal RGB+original instruction+timestamp and internally generated noise only. No GT inputs, episode lookup or oracle policy routing.
 
-## Active A4 package and route
-- A800: /data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/a4_sr_adaptation_20261006.
-- Read RUN.json,EXPERIMENT_PLAN.md,A3_LESSONS.json before acting; check scheduler before submissions.
-- Initial checkpoint originalA2_60058 SHA59cdfe10fc1efa92ae24568152e2c24baa69a1b91609fc4f823ec625204d713b.
-- Collect all4215 episodes independently: A2-success2635 forced originalstudent for behavior anchors; A2-failure1580 allows LightNav takeover/recovery/handback.
-- Admit correction only from actual terminal SR1, complete0.7s expert-only/no-fallback windows. If intervention fails or yields0windows, reset a separate full LightNav rescue; preserve both attempts and selected pointer. Coverage4215, actual rollouts up to5795.
-- Train action_expert only; freeze backbone/MetaQuery/geometry/XYvis. Correction flow supervision plus frozen-A2 velocity distillation at identical conditions/x_t/t.
-- Balanced anchor/correction batches and task sampling; document repeats/coverage. SmallLR1e-6 proposed; no performance claim from training loss.
-- Same real PNG132-step old/new serving RPC outputs bitwise PASS. Full3 replay endpoint metrics match;STT0/AT3 116steps exact,DT28 action drift remainsUNCONFIRMED despite same initialJPEG. Preserve initial failure;JPEG is not rawRGB proof.
-- Fixed252 full-horizon panel(84/task,uniform deterministic hash) for multiple saved candidates;top2 receive full4215. Persist cross-campaign BEST_FULL.json;A2 stays incumbent until genuine higher fullSR.
-- Keep original A2 incumbent and every checkpoint; never replace best using online SR,partial-panel peak or final-step assumption.
-- Real single batch2/single batch4/dual batch4 each2updates PASS;initialanchor0,214frozen tensors exact,checkpoint reload exact,dualpeak17.219GiB. Formal batch4/GPU,global16. Actual newstep2 checkpoint serving/reset/full3episodes166frames PASS.3979collectioninputs frozen/checkPASS;auto-review rejected specific8A80048h submission before execution. No A4job;wait explicit resource approval.
-- Expected resources8A800 collection/eval,4A800training; query live resources before submission. No cluster smoke.
+## Active NAS package
+- nas-a800:/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/a4_hybrid_replay_20261006.
+- Read RUN.json,EXPERIMENT_PLAN.md,DATA_REUSE_AUDIT.json,then REPLAY_INDEX_AUDIT.json and RESIDUAL_SUPPORT_AUDIT.json when present.
+- DATA_INTERFACE_PASS:all1732 NPZ hashes and886589 actual latent/reward/component rows versus8430 fulltraces independently verified;MC/SR index implemented. Hybrid model/optimizer/serving checks pending,noformaljob.
+- A3 archive:8430 episodes,886589 transitions,1732 replay chunks(~13.63GiB);4760 successful attempts,2914 unique source episodes ever succeeded.
+- Of originalA2 failures,568 had an A3 exploratory success(STT137,DT217,AT214). This is learnable experience coverage,not any policy's SR or an achievable oracle-combined score.
+- Cached FP16[16,256] features precede trainable reader;actual28D total latent/reward/done/phase/action_id retained. All success/failure experience remains available.
+- Only4 A3 trajectories have complete RGB;8426 have first frame only. Direct latent learning is possible; arbitrary RGB→Flow supervision is not.
+- DATA_REUSE_AUDIT independently rechecks all manifests/source pairs and first/middle/last NPZ; full886589 numerical replay conclusion cites the preserved earlier full audit,not a new full read.
 
-## A3 completed result and lessons
-- Job61020/Task71943 SUCCEEDED;8430 adaptation episodes,886589transitions,221392SACupdates,then frozen/reset4215.
-- A3 final SHA c7269fa14ba53ec60f4f27fa80aa9b295f83464ca5e0124597c30e0c10fce435.
-- Independent4215 strictA2 pairs and431802-step trace/reward/frozen policy audit PASS.
-- A3 STT1061/1405 SR75.516014%;DT583/1405 SR41.494662%;AT565/1405 SR40.213523%.
-- Overall2209/4215 SR52.408066%,TR_macro70.368704%,CR3.724792%;SR-10.106762pp versusA2.
-- A3 actorzero latent was not A2seed7+step Gaussian behavior. Q target inflated182 despite episode reward<=11; final latent44.81% nearbound.
-- A3 improved388 originalfailures but regressed814 originalsuccesses. Lost1331 vsA2 802; collision157 vs357. Cause labels remainUNANNOTATED.
-- Evidence A800 a3_test_scene_rl_20261004/FINAL_INDEPENDENT_AUDIT_20261006.json;only finalA3 checkpoint received full4215.
+## Revised hybrid route and verification
+- Freeze originalA2 encoder/MetaQuery/Flow/oldheads/controller and A3 fixedprojector. OriginalA2 SHA59cdfe10fc1efa92ae24568152e2c24baa69a1b91609fc4f823ec625204d713b.
+- Projector SHA7b523f1d10a1dad7407ec6aee3fca4016bc1cbb34460cc9ed39ab948ee7dbcc9;reader/policy/value/optimizers initialized independently,not resumed from degradedA3.
+- Exact CUDA Gaussian z0(seed7+prediction_step,shape1x7x4) plus zero-initialized residual;actor explicitly sees z0. Same-input zero-residual serving must reproduceA2.
+- Full886589 residualsupport audited:rho0.5 supports0, rho2 only15 recorded28Dactions. Usezero-initialized unboundedresidualmean+softA2regularization;explicitz0 input,neverclipolda/keepoldreward.
+- Reconstruct complete episodes by lane/action_id/done;success S is main MC target,old shapedreward separately retained. No cross-lane/chunk-blind return accumulation.
+- Both successes/failures train value;advantage-weighted regression uses actual recordedactions,episode/task balancing and cappedweights. Historical MC advantage is not unbiased current-policy advantage.
+- Mix archived data with new online complete episodes,small initial exploration,record actual totalz/basez/delta/policyversion/outcomes.
+- ChangingFlow invalidates simple oldlatent-replay compatibility;old ActionExpert-finetuning branch must remain separate.
+- Verify real data index/returns,exactnoise/interface,real offline+online short updates,frozenparams,finite,checkpointreload/reset and noGT actor inputs before formal work.
+- Existing fixed252 full-horizon panel(84/task) screens multiple frozencheckpoints;promoted candidates get full4215 eachclass1405 and strictA2 pairing.
+- Persistent fullbest remains a4_sr_adaptation_20261006/BEST_FULL.json. Never use onlineSR,partialpeak,Q/loss or cross-policy successunion as fullbest.
 
-## Preserved references and ongoing reporting
-- A2_60058 full4215: STT1143,DT796,AT696 successes; SR62.514828%.
-- B_partial_cache60994 full60996 audited:2684/4215 SR63.677343%, highest measured among A2/B/A3.
-- Historical A2 action-only/59752 remains separate; originalA60316 fixed36mixed remains frozen.
-- Use task+dataset_index,never scene+episodeID dictionary overwrite. Preserve full horizon and terminal omissions explicitly.
-- Update NAS RUN,ledgers,CURRENT_TASK/PROGRESS/taskdoc on new evidence;doc-only explicit commit/push,preserve dirty source.
-- Automation wla updated to A4. Every20min advance verified stage;notify formal starts/completions/failures. During evaluation report exact partial task counts/SR every20min.
-- A3 monitoring goal complete;A4automation remainsactive. While specificcollectionapproval pending,no automatic retry or repeatednags;independent development complete,wait user reply.
+## Formal resource gate and preserved work
+- Previous8A80048h fullcollection request rejected by automaticapproval review beforeSSH execution;noJob. Preserve old APPROVAL_BLOCK.json.
+- Latest method question is not approval of that old resource request. No retry via anotherinterface,smallerresources,delegation or heartbeat.
+- Continue independent hybrid development;prepare a concrete revised formal configuration and resource request after actual checks. Do not repeatedly ask the stale full-recollection question.
+- Old3979 collectioninputs frozen SHA b87cfadaa2350892ad8eb34f70fa5165bf316cac9c13ddae88f8910a3b44c6a6 unchanged;old developer2updates/rescue/samePNG evidence remains separate.
+- Old samePNG132-step equivalence PASS;DT28 historical action drift UNCONFIRMED. JPEG hash is not rawRGB proof.
+- A800 priority;H100/4090 require actualreadiness checks,no blind crossNAS or cluster smoke.
+
+## Completed references and reporting
+- A3_61020/71943 SUCCEEDED:8430adapt/886589transitions/221392updates,then frozen4215;2209successes SR52.408066%(-10.106762pp vsA2).
+- A3 STT1061,DT583,AT565 each/1405;finalSHA c7269fa14ba53ec60f4f27fa80aa9b295f83464ca5e0124597c30e0c10fce435.
+- A3 initialnoise did not preserveA2;Q inflated andactor saturated;only finalcheckpoint fulltested. Preserve failedmethod and traces,do not resume.
+- A2 full4215 STT1143,DT796,AT696;B60994 STT1169,DT787,AT728;B63.677343% highest measured amongA2/B/A3.
+- Historical A2 action-only/59752 separate;A60316 fixed36mixed frozen. No60766/59352/DA3 restart.
+- Update NAS RUN,twoledgers,these taskdocs on real evidence;doc-only commit/push,preserve dirtysource/CSV.
+- Automationwla nowhybrid:advance every20min;notify milestones/failures. Duringevaluation report exact partialsuccess/completedSR and taskcoverage every20min.
