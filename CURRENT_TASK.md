@@ -41,7 +41,7 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - TRreference-normalized;52missingreference/taskactualfallback;macroTRseparate. CRtargetdistanceever<.5m,notgeneralobstaclecontact.
 - Gym/xFormers/SSDsemanticwarningsretained;specifiedfatalpatterns0. Earlierwrongrun/console.logmonitorclaimwithdrawn;actualtaskconsole/.md-ak/workload used. HistoricalSTTupperbound/partialwatchrecords retained.
 
-## Active bounded work — accepted STT anchor61715; DT evaluation progressing, STT/AT queued
+## Active bounded work — accepted STT anchor61715; all three8GPU evaluations running
 - Realfixed88replay completed onidledevpod4090GPU6:597.856s,1.482GiB,88windows/176predictions/1713sourcehashes PASS. No training/rollout.
 - Artifact artifacts/teacher_group_fit_61609_replay_20261007_v1.json SHA3db61f67a648258593382dd2adbfd508a2d8dbe0aeb077648b0e8b51f54d7f73;reference1463ea39 fixedidentities/order unchanged.
 - NormalhistoryADE61377->61609:hardCollision.487173->.467611,hardOther.394402->.383305,successSTT.252272->.255145,DT.290127->.310269,AT.400361->.371023. Smallselectedsample/notSR;DTfitworsebutfullSRup.
@@ -67,7 +67,7 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - FinalofflineADE/FDE image.26574965/.46344470 point.25376165/.44215970 mixed.25379827/.44177998;73368each/SRnull. No new61715closedloopresult;last59700lognormal25stepcadence.
 - Initialization remains59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;1new/cumulative2epochs;not61609epoch3,noLR/loss/controllerchange.
 - Reserveonlyif61715fullresultsevidencefailure-state recoveryneed:readonly18sourcepins checked;oldLightNavtrain-only replay canreusebutcurrentdualteacherstep0/Oraclebinding-not-forwarded/no failure-keyplan/nonzero-suffixadmission absent. Currentevaltracesnotfullperstepreplay. Explicitnewadaptationprotocol+integrationchecksrequired;no newcollector/training. DetailSTUDENT61715_EVAL_WATCH_20261008_0305.json.
-- EvalSTT61792/72986 DT61793/72987 AT61794/72988 submittedonce01:51:39Beijing baidu_4090 each8requested/1405. At03:05:35 DT8realRTX4090/580unique/invalid0,up459->580during10minwatch;STT/AT SUBMITTED0/nooutput. Eightworkerlogs/readycontracts/fatalpatternsPASS02:56. Offlinecomparison57tests/bounded8audit previouslyPASS;new evidenceSTUDENT61715_EVAL_WATCH_20261008_0305.json;originaljobs/freezeunchanged.
+- EvalSTT61792/72986 DT61793/72987 AT61794/72988 nowallRUNNING/8readyeach. At03:29:11 completedSTT150/DT794/AT145=1089unique/4215,invalid0;STT/ATqueueended. NodesSTT172.20.32.53/DT172.20.32.147/AT172.20.32.146. All24readyRTX4090/SHA9631778c/59716/contracts+72logfatalpatternsPASS03:19;physicalUUIDlistnotcaptured. EvidenceSTUDENT61715_EVAL_WATCH_20261008_0329.json;no newjob/migration/fullSR.
 - Evalfrozen source_student61715_eval24_v1 clean5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb;114CPU/10dependencySHA/23unchangedfiles/2CPUimports/24realHabitatlanes9b40d627/realweightinterface25fecf25PASS. Configsstudent61715_{stt,dt,at}_4090_v1.yaml backedbeforeonce3fulljobs;no cluster smoke. Monitorwa updatedsame20minthread.
 - AfterSRgate only:explicitimage-mode sameweight UWBablation afterrealinterface/observerperturbation/Habitatcheck;notmixedzero ornoUWB-retrainingclaim.
 - Preserveallcheckpoints/results/failures;GitHubexistingwa announcebeforeeachpush. No weight/data/video upload. CURRENT<=80,PROGRESS<=150. Goal/20minmonitor remainACTIVE.
