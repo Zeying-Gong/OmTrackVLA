@@ -23,7 +23,8 @@
 40项CPU测试及真实RTX4090开发机4次更新检查通过；开发检查未保存checkpoint。88个固定早期教师窗口的配对拟合检查仅作训练依据，不是闭环提升证据。
 训练冻结 `source_hard_stt_train_v1` commit `8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06`；配置 [hard_stt_train_a800_v1.yaml](../jobs/hard_stt_train_a800_v1.yaml)，SHA256 `99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184`。
 输出目录：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1`。新checkpoint尚未验收，不能把预期路径或预计步数当作完成产物。
-最近核查 step27275、新增4568/37009更新；预计终点59716。最终checkpoint、73368窗口×3模式离线指标、逐窗口实际曝光核验通过后，再进行STT/DT/AT各8卡全量闭环；当前没有61609的新SR。
+最近核查 step30725、新增8018/37009更新；预计终点59716。11分钟只读观察中新增更新从5893增至7468，日志持续增长，终态产物尚未产生。最终checkpoint、73368窗口×3模式离线指标、逐窗口实际曝光核验通过后，再进行STT/DT/AT各8卡全量闭环；当前没有61609的新SR。
+冻结源码中，实际曝光写出后才保存最终checkpoint，随后8卡并行验证image/point/mixed三种模式，最后产生metrics/COMPLETE。没有独立的权重保存完成标记，不能仅凭文件存在提前放行。旧61377从checkpoint修改时间到metrics约51分02秒，只作离线验证尾段历史参考，不是本轮完成时间承诺。
 实时曲线选择 `hard_stt_61609`：[TensorBoard](http://127.0.0.1:16006/#scalars)。在浏览电脑执行 `ssh -N -L 16006:127.0.0.1:6006 devpod-a800`；远程scalar API已核验真实数据，未新建本机转发。loss是DDP累积组均值，不能代替闭环成功率。
 详细候选、拟合和开发检查证据：[HARD_STT_CANDIDATE_20261007.json](HARD_STT_CANDIDATE_20261007.json)。完成后验收STT≥1289、DT≥1173、AT≥1203，保留现有61377结果作逐例配对基线。
 
