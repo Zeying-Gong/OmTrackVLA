@@ -45,11 +45,16 @@ def verify_metadata(records, windows, expected_records, teacher):
     return np.flatnonzero(hard).tolist()
 
 def load_candidate(directory, report_sha256, base, teacher, *, base_index,
-                   student_rows, teacher_selections):
+                   student_rows, teacher_selections, project_root=None):
     directory = Path(directory)
     if sha(directory/'report.json') != report_sha256:
         raise ValueError('candidate report hash mismatch')
     report = json.loads((directory/'report.json').read_text())
+    if report.get('candidate_kind') == 'stt_anchor_v1':
+        from wa.wm.teacher_plan_runtime_v2 import load_v2
+        return load_v2(directory, report, base, teacher, base_index=base_index,
+            student_rows=student_rows, teacher_selections=teacher_selections,
+            project_root=project_root)
     if report['status'] != 'CANDIDATE_ONLY_NOT_TRAINING_RELEASE' or report['experiment'] != EXPERIMENT:
         raise ValueError('unexpected candidate protocol')
     if report['checkpoint_sha256'] != CHECKPOINT_SHA or report['checkpoint_step'] != 59065:
@@ -93,6 +98,10 @@ def load_candidate(directory, report_sha256, base, teacher, *, base_index,
 
 def diagnostic_positions(mix, records, windows, count=16):
     """Bounded developer check intentionally covers all sources plus extra positions."""
+    from wa.wm.teacher_window_schedule import ScheduledTeacherMix
+    if isinstance(mix, ScheduledTeacherMix):
+        from wa.wm.teacher_plan_runtime_v2 import diagnostic_positions_v2
+        return diagnostic_positions_v2(mix, records, windows, count)
     if type(count) is not int or count < 8 or count % 2:
         raise ValueError('even integer diagnostic count >=8 required')
     positions = [0, len(mix.base)-1]

@@ -126,7 +126,11 @@ def main():
             planned_mix,plan_records,plan_windows,plan_report=load_candidate(
                 a.teacher_window_plan,a.teacher_plan_report_sha256,train,teachers,
                 base_index=a.index_root,student_rows=candidate_root/'student61377_full_audit_20261007_v1/combined_episodes.jsonl',
-                teacher_selections=candidate_root/'dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl')
+                teacher_selections=candidate_root/'dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl',
+                project_root=a.root)
+            if plan_report.get('candidate_kind') == 'stt_anchor_v1':
+                from wa.wm.teacher_plan_runtime_v2 import validate_training_recipe
+                validate_training_recipe(plan_report,a,world=world)
             mixed=planned_mix
             train=ExposureTaggedData(mixed)
             if a.diagnostic:
@@ -142,6 +146,10 @@ def main():
             cache_sha256=sha(Path(a.dual_teacher_cache)/'complete.json'),
             evaluation_interpretation='in-set adaptation; unchanged heldout files do NOT establish unseen generalization',
             note='Pre-DDP exposure; sampler and batch drop_last discard final rows; audit actual rank exposure before submission.')
+        if planned_mix is not None and plan_report.get('candidate_kind') == 'stt_anchor_v1':
+            teacher_exposure.update(teacher_plan_schema=planned_mix.schema,
+                teacher_candidate_kind=plan_report['candidate_kind'],
+                selection_source_hashes=plan_report['selection_source_hashes'])
         if rank==0:(output/'dual_teacher_exposure.json').write_text(json.dumps(teacher_exposure,indent=2))
     sampler=DistributedSampler(train,num_replicas=world,rank=rank,shuffle=True,seed=a.seed,drop_last=True)
     loader=DataLoader(train,batch_size=a.batch_size,sampler=sampler,drop_last=True,num_workers=a.workers,pin_memory=True)

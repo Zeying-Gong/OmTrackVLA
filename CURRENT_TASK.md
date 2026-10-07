@@ -41,21 +41,28 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - TRreference-normalized;52missingreference/taskactualfallback;macroTRseparate. CRtargetdistanceever<.5m,notgeneralobstaclecontact.
 - Gym/xFormers/SSDsemanticwarningsretained;specifiedfatalpatterns0. Earlierwrongrun/console.logmonitorclaimwithdrawn;actualtaskconsole/.md-ak/workload used. HistoricalSTTupperbound/partialwatchrecords retained.
 
-## Next bounded work — not a new training job yet
-- Newcandidate improvesall3tasks butSTT missesgoal. Do not blindlyrepeatweights/LR/epoch3, or startUWB now.
-- Fixed88 replay tool wa/tools/replay_teacher_group_fit.py andtests:13CPUtestsPASS;real88window/176pair/1705sourcehash admissionPASS50.50s,no model loaded.
-- Referencefit artifacts/teacher_group_fit_61377_20261007_v1.json SHA1463ea39a6fe1acf90fcbd813d1ae23bee6ee0e475a314e5bde174b3fa4f8158.
-- Exactold88identities/order retained,notreselectedby61609failure;40hard/16STTsuccess/16DT/16AT,normal+repeatedhistory. Oldstoredperwindowerrors/firstpoints only;newreplaysavesfull7x4predictions/labels/inputhashes.
-- Preparation wa/results/TEACHER_FIT_REPLAY_PREPARATION_20261007.json;toolSHA869e5346fb69cfb189746cedc5b72166b0df11b26f3d35c4465256d7650d1a46;no61609fitpredictionsyet.
-- BeforeGPUsection recheck actualidle developerGPU. A800allallocated;nas-h100reachable butseparateNAS requiredcode/env/cache/ckptmissing;no migration. 4090sameGPFS GPU6=340MiB/27%tworeads,notassumedidle;otherjobsuntouched.
-- Replayonly61609onfixedwindows;old61377errorsreused,no oldmodelrerun. Theninspect12regressions/76persistenthard withpairedtraces before selecting limited nextsampling/recoveryexperiment.
-- Parentforanysupportednewtraining remains59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;8GPU,maxcumulative2epochs unlessnewauthority.
-- Allteacherselectionsuccess-first,thenhigherTR,tieLightNav. Failed/fallbackbranchesnotcorrectlabels;actualexposurelogged.
-- EvalSTT/DT/AT each8GPU,total24;followAGENTS resourceorder/NAS/preflight/frozenconfig,noclustersmoke/duplicatejob.
-- ModelJEPA/MetaQuery/ActionExpert/originalloss/physics fixed;RGB+initialGTBBox+idealpolarUWB,notext/laterGTboxes/futurepaths;JEPAaux,noonlineMPC.
-- AfterSRgate:explicitimage-mode sameweight UWBablation;existing98CPUmodechecks not actualimagebehavior. Requirefinalweightinterface/observerperturbation/realHabitatchecks/fullpaired4215;notmixedzero ornoUWB-retrainingclaim.
-- Preserveallcheckpoints/results/failures;GitHubexistingwa announcebeforeeachpush. No weight/data/video upload. CURRENT<=80,PROGRESS<=150.
-- TB6006completed61609curves;ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars ;not runningtraining.
+## Next bounded work — fixed-budget rebalance preparation, not submitted
+- Realfixed88replay completed onidledevpod4090GPU6:597.856s,1.482GiB,88windows/176predictions/1713sourcehashes PASS. No training/rollout.
+- Artifact artifacts/teacher_group_fit_61609_replay_20261007_v1.json SHA3db61f67a648258593382dd2adbfd508a2d8dbe0aeb077648b0e8b51f54d7f73;reference1463ea39 fixedidentities/order unchanged.
+- NormalhistoryADE61377->61609:hardCollision.487173->.467611,hardOther.394402->.383305,successSTT.252272->.255145,DT.290127->.310269,AT.400361->.371023. Smallselectedsample/notSR;DTfitworsebutfullSRup.
+- Boundedtrace+exposure report wa/results/STUDENT61609_DIAGNOSTIC_20261007.json. Main24new/oldtracepinsPASS plus48info/reviewhashes. Firstflattenedinfo-pathvalidatorfailed;actualscene/episode_info path corrected,originalresultsunchanged.
+- 12regressions:10successfulteacher raw972->valid886,early357,eachactual1;2bothfail no labels. Original transient986sum corrected. Noneinoriginalhard91.
+- Hax/16 finaldistance.981m failsunchanged1m lowerbound despiteTR1;VLzq/197,/238 forwardcommands withlittlemotion;Vt2/123 andac26/258 visibilitynotrecovered. Notall failuresdoorframes.
+- VLzq/238 has149executedactions/148infologs:Lostbreak occursafterstepbeforeinfo-write;lastpostunlogged. info.facing=distance+detectorcombinedmetric,notpurevisibility.
+- Persistent76:38Collision/26Lost/12Normal;32terminate<=40allCollision. All38last5meanlongitudinalnegative;18Lost+6Normal forward>0.1 butactualhorizontalpathspeed<0.1m/s. No contactgeometrycausalclaim.
+- Fixed-budget candidateA generated/CPUchecked independently:base+allteacheronce;3270earlyhardextra2,7143latehardextra1,886regressionteacherextra1,6257balancedextrasfor1248oldsuccessSTTepisodes. Totalextra20826 unchanged.
+- Newv2candidate artifacts/stt_anchor_candidate_61609_20261007_v1 reportbbe21c78;canonicalplan42d33d92. 14CPUtests mainPASS;24111sourcehashes/rederivedeligibility checked;8ranks148034/1184272simulated,notactualtraining.
+- Anchorpoolmin6validwindows;17six-windowepisodeallocationsmin30;6257uniqueanchorindices. SametaildropAT/Oracle424632;hard24096early9810late14286;gains3032/persistent21064/regression1772/stableanchors122679.
+- Preparationwa/results/STT_ANCHOR_PREPARATION_20261007.json;builder2d011cd7 tests55b5e73e. Initialbinaryfloatoutcome typegatefailedbeforeoutput;strict0/1compatibilityfixed+testsPASS,notdata/trainingfailure.
+- v2runtime implemented/strictadmissionPASS;v1order/rejections unchanged. Main66CPUtestsPASS0.387s andfull8rankactual-index/DataLoaderPASS68.13s;notfullimageconsumption.
+- PreserveDT/ATdata andold15gains;anchor5/6uniqueagequantiles pereligibleepisode fixedSHAorder,notchosenbynewfit. Insufficientvalidwindows mustfail,no label/filterrelaxation.
+- MainshortGPUdev4090GPU6 PASS16samples/4updates22708..22711;peak7.309GiB,train+val18.828s afterslowNAS/modelsetup. All4groupsconsumed;no savedcheckpoint. artifacts/stt_anchor_short_gpu_20261007_v1.
+- Runtimepreflight wa/results/STT_ANCHOR_RUNTIME_PREFLIGHT_20261007.json;newterminalauditorCPUtested. Nextfreeze/backup/config/resourcecheck thenonefull8A800independentbranch;NO newformaljob yet.
+- Initialization remains59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;1new/cumulative2epochs;not61609epoch3,noLR/loss/controllerchange.
+- Reserveoption ifevidenced:boundedstudent-failure-stateOracle/LightNavrecoverycollection,success-first/higherTR/tieLightNav;failedprefix/fallbacknotlabels. Notstartpointteacher successassumed recovery.
+- EvalSTT/DT/AT each8GPU,total24;AGENTS resourceorder/NAS/preflight/frozenconfig,noclustersmoke/duplicatejob. Do notclaim runstartorloss asgoalprogress.
+- AfterSRgate only:explicitimage-mode sameweight UWBablation afterrealinterface/observerperturbation/Habitatcheck;notmixedzero ornoUWB-retrainingclaim.
+- Preserveallcheckpoints/results/failures;GitHubexistingwa announcebeforeeachpush. No weight/data/video upload. CURRENT<=80,PROGRESS<=150. Goal/20minmonitor remainACTIVE.
 
 ## Preserved baseline
 - 61377checkpoint:/data/nas_ray/project/md-ak/users/zeying.gong/job_61377/task_72474/wa_dual_teacher_train_a800_v1/checkpoint.pt;SHAb5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f step59065.

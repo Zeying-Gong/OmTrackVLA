@@ -16,6 +16,7 @@ import torch
 from torch.utils.data import DistributedSampler
 
 from wa.wm.teacher_window_plan import PlannedTeacherMix, positive_int, simulate_exposure
+from wa.wm.teacher_window_schedule import ScheduledTeacherMix
 
 SCHEMA = 'wa.runtime-exposure.v1'
 
@@ -39,8 +40,8 @@ def _counts(value, count):
 
 class RuntimeExposure:
     def __init__(self, mix, *, episode_index, episodes, hard, early):
-        if not isinstance(mix, PlannedTeacherMix):
-            raise ValueError('verified PlannedTeacherMix required')
+        if not isinstance(mix, (PlannedTeacherMix, ScheduledTeacherMix)):
+            raise ValueError('verified teacher plan/schedule required')
         self.mix = mix
         self.base_count, self.teacher_count = len(mix.base), len(mix.teacher)
         self.total = len(mix)
@@ -67,17 +68,30 @@ class RuntimeExposure:
         tasks = np.asarray([x['task'] for x in self.episodes])
         if (self.hard & (tasks[self.episode_index] != 'stt')).any():
             raise ValueError('hard-STT metadata includes another task')
+        self.sampling_groups = None
+        if isinstance(mix, ScheduledTeacherMix):
+            self.sampling_groups = {k: tuple(v) for k, v in mix.sampling_groups.items()}
+            if (set(self.sampling_groups['hard_stt_early']) != set(np.flatnonzero(self.hard & self.early))
+                    or set(self.sampling_groups['hard_stt_late']) != set(np.flatnonzero(self.hard & ~self.early))):
+                raise ValueError('v2 hard/early groups differ from original metadata')
+            for name in ('new_regression_stt', 'successful_stt_anchor'):
+                if any(self.hard[i] or tasks[self.episode_index[i]] != 'stt'
+                       for i in self.sampling_groups[name]):
+                    raise ValueError('v2 new group includes hard or another task')
         digest = hashlib.sha256()
         for value in (SCHEMA, mix.plan_sha256, self.episodes):
             digest.update(json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode())
             digest.update(b'\0')
         for value in (self.episode_index, self.hard, self.early):
             digest.update(value.dtype.str.encode()); digest.update(value.tobytes())
+        if self.sampling_groups is not None:
+            digest.update(json.dumps(self.sampling_groups, sort_keys=True,
+                separators=(',', ':'), allow_nan=False).encode())
         self.context_sha256 = digest.hexdigest()
         self._position_counts = torch.zeros(self.total, dtype=torch.long)
         # Source indices deliberately repeat only in the extra planned positions.
         self._teacher_sources = torch.tensor(list(range(self.teacher_count)) +
-            list(mix.extra) * mix.repeats, dtype=torch.long)
+            list(mix.extra_positions), dtype=torch.long)
 
     def consume(self, indices):
         if not isinstance(indices, torch.Tensor) or indices.device.type != 'cpu' or indices.dtype != torch.long:
@@ -134,7 +148,7 @@ class RuntimeExposure:
         hard = torch.from_numpy(self.hard)
         early = torch.from_numpy(self.early)
         total = int(counts.sum())
-        return dict(schema=SCHEMA, context_sha256=self.context_sha256,
+        report = dict(schema=SCHEMA, context_sha256=self.context_sha256,
             plan_sha256=self.mix.plan_sha256, pre_ddp_total=self.total,
             actual_total=total, actual_base=int(base.sum()), actual_teacher=int(teacher.sum()),
             unconsumed_positions=self.total-total, groups=dict(groups),
@@ -145,6 +159,18 @@ class RuntimeExposure:
             per_window_exposure_histogram=dict(Counter(teacher.tolist())),
             per_episode=per_episode,
             scope='Recorded DataLoader consumption; not optimizer-step or performance evidence')
+        if self.sampling_groups is not None:
+            extra_counts = torch.zeros(self.teacher_count, dtype=torch.long)
+            extra_counts.index_add_(0, torch.tensor(self.mix.extra_positions, dtype=torch.long),
+                counts[self.base_count + self.teacher_count:])
+            report.update(schedule_schema=self.mix.schema,
+                sampling_group_exposures={name: int(teacher[list(ids)].sum())
+                    for name, ids in self.sampling_groups.items()},
+                sampling_group_extra_exposures={name: int(extra_counts[list(ids)].sum())
+                    for name, ids in self.sampling_groups.items()},
+                sampling_group_unique_windows={name: len(ids)
+                    for name, ids in self.sampling_groups.items()})
+        return report
 
     def finalize(self, *, state=None, world=8, batch=2, seed=42, epoch=1):
         """Require complete exact DDP+DataLoader consumption, including tail drops."""

@@ -1,0 +1,1195 @@
+{
+  "schema": "wa.student61609.diagnostic.v1",
+  "status": "OFFLINE_FIT_AND_BOUNDED_TRACE_AUDITS_COMPLETE_NOT_NEW_CLOSED_LOOP_SCORE",
+  "date_beijing": "2026-10-07",
+  "fit": {
+    "status": "FIXED88_CANDIDATE_LABEL_FIT_ONLY",
+    "reference_sha256": "1463ea39a6fe1acf90fcbd813d1ae23bee6ee0e475a314e5bde174b3fa4f8158",
+    "scope": "Same fixed teacher-state windows; no reselection or relabeling; not closed-loop SR. Old full trajectories unavailable: only stored per-window errors and first points paired.",
+    "input": "RGB/template/current ideal polar UWB/times only; metadata and pose labels excluded from predict; zero flow start, mode2, seed42, FP32 action inference and original BF16 frozen encoder",
+    "reference_gpu": "NVIDIA GeForce RTX 4090",
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "torch_version": "2.8.0+cu128",
+    "tool_sha256": "869e5346fb69cfb189746cedc5b72166b0df11b26f3d35c4465256d7650d1a46",
+    "elapsed_s": 597.8557047080249,
+    "peak_gpu_GiB": 1.4815402030944824,
+    "paired_summary": {
+      "hard_stt_collision": {
+        "False": {
+          "ADE_m": {
+            "mean_delta": -0.019561471417546272,
+            "median_delta": -0.0017495602369308472,
+            "improved": 14,
+            "tied": 0,
+            "worsened": 10,
+            "count": 24
+          },
+          "FDE_m": {
+            "mean_delta": -0.04883257485926151,
+            "median_delta": -0.00386086106300354,
+            "improved": 15,
+            "tied": 0,
+            "worsened": 9,
+            "count": 24
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": -0.010592899595697721,
+            "median_delta": -0.004060953855514526,
+            "improved": 15,
+            "tied": 0,
+            "worsened": 9,
+            "count": 24
+          },
+          "first_xy_error_m": {
+            "mean_delta": -0.003420471679419279,
+            "median_delta": -0.004429677501320839,
+            "improved": 17,
+            "tied": 0,
+            "worsened": 7,
+            "count": 24
+          }
+        },
+        "True": {
+          "ADE_m": {
+            "mean_delta": -0.009671330451965332,
+            "median_delta": -0.00367940217256546,
+            "improved": 14,
+            "tied": 0,
+            "worsened": 10,
+            "count": 24
+          },
+          "FDE_m": {
+            "mean_delta": -0.028988662796715896,
+            "median_delta": -0.0033859312534332275,
+            "improved": 13,
+            "tied": 0,
+            "worsened": 11,
+            "count": 24
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": -0.0020231432281434536,
+            "median_delta": -0.0067809149622917175,
+            "improved": 15,
+            "tied": 0,
+            "worsened": 9,
+            "count": 24
+          },
+          "first_xy_error_m": {
+            "mean_delta": -0.003003704594448209,
+            "median_delta": -0.0034651830792427063,
+            "improved": 16,
+            "tied": 0,
+            "worsened": 8,
+            "count": 24
+          }
+        }
+      },
+      "hard_stt_other": {
+        "False": {
+          "ADE_m": {
+            "mean_delta": -0.01109768496826291,
+            "median_delta": -0.0030705220997333527,
+            "improved": 10,
+            "tied": 0,
+            "worsened": 6,
+            "count": 16
+          },
+          "FDE_m": {
+            "mean_delta": -0.017454901710152626,
+            "median_delta": -0.010555252432823181,
+            "improved": 9,
+            "tied": 0,
+            "worsened": 7,
+            "count": 16
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": -0.005221728468313813,
+            "median_delta": -0.0022133756428956985,
+            "improved": 12,
+            "tied": 0,
+            "worsened": 4,
+            "count": 16
+          },
+          "first_xy_error_m": {
+            "mean_delta": -0.0009137188317254186,
+            "median_delta": 0.0010208338499069214,
+            "improved": 7,
+            "tied": 0,
+            "worsened": 9,
+            "count": 16
+          }
+        },
+        "True": {
+          "ADE_m": {
+            "mean_delta": -0.012955768965184689,
+            "median_delta": -0.002482175827026367,
+            "improved": 9,
+            "tied": 0,
+            "worsened": 7,
+            "count": 16
+          },
+          "FDE_m": {
+            "mean_delta": -0.02246831450611353,
+            "median_delta": -0.008945908397436142,
+            "improved": 11,
+            "tied": 0,
+            "worsened": 5,
+            "count": 16
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": -0.0065466235391795635,
+            "median_delta": -0.0029819607734680176,
+            "improved": 11,
+            "tied": 0,
+            "worsened": 5,
+            "count": 16
+          },
+          "first_xy_error_m": {
+            "mean_delta": 0.00015142338816076517,
+            "median_delta": 0.003251180052757263,
+            "improved": 6,
+            "tied": 0,
+            "worsened": 10,
+            "count": 16
+          }
+        }
+      },
+      "successful_stt_control": {
+        "False": {
+          "ADE_m": {
+            "mean_delta": 0.0028723711147904396,
+            "median_delta": 0.00310448557138443,
+            "improved": 4,
+            "tied": 0,
+            "worsened": 12,
+            "count": 16
+          },
+          "FDE_m": {
+            "mean_delta": -0.0035274230467621237,
+            "median_delta": 0.0011904630810022354,
+            "improved": 6,
+            "tied": 0,
+            "worsened": 10,
+            "count": 16
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": -0.00014899368397891521,
+            "median_delta": 0.000548630952835083,
+            "improved": 7,
+            "tied": 0,
+            "worsened": 9,
+            "count": 16
+          },
+          "first_xy_error_m": {
+            "mean_delta": 0.003146297996863723,
+            "median_delta": -0.0013003014028072357,
+            "improved": 9,
+            "tied": 0,
+            "worsened": 7,
+            "count": 16
+          }
+        },
+        "True": {
+          "ADE_m": {
+            "mean_delta": 0.0036388826556503773,
+            "median_delta": 0.007159821689128876,
+            "improved": 5,
+            "tied": 0,
+            "worsened": 11,
+            "count": 16
+          },
+          "FDE_m": {
+            "mean_delta": 0.0032672144006937742,
+            "median_delta": 0.01025223545730114,
+            "improved": 6,
+            "tied": 0,
+            "worsened": 10,
+            "count": 16
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": -0.0018886305624619126,
+            "median_delta": -0.0008241012692451477,
+            "improved": 9,
+            "tied": 0,
+            "worsened": 7,
+            "count": 16
+          },
+          "first_xy_error_m": {
+            "mean_delta": 0.0027123079635202885,
+            "median_delta": 0.0005523078143596649,
+            "improved": 6,
+            "tied": 0,
+            "worsened": 10,
+            "count": 16
+          }
+        }
+      },
+      "dt_teacher_control": {
+        "False": {
+          "ADE_m": {
+            "mean_delta": 0.020141962682828307,
+            "median_delta": 0.007010407745838165,
+            "improved": 5,
+            "tied": 0,
+            "worsened": 11,
+            "count": 16
+          },
+          "FDE_m": {
+            "mean_delta": 0.040043300396064296,
+            "median_delta": 0.024275004863739014,
+            "improved": 5,
+            "tied": 0,
+            "worsened": 11,
+            "count": 16
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": -0.0017339364858344197,
+            "median_delta": 0.0006231386214494705,
+            "improved": 7,
+            "tied": 0,
+            "worsened": 9,
+            "count": 16
+          },
+          "first_xy_error_m": {
+            "mean_delta": 0.0012277940404601395,
+            "median_delta": -0.0008929595351219177,
+            "improved": 10,
+            "tied": 0,
+            "worsened": 6,
+            "count": 16
+          }
+        },
+        "True": {
+          "ADE_m": {
+            "mean_delta": 0.023182577919214964,
+            "median_delta": 0.0034640561789274216,
+            "improved": 6,
+            "tied": 0,
+            "worsened": 10,
+            "count": 16
+          },
+          "FDE_m": {
+            "mean_delta": 0.042637091130018234,
+            "median_delta": 0.004470810294151306,
+            "improved": 7,
+            "tied": 0,
+            "worsened": 9,
+            "count": 16
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": -0.0026738530723378062,
+            "median_delta": -0.0013726847246289253,
+            "improved": 9,
+            "tied": 0,
+            "worsened": 7,
+            "count": 16
+          },
+          "first_xy_error_m": {
+            "mean_delta": 0.0032081743120215833,
+            "median_delta": 0.0007827449589967728,
+            "improved": 6,
+            "tied": 0,
+            "worsened": 10,
+            "count": 16
+          }
+        }
+      },
+      "at_teacher_control": {
+        "False": {
+          "ADE_m": {
+            "mean_delta": -0.029338231775909662,
+            "median_delta": -0.00010513514280319214,
+            "improved": 8,
+            "tied": 0,
+            "worsened": 8,
+            "count": 16
+          },
+          "FDE_m": {
+            "mean_delta": -0.05208658333867788,
+            "median_delta": -0.003196755424141884,
+            "improved": 10,
+            "tied": 0,
+            "worsened": 6,
+            "count": 16
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": 0.000024334294721484184,
+            "median_delta": -0.0010088533163070679,
+            "improved": 10,
+            "tied": 0,
+            "worsened": 6,
+            "count": 16
+          },
+          "first_xy_error_m": {
+            "mean_delta": -0.006947005575057119,
+            "median_delta": -0.0011084023863077164,
+            "improved": 10,
+            "tied": 0,
+            "worsened": 6,
+            "count": 16
+          }
+        },
+        "True": {
+          "ADE_m": {
+            "mean_delta": 0.0004216688685119152,
+            "median_delta": 0.005402311682701111,
+            "improved": 6,
+            "tied": 0,
+            "worsened": 10,
+            "count": 16
+          },
+          "FDE_m": {
+            "mean_delta": -0.006308545358479023,
+            "median_delta": 0.0097007155418396,
+            "improved": 6,
+            "tied": 0,
+            "worsened": 10,
+            "count": 16
+          },
+          "yaw_MAE_rad": {
+            "mean_delta": 0.0027342699468135834,
+            "median_delta": 0.0008106976747512817,
+            "improved": 7,
+            "tied": 0,
+            "worsened": 9,
+            "count": 16
+          },
+          "first_xy_error_m": {
+            "mean_delta": 0.0003739519161172211,
+            "median_delta": 0.0008597485721111298,
+            "improved": 7,
+            "tied": 0,
+            "worsened": 9,
+            "count": 16
+          }
+        }
+      }
+    },
+    "source_hash_count": 1713,
+    "selected_count": 88,
+    "record_count": 176,
+    "baseline_summaries": {
+      "hard_stt_collision": {
+        "False": {
+          "ADE_m": 0.48717269860208035,
+          "FDE_m": 0.8567009040464958,
+          "yaw_MAE_rad": 0.19564474886283278,
+          "first_xy_error_m": 0.1853816929894189
+        },
+        "True": {
+          "ADE_m": 0.49776464079817134,
+          "FDE_m": 0.8593287750457724,
+          "yaw_MAE_rad": 0.1880169229892393,
+          "first_xy_error_m": 0.19268767752995095
+        }
+      },
+      "hard_stt_other": {
+        "False": {
+          "ADE_m": 0.39440230932086706,
+          "FDE_m": 0.5750976987183094,
+          "yaw_MAE_rad": 0.13330198914627545,
+          "first_xy_error_m": 0.11440318846143782
+        },
+        "True": {
+          "ADE_m": 0.4196827639825642,
+          "FDE_m": 0.621789988130331,
+          "yaw_MAE_rad": 0.1517057398450561,
+          "first_xy_error_m": 0.11905428301542997
+        }
+      },
+      "successful_stt_control": {
+        "False": {
+          "ADE_m": 0.2522724815644324,
+          "FDE_m": 0.3693616807286162,
+          "yaw_MAE_rad": 0.10987616720376536,
+          "first_xy_error_m": 0.09208931145258248
+        },
+        "True": {
+          "ADE_m": 0.26301430724561214,
+          "FDE_m": 0.3874394502490759,
+          "yaw_MAE_rad": 0.10930507292505354,
+          "first_xy_error_m": 0.09039961267262697
+        }
+      },
+      "dt_teacher_control": {
+        "False": {
+          "ADE_m": 0.29012710065580904,
+          "FDE_m": 0.42694984102854505,
+          "yaw_MAE_rad": 0.1588305450277403,
+          "first_xy_error_m": 0.13757246994646266
+        },
+        "True": {
+          "ADE_m": 0.318971884669736,
+          "FDE_m": 0.4850603532977402,
+          "yaw_MAE_rad": 0.15192614222178236,
+          "first_xy_error_m": 0.1405623684404418
+        }
+      },
+      "at_teacher_control": {
+        "False": {
+          "ADE_m": 0.40036083571612835,
+          "FDE_m": 0.6269066664390266,
+          "yaw_MAE_rad": 0.16983771277591586,
+          "first_xy_error_m": 0.12894146575126797
+        },
+        "True": {
+          "ADE_m": 0.43751237681135535,
+          "FDE_m": 0.6755210584960878,
+          "yaw_MAE_rad": 0.17417230911087245,
+          "first_xy_error_m": 0.1401261214632541
+        }
+      }
+    },
+    "candidate_summaries": {
+      "hard_stt_collision": {
+        "False": {
+          "ADE_m": 0.4676112271845341,
+          "FDE_m": 0.8078683291872343,
+          "yaw_MAE_rad": 0.18505184926713505,
+          "first_xy_error_m": 0.18196122130999962
+        },
+        "True": {
+          "ADE_m": 0.488093310346206,
+          "FDE_m": 0.8303401122490565,
+          "yaw_MAE_rad": 0.18599377976109585,
+          "first_xy_error_m": 0.18968397293550274
+        }
+      },
+      "hard_stt_other": {
+        "False": {
+          "ADE_m": 0.38330462435260415,
+          "FDE_m": 0.5576427970081568,
+          "yaw_MAE_rad": 0.12808026067796163,
+          "first_xy_error_m": 0.1134894696297124
+        },
+        "True": {
+          "ADE_m": 0.4067269950173795,
+          "FDE_m": 0.5993216736242175,
+          "yaw_MAE_rad": 0.14515911630587652,
+          "first_xy_error_m": 0.11920570640359074
+        }
+      },
+      "successful_stt_control": {
+        "False": {
+          "ADE_m": 0.2551448526792228,
+          "FDE_m": 0.36583425768185407,
+          "yaw_MAE_rad": 0.10972717351978645,
+          "first_xy_error_m": 0.0952356094494462
+        },
+        "True": {
+          "ADE_m": 0.2666531899012625,
+          "FDE_m": 0.39070666464976966,
+          "yaw_MAE_rad": 0.10741644236259162,
+          "first_xy_error_m": 0.09311192063614726
+        }
+      },
+      "dt_teacher_control": {
+        "False": {
+          "ADE_m": 0.31026906333863735,
+          "FDE_m": 0.46699314142460935,
+          "yaw_MAE_rad": 0.15709660854190588,
+          "first_xy_error_m": 0.1388002639869228
+        },
+        "True": {
+          "ADE_m": 0.342154462588951,
+          "FDE_m": 0.5276974444277585,
+          "yaw_MAE_rad": 0.14925228914944455,
+          "first_xy_error_m": 0.14377054275246337
+        }
+      },
+      "at_teacher_control": {
+        "False": {
+          "ADE_m": 0.3710226039402187,
+          "FDE_m": 0.5748200831003487,
+          "yaw_MAE_rad": 0.16986204707063735,
+          "first_xy_error_m": 0.12199446017621085
+        },
+        "True": {
+          "ADE_m": 0.43793404567986727,
+          "FDE_m": 0.6692125131376088,
+          "yaw_MAE_rad": 0.17690657905768603,
+          "first_xy_error_m": 0.14050007337937132
+        }
+      }
+    },
+    "artifact": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/teacher_group_fit_61609_replay_20261007_v1.json",
+    "sha256": "3db61f67a648258593382dd2adbfd508a2d8dbe0aeb077648b0e8b51f54d7f73"
+  },
+  "fit_execution": {
+    "command": "ssh -o BatchMode=yes -o ConnectTimeout=10 -o ControlMaster=auto -o ControlPersist=300 -o ControlPath=/tmp/wa-goal-ssh-%C devpod-4090 'cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout && CUDA_VISIBLE_DEVICES=GPU-63ea1d9b-4c44-1c78-e545-dc93f6e962d4 PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 timeout --signal=TERM 900 /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -m wa.tools.replay_teacher_group_fit --root /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928 --job-root /data/nas_ray/project/md-ak/users/zeying.gong --reference-fit /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/teacher_group_fit_61377_20261007_v1.json --candidate-checkpoint /data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt --candidate-sha256 c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52 --candidate-step 59716 --training-audit /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/hard_stt_training_audit_61609_v1.json --training-audit-sha256 59d5b468eec4283db1a1d87ad7b9a9d1bc2123739cffc38cebfc9a1e14dcc727 --output /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/teacher_group_fit_61609_replay_20261007_v1.json'",
+    "exit_code": 0,
+    "timeout_s": 900,
+    "source_commit": "466a4cb57175571e56b1ab31aff9dd0c697475e3",
+    "device_uuid": "GPU-63ea1d9b-4c44-1c78-e545-dc93f6e962d4",
+    "two_pre_run_idle_checks_MiB": [
+      1,
+      4
+    ],
+    "no_other_process_stopped": true,
+    "output_tool_records": [
+      {
+        "chunk_id": "d062f2",
+        "wall_time_seconds": 45.000844364,
+        "session_id": 99101,
+        "original_token_count": 0,
+        "output": ""
+      },
+      {
+        "chunk_id": "487b99",
+        "wall_time_seconds": 45.00128487,
+        "session_id": 99101,
+        "original_token_count": 0,
+        "output": ""
+      },
+      {
+        "chunk_id": "b8c875",
+        "wall_time_seconds": 5.001299525,
+        "session_id": 99101,
+        "original_token_count": 0,
+        "output": ""
+      },
+      {
+        "chunk_id": "4be632",
+        "wall_time_seconds": 45.001228617,
+        "session_id": 99101,
+        "original_token_count": 0,
+        "output": ""
+      },
+      {
+        "chunk_id": "6b3c26",
+        "wall_time_seconds": 5.00064542,
+        "session_id": 99101,
+        "original_token_count": 0,
+        "output": ""
+      },
+      {
+        "chunk_id": "143447",
+        "wall_time_seconds": 45.001921799,
+        "session_id": 99101,
+        "original_token_count": 173,
+        "output": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)\n  warnings.warn(\"xFormers is not available (SwiGLU)\")\n/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)\n  warnings.warn(\"xFormers is not available (Attention)\")\n/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)\n  warnings.warn(\"xFormers is not available (Block)\")\n"
+      },
+      {
+        "chunk_id": "e8249b",
+        "wall_time_seconds": 5.00133239,
+        "session_id": 99101,
+        "original_token_count": 94,
+        "output": "[INFO    ][2026-10-07 11:29:39][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)\n{\"stage\": \"candidate_predict\", \"windows\": 16}\n{\"stage\": \"candidate_predict\", \"windows\": 32}\n{\"stage\": \"candidate_predict\", \"windows\": 48}\n{\"stage\": \"candidate_predict\", \"windows\": 64}\n{\"stage\": \"candidate_predict\", \"windows\": 80}\n"
+      },
+      {
+        "chunk_id": "ed1fea",
+        "wall_time_seconds": 6.104842953,
+        "exit_code": 0,
+        "original_token_count": 68,
+        "output": "{\"status\": \"FIXED88_CANDIDATE_LABEL_FIT_ONLY\", \"output\": \"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/teacher_group_fit_61609_replay_20261007_v1.json\", \"sha256\": \"3db61f67a648258593382dd2adbfd508a2d8dbe0aeb077648b0e8b51f54d7f73\"}\n"
+      }
+    ]
+  },
+  "regressions": [
+    {
+      "key": "3t8DB4Uzvkt/8",
+      "new": {
+        "status": "Collision",
+        "success": 0,
+        "following_rate": 0.8909090909090909,
+        "total_step": 55,
+        "collision": 1,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07",
+        "trace_sha256": "ec5e9f00ba9c295b6836dd768b2e61126b50c3799ab1c700fbba346f810c6ac5",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/stt/3t8DB4Uzvkt_8.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/stt/3t8DB4Uzvkt/8_info.json",
+        "info_sha256": "d2f3d2f645ea45ce03e6071fd5cd35a186f1b651f0b73d8e56289cda5766fbf1",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/stt/_review/3t8DB4Uzvkt/8/steps.jsonl",
+        "review_sha256": "355d59394b8db2ca8acfda6db0fc50113d49711128f5034b3cc9375934313cf3"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.9655172413793104,
+        "total_step": 116,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_07",
+        "trace_sha256": "117ef752cfd030302ca929e3c36934b9947c71b4614e784d0efeebed6a77c767",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_07/stt/3t8DB4Uzvkt_8.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_07/stt/3t8DB4Uzvkt/8_info.json",
+        "info_sha256": "9731ea176df400ddd71d7bc5ca6c5c4ae47e1172fa39bfbc384481526133ab9d",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_07/stt/_review/3t8DB4Uzvkt/8/steps.jsonl",
+        "review_sha256": "9881d8f647462a6e649633c8b060bce5cc1f6442acbdab516e85f98616663cf9"
+      },
+      "selected_teacher": null,
+      "valid_teacher_windows": 0,
+      "first_robot_position_difference_over_005m_s": 0.528,
+      "observation": "Collision: retreat commands weaken near target; final post range0.490m versus old1.906m at same time. No long high-command/low-displacement evidence.",
+      "original_hard": false
+    },
+    {
+      "key": "E9uDoFAP3SH/23",
+      "new": {
+        "status": "Collision",
+        "success": 0,
+        "following_rate": 0.8461538461538461,
+        "total_step": 13,
+        "collision": 1,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02",
+        "trace_sha256": "b4f526be34ae679e675ab9d44f631b96010800b4226f9e0ba29bf5e413468817",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/stt/E9uDoFAP3SH_23.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/stt/E9uDoFAP3SH/23_info.json",
+        "info_sha256": "2cd8163a998411c2a5efebdfc7f01da6fd12d7f4e741907827e9eb3c9edbdc81",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/stt/_review/E9uDoFAP3SH/23/steps.jsonl",
+        "review_sha256": "e44fdfc010544168b202b045088165796e55eb1abab379081351e4326ab2c561"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 1,
+        "total_step": 63,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_02",
+        "trace_sha256": "9c4128447b3fa47af20b8192f70b4152fc67aacac72f3e357cb179fb048125cc",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_02/stt/E9uDoFAP3SH_23.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_02/stt/E9uDoFAP3SH/23_info.json",
+        "info_sha256": "82f1f46535f7ab3a37b95799e4a7587a38a12603e842ac26d6c1b1d025b30366",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_02/stt/_review/E9uDoFAP3SH/23/steps.jsonl",
+        "review_sha256": "f5ab33d7b7596c3a2fb194624c94ec7cdefe2bde782559416f8cbf2a3907af97"
+      },
+      "selected_teacher": "oracle",
+      "valid_teacher_windows": 44,
+      "first_robot_position_difference_over_005m_s": 0.48,
+      "observation": "Collision: at .480/.528s new reverse -.318/-.213 yields .009/.003m displacement; old -.563/-.557 yields .227/.243m plus lateral motion; final post .449m. Contact geometry unverified.",
+      "original_hard": false
+    },
+    {
+      "key": "HaxA7YrQdEC/16",
+      "new": {
+        "status": "Normal",
+        "success": 0,
+        "following_rate": 1,
+        "total_step": 62,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02",
+        "trace_sha256": "9780b566d6da402fdeeddfc58a407a639253cef725690f3ff2d7654cf5e5fdc2",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/stt/HaxA7YrQdEC_16.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/stt/HaxA7YrQdEC/16_info.json",
+        "info_sha256": "b470577961c1ce03476e07404999d48eddfdb5a6ff3ba2fe473638d0c996f67f",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/stt/_review/HaxA7YrQdEC/16/steps.jsonl",
+        "review_sha256": "b122178fb0fbda52fc8a80bdb7a882980fd6e7348bbfccbc362f9b8f8727dc94"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.9838709677419355,
+        "total_step": 62,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_02",
+        "trace_sha256": "0f99164e8e3242a239aeae3ccc66ae73c42a2241cbc5972676da072e295fb786",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_02/stt/HaxA7YrQdEC_16.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_02/stt/HaxA7YrQdEC/16_info.json",
+        "info_sha256": "f13dcd538decb7e353846c3cf25e7b08b6e83169298cc82613d6be32798037a8",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_02/stt/_review/HaxA7YrQdEC/16/steps.jsonl",
+        "review_sha256": "4d531bec1dcedb671fa70bfe0bc28437c08960eb69cfb13fe8795f816425f97a"
+      },
+      "selected_teacher": "lightnav",
+      "valid_teacher_windows": 43,
+      "first_robot_position_difference_over_005m_s": 0.432,
+      "observation": "Normal failure with TR1.0: final post .981m below unchanged1m success lower bound; old1.291m succeeds. Visibility not globally absent; final distance recovery insufficient.",
+      "original_hard": false
+    },
+    {
+      "key": "LEFTm3JecaC/25",
+      "new": {
+        "status": "Collision",
+        "success": 0,
+        "following_rate": 0.9047619047619048,
+        "total_step": 42,
+        "collision": 1,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03",
+        "trace_sha256": "ffea4f37d1ca4213c709bd00733e42b7990f0f4c4e4d3b6067bbb4e72abaff9f",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/stt/LEFTm3JecaC_25.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/stt/LEFTm3JecaC/25_info.json",
+        "info_sha256": "9e164831845d530fb249f9b92d37d70b5b0a8d2868c65b74d2132e60e22186c1",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/stt/_review/LEFTm3JecaC/25/steps.jsonl",
+        "review_sha256": "392f9d31f20b1b372429282a92b68e6ef8dc5b7c1166235bd4a64a8b6f3c38e2"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.9418604651162791,
+        "total_step": 86,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_03",
+        "trace_sha256": "b7f8d102759b257a89e6e0207d7c0af613cce3dfa856c8e878e53f572a0c9952",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_03/stt/LEFTm3JecaC_25.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_03/stt/LEFTm3JecaC/25_info.json",
+        "info_sha256": "87d0ebe9ee0b594b8fd37f030bc88616341c5e663fffceff9f2ae8c63f779903",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_03/stt/_review/LEFTm3JecaC/25/steps.jsonl",
+        "review_sha256": "54cd6f574a96be6dbb7204b2d7fb35dcd7fa75b3beeed58845b2709e58c37e61"
+      },
+      "selected_teacher": "lightnav",
+      "valid_teacher_windows": 21,
+      "first_robot_position_difference_over_005m_s": 0.584,
+      "observation": "Collision: 1.696..1.944s six consecutive |longitudinal|>.2 and displacement<.03m; later retreat -.668..-.336 yields .009.. .021m; final post .419m. Teacher raw71 -> valid21.",
+      "original_hard": false
+    },
+    {
+      "key": "VLzqgDo317F/197",
+      "new": {
+        "status": "Normal",
+        "success": 0,
+        "following_rate": 0.907103825136612,
+        "total_step": 183,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00",
+        "trace_sha256": "0a86a9f83cc30c02aa723ba3aca2237167e7919c472163da0467b3e1141172b4",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/stt/VLzqgDo317F_197.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/stt/VLzqgDo317F/197_info.json",
+        "info_sha256": "b6cfff5e170e5966fd1ee96671ef2ebbf5edecfcf8538c6f680751eb30b24b69",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/stt/_review/VLzqgDo317F/197/steps.jsonl",
+        "review_sha256": "089eb6af82fcca4655302224f17ac48d8af26da009e56ea2a29fe89507638c76"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.9781420765027322,
+        "total_step": 183,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_00",
+        "trace_sha256": "604846947007bd81f6f5217418c22ba8c2cfa0b483acb109f172d890b7901434",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_00/stt/VLzqgDo317F_197.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_00/stt/VLzqgDo317F/197_info.json",
+        "info_sha256": "d204ce6cf8b694a710c9d968c4374b37bfa1a8fa717011bd60f6256cf8c9fa89",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_00/stt/_review/VLzqgDo317F/197/steps.jsonl",
+        "review_sha256": "2bffebaaff463efa368bcdcdd6fdfbdbb08fa336bea98c54db258d6584e092bf"
+      },
+      "selected_teacher": "oracle",
+      "valid_teacher_windows": 164,
+      "first_robot_position_difference_over_005m_s": 4.568,
+      "observation": "Normal failure: 7.976..8.808s18 consecutive forward-command/low-displacement steps; last commands .56.. .68 displacements .005.. .008m, range3.16m,target~2170px; old recovers motion and ends1.5m.",
+      "original_hard": false
+    },
+    {
+      "key": "VLzqgDo317F/238",
+      "new": {
+        "status": "Lost",
+        "success": 0,
+        "following_rate": 0.7986577181208053,
+        "total_step": 149,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01",
+        "trace_sha256": "bef7a624f1dbf6db83242846ee09aae4b942eda00c1945d3fbd9e2550a346902",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/VLzqgDo317F_238.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/VLzqgDo317F/238_info.json",
+        "info_sha256": "c6874cdb455f0671b046bd98847b1be7420d2193082bb8aa70d93662937a6471",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/_review/VLzqgDo317F/238/steps.jsonl",
+        "review_sha256": "28ca6600ec1f98795744436c6b8830d3dc17c8c4c1980f20a0cafe942ea959c5"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.8453038674033149,
+        "total_step": 181,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01",
+        "trace_sha256": "ce10a3cc1b437efe95dbe527be3b66c4b5e20563404ee5e6b6b84f346e52d5b1",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/VLzqgDo317F_238.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/VLzqgDo317F/238_info.json",
+        "info_sha256": "6c88b419efab349a0040a9da2d5a805d3ceb829212c1b8d9e242fd236a7b2b36",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/_review/VLzqgDo317F/238/steps.jsonl",
+        "review_sha256": "3147ae4d8bd9aee8677a7c5e63b99a01465dd787820659043231788864185408"
+      },
+      "selected_teacher": "lightnav",
+      "valid_teacher_windows": 162,
+      "first_robot_position_difference_over_005m_s": 0.288,
+      "observation": "Lost: 5.688..7.152s31 consecutive forward-command/low-displacement steps. Final action pre range5.703m; final post not recorded.149actions executed,148info records; do not report5.706m as final post.",
+      "original_hard": false
+    },
+    {
+      "key": "VLzqgDo317F/48",
+      "new": {
+        "status": "Collision",
+        "success": 0,
+        "following_rate": 0.6956521739130435,
+        "total_step": 23,
+        "collision": 1,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01",
+        "trace_sha256": "16ebfe96783d2c710e98ac4b319d505f4234a0445cca35a622c4859248b18290",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/VLzqgDo317F_48.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/VLzqgDo317F/48_info.json",
+        "info_sha256": "a8a916378e56c10b1c8dd332641194fe6bf9613e57a90cc960c6f58a1a0148e9",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/_review/VLzqgDo317F/48/steps.jsonl",
+        "review_sha256": "0ec86cf57aeb1a121712740cd07803222be11ef9ac6f502baa9bf9fca7bfac28"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 1,
+        "total_step": 76,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01",
+        "trace_sha256": "87241d1678c575d81d17066a5207b379793b1d8e7d5b86fd4c37d0668469520d",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/VLzqgDo317F_48.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/VLzqgDo317F/48_info.json",
+        "info_sha256": "f3e2b99183fa902f3cfc670e9e3ba8ab9452d38c88e1fe783db18a406c03167f",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/_review/VLzqgDo317F/48/steps.jsonl",
+        "review_sha256": "a21fad347049fd866f9960b09438516c42dce02a249b0a973226f61057634a49"
+      },
+      "selected_teacher": "lightnav",
+      "valid_teacher_windows": 57,
+      "first_robot_position_difference_over_005m_s": 0.632,
+      "observation": "Collision: near range<1m from.728s; pixel fraction above30% at.824..1.064s; retreat with some small executed steps; final post .486m.",
+      "original_hard": false
+    },
+    {
+      "key": "Vt2qJdWjCF2/123",
+      "new": {
+        "status": "Normal",
+        "success": 0,
+        "following_rate": 0.8558558558558559,
+        "total_step": 222,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03",
+        "trace_sha256": "58a39bd5fb94bd0b5cfa2c12295cf900b8f1f9376f49290815abd8f629d66816",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/stt/Vt2qJdWjCF2_123.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/stt/Vt2qJdWjCF2/123_info.json",
+        "info_sha256": "b5a4c2117bbd81e4da38dfa1e66787d916b39809d7db44443eefa0737ffd7eea",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/stt/_review/Vt2qJdWjCF2/123/steps.jsonl",
+        "review_sha256": "69c2ee7ce617388a5f521af051717578115188d6514c788ba0109f8f60f9a9e4"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.918918918918919,
+        "total_step": 222,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_03",
+        "trace_sha256": "2cbde366d538d326ba52e86948151413dcaff17edb8a40da59662fa3910e3d70",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_03/stt/Vt2qJdWjCF2_123.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_03/stt/Vt2qJdWjCF2/123_info.json",
+        "info_sha256": "fa0f0d1613bc6310d32b308225ea44691ee0c4623cbb387dd8919b2a074b7892",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_03/stt/_review/Vt2qJdWjCF2/123/steps.jsonl",
+        "review_sha256": "89c01517757ef3102bcc544ec26f2eee7c8ffc247b183a448ad9af1d310d812a"
+      },
+      "selected_teacher": "lightnav",
+      "valid_teacher_windows": 203,
+      "first_robot_position_difference_over_005m_s": 1.36,
+      "observation": "Normal failure: lowpixels from9.288s. At10.024..10.264s new yaw .33.. .44 versus old .61.. .70, newforward stronger; old10.168s recovers4616px, new remains0 through10.752s. New final distance1.687m qualifies but following condition does not.",
+      "original_hard": false
+    },
+    {
+      "key": "ac26ZMwG7aT/258",
+      "new": {
+        "status": "Normal",
+        "success": 0,
+        "following_rate": 0.7032967032967034,
+        "total_step": 91,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01",
+        "trace_sha256": "b76d6e106623af9797ca447b59f8e74b76d3f98b2eb0d75cafed3eef3294516c",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/ac26ZMwG7aT_258.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/ac26ZMwG7aT/258_info.json",
+        "info_sha256": "3901c8d2ffab6752157db88a11912ee62500358a7464e726febd9a0c70eecd53",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/_review/ac26ZMwG7aT/258/steps.jsonl",
+        "review_sha256": "a73a70b36921d56fbdc9a3cb5f49eabcdcece059dd5a0d6d0d3713d28f87f83e"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.8131868131868132,
+        "total_step": 91,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01",
+        "trace_sha256": "f71223e9d5eeaadf57185edb147bd6e2f43341bd2462a219ae5d5a53bc9066a1",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/ac26ZMwG7aT_258.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/ac26ZMwG7aT/258_info.json",
+        "info_sha256": "91e1380322cccb0a0be3f25c105a3c2eb12ed2f0745b0a4f75c6a031dda8d4eb",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/_review/ac26ZMwG7aT/258/steps.jsonl",
+        "review_sha256": "2952a4e5e4997b664473cc18ec4d3076d9a615b22870785071d282fd967c8d20"
+      },
+      "selected_teacher": null,
+      "valid_teacher_windows": 0,
+      "first_robot_position_difference_over_005m_s": 1.064,
+      "observation": "Normal failure:3.648..4.376s16steps targetpixels<=3000; lastpre2346px versus old3370px; finalpostdistance1.398/1.350m both qualify. Bothteachers failed; no correct-label admission.",
+      "original_hard": false
+    },
+    {
+      "key": "kJJyRFXVpx2/9",
+      "new": {
+        "status": "Collision",
+        "success": 0,
+        "following_rate": 0.6,
+        "total_step": 10,
+        "collision": 1,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01",
+        "trace_sha256": "b0d0a68753c7b92735af979b9d29c84745cf68dd428f69f7819bc48e0d498e31",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/kJJyRFXVpx2_9.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/kJJyRFXVpx2/9_info.json",
+        "info_sha256": "2e2e595957dfb9c7fbb9dbd333019184572f83121abdf0b1e94a9fd924af887c",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/_review/kJJyRFXVpx2/9/steps.jsonl",
+        "review_sha256": "1361ea5a787bcc712d120c9f770ea3fb0b0ddef75a04015de1aa85485046d3ca"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.9270833333333334,
+        "total_step": 96,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01",
+        "trace_sha256": "0b52b98798a591103feb3eb2cd387eb428d09e29943757bae92440c170abd771",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/kJJyRFXVpx2_9.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/kJJyRFXVpx2/9_info.json",
+        "info_sha256": "65e03ed8bfa4d6512cafa4474d1a98055d72e7e3c63862140fb634938630e087",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/_review/kJJyRFXVpx2/9/steps.jsonl",
+        "review_sha256": "10f4981e92bfbed4e80b85cca656287f9816b5d6bb070e5457a548f3331c7569"
+      },
+      "selected_teacher": "lightnav",
+      "valid_teacher_windows": 77,
+      "first_robot_position_difference_over_005m_s": 0.144,
+      "observation": "Collision: new.240.. .432s reverse -.162..-.011 weaker than old-.320..-.463; displacement follows smallcommands; finalpost .372m. Not demonstrated obstacleblocking.",
+      "original_hard": false
+    },
+    {
+      "key": "qyAac8rV8Zk/3",
+      "new": {
+        "status": "Collision",
+        "success": 0,
+        "following_rate": 0.875,
+        "total_step": 24,
+        "collision": 1,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07",
+        "trace_sha256": "cb5d745392a7b5d63e4a94b1ead469e89b403454d6ef3dd6c241652cc9180c71",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/stt/qyAac8rV8Zk_3.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/stt/qyAac8rV8Zk/3_info.json",
+        "info_sha256": "b963f0705c3821036ea0c76670e39cb8cdd115d6b117780aca9b6a989cb8be50",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/stt/_review/qyAac8rV8Zk/3/steps.jsonl",
+        "review_sha256": "773af59c9bbb9e46acd3da25a53c3945099f5f0cc3567e742ae9c297a1cb55d0"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 1,
+        "total_step": 69,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_07",
+        "trace_sha256": "23bda7b4bdbb75a29df68ed4ca97921a102fc3ea4fd45b219922b8b74443b15c",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_07/stt/qyAac8rV8Zk_3.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_07/stt/qyAac8rV8Zk/3_info.json",
+        "info_sha256": "6a2153ef28f621792d1c50713837d49d53d1358e426b8bd236e5e1e963877873",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_07/stt/_review/qyAac8rV8Zk/3/steps.jsonl",
+        "review_sha256": "d834ef2d0417e96d30e72359c0c100f15d34f03d88edb428d451d84d9f823cc4"
+      },
+      "selected_teacher": "lightnav",
+      "valid_teacher_windows": 50,
+      "first_robot_position_difference_over_005m_s": 0.632,
+      "observation": "Collision:.872..1.016s4 highreverse-command/low-displacementsteps; .968s -.627 yields.015m versus old-.633/.229m; finalpost .429m.",
+      "original_hard": false
+    },
+    {
+      "key": "qyAac8rV8Zk/8",
+      "new": {
+        "status": "Collision",
+        "success": 0,
+        "following_rate": 0.5,
+        "total_step": 22,
+        "collision": 1,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01",
+        "trace_sha256": "021f39c7a3deb7d3b68e733b410e33d7bff0810ea63c99d5cbd96a9189ef4913",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/qyAac8rV8Zk_8.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/qyAac8rV8Zk/8_info.json",
+        "info_sha256": "e98797a15100a9f9c0e9695c7a90f066ffd39412a8cd8846dc4c17b33b089f92",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/stt/_review/qyAac8rV8Zk/8/steps.jsonl",
+        "review_sha256": "c113680ab50b4a2333da211c0e146b81531dc998f36e1952b6f023708e81a64d"
+      },
+      "old": {
+        "status": "Normal",
+        "success": 1,
+        "following_rate": 0.7261904761904762,
+        "total_step": 84,
+        "collision": 0,
+        "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01",
+        "trace_sha256": "1e706b08b9cf1deda9eb364385ab913e12343227517f4c42c530740fdb64de2f",
+        "trace_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/qyAac8rV8Zk_8.trace.jsonl",
+        "info_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/qyAac8rV8Zk/8_info.json",
+        "info_sha256": "4fcf79c44d3239f43da54836cb2e9020181eaa47c30d433358d9dc0a17a3e25e",
+        "review_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1/shard_01/stt/_review/qyAac8rV8Zk/8/steps.jsonl",
+        "review_sha256": "cd81a63b4717bb16e3ef965b3107a4eb663996f4c9c47b932a91fa2c3ae418de"
+      },
+      "selected_teacher": "lightnav",
+      "valid_teacher_windows": 65,
+      "first_robot_position_difference_over_005m_s": 0.776,
+      "observation": "Collision: bothmodels brieflyexceed30%pixelupperbound .584..1.016s; newfinalpost .496m versus oldsame-step .600m thenrecovery. Pixelupperboundexceedance alone not irrecoverable.",
+      "original_hard": false
+    }
+  ],
+  "regression_scope": {
+    "count": 12,
+    "reasons": {
+      "Collision": 7,
+      "Lost": 1,
+      "Normal": 4
+    },
+    "raw_teacher_windows": 972,
+    "valid_teacher_windows": 886,
+    "early_valid_windows": 357,
+    "actual_exposures": 886,
+    "valid_teachers": 10,
+    "neither_teachers": 2,
+    "all_unweighted_in_61609": true,
+    "arithmetic_correction": "Prior transient986was arithmeticerror;972raw/886valid verified,not alternate denominator.",
+    "source_validation": "Main independently matched24new/oldtrace SHA pins and hashed48info/review files;12oldsuccess/newfailure asserted.",
+    "path_correction": "Firstmainreadonlyvalidator incorrectly assumed flattened_info filename, failedwithFileNotFoundError and noPASS; actualinfo is stt/scene/episode_info.json. Corrected validator passed.",
+    "validation_script": "import json,hashlib\nfrom pathlib import Path\nr=Path(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928\")\nspecs=[[\"3t8DB4Uzvkt/8\",\"ec5e9f00ba9c295b6836dd768b2e61126b50c3799ab1c700fbba346f810c6ac5\",\"117ef752cfd030302ca929e3c36934b9947c71b4614e784d0efeebed6a77c767\"],[\"E9uDoFAP3SH/23\",\"b4f526be34ae679e675ab9d44f631b96010800b4226f9e0ba29bf5e413468817\",\"9c4128447b3fa47af20b8192f70b4152fc67aacac72f3e357cb179fb048125cc\"],[\"HaxA7YrQdEC/16\",\"9780b566d6da402fdeeddfc58a407a639253cef725690f3ff2d7654cf5e5fdc2\",\"0f99164e8e3242a239aeae3ccc66ae73c42a2241cbc5972676da072e295fb786\"],[\"LEFTm3JecaC/25\",\"ffea4f37d1ca4213c709bd00733e42b7990f0f4c4e4d3b6067bbb4e72abaff9f\",\"b7f8d102759b257a89e6e0207d7c0af613cce3dfa856c8e878e53f572a0c9952\"],[\"VLzqgDo317F/197\",\"0a86a9f83cc30c02aa723ba3aca2237167e7919c472163da0467b3e1141172b4\",\"604846947007bd81f6f5217418c22ba8c2cfa0b483acb109f172d890b7901434\"],[\"VLzqgDo317F/238\",\"bef7a624f1dbf6db83242846ee09aae4b942eda00c1945d3fbd9e2550a346902\",\"ce10a3cc1b437efe95dbe527be3b66c4b5e20563404ee5e6b6b84f346e52d5b1\"],[\"VLzqgDo317F/48\",\"16ebfe96783d2c710e98ac4b319d505f4234a0445cca35a622c4859248b18290\",\"87241d1678c575d81d17066a5207b379793b1d8e7d5b86fd4c37d0668469520d\"],[\"Vt2qJdWjCF2/123\",\"58a39bd5fb94bd0b5cfa2c12295cf900b8f1f9376f49290815abd8f629d66816\",\"2cbde366d538d326ba52e86948151413dcaff17edb8a40da59662fa3910e3d70\"],[\"ac26ZMwG7aT/258\",\"b76d6e106623af9797ca447b59f8e74b76d3f98b2eb0d75cafed3eef3294516c\",\"f71223e9d5eeaadf57185edb147bd6e2f43341bd2462a219ae5d5a53bc9066a1\"],[\"kJJyRFXVpx2/9\",\"b0d0a68753c7b92735af979b9d29c84745cf68dd428f69f7819bc48e0d498e31\",\"0b52b98798a591103feb3eb2cd387eb428d09e29943757bae92440c170abd771\"],[\"qyAac8rV8Zk/3\",\"cb5d745392a7b5d63e4a94b1ead469e89b403454d6ef3dd6c241652cc9180c71\",\"23bda7b4bdbb75a29df68ed4ca97921a102fc3ea4fd45b219922b8b74443b15c\"],[\"qyAac8rV8Zk/8\",\"021f39c7a3deb7d3b68e733b410e33d7bff0810ea63c99d5cbd96a9189ef4913\",\"1e706b08b9cf1deda9eb364385ab913e12343227517f4c42c530740fdb64de2f\"]]\np=r/\"artifacts/teacher_group_fit_61609_replay_20261007_v1.json\"\nd=json.loads(p.read_text())\nassert hashlib.sha256(p.read_bytes()).hexdigest()==\"3db61f67a648258593382dd2adbfd508a2d8dbe0aeb077648b0e8b51f54d7f73\"\nf={k:d[k] for k in [\"status\",\"reference_sha256\",\"scope\",\"input\",\"reference_gpu\",\"gpu\",\"torch_version\",\"tool_sha256\",\"elapsed_s\",\"peak_gpu_GiB\",\"paired_summary\"]}\nf.update(source_hash_count=len(d[\"source_hashes\"]),selected_count=len(d[\"selected\"]),record_count=len(d[\"candidate\"][\"records\"]),baseline_summaries=d[\"baseline\"][\"summaries\"],candidate_summaries=d[\"candidate\"][\"summaries\"],artifact=str(p),sha256=hashlib.sha256(p.read_bytes()).hexdigest())\nassert f[\"selected_count\"]==88 and f[\"record_count\"]==176\nsources={}\nfor tag in (\"61609\",\"61377\"):\n src=r/(\"artifacts/student\"+tag+\"_full_audit_20261007_v1/combined_episodes.jsonl\")\n sources[tag]={q[\"key\"]:q for line in src.open() if (q:=json.loads(line))[\"task\"]==\"stt\"}\nrows=[]\nfor key,newsha,oldsha in specs:\n z=dict(key=key)\n for ver,tag,expected in [(\"new\",\"61609\",newsha),(\"old\",\"61377\",oldsha)]:\n  src=r/(\"artifacts/student\"+tag+\"_full_audit_20261007_v1/combined_episodes.jsonl\")\n  found=[sources[tag][key]]\n  assert len(found)==1\n  row=found[0];assert row[\"success\"]==(0.0 if ver==\"new\" else 1.0)\n  a=Path(row[\"artifact_root\"])/\"stt\"\n  trace=a/(key.replace(\"/\",\"_\")+\".trace.jsonl\")\n  h=hashlib.sha256(trace.read_bytes()).hexdigest();assert h==expected,(key,ver,h,expected)\n  z[ver]={k:row[k] for k in [\"status\",\"success\",\"following_rate\",\"total_step\",\"collision\",\"artifact_root\"]}\n  z[ver][\"trace_sha256\"]=h\n  z[ver][\"trace_path\"]=str(trace)\n  for name,fp in [(\"info\",a/(key+\"_info.json\")),(\"review\",a/\"_review\"/key/\"steps.jsonl\")]:\n   z[ver][name+\"_path\"]=str(fp);z[ver][name+\"_sha256\"]=hashlib.sha256(fp.read_bytes()).hexdigest()\n rows.append(z)\nprint(json.dumps(dict(fit=f,regressions=rows,status=\"FIT_SUMMARY_AND_24_TRACE_PINS_PASS\")))\n",
+    "initial_validator_failure": {
+      "chunk_id": "f19dc8",
+      "wall_time_seconds": 0.00001398,
+      "exit_code": 1,
+      "original_token_count": 177,
+      "output": "Traceback (most recent call last):\n  File \"<stdin>\", line 26, in <module>\n  File \"/data/nas_ray/home/zeying.gong/algorithm/envs/wla_evt_torch28/lib/python3.11/pathlib.py\", line 1050, in read_bytes\n    with self.open(mode='rb') as f:\n         ^^^^^^^^^^^^^^^^^^^^\n  File \"/data/nas_ray/home/zeying.gong/algorithm/envs/wla_evt_torch28/lib/python3.11/pathlib.py\", line 1044, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/stt/3t8DB4Uzvkt_8_info.json'\n"
+    },
+    "timestamp_alignment": "Subagentverified initialrobot/target positionssame and targetworldpositiondifference0 at matchednew-endtimestamps for12;no counterfactual/crossGPUbitwiseclaim."
+  },
+  "persistent_hard_cohort": {
+    "source": "artifacts/student61609_hard_outcomes_20261007_v1/hard_stt_outcomes.json",
+    "source_sha256": "b03ec11a2932ed317d9ebedbd420342f9ac26551b7a39872f4f99e072e681736",
+    "original_nonzero": 91,
+    "recovered": 15,
+    "persistent": 76,
+    "zero_window_separate": 2,
+    "groups": [
+      {
+        "status": "Collision",
+        "n": 38,
+        "termination_le20": 11,
+        "termination_21to40": 21,
+        "termination_gt40": 6,
+        "last_pre_range_m_median": 0.548,
+        "last5_mean_longitudinal_negative": 38,
+        "last_pre_target_pixels_positive": 38,
+        "last5_range_drop_m_median": 0.505,
+        "robot_horizontal_path_speed_m_s_median": 0.503,
+        "target_horizontal_path_speed_m_s_median": 3.355
+      },
+      {
+        "status": "Lost",
+        "n": 26,
+        "termination_le20": 0,
+        "termination_21to40": 0,
+        "termination_gt40": 26,
+        "last_pre_range_m_median": 6.22,
+        "last5_forward_positive": 26,
+        "last5_actual_path_speed_lt01_m_s": 18,
+        "last_pre_zero_pixels": 13,
+        "zero_pixels_run_ge5": 12
+      },
+      {
+        "status": "Normal",
+        "n": 12,
+        "termination_le20": 0,
+        "termination_21to40": 0,
+        "termination_gt40": 12,
+        "last_pre_range_m_median": 2.918,
+        "last5_actual_path_speed_lt01_m_s": 7,
+        "low_speed_with_forward_gt01": 6,
+        "last_pre_zero_pixels": 6
+      }
+    ],
+    "only_2_ever_abs_yaw_gt095": true,
+    "persistent_teacher": {
+      "lightnav": 35,
+      "oracle": 41,
+      "valid_windows": 9160,
+      "early_windows": 2744,
+      "episode_valid_median": 116,
+      "early_missing": 1,
+      "early_missing_key": "XNeHsjL6nBB/9",
+      "earliest_valid_age_s": 2.184
+    },
+    "recovered_teacher": {
+      "lightnav": 14,
+      "oracle": 1,
+      "valid_windows": 1253,
+      "early_windows": 526,
+      "episode_valid_median": 72,
+      "early_missing": 0,
+      "prior_status": {
+        "Collision": 12,
+        "Lost": 2,
+        "Normal": 1
+      },
+      "last_pre_range_m_median": 1.491
+    },
+    "evidence_subagent_files_rechecked": 277,
+    "evidence_subagent_manifest_digest": "ae37b684adffed2e703a2c2260440f138235b1b53df944f1e66fb56dc6942fc7",
+    "limits": [
+      "Pre-actiondistance/visibility,notunloggedfinalpost",
+      "Lowactualhorizontalpathspeedisnotproof of obstacle contact",
+      "Teacher sourceconfoundedbydifficulty/route;noOraclecausalityclaim"
+    ]
+  },
+  "exposure_audit": {
+    "actual_total": 1184272,
+    "base": 726631,
+    "teacher": 457641,
+    "hard_unique": 10413,
+    "hard_actual": 31239,
+    "hard_early": 9810,
+    "successful_stt_episode_with_windows": 1258,
+    "successful_stt_unique_actual": 117308,
+    "successful_stt_early": 45827,
+    "persistent_hard_actual": 27480,
+    "persistent_hard_early": 8232,
+    "recovered_hard_actual": 3759,
+    "recovered_hard_early": 1578,
+    "hard_top10_longest_actual": 8046,
+    "hard_top2_scenes_actual": 15789,
+    "hard_episode_valid_median": 106,
+    "hard_episode_valid_max": 281,
+    "dt_actual": 156048,
+    "dt_early": 47468,
+    "at_unique": 153047,
+    "at_actual": 153046,
+    "at_early": 47325,
+    "exposure_json_sha256": "8b649d4c7ca580a32a833b20896435eafa5ebe071c2b3ca3b68d06f8f90a672b",
+    "exposure_json_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/actual_exposure_epoch1.json"
+  },
+  "code_readback": {
+    "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924",
+    "human_following": "distance<=success_distance AND detector; info.facing stores thiscombinedmetric,notpurevisibility.",
+    "detector": "strict3000<pixels<384*384*0.3",
+    "success": "unchanged following plusdistance[1,3]m",
+    "lost_log": "trained_agent.py env.step beforeLostbreak;149executed actions/148record_info possible;lastpostunlogged.",
+    "no_metric_or_source_changes": true,
+    "sha256": {
+      "evt_bench/additional_metric.py": "c898329b46ad98214909ae86b84242b36c891ee89b3db3ec54fd58493a3315a6",
+      "evt_bench/additional_sensor.py": "b7e0acba237e39882fcbc9f290d05ee139609925979bebf754fa6b372a5352ff",
+      "trained_agent.py": "2b5c0faeff3e633588b9af39a14472055ae263291bed3840ff218a680f2fe3a1"
+    }
+  },
+  "decision": {
+    "status": "PREPARE_ONE_FIXED_BUDGET_REBALANCE_CANDIDATE_NOT_SUBMITTED",
+    "reason": "Hardteacher-fit modestlyimproves;successSTTcontroldegrades slightly;hardgains15 offsetby12regressions. Test redistribution before moreglobalrepeats. DTfixed16fitworsens butfullSRimproves,sofitnotSRproxy.",
+    "proposed_extra": {
+      "hard_early_3270_each": 2,
+      "hard_later_7143_each": 1,
+      "new_regression_valid_886_each": 1,
+      "other_success1248_ep_balanced": 6257,
+      "total": 20826
+    },
+    "keep": "Base+allvalidteacheronce,DT/ATunchanged,59866model+optimizerindependentbranch1newepoch cumulative2,originallossLRarchitecturecontrollerphysicscriteria.",
+    "runtime": "Newheterogeneousmultisetplanrequires explicitv2schema/runtimevalidation;oldv1cannotbeclaimedcompatible. Onlyofflineplanpreparationnow.",
+    "reserve_branch": "Ifrebalancedcandidatefails, evaluateboundedfailed-state successfulOracle/LightNavrecovery acquisition with replayproof;nofailedprefix labels."
+  },
+  "goal": {
+    "status": "ACTIVE_NOT_MET",
+    "stt_success": 1279,
+    "threshold": 1289,
+    "gap": 10,
+    "dt_success": 1178,
+    "at_success": 1207,
+    "uwb_ablation_started": false
+  },
+  "limitations": [
+    "Evaluation-set adaptation,notunseen-testgeneralization",
+    "No changes to modelweights/runningfrozen source/originalresults",
+    "DiagnosticsnotnewSR andnotcausalproof",
+    "No newformaltraining/evaluation submittedin thisdiagnosticstage"
+  ]
+}

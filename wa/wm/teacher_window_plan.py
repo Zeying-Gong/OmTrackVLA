@@ -73,6 +73,11 @@ class PlannedTeacherMix(Dataset):
         self.base, self.teacher = base, teacher
         self.plan_sha256 = canonical_sha(plan)
 
+    @property
+    def extra_positions(self):
+        """Preserve the v1 cycle order exactly; not the v2 sorted multiset."""
+        return self.extra * self.repeats
+
     def __len__(self):
         return len(self.base) + len(self.teacher) + len(self.extra) * self.repeats
 
