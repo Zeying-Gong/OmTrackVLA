@@ -1,6 +1,18 @@
+## 2026-10-07 09:39 China — user-authorized16GPU formal launch
+- User explicitly approved and required16A800. Active package a4_hybrid_16gpu_20261007; two independent8GPU jobs61597/72791 +61598/72792 bothRUNNING,72h each; one shared learner/campaign, not two methods.
+- Final frozen6557 inputs19,139,486,370bytes SHA1fb3481f1e1f5a0d974a6c862b32d0af310bbe41d69a63b6930b44267455c15b includes all old6498 unchanged. No WLA Git; new NAS evidence/RUN/CSV authoritative.
+- attempt02 independentPASS20completeepisodes/1317savedfeature-latent-reward rows,4adapt285steps8onlineupdates+2offline;7checkpoint reloads; two-group drain/shutdownPASS. Developer used4physicalGPUs;16lane full4215 plan and capacity separateCPUchecks.
+- Preserve attempt01 missingmanifest failure, independent all-PNG checker assumption failure, and initial frozen candidate omission; final manifest corrected before formal submission, no input model/source mutation.
+- BothRUNNING and16uniqueGPU UUIDs/private-network/lane0–15 passed; eachworker6557new+6498old+protocol hashesPASS, CPU120quota/RAM960GiBlimit/startupoom0. Offline1024updates complete,1732cachedchunks; first252panel offline_panel_000128 started, noA4SR yet. Masteroutput job61597/task72791/wla_a4_hybrid_16gpu/run; peerjob61598/task72792; coord experiments/wla_a4_hybrid16_campaign_20261007_r01/control.
+- Learning/selection budget unchanged:1024offline +8430onlineupdates max,6x252 candidatepanels and strictpromotion4215, up to9942rollouts. FormalfreshA2, TEST_SCENE_ADAPTATION_NOT_HELDOUT, no efficacy claim.
+- Earlier4GPU approval-waiting notes are historical superseded records; no approval pending now. A2 best62.514828%; measuredA2/B/A3 highestB63.677343%.
+
 # Progress
-Updated: 2026-10-06 13:00 China
+Updated: 2026-10-07 China
 Historical state: archive/2026-10/PROGRESS_before_a4_20261006.md and archive/2026-10/a4_before_hybrid_reuse_20261006/.
+
+## 2026-10-07 user authorized16GPU
+User explicitly approves starting A4 and requests16A800, not4. New a4_hybrid_16gpu_20261007 preserves originalfrozenpackage and learningbudget. Two independent8GPUJobs will shareoneNAScoordinator/learner; sameJobmulti-root approach exposed SDKlegacyserialization and is retainedasUNSUPPORTED. ActualSDK singleJobconfigs passed.16laneCPUownership/networkserialhandler and two-nodebus checksPASS. Firstfull developerattempt failed beforefirstrollout due missingnewmanifest; preserved,originalassetcopied; secondbounded4GPU/two-node fullpipelinecheck running. NoformalJob yet,noA4effect. Priorapprovalwaiting descriptions below are historical and superseded; nofurtherpermissionrequest.
 
 ## A4 complete pipeline technically ready; explicit4A800/72h approval pending
 New package a4_hybrid_replay_20261006 reuses A3 experience and performs fresh MC terminal-success learning plus A2-preserving online residual adaptation. Formal Job=null,formal optimizer updates0,no A4 full4215 performance result.

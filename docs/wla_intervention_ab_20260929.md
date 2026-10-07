@@ -391,3 +391,14 @@ A3 heads were FP32,A2/A4 heads BF16;Flow remains FP32. Nine developer probes fou
 A3_61020/71943 full4215:2209success SR52.408066%,STT1061/DT583/AT565;TR70.368704 CR3.724792;SR-10.106762ppvsA2,-11.269276ppvsB. Onlyfinalcheckpoint evaluated;no optimal-checkpoint claim.
 A2_60058:2635/4215=62.514828%,STT1143/DT796/AT696. B60994:2684/4215=63.677343%,STT1169/DT787/AT728,highest measured A2/B/A3;checkpointd4987b0aa961d971c30095c1b914224fff4b4dcc4b604655bb6113cd0f6f2883.
 A4 BEST_FULL stillA2. TEST_SCENE_ADAPTATION_NOT_HELDOUT,not heldout generalization/global optimum. HistoricalA2 action-only59752 remains distinct;all old failures/STOPPED preserved. No60766/59352/DA3/B restart.
+
+## 2026-10-07 09:39 China — user-authorized16GPU formal launch
+- User explicitly approved and required16A800. Active package a4_hybrid_16gpu_20261007; two independent8GPU jobs61597/72791 +61598/72792 bothRUNNING,72h each; one shared learner/campaign, not two methods.
+- Final frozen6557 inputs19,139,486,370bytes SHA1fb3481f1e1f5a0d974a6c862b32d0af310bbe41d69a63b6930b44267455c15b includes all old6498 unchanged. No WLA Git; new NAS evidence/RUN/CSV authoritative.
+- attempt02 independentPASS20completeepisodes/1317savedfeature-latent-reward rows,4adapt285steps8onlineupdates+2offline;7checkpoint reloads; two-group drain/shutdownPASS. Developer used4physicalGPUs;16lane full4215 plan and capacity separateCPUchecks.
+- Preserve attempt01 missingmanifest failure, independent all-PNG checker assumption failure, and initial frozen candidate omission; final manifest corrected before formal submission, no input model/source mutation.
+- BothschedulerRUNNING; actualworker hashes/private-network/16UUID/cgroup and formaloptimizer currently being verified. Masteroutput job61597/task72791/wla_a4_hybrid_16gpu/run; peerjob61598/task72792; coord experiments/wla_a4_hybrid16_campaign_20261007_r01/control.
+- Learning/selection budget unchanged:1024offline +8430onlineupdates max,6x252 candidatepanels and strictpromotion4215, up to9942rollouts. FormalfreshA2, TEST_SCENE_ADAPTATION_NOT_HELDOUT, no efficacy claim.
+- Earlier4GPU approval-waiting notes are historical superseded records; no approval pending now. A2 best62.514828%; measuredA2/B/A3 highestB63.677343%.
+
+2026-10-07 09:44 China runtime follow-up:61597/72791+61598/72792 bothRUNNING,16uniqueA800 UUIDs with0overlap,lane0–15,differentPods,bidirectionalpeer PASS. Eachworker6557new+6498old+protocol hashes allPASS. Actualcgroup120CPUquota/960GiBmemorylimit each,startupoom0. Offline1024actualupdates completed,1732chunks cachehash/prewarm with0evictions,128/512/1024checkpoints saved. First252fullhorizon panel offline_panel_000128 running; no A4 frozen SR yet. RUNTIME_ALLOCATION_AUDIT and OFFLINE_STAGE_AUDIT in activepackage. Initial progress0 is stale; finalofflineCOMPLETE andupdates.jsonl authoritative.
