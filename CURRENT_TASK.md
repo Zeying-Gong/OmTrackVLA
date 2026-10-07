@@ -57,7 +57,9 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - v2runtime implemented/strictadmissionPASS;v1order/rejections unchanged. Main66CPUtestsPASS0.387s andfull8rankactual-index/DataLoaderPASS68.13s;notfullimageconsumption.
 - PreserveDT/ATdata andold15gains;anchor5/6uniqueagequantiles pereligibleepisode fixedSHAorder,notchosenbynewfit. Insufficientvalidwindows mustfail,no label/filterrelaxation.
 - MainshortGPUdev4090GPU6 PASS16samples/4updates22708..22711;peak7.309GiB,train+val18.828s afterslowNAS/modelsetup. All4groupsconsumed;no savedcheckpoint. artifacts/stt_anchor_short_gpu_20261007_v1.
-- Runtimepreflight wa/results/STT_ANCHOR_RUNTIME_PREFLIGHT_20261007.json;newterminalauditorCPUtested. Nextfreeze/backup/config/resourcecheck thenonefull8A800independentbranch;NO newformaljob yet.
+- Runtimepreflight wa/results/STT_ANCHOR_RUNTIME_PREFLIGHT_20261007.json;66CPU+realshortGPU+v2fullsizesimulationauditPASS. CodebackedGitHubwa dd1fec9e2cba0450be7a33387c8a2e550db4cd91.
+- READY notsubmitted:source_stt_anchor_train_v1 clean175Python dd1fec9e;configwa/jobs/stt_anchor_train_a800_v1.yaml SHA4a5b465a9533c779a7990aa754575caee34dc302fa0238ecd62d3471cb3879ef. Releasewa/results/STT_ANCHOR_RELEASE_20261007.json.
+- Formal8A800 independent59866/37009newupdates planned;fullparent+encoder+JEPA+WLA hashes/288WLAfiles+env3.11.15torch2.8cu128PASS;no runtime changes. A80029free;recheckduplicates thenonecompletejob.
 - Initialization remains59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;1new/cumulative2epochs;not61609epoch3,noLR/loss/controllerchange.
 - Reserveoption ifevidenced:boundedstudent-failure-stateOracle/LightNavrecoverycollection,success-first/higherTR/tieLightNav;failedprefix/fallbacknotlabels. Notstartpointteacher successassumed recovery.
 - EvalSTT/DT/AT each8GPU,total24;AGENTS resourceorder/NAS/preflight/frozenconfig,noclustersmoke/duplicatejob. Do notclaim runstartorloss asgoalprogress.

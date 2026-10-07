@@ -1,0 +1,79 @@
+{
+  "status": "READY_FOR_ONE_FORMAL_8A800_TRAINING_NOT_SUBMITTED",
+  "checked_at_beijing": "2026-10-07T20:20:34+08:00",
+  "experiment_id": "WA_STT_ANCHOR_TRAIN_A800_V1",
+  "source": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_stt_anchor_train_v1",
+  "source_commit": "dd1fec9e2cba0450be7a33387c8a2e550db4cd91",
+  "source_clean": true,
+  "source_python_count": 175,
+  "unchanged_diagnostic_python_count": 173,
+  "new_audit_files": [
+    "wa/tests/test_audit_stt_anchor_training.py",
+    "wa/tools/audit_stt_anchor_training.py"
+  ],
+  "config": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/stt_anchor_train_a800_v1.yaml",
+  "config_sha256": "4a5b465a9533c779a7990aa754575caee34dc302fa0238ecd62d3471cb3879ef",
+  "plan_canonical_sha256": "42d33d92ba33cebaf2d40b17ea1f282169cf22599a7060f954b3fd5740da07a3",
+  "checkpoint_hashes": {
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt": "ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d",
+    "/data/nas_ray/home/zeying.gong/datasets_processed/threepanel_debug_v2/traversability_stepp_v1/_weights/dinov2_vits14_pretrain.pth": "b938bf1bc15cd2ec0feacfe3a1bb553fe8ea9ca46a7e1d8d00217f29aef60cd9",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/models/jepa_wms/mz_jepa-wm.pth.tar": "a01d99c4592fbedf44af076cf4c339de230c56f9f377c7559f584b97569b59bc",
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_58346/task_69086/wla_teacher_train/training/checkpoints/step-0043203.pt": "0b8f036fd282474d8c9efe9e34e1f4dc56b9282c44295bcda1f16edcf48460e1"
+  },
+  "wla_source_files": 288,
+  "python": "3.11.15 | packaged by conda-forge | (main, Jun 11 2026, 03:34:02) [GCC 14.3.0]",
+  "torch": "2.8.0+cu128",
+  "planned_gpus": 8,
+  "actual_worker_gpus": "not yet submitted; verify after placement",
+  "full_command": "set -euo pipefail\ncd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_stt_anchor_train_v1\ntest \"$(git rev-parse HEAD)\" = dd1fec9e2cba0450be7a33387c8a2e550db4cd91\ntest -z \"$(git status --porcelain)\"\nexport WA_ROOT=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928\nexport WA_WLA_SOURCE=\"$WA_ROOT/dependencies/wla_v1\"\nexport WA_WLA_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_58346/task_69086/wla_teacher_train/training/checkpoints/step-0043203.pt\nexport WA_ENCODER_WEIGHTS=/data/nas_ray/home/zeying.gong/datasets_processed/threepanel_debug_v2/traversability_stepp_v1/_weights/dinov2_vits14_pretrain.pth\nexport WA_CACHE=/data/nas_ray/home/zeying.gong/datasets/wla_evt_se2_cache_20260925_v2\nexport WA_INDEX_ROOT=\"$WA_ROOT/artifacts/robot_transition_audit_v2\"\nexport WA_PYTHON=\"$WA_ROOT/probe_env/bin/python\" WA_WORLD_KIND=jepa WA_GPUS=8 OMP_NUM_THREADS=2 NCCL_DEBUG=WARN PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1\nexport WA_OUTPUT=\"/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_stt_anchor_train_a800_v1\"\ntest ! -e \"$WA_OUTPUT\"\n\"$WA_PYTHON\" -c 'import torch; names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]; print(names,flush=True); assert torch.__version__==\"2.8.0+cu128\" and len(names)==8 and all(\"A800\" in n for n in names)'\n\"$WA_PYTHON\" -c 'from wa.data import sha; assert sha(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_se2_cache_20261006_v1/complete.json\")==\"79e5a7dc43b61a23bb64d5676c4c1cac17b459a5e390b308377012e582ba1a8d\"; assert sha(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/stt_anchor_candidate_61609_20261007_v1/report.json\")==\"bbe21c78d1b38731f812866158ea1492c0950d6f05843bfbc8d95fd4da3ff8bd\"'\nbash wa/scripts/train_world.sh --epochs 1 --batch-size 2 --accumulation 2 --workers 2 --seed 42 --world-weight 0.1 --history-repeat-probability 0.25 --completed-epochs 1 --resume /data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt --resume-sha256 ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d --dual-teacher-cache /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_se2_cache_20261006_v1 --dual-teacher-repeats 1 --evaluation-set-adaptation --teacher-window-plan /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/stt_anchor_candidate_61609_20261007_v1 --teacher-plan-report-sha256 bbe21c78d1b38731f812866158ea1492c0950d6f05843bfbc8d95fd4da3ff8bd\n",
+  "elapsed_s": 11.128536881878972,
+  "developer_preflight": "wa/results/STT_ANCHOR_RUNTIME_PREFLIGHT_20261007.json",
+  "authorizations": "Existing user-directed persistent goal, finite additional training/evaluation and GitHub backup.",
+  "source_backup_commit": "dd1fec9e2cba0450be7a33387c8a2e550db4cd91",
+  "full_exposure_simulation_audit": {
+    "status": "SIMULATED_NOT_TRAINING_PASS",
+    "elapsed_s": 12.679,
+    "helpers": [
+      "recorded_exposure",
+      "recipe_exposure"
+    ],
+    "early_teacher": 154136,
+    "groups": {
+      "hard_stt_early": 9810,
+      "hard_stt_late": 14286,
+      "new_regression_stt": 1772,
+      "selected_anchor_windows": 12514
+    },
+    "whole_anchor_episode_pool": 122679
+  },
+  "train_spec": {
+    "parent_checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt",
+    "parent_sha256": "ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d",
+    "initial_step": 22707,
+    "planned_new_updates": 37009,
+    "planned_final_step": 59716,
+    "new_epochs": 1,
+    "cumulative_epochs": 2,
+    "teacher_selection_checkpoint_step": 59716,
+    "teacher_selection_checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "same_step_does_not_mean_same_model": true,
+    "base_windows": 726631,
+    "unique_teacher_windows": 436816,
+    "extra_positions": 20826,
+    "planned_consumed": 1184272,
+    "output_pattern": "/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_stt_anchor_train_a800_v1",
+    "acceptance": {
+      "stt_success_at_least": 1289,
+      "dt_success_at_least": 1173,
+      "at_success_at_least": 1203,
+      "each_task_episodes": 1405
+    },
+    "next": "8GPU full training; terminal artifact audit; then3x8GPU full4215 paired evaluation before efficacy or UWB claims."
+  },
+  "limits": [
+    "No actual worker or new training result yet.",
+    "This is an independent59866 model+optimizer continuation, not61609 epoch3.",
+    "Same architecture/loss/LR schedule/physics/controller/threshold; only finite sampling redistribution.",
+    "Evaluation-set adaptation; no untouched-test generalization claim."
+  ]
+}
