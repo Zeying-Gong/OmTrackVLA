@@ -1,0 +1,113 @@
+{
+  "audit": "uwb_inference_information_flow_readonly",
+  "date": "2026-10-07",
+  "reviewed_commit": "89c2f39de5493526b6e9cb007b5664fd41d75b87",
+  "status": "STATIC_AND_EXISTING_CPU_FIXTURES_ONLY",
+  "formal_uwb_gate": "After STT>=1289 DT>=1173 AT>=1203 on 1405/task; no new UWB job submitted",
+  "image_request_keys": [
+    "rgb_png",
+    "timestamp_s",
+    "initial_bbox"
+  ],
+  "image_internal_uwb": {
+    "polar": "constant zeros",
+    "valid": false,
+    "age_s": "constant zeros",
+    "reply_uwb": null
+  },
+  "timestamp_source": "sim.get_world_time(): observation clock, not UWB clock",
+  "controller": "learned_yaw_guard_v1",
+  "controller_geometry": "model-predicted separately in each branch, not measured UWB",
+  "policy_input_scope": "RGB history + first GT BBox template + observation time; no later GT boxes, text, measured coordinates, or future GT paths",
+  "observer_scope": "World poses/GT polar/visibility may be logged or used for scoring only; full observer side-effect perturbation check still pending",
+  "forbidden_shortcuts": [
+    "mixed mode with polar zeroed while valid remains true",
+    "uwb_heading_v1 direct measured control",
+    "reusing mixed geometry/history/actions for image",
+    "removing geometry head or changing guard together with input mode"
+  ],
+  "evidence": [
+    {
+      "path": "wa/wm/eval_server.py",
+      "line": 21,
+      "finding": "Strict request keys; image omits measurement, mode0, zero age/polar placeholders, reply UWB null"
+    },
+    {
+      "path": "wa/wm/training.py",
+      "line": 40,
+      "finding": "image mode0 disables UWB validity; predict uses conditions, not supervision labels"
+    },
+    {
+      "path": "wa/wm/adapters.py",
+      "line": 12,
+      "finding": "Missing coordinate/age masked before arithmetic; invalid coordinate token masked in attention"
+    },
+    {
+      "path": "wa/wm/diagnostic_agent.py",
+      "line": 18,
+      "finding": "SimulatedUWB created only in mixed; observer state not sent in RPC"
+    },
+    {
+      "path": "wa/wm/diagnostic_agent.py",
+      "line": 52,
+      "finding": "Learned yaw guard uses predicted geometry; alternative uwb_heading_v1 forbidden in ablation"
+    },
+    {
+      "path": "wa/wm/eval_full_mixed_launch.py",
+      "line": 59,
+      "finding": "Full evaluation server currently hardcoded mixed"
+    },
+    {
+      "path": "wa/wm/eval_full_mixed.py",
+      "line": 73,
+      "finding": "Full evaluation agent, row and completion markers currently hardcoded mixed"
+    },
+    {
+      "path": "wa/wm/full_mixed_contract.py",
+      "line": 15,
+      "finding": "Ready/rows/summary currently require mixed"
+    },
+    {
+      "path": "wa/wm/review_recorder.py",
+      "line": 50,
+      "finding": "Video title currently always says idealUWB and must be mode-correct for image"
+    }
+  ],
+  "existing_cpu_tests": {
+    "module": "wa.tests.test_wm_adapters",
+    "passed": 4,
+    "scope": "Synthetic conditioning taps unchanged after polar/age NaN substitution in image; not loaded-checkpoint end-to-end proof"
+  },
+  "pending_before_formal_ablation": [
+    "Explicit mode contract through server/agent/ready/rows/partition/summary/HTML; mixed default unchanged",
+    "Real final checkpoint paired fixed-RGB/time/noise perturbation: conditions, pose, geometry and action invariant to unavailable UWB metadata",
+    "Assert image RPC has no UWB fields and no UWB sensor/direct controller calls",
+    "Observer-only GT perturbation/on-off must not change request or action",
+    "Keep same checkpoint SHA/step, manifest, seed7, semantic/bbox repairs, first RGB/template, physics and success criterion"
+  ],
+  "paired_protocol": {
+    "with_uwb": "Goal-passing complete mixed results may be reused only if checkpoint and all mode-independent evaluation contracts are unchanged and paired initial evidence matches; otherwise new independently named baseline run is needed",
+    "without_uwb": "Independent full4215 image-mode episodes, 1405/task; no reuse of mixed output rows, histories or model predictions",
+    "pairing": "Exact task/key and initial RGB/state; trajectories may diverge naturally after actions",
+    "report": "Full-denominator success/SR/TR/CR/initialization failures plus paired gains and regressions",
+    "interpretation": "Inference-time removal from the same multi-mode-trained model; NOT training without UWB or coordinate supervision",
+    "retraining": "Separate hypothesis and recipe after direct-removal results; do not conflate"
+  },
+  "sha256": {
+    "wa/wm/eval_server.py": "49d7b0b5b60f98a479a870f65821ec0a0b0a69f8b60cf9f5a5a6c9cd9b217fb1",
+    "wa/wm/training.py": "43e2705aeb1175ae5e73225587d0d8caa5cdea6deff43ecec4150721e8ea2bc8",
+    "wa/wm/adapters.py": "24d239540315dba258759e14953e61a3a3fe7e9676f7a36e8a58dc672063507a",
+    "wa/wm/eval_agent.py": "2027cbfcaf82a44ab2a914bb1fcf34a845c009870142d7cf7015b95d75a7dd98",
+    "wa/wm/diagnostic_agent.py": "6ea51590ad4a187ac8fd89cb2bf06c9095c72994a98f8ad3ad1142fa0408678a",
+    "wa/wm/learned_yaw_control.py": "cf917b6657116bfaa78743b444689c4ee818a0b75189c9c8c8ffb1012deffbc9",
+    "wa/wm/uwb_control.py": "210cdf8e9bd2b02abaeb567f39e5551366c80de57ddd0f6fcc9303ea6b8f1ab1",
+    "wa/wm/sim_uwb.py": "b578ce34aac6cbf2f75877caee89b9eb1d93e771e1eb6c28fb158510b4df10b8",
+    "wa/wm/eval_full_mixed.py": "dfc3316cd855ec991b0d1d920d44f59502800d710ab7a74d93ba52e9674b421e",
+    "wa/wm/eval_full_mixed_launch.py": "125a0aec10ae4b983c7db39a2e5df8ef1d9b0f76f9b8a7f6c093dce50cea8c37",
+    "wa/wm/full_mixed_contract.py": "d57154492321827b6342d8397078d65d42dd998528096782e44d7d2b23fda68c",
+    "wa/wm/review_recorder.py": "5559df604d0e0cd85b246f065fba45d3bb01d139b6ea924b0f1d715e4d66596d",
+    "wa/tests/test_wm_adapters.py": "8cf88846953105063f53c0282bf7e8b1effb813210ccc7025990da72eace95cb",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_text_action_v3/control.py": "90b8b7492371f95016f3516cb26e035e09b675bbc276bfa27ac3fb3f895c52d5",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/trained_agent.py": "2b5c0faeff3e633588b9af39a14472055ae263291bed3840ff218a680f2fe3a1"
+  }
+}

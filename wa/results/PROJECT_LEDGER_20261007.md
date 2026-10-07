@@ -23,7 +23,7 @@
 40项CPU测试及真实RTX4090开发机4次更新检查通过；开发检查未保存checkpoint。88个固定早期教师窗口的配对拟合检查仅作训练依据，不是闭环提升证据。
 训练冻结 `source_hard_stt_train_v1` commit `8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06`；配置 [hard_stt_train_a800_v1.yaml](../jobs/hard_stt_train_a800_v1.yaml)，SHA256 `99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184`。
 输出目录：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1`。新checkpoint尚未验收，不能把预期路径或预计步数当作完成产物。
-最近核查 step24375、新增1668/37009更新；预计终点59716。最终checkpoint、73368窗口×3模式离线指标、逐窗口实际曝光核验通过后，再进行STT/DT/AT各8卡全量闭环；当前没有61609的新SR。
+最近核查 step27275、新增4568/37009更新；预计终点59716。最终checkpoint、73368窗口×3模式离线指标、逐窗口实际曝光核验通过后，再进行STT/DT/AT各8卡全量闭环；当前没有61609的新SR。
 实时曲线选择 `hard_stt_61609`：[TensorBoard](http://127.0.0.1:16006/#scalars)。在浏览电脑执行 `ssh -N -L 16006:127.0.0.1:6006 devpod-a800`；远程scalar API已核验真实数据，未新建本机转发。loss是DDP累积组均值，不能代替闭环成功率。
 详细候选、拟合和开发检查证据：[HARD_STT_CANDIDATE_20261007.json](HARD_STT_CANDIDATE_20261007.json)。完成后验收STT≥1289、DT≥1173、AT≥1203，保留现有61377结果作逐例配对基线。
 
@@ -69,4 +69,5 @@ AT结果：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61425/task_72528/w
 
 Goal与20分钟持续跟进已启用，验收STT至少1289、DT至少1173、AT至少1203。难例覆盖、分组拟合、受限采样接入及开发检查已完成；当前监控正式61609训练并准备最终真实性验收。训练结束后重新核查资源、冻结评测配置和实际checkpoint SHA，再一次提交三任务各8卡完整闭环，不提交集群smoke或复用旧模型结果。只在这次闭环结果支持时继续有限尝试；不盲目续训epoch3。
 达到后先测同权重有/无UWB依赖，再区分无UWB重训的纯视觉能力；两者不是同一实验。当前无真实UWB噪声/丢包/多径、真实机器人、Thor/RDK时延或产品级避障验收。
+UWB只读接口审计已保存：[UWB_INTERFACE_AUDIT_20261007.json](UWB_INTERFACE_AUDIT_20261007.json)。现有image路径不发送测量字段且屏蔽坐标token；控制器使用模型预测geometry，不直接读实测UWB。4项既有CPU测试和15个源文件hash核验通过，但真实权重端到端消融尚未验证，完整评测入口仍固定mixed。后续不以“mixed坐标填零”冒充无UWB，不把推理时移除与无UWB训练混为一谈。合法布尔False初始化/策略失败已纳入目标验收完整分母，27项验收测试通过。
 旧台账及旧评测修复记录保留。本次备份不修改运行源码、模型或已完成产物，不重新提交评测。

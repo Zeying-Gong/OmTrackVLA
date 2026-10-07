@@ -14,7 +14,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Frozen source_hard_stt_train_v1 commit8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06;clean;159Pythonfiles match developer diagnostic.
 - Config wa/jobs/hard_stt_train_a800_v1.yaml SHA99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184;GitHubfda647a7.
 - Parent59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;new1epoch cumulative2;planned37009updates/end59716.
-- Actual training snapshot: step25100/59716, phase2393/37009, elapsed1051.026s, loss0.14129, gradnorm0.86114, peak8.849GiB. Recent logs growing; startup warnings retained.
+- Actual training snapshot: step27275/59716, phase4568/37009, elapsed1964.055s, loss0.14386, gradnorm0.77193, peak9.014GiB. Logs growing; no fatal/OOM signatures in checked console; startup warnings retained.
 - Live TensorBoard run hard_stt_61609 verified from scalar API. Existing server6006/exporter2619386; ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars . No new local tunnel.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
 
@@ -49,7 +49,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - RealRTX4090 diagnostic4updates22708..22711 consumed16samples10base6teacher3hard;peak7.309GiB;no checkpoint.
 - Evidence:wa/results/HARD_STT_CANDIDATE_20261007.json. Monitor61609 steps/checkpoint andfinal actual_exposure_epoch1.json/npz;do notduplicate.
 - Final tools: wa.tools.audit_hard_stt_training checks completed metadata/exact actual exposure/source+YAML pins; live run correctly INCOMPLETE without checkpoint load. Scheduler terminal status checked separately.
-- wa.tools.audit_student_goal checks full4215 new rows and paired61377 baseline, fixed1289/1173/1203 thresholds and gains/regressions. 25 new audit tests PASS (plus6 existing runtime tests); not a new model result.
+- wa.tools.audit_student_goal checks full4215 new rows and paired61377 baseline, fixed1289/1173/1203 thresholds and gains/regressions. 27 new audit tests PASS (plus6 existing runtime tests); not a new model result. Boolean false init/policy failures remain in denominator; regression fixture PASS.
 - Goal-auditor real61377 self-check:81sourcehashes PASS,4215rows,NOT_MET with13/0/0shortfall whileLightNav superiority=True. Read-only/no new result artifact;61609 closedloop still pending.
 - FullSTT/DT/AT24GPU closedloop required before claiming gain;actualperwindow exposure recorded and validated after epoch.
 - Do not blindly continue epoch3, change architecture/loss/physics/success thresholds, or invent task-ID inputs.
@@ -58,4 +58,5 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Formal training8GPU; evaluation STT/DT/AT each8GPU,total24; verify realtime resources and AGENTS preflight.
 - Freeze source/config/hash; short developer checks then complete scheduled jobs, no cluster smoke/duplicate job.
 - Input remains RGB+initialGTBBox+idealpolarUWB,no text/laterGTboxes; JEPA training auxiliary only, no onlineMPC.
+- UWB interface audit saved wa/results/UWB_INTERFACE_AUDIT_20261007.json: image RPC omits measurements/token masked;4existing CPU tests+15source hashes PASS. Loaded-checkpoint end-to-end ablation and full-image runner not yet verified/implemented; defer formal UWB experiment until SR gate.
 - Preserve originals and failed experiments. Update state/experiment records and GitHub; verified service links need SSH forwarding.

@@ -95,8 +95,10 @@ def validate_bundle_data(bundle, manifest, contract, teachers, teacher_metrics):
         raise ValueError('incomplete or unverified paired-start audit')
     for row in rows:
         for field in ('success', 'collision'):
-            if isinstance(row[field], bool) or not isinstance(row[field], (int, float)):
-                raise ValueError('numeric binary outcome required')
+            # The frozen runner writes success=False for policy/init failure.
+            # Keep JSON boolean outcomes in the full denominator like 0/1.
+            if type(row[field]) not in (bool, int, float) or row[field] not in (0, 1):
+                raise ValueError('binary JSON outcome required')
         evidence = row.get('initial_pair_evidence')
         if not isinstance(evidence, dict) or not finite_tree(evidence.get('state')):
             raise ValueError('missing/nonfinite persisted start evidence')

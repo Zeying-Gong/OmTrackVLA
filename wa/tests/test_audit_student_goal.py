@@ -170,10 +170,36 @@ class StudentGoalTests(unittest.TestCase):
             self.new['rows'][0]['initial_pair_evidence'] = evidence
             with self.subTest(change=change), self.assertRaises(ValueError): self.compare()
 
-    def test_numeric_outcome_bool_and_nonfinite_rejected(self):
-        for value in (True, float('nan'), 2):
+    def test_nonbinary_and_nonfinite_outcome_rejected(self):
+        for value in (float('nan'), 2, '0', None):
             self.new['rows'][0]['success'] = value
-            with self.subTest(value=value), self.assertRaises(ValueError): self.compare()
+            with self.subTest(value=value), self.assertRaises((ValueError, TypeError)): self.compare()
+
+    def test_json_boolean_outcomes_preserve_success_and_collision_counts(self):
+        for row in self.new['rows']:
+            row['success'] = bool(row['success'])
+            row['collision'] = bool(row['collision'])
+        self.refresh(self.new, self.contract)
+        report = self.compare()
+        self.assertEqual(report['goal_status'], 'MET')
+        for task in goal.TASKS:
+            self.assertEqual(report['tasks'][task]['candidate_success'], goal.TARGETS[task])
+            self.assertEqual(report['tasks'][task]['candidate_collision_count'], 15)
+
+    def test_real_runner_false_init_failure_stays_in_full_denominator(self):
+        row = self.new['rows'][0]
+        row.update(success=False, policy_init_valid=False, following_rate=0.0,
+                   policy_failure_reason='invalid_initialization_bbox: missing target')
+        self.refresh(self.new, self.contract)
+        report = self.compare()
+        task = report['tasks']['stt']
+        self.assertEqual(report['goal_status'], 'NOT_MET')
+        self.assertEqual(task['episodes'], 1405)
+        self.assertEqual(task['candidate_success'], 1288)
+        self.assertEqual(task['candidate_invalid_init_count'], 2)
+        self.assertEqual(task['candidate_SR'], 100 * 1288 / 1405)
+        self.assertEqual(task['candidate_invalid_init_percent'], 100 * 2 / 1405)
+        self.assertEqual((task['gains'], task['regressions'], task['net_success']), (13, 1, 12))
 
     def test_changed_baseline_counts_rejected(self):
         self.base['rows'][0]['success'] = 0.
