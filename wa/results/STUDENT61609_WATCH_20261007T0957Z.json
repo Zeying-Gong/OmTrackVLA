@@ -1,0 +1,4183 @@
+{
+  "schema": "wa.student61609-bounded-running-watch.v1",
+  "status": "VERIFIED_WAIT_WITH_EPISODE_GROWTH_NOT_FINAL_RESULT",
+  "source_commit": "192b57f5e270acfffd8c7c1a4590cb1b257d92a3",
+  "session": 62113,
+  "process_exit_code": 0,
+  "observation_exit_means": "Bounded read-only watcher finished; all three scheduler jobs RUNNING at last query. Not benchmark completion.",
+  "interval_s": 50,
+  "requested_intervals": 24,
+  "elapsed_snapshot_seconds": 1248.565,
+  "completed_first": 3322,
+  "completed_last": 3814,
+  "completed_delta": 492,
+  "per_task_delta": {
+    "stt": 171,
+    "dt": 157,
+    "at": 164
+  },
+  "all_24_lanes_progressed": true,
+  "assertions": "Complete newline-terminated JSONL rows only; frozen manifest shard ownership, unique task/key, actual checkpoint/step, mode/noise/controller/semantic/seven-key repair, bool initialization and binary outcome checked; all24 actual A800 ready contracts validated. Partial tails excluded and reported; required missing logs raise.",
+  "log_scan": "Full actual task-root console/workload plus worker/server logs at first snapshot; subsequent appended bytes with512byte overlap. Four specified fatal patterns only, not an exhaustive absence-of-errors assertion. Original warning logs preserved.",
+  "file_age_caveat": "Capture time precedes reading live files; small negative file ages may be writes during the scan. Snapshot not globally atomic.",
+  "final_SR": null,
+  "goal_acceptance": "STT_RAW_FULL_COUNT1279_BELOW1289_FULL4215_PAIR_MEDIA_AND_DIAGNOSIS_PENDING",
+  "snapshots": [
+    {
+      "utc": "2026-10-07T09:57:28.098505+00:00",
+      "snapshot": 0,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1221,
+          "lanes": [
+            154,
+            157,
+            152,
+            155,
+            145,
+            156,
+            148,
+            154
+          ],
+          "delta": null,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26175902,
+          "log_bytes": 28955176,
+          "log_growth": null,
+          "worker_log_age_s": [
+            7.21,
+            -1.34,
+            12.16,
+            30.06,
+            27.89,
+            16.27,
+            -1.93,
+            6.64
+          ],
+          "episode_file_age_s": [
+            20.67,
+            12.81,
+            24.75,
+            43.14,
+            33.6,
+            30.14,
+            44.35,
+            6.67
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1037,
+          "lanes": [
+            133,
+            134,
+            130,
+            126,
+            130,
+            132,
+            128,
+            124
+          ],
+          "delta": null,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 22326711,
+          "log_bytes": 24619636,
+          "log_growth": null,
+          "worker_log_age_s": [
+            13.7,
+            16,
+            38.15,
+            4.42,
+            62.81,
+            17.3,
+            32.52,
+            -2.63
+          ],
+          "episode_file_age_s": [
+            27.96,
+            29.59,
+            43.84,
+            4.45,
+            68.57,
+            29.87,
+            53.69,
+            29.3
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1064,
+          "lanes": [
+            137,
+            136,
+            131,
+            131,
+            134,
+            137,
+            128,
+            130
+          ],
+          "delta": null,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 22886036,
+          "log_bytes": 24370108,
+          "log_growth": null,
+          "worker_log_age_s": [
+            29.26,
+            6.39,
+            67.61,
+            17.84,
+            10.24,
+            16.38,
+            0.51,
+            38.49
+          ],
+          "episode_file_age_s": [
+            42.05,
+            18.88,
+            72.95,
+            26.73,
+            15.53,
+            16.42,
+            20.81,
+            43.71
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "scheduler": {
+        "stt": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:23",
+          "Status        : RUNNING"
+        ],
+        "dt": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:28",
+          "Status        : RUNNING"
+        ],
+        "at": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:34",
+          "Status        : RUNNING"
+        ]
+      },
+      "unique_completed": 3322
+    },
+    {
+      "utc": "2026-10-07T09:58:21.583522+00:00",
+      "snapshot": 1,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1231,
+          "lanes": [
+            155,
+            158,
+            153,
+            157,
+            146,
+            157,
+            150,
+            155
+          ],
+          "delta": 10,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26390325,
+          "log_bytes": 29190403,
+          "log_growth": 235227,
+          "worker_log_age_s": [
+            0.36,
+            3.01,
+            3.73,
+            7.32,
+            5.16,
+            34.19,
+            6.19,
+            13.73
+          ],
+          "episode_file_age_s": [
+            21.93,
+            8.72,
+            24.73,
+            7.35,
+            26.76,
+            47.44,
+            14.67,
+            13.77
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1044,
+          "lanes": [
+            134,
+            135,
+            131,
+            127,
+            130,
+            132,
+            129,
+            126
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 22477537,
+          "log_bytes": 24784351,
+          "log_growth": 164715,
+          "worker_log_age_s": [
+            12.18,
+            15.26,
+            0.11,
+            14.61,
+            116.29,
+            70.78,
+            8.92,
+            6.99
+          ],
+          "episode_file_age_s": [
+            12.22,
+            28.66,
+            0.14,
+            23.15,
+            122.06,
+            83.35,
+            14.76,
+            21.49
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1070,
+          "lanes": [
+            138,
+            137,
+            132,
+            132,
+            136,
+            137,
+            128,
+            130
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23015217,
+          "log_bytes": 24507021,
+          "log_growth": 136913,
+          "worker_log_age_s": [
+            5.14,
+            15.53,
+            9.98,
+            27.85,
+            8.62,
+            49.5,
+            53.99,
+            -1.32
+          ],
+          "episode_file_age_s": [
+            18.18,
+            15.56,
+            30.51,
+            41.6,
+            8.65,
+            69.9,
+            74.29,
+            97.2
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3345
+    },
+    {
+      "utc": "2026-10-07T09:59:13.168331+00:00",
+      "snapshot": 2,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1236,
+          "lanes": [
+            156,
+            158,
+            154,
+            158,
+            146,
+            159,
+            150,
+            155
+          ],
+          "delta": 5,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26497526,
+          "log_bytes": 29308484,
+          "log_growth": 118081,
+          "worker_log_age_s": [
+            13.42,
+            0.04,
+            1.49,
+            4.17,
+            56.75,
+            11.02,
+            57.78,
+            44.79
+          ],
+          "episode_file_age_s": [
+            26.18,
+            60.31,
+            1.53,
+            4.21,
+            78.34,
+            11.05,
+            66.25,
+            65.35
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1049,
+          "lanes": [
+            135,
+            135,
+            131,
+            128,
+            131,
+            133,
+            129,
+            127
+          ],
+          "delta": 5,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 22585290,
+          "log_bytes": 24907169,
+          "log_growth": 122818,
+          "worker_log_age_s": [
+            -0.11,
+            66.85,
+            46.09,
+            30.72,
+            7.09,
+            13.23,
+            60.5,
+            9.2
+          ],
+          "episode_file_age_s": [
+            13.22,
+            80.24,
+            51.73,
+            44.98,
+            28.11,
+            27.69,
+            66.35,
+            30.2
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1079,
+          "lanes": [
+            139,
+            138,
+            133,
+            133,
+            137,
+            138,
+            129,
+            132
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23209142,
+          "log_bytes": 24711836,
+          "log_growth": 204815,
+          "worker_log_age_s": [
+            31.84,
+            2.06,
+            24.13,
+            1.87,
+            15.65,
+            17.86,
+            31.09,
+            6.4
+          ],
+          "episode_file_age_s": [
+            44.75,
+            2.09,
+            37.79,
+            1.9,
+            15.95,
+            38.04,
+            36.4,
+            19.59
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3364
+    },
+    {
+      "utc": "2026-10-07T10:00:04.858244+00:00",
+      "snapshot": 3,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1243,
+          "lanes": [
+            157,
+            159,
+            155,
+            158,
+            147,
+            160,
+            151,
+            156
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26647570,
+          "log_bytes": 29478170,
+          "log_growth": 169686,
+          "worker_log_age_s": [
+            19.65,
+            36.15,
+            6.14,
+            34.85,
+            21.66,
+            0.81,
+            7.11,
+            12.99
+          ],
+          "episode_file_age_s": [
+            41.33,
+            49.72,
+            13.47,
+            55.9,
+            43.38,
+            0.84,
+            20.96,
+            26.76
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1055,
+          "lanes": [
+            135,
+            136,
+            132,
+            129,
+            132,
+            134,
+            129,
+            128
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 22714677,
+          "log_bytes": 25044600,
+          "log_growth": 137431,
+          "worker_log_age_s": [
+            51.58,
+            8.1,
+            4.59,
+            4.02,
+            14.23,
+            8.76,
+            112.19,
+            28.74
+          ],
+          "episode_file_age_s": [
+            64.91,
+            21.56,
+            4.63,
+            4.05,
+            22.26,
+            8.8,
+            118.04,
+            42.73
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1084,
+          "lanes": [
+            141,
+            138,
+            134,
+            133,
+            137,
+            140,
+            129,
+            132
+          ],
+          "delta": 5,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23316899,
+          "log_bytes": 24826361,
+          "log_growth": 114525,
+          "worker_log_age_s": [
+            3.53,
+            39.69,
+            18.94,
+            33.23,
+            47.05,
+            2.74,
+            82.78,
+            58.09
+          ],
+          "episode_file_age_s": [
+            3.56,
+            53.78,
+            32.58,
+            53.59,
+            67.64,
+            2.77,
+            88.09,
+            71.28
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3382
+    },
+    {
+      "utc": "2026-10-07T10:00:56.550823+00:00",
+      "snapshot": 4,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1250,
+          "lanes": [
+            158,
+            160,
+            156,
+            159,
+            148,
+            160,
+            152,
+            157
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26797645,
+          "log_bytes": 29646994,
+          "log_growth": 168824,
+          "worker_log_age_s": [
+            6.28,
+            15.81,
+            16.52,
+            -0.17,
+            -0.29,
+            38.5,
+            15.65,
+            16.5
+          ],
+          "episode_file_age_s": [
+            20.71,
+            30.19,
+            30.81,
+            33.55,
+            11.68,
+            52.53,
+            30.19,
+            38.01
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1062,
+          "lanes": [
+            136,
+            137,
+            133,
+            130,
+            133,
+            134,
+            130,
+            129
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 22865541,
+          "log_bytes": 25209917,
+          "log_growth": 165317,
+          "worker_log_age_s": [
+            13.79,
+            9.41,
+            11.24,
+            16.25,
+            0.76,
+            47.03,
+            3.32,
+            7.53
+          ],
+          "episode_file_age_s": [
+            26.58,
+            9.45,
+            11.28,
+            30.48,
+            10.13,
+            60.49,
+            24.55,
+            7.57
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1093,
+          "lanes": [
+            142,
+            139,
+            135,
+            134,
+            138,
+            142,
+            130,
+            133
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23510787,
+          "log_bytes": 25030413,
+          "log_growth": 204052,
+          "worker_log_age_s": [
+            15.04,
+            32.47,
+            19.13,
+            29.66,
+            16.23,
+            -0.62,
+            4.56,
+            12.19
+          ],
+          "episode_file_age_s": [
+            20.25,
+            37.86,
+            24.46,
+            37.25,
+            30.1,
+            -0.59,
+            4.84,
+            32.65
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3405
+    },
+    {
+      "utc": "2026-10-07T10:01:48.188443+00:00",
+      "snapshot": 5,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1258,
+          "lanes": [
+            159,
+            161,
+            157,
+            160,
+            149,
+            161,
+            153,
+            158
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26969207,
+          "log_bytes": 29836167,
+          "log_growth": 189173,
+          "worker_log_age_s": [
+            29.8,
+            2.71,
+            17.38,
+            43.6,
+            6.95,
+            17.18,
+            15.29,
+            24.18
+          ],
+          "episode_file_age_s": [
+            43.79,
+            23.72,
+            23.21,
+            49.42,
+            27.88,
+            32.01,
+            15.33,
+            32.62
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1068,
+          "lanes": [
+            137,
+            137,
+            133,
+            131,
+            134,
+            135,
+            131,
+            130
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 22994811,
+          "log_bytes": 25376956,
+          "log_growth": 167039,
+          "worker_log_age_s": [
+            26.96,
+            39.13,
+            48.66,
+            0.62,
+            -0.8,
+            4.29,
+            2.91,
+            -1.21
+          ],
+          "episode_file_age_s": [
+            40.8,
+            61.08,
+            62.91,
+            9.66,
+            22.71,
+            4.33,
+            16.9,
+            3.9
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1097,
+          "lanes": [
+            142,
+            139,
+            135,
+            135,
+            139,
+            142,
+            131,
+            134
+          ],
+          "delta": 4,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23596982,
+          "log_bytes": 25122084,
+          "log_growth": 91671,
+          "worker_log_age_s": [
+            66.68,
+            84.1,
+            70.77,
+            14.64,
+            24.59,
+            45.77,
+            -0.02,
+            7.19
+          ],
+          "episode_file_age_s": [
+            71.89,
+            89.5,
+            76.1,
+            27.19,
+            44.61,
+            51.05,
+            0.01,
+            20.57
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3423
+    },
+    {
+      "utc": "2026-10-07T10:02:39.972361+00:00",
+      "snapshot": 6,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1266,
+          "lanes": [
+            160,
+            162,
+            158,
+            161,
+            150,
+            163,
+            153,
+            159
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 27140727,
+          "log_bytes": 30025009,
+          "log_growth": 188842,
+          "worker_log_age_s": [
+            6.06,
+            9.33,
+            -0.06,
+            19.42,
+            19.98,
+            1.89,
+            45.92,
+            -0.43
+          ],
+          "episode_file_age_s": [
+            20.64,
+            9.37,
+            -0.03,
+            32.84,
+            20.01,
+            15.34,
+            67.11,
+            35.4
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1074,
+          "lanes": [
+            138,
+            138,
+            134,
+            132,
+            136,
+            135,
+            131,
+            130
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23124170,
+          "log_bytes": 25500304,
+          "log_growth": 123348,
+          "worker_log_age_s": [
+            -0.68,
+            22.19,
+            11.69,
+            10.02,
+            11.29,
+            43.19,
+            54.69,
+            49.58
+          ],
+          "episode_file_age_s": [
+            13.06,
+            35.64,
+            25.86,
+            23.83,
+            11.32,
+            56.11,
+            68.68,
+            55.68
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1103,
+          "lanes": [
+            142,
+            140,
+            136,
+            137,
+            140,
+            142,
+            131,
+            135
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23726310,
+          "log_bytes": 25257487,
+          "log_growth": 135403,
+          "worker_log_age_s": [
+            118.46,
+            5.12,
+            4.96,
+            4.75,
+            7.13,
+            97.56,
+            38.07,
+            7.95
+          ],
+          "episode_file_age_s": [
+            123.68,
+            5.15,
+            4.99,
+            4.78,
+            19.15,
+            102.83,
+            51.8,
+            20.05
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3443
+    },
+    {
+      "utc": "2026-10-07T10:03:31.697979+00:00",
+      "snapshot": 7,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1275,
+          "lanes": [
+            161,
+            163,
+            159,
+            162,
+            151,
+            164,
+            154,
+            161
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 27333698,
+          "log_bytes": 30236018,
+          "log_growth": 211009,
+          "worker_log_age_s": [
+            26.88,
+            1.32,
+            8.37,
+            11.02,
+            1.66,
+            18.71,
+            -0.44,
+            -0.66
+          ],
+          "episode_file_age_s": [
+            48.75,
+            1.36,
+            8.41,
+            23.52,
+            1.7,
+            18.75,
+            32.48,
+            12.21
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1081,
+          "lanes": [
+            139,
+            139,
+            135,
+            132,
+            137,
+            136,
+            133,
+            130
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23275155,
+          "log_bytes": 25666185,
+          "log_growth": 165881,
+          "worker_log_age_s": [
+            25.76,
+            16.4,
+            12,
+            61.74,
+            17.71,
+            1.71,
+            3.14,
+            101.31
+          ],
+          "episode_file_age_s": [
+            38.61,
+            22.3,
+            17.77,
+            75.55,
+            17.75,
+            1.75,
+            10.88,
+            107.41
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1111,
+          "lanes": [
+            144,
+            140,
+            137,
+            138,
+            141,
+            143,
+            132,
+            136
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23898502,
+          "log_bytes": 25439966,
+          "log_growth": 182479,
+          "worker_log_age_s": [
+            4.27,
+            35.99,
+            16.93,
+            17.89,
+            14.22,
+            21.15,
+            -1.54,
+            -1.08
+          ],
+          "episode_file_age_s": [
+            4.3,
+            56.87,
+            29.46,
+            25.12,
+            34.97,
+            34.47,
+            31.5,
+            11.37
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3467
+    },
+    {
+      "utc": "2026-10-07T10:04:23.570949+00:00",
+      "snapshot": 8,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1287,
+          "lanes": [
+            162,
+            165,
+            160,
+            164,
+            152,
+            166,
+            156,
+            162
+          ],
+          "delta": 12,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 27591007,
+          "log_bytes": 30515825,
+          "log_growth": 279807,
+          "worker_log_age_s": [
+            6.31,
+            0.89,
+            4.16,
+            10.11,
+            5.13,
+            -0.06,
+            9.18,
+            12.8
+          ],
+          "episode_file_age_s": [
+            18.72,
+            0.92,
+            4.19,
+            10.41,
+            5.16,
+            -0.03,
+            9.22,
+            20.76
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1087,
+          "lanes": [
+            139,
+            140,
+            135,
+            133,
+            137,
+            137,
+            134,
+            132
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23404449,
+          "log_bytes": 25810611,
+          "log_growth": 144426,
+          "worker_log_age_s": [
+            77.63,
+            23.96,
+            63.87,
+            16.68,
+            48.59,
+            -1.25,
+            10.21,
+            11.49
+          ],
+          "episode_file_age_s": [
+            90.49,
+            44.77,
+            69.64,
+            37.43,
+            69.62,
+            19.13,
+            23.32,
+            11.52
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1119,
+          "lanes": [
+            145,
+            141,
+            139,
+            139,
+            142,
+            143,
+            134,
+            136
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24070813,
+          "log_bytes": 25622288,
+          "log_growth": 182322,
+          "worker_log_age_s": [
+            5.55,
+            19.44,
+            -0.82,
+            2.26,
+            17.64,
+            73.02,
+            7.45,
+            -1.67
+          ],
+          "episode_file_age_s": [
+            13.56,
+            32.9,
+            -0.79,
+            15.68,
+            22.85,
+            86.34,
+            7.48,
+            63.25
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3493
+    },
+    {
+      "utc": "2026-10-07T10:05:15.548470+00:00",
+      "snapshot": 9,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1293,
+          "lanes": [
+            163,
+            165,
+            161,
+            164,
+            153,
+            167,
+            157,
+            163
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 27719645,
+          "log_bytes": 30666973,
+          "log_growth": 151148,
+          "worker_log_age_s": [
+            7.08,
+            31.97,
+            1.01,
+            48.98,
+            -0.37,
+            1.77,
+            0.28,
+            9.35
+          ],
+          "episode_file_age_s": [
+            20.88,
+            52.9,
+            1.05,
+            62.39,
+            12.26,
+            23.21,
+            0.31,
+            23.98
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1093,
+          "lanes": [
+            140,
+            141,
+            135,
+            134,
+            138,
+            137,
+            135,
+            133
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23533924,
+          "log_bytes": 25953324,
+          "log_growth": 142713,
+          "worker_log_age_s": [
+            27.3,
+            7.14,
+            115.85,
+            12.25,
+            12.89,
+            50.4,
+            10.89,
+            1.27
+          ],
+          "episode_file_age_s": [
+            33.28,
+            21.02,
+            121.62,
+            20.41,
+            27.22,
+            71.11,
+            10.93,
+            1.31
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1122,
+          "lanes": [
+            146,
+            141,
+            139,
+            139,
+            142,
+            144,
+            134,
+            137
+          ],
+          "delta": 3,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24135410,
+          "log_bytes": 25712968,
+          "log_growth": 90680,
+          "worker_log_age_s": [
+            13.98,
+            -1.3,
+            -1.21,
+            54.24,
+            69.62,
+            22.46,
+            46.74,
+            43.85
+          ],
+          "episode_file_age_s": [
+            25.96,
+            84.88,
+            51.19,
+            67.65,
+            74.83,
+            35.44,
+            59.46,
+            49.21
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3508
+    },
+    {
+      "utc": "2026-10-07T10:06:07.329238+00:00",
+      "snapshot": 10,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1300,
+          "lanes": [
+            164,
+            167,
+            161,
+            165,
+            154,
+            167,
+            158,
+            164
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 27869703,
+          "log_bytes": 30832252,
+          "log_growth": 165279,
+          "worker_log_age_s": [
+            12.04,
+            8.89,
+            -0.13,
+            31.3,
+            2.33,
+            53.55,
+            -0.32,
+            23.26
+          ],
+          "episode_file_age_s": [
+            12.08,
+            8.92,
+            52.83,
+            43.88,
+            15.2,
+            74.99,
+            -0.28,
+            44.88
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1101,
+          "lanes": [
+            142,
+            141,
+            137,
+            135,
+            139,
+            138,
+            136,
+            133
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23706454,
+          "log_bytes": 26144620,
+          "log_growth": 191296,
+          "worker_log_age_s": [
+            3.19,
+            58.92,
+            -0.59,
+            8.41,
+            9.42,
+            16.19,
+            8.3,
+            32.35
+          ],
+          "episode_file_age_s": [
+            3.22,
+            72.81,
+            12.38,
+            8.44,
+            30.29,
+            37.06,
+            22.06,
+            53.09
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1129,
+          "lanes": [
+            147,
+            142,
+            141,
+            140,
+            143,
+            144,
+            135,
+            137
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24286153,
+          "log_bytes": 25850170,
+          "log_growth": 137202,
+          "worker_log_age_s": [
+            1.82,
+            36.64,
+            1.01,
+            17.5,
+            10.43,
+            74.24,
+            -1.48,
+            95.63
+          ],
+          "episode_file_age_s": [
+            1.85,
+            50.18,
+            14.33,
+            29.6,
+            22.3,
+            87.22,
+            45.18,
+            100.99
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3530
+    },
+    {
+      "utc": "2026-10-07T10:06:59.128183+00:00",
+      "snapshot": 11,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1307,
+          "lanes": [
+            164,
+            168,
+            163,
+            166,
+            155,
+            168,
+            158,
+            165
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 28019724,
+          "log_bytes": 31000987,
+          "log_growth": 168735,
+          "worker_log_age_s": [
+            42.12,
+            0.89,
+            17.65,
+            20.26,
+            17.29,
+            28.2,
+            45.72,
+            1.55
+          ],
+          "episode_file_age_s": [
+            63.88,
+            9.07,
+            17.69,
+            34.48,
+            17.32,
+            40.76,
+            51.52,
+            22.97
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1108,
+          "lanes": [
+            142,
+            142,
+            138,
+            136,
+            140,
+            139,
+            137,
+            134
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 23857495,
+          "log_bytes": 26314675,
+          "log_growth": 170055,
+          "worker_log_age_s": [
+            49.25,
+            22.57,
+            2.8,
+            13.8,
+            5.18,
+            24.31,
+            2.08,
+            26.69
+          ],
+          "episode_file_age_s": [
+            55.02,
+            36.63,
+            16.94,
+            19.58,
+            5.21,
+            36.75,
+            22.93,
+            40.6
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1138,
+          "lanes": [
+            148,
+            143,
+            142,
+            141,
+            144,
+            145,
+            137,
+            138
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24479963,
+          "log_bytes": 26052170,
+          "log_growth": 202000,
+          "worker_log_age_s": [
+            -0.07,
+            7.03,
+            14.35,
+            18.98,
+            7.72,
+            22.3,
+            0.39,
+            16.75
+          ],
+          "episode_file_age_s": [
+            -0.03,
+            14.56,
+            26.12,
+            31.19,
+            7.75,
+            34.2,
+            0.42,
+            37.59
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3553
+    },
+    {
+      "utc": "2026-10-07T10:07:51.034544+00:00",
+      "snapshot": 12,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1316,
+          "lanes": [
+            165,
+            170,
+            164,
+            167,
+            155,
+            169,
+            160,
+            166
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 28212637,
+          "log_bytes": 31215906,
+          "log_growth": 214919,
+          "worker_log_age_s": [
+            22.09,
+            0.41,
+            10.07,
+            26.33,
+            48.02,
+            -2.08,
+            1.56,
+            16.58
+          ],
+          "episode_file_age_s": [
+            43.6,
+            6.43,
+            10.11,
+            39.13,
+            69.23,
+            33.2,
+            1.6,
+            30.18
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1115,
+          "lanes": [
+            142,
+            142,
+            139,
+            138,
+            141,
+            141,
+            137,
+            135
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24008367,
+          "log_bytes": 26481471,
+          "log_growth": 166796,
+          "worker_log_age_s": [
+            101.16,
+            74.48,
+            14.4,
+            -1.19,
+            0.35,
+            1.8,
+            53.98,
+            30.49
+          ],
+          "episode_file_age_s": [
+            106.93,
+            88.53,
+            27.63,
+            -1.14,
+            21.27,
+            10.44,
+            74.83,
+            42.9
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1145,
+          "lanes": [
+            148,
+            144,
+            144,
+            142,
+            145,
+            146,
+            137,
+            139
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24630698,
+          "log_bytes": 26212971,
+          "log_growth": 160801,
+          "worker_log_age_s": [
+            31.46,
+            29.7,
+            0.47,
+            7.93,
+            1.04,
+            29.71,
+            31.79,
+            -3.5
+          ],
+          "episode_file_age_s": [
+            51.87,
+            41.97,
+            0.5,
+            13.17,
+            1.08,
+            42.17,
+            52.33,
+            26.3
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "scheduler": {
+        "stt": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:23",
+          "Status        : RUNNING"
+        ],
+        "dt": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:28",
+          "Status        : RUNNING"
+        ],
+        "at": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:34",
+          "Status        : RUNNING"
+        ]
+      },
+      "unique_completed": 3576
+    },
+    {
+      "utc": "2026-10-07T10:08:44.628303+00:00",
+      "snapshot": 13,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1322,
+          "lanes": [
+            166,
+            170,
+            164,
+            168,
+            156,
+            170,
+            161,
+            167
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 28341242,
+          "log_bytes": 31360765,
+          "log_growth": 144859,
+          "worker_log_age_s": [
+            0.08,
+            0.14,
+            -0.18,
+            39.43,
+            36.52,
+            37.18,
+            7.6,
+            9.18
+          ],
+          "episode_file_age_s": [
+            21.17,
+            60.02,
+            63.71,
+            45.12,
+            42.42,
+            49.61,
+            16.21,
+            17.99
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1124,
+          "lanes": [
+            143,
+            144,
+            140,
+            138,
+            142,
+            142,
+            139,
+            136
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24202350,
+          "log_bytes": 26694677,
+          "log_growth": 213206,
+          "worker_log_age_s": [
+            20.15,
+            7.86,
+            18.58,
+            45.56,
+            0.81,
+            20.5,
+            -0.4,
+            23.2
+          ],
+          "episode_file_age_s": [
+            32.56,
+            20.35,
+            25.9,
+            52.45,
+            6.32,
+            26.14,
+            11.67,
+            36.34
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1151,
+          "lanes": [
+            149,
+            145,
+            145,
+            143,
+            145,
+            146,
+            138,
+            140
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24759969,
+          "log_bytes": 26350807,
+          "log_growth": 137836,
+          "worker_log_age_s": [
+            19.99,
+            16.25,
+            5.33,
+            12.16,
+            49.42,
+            83.31,
+            -1.8,
+            26.02
+          ],
+          "episode_file_age_s": [
+            40.35,
+            30.09,
+            5.36,
+            24.64,
+            54.67,
+            95.76,
+            27.81,
+            46.47
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3597
+    },
+    {
+      "utc": "2026-10-07T10:09:36.576614+00:00",
+      "snapshot": 14,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1332,
+          "lanes": [
+            166,
+            172,
+            166,
+            169,
+            157,
+            171,
+            162,
+            169
+          ],
+          "delta": 10,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 28555624,
+          "log_bytes": 31593639,
+          "log_growth": 232874,
+          "worker_log_age_s": [
+            51.29,
+            8.76,
+            9.63,
+            25.03,
+            30.58,
+            36.69,
+            9.32,
+            1.73
+          ],
+          "episode_file_age_s": [
+            73.12,
+            8.8,
+            9.66,
+            32.71,
+            44.8,
+            42.79,
+            30.15,
+            10.25
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1130,
+          "lanes": [
+            144,
+            145,
+            141,
+            139,
+            142,
+            142,
+            140,
+            137
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24331519,
+          "log_bytes": 26838034,
+          "log_growth": 143357,
+          "worker_log_age_s": [
+            29.17,
+            16.16,
+            30.55,
+            30.7,
+            52.76,
+            72.45,
+            -1.15,
+            12.16
+          ],
+          "episode_file_age_s": [
+            43.63,
+            30.13,
+            44.9,
+            44.65,
+            58.27,
+            78.09,
+            26.45,
+            18.23
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1160,
+          "lanes": [
+            150,
+            146,
+            145,
+            145,
+            146,
+            147,
+            140,
+            141
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24953727,
+          "log_bytes": 26555893,
+          "log_growth": 205086,
+          "worker_log_age_s": [
+            32.41,
+            18.03,
+            45.39,
+            2.51,
+            10.41,
+            26.9,
+            -1.17,
+            5.6
+          ],
+          "episode_file_age_s": [
+            45.58,
+            30.95,
+            57.31,
+            10.61,
+            30.61,
+            47.88,
+            11.38,
+            5.63
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3622
+    },
+    {
+      "utc": "2026-10-07T10:10:28.562044+00:00",
+      "snapshot": 15,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1339,
+          "lanes": [
+            167,
+            172,
+            166,
+            170,
+            159,
+            172,
+            163,
+            170
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 28705729,
+          "log_bytes": 31760896,
+          "log_growth": 167257,
+          "worker_log_age_s": [
+            4.71,
+            39.57,
+            40.67,
+            33.83,
+            9.13,
+            17.88,
+            1.86,
+            21.17
+          ],
+          "episode_file_age_s": [
+            26,
+            60.78,
+            61.65,
+            46.15,
+            9.17,
+            39.06,
+            14.5,
+            26.85
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1137,
+          "lanes": [
+            145,
+            146,
+            143,
+            140,
+            142,
+            143,
+            141,
+            137
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24482392,
+          "log_bytes": 26998399,
+          "log_growth": 160365,
+          "worker_log_age_s": [
+            4.71,
+            14.48,
+            8.28,
+            6.26,
+            104.74,
+            2.57,
+            25.23,
+            64.15
+          ],
+          "episode_file_age_s": [
+            4.74,
+            28.46,
+            8.31,
+            6.29,
+            110.26,
+            2.61,
+            45.96,
+            70.21
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1164,
+          "lanes": [
+            150,
+            146,
+            147,
+            145,
+            146,
+            147,
+            141,
+            142
+          ],
+          "delta": 4,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25039728,
+          "log_bytes": 26647179,
+          "log_growth": 91286,
+          "worker_log_age_s": [
+            84.4,
+            70.01,
+            -1.51,
+            54.5,
+            62.4,
+            78.89,
+            10.34,
+            9.04
+          ],
+          "episode_file_age_s": [
+            97.56,
+            82.93,
+            10.4,
+            62.6,
+            82.6,
+            99.86,
+            30.65,
+            22.33
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3640
+    },
+    {
+      "utc": "2026-10-07T10:11:20.530131+00:00",
+      "snapshot": 16,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1347,
+          "lanes": [
+            167,
+            173,
+            167,
+            171,
+            160,
+            174,
+            164,
+            171
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 28877246,
+          "log_bytes": 31953098,
+          "log_growth": 192202,
+          "worker_log_age_s": [
+            56.68,
+            34.66,
+            9.52,
+            29.66,
+            6.58,
+            5.04,
+            8.78,
+            24.75
+          ],
+          "episode_file_age_s": [
+            77.96,
+            40.48,
+            31.3,
+            35.38,
+            28.55,
+            11.22,
+            30.42,
+            45.83
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1143,
+          "lanes": [
+            146,
+            146,
+            144,
+            141,
+            143,
+            143,
+            142,
+            138
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24611623,
+          "log_bytes": 27142737,
+          "log_growth": 144338,
+          "worker_log_age_s": [
+            3.13,
+            66.45,
+            8.92,
+            7.06,
+            28.76,
+            41.3,
+            13.91,
+            3.44
+          ],
+          "episode_file_age_s": [
+            15.99,
+            80.42,
+            8.95,
+            7.09,
+            40.9,
+            54.58,
+            19.65,
+            3.47
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1173,
+          "lanes": [
+            151,
+            147,
+            148,
+            147,
+            147,
+            149,
+            142,
+            142
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25233680,
+          "log_bytes": 26849373,
+          "log_growth": 202194,
+          "worker_log_age_s": [
+            40.76,
+            23.03,
+            24.3,
+            19.98,
+            8.11,
+            9.54,
+            0.63,
+            61.01
+          ],
+          "episode_file_age_s": [
+            46.34,
+            43.68,
+            29.61,
+            25.27,
+            28.41,
+            9.57,
+            6.2,
+            74.3
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3663
+    },
+    {
+      "utc": "2026-10-07T10:12:12.541004+00:00",
+      "snapshot": 17,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1354,
+          "lanes": [
+            169,
+            174,
+            167,
+            172,
+            161,
+            174,
+            165,
+            172
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 29027338,
+          "log_bytes": 32114429,
+          "log_growth": 161331,
+          "worker_log_age_s": [
+            9.95,
+            -0.12,
+            61.53,
+            1.84,
+            1.48,
+            57.05,
+            4.84,
+            3.64
+          ],
+          "episode_file_age_s": [
+            9.99,
+            21,
+            83.31,
+            1.88,
+            1.51,
+            63.23,
+            4.88,
+            18.16
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1148,
+          "lanes": [
+            147,
+            147,
+            145,
+            141,
+            144,
+            144,
+            142,
+            138
+          ],
+          "delta": 5,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24719478,
+          "log_bytes": 27263810,
+          "log_growth": 121073,
+          "worker_log_age_s": [
+            38.59,
+            15.41,
+            23,
+            46.53,
+            7.73,
+            4.22,
+            65.92,
+            34.59
+          ],
+          "episode_file_age_s": [
+            46.58,
+            36.44,
+            35.62,
+            59.1,
+            20.72,
+            4.25,
+            71.66,
+            55.49
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1178,
+          "lanes": [
+            152,
+            148,
+            148,
+            148,
+            147,
+            150,
+            142,
+            143
+          ],
+          "delta": 5,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25341380,
+          "log_bytes": 26963442,
+          "log_growth": 114069,
+          "worker_log_age_s": [
+            1.51,
+            7.55,
+            76.31,
+            34.23,
+            -1.57,
+            6.12,
+            52.64,
+            14.08
+          ],
+          "episode_file_age_s": [
+            9.11,
+            7.58,
+            81.62,
+            39.51,
+            80.42,
+            14.83,
+            58.22,
+            34.66
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3680
+    },
+    {
+      "utc": "2026-10-07T10:13:04.539615+00:00",
+      "snapshot": 18,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1358,
+          "lanes": [
+            169,
+            174,
+            168,
+            172,
+            161,
+            175,
+            166,
+            173
+          ],
+          "delta": 4,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 1,
+          "partial_tails": 0,
+          "row_bytes": 29113081,
+          "log_bytes": 32213393,
+          "log_growth": 98964,
+          "worker_log_age_s": [
+            0.13,
+            51.72,
+            33.31,
+            48.03,
+            32.03,
+            40.19,
+            14.76,
+            17.51
+          ],
+          "episode_file_age_s": [
+            61.98,
+            73,
+            47.03,
+            53.88,
+            53.51,
+            40.19,
+            17.9,
+            17.54
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1156,
+          "lanes": [
+            148,
+            148,
+            146,
+            143,
+            145,
+            144,
+            142,
+            140
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 24891876,
+          "log_bytes": 27452434,
+          "log_growth": 188624,
+          "worker_log_age_s": [
+            24.15,
+            2.41,
+            5,
+            0.48,
+            3.03,
+            -0.93,
+            117.92,
+            12.62
+          ],
+          "episode_file_age_s": [
+            45.34,
+            2.45,
+            17.43,
+            0.51,
+            8.84,
+            56.25,
+            123.66,
+            12.65
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1186,
+          "lanes": [
+            153,
+            149,
+            149,
+            148,
+            149,
+            151,
+            142,
+            145
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25513621,
+          "log_bytes": 27145230,
+          "log_growth": 181788,
+          "worker_log_age_s": [
+            2.42,
+            14.61,
+            20.34,
+            86.22,
+            4.35,
+            14.03,
+            104.64,
+            11.67
+          ],
+          "episode_file_age_s": [
+            10.02,
+            26.53,
+            33.04,
+            91.51,
+            4.39,
+            25.95,
+            110.21,
+            23.78
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3700
+    },
+    {
+      "utc": "2026-10-07T10:13:56.503191+00:00",
+      "snapshot": 19,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1365,
+          "lanes": [
+            170,
+            175,
+            169,
+            173,
+            162,
+            175,
+            167,
+            174
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 1,
+          "partial_tails": 0,
+          "row_bytes": 29263171,
+          "log_bytes": 32400697,
+          "log_growth": 187304,
+          "worker_log_age_s": [
+            28.09,
+            24.01,
+            -0.28,
+            18.17,
+            13.98,
+            92.15,
+            13.91,
+            16.72
+          ],
+          "episode_file_age_s": [
+            49.21,
+            37.2,
+            30.45,
+            18.21,
+            14.02,
+            92.15,
+            26.51,
+            29.98
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1164,
+          "lanes": [
+            149,
+            149,
+            148,
+            144,
+            145,
+            146,
+            143,
+            140
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25064387,
+          "log_bytes": 27645062,
+          "log_growth": 192628,
+          "worker_log_age_s": [
+            13.76,
+            2.13,
+            7.49,
+            3.51,
+            54.99,
+            1.18,
+            22.18,
+            43.03
+          ],
+          "episode_file_age_s": [
+            34.59,
+            15.11,
+            13.35,
+            15.86,
+            60.8,
+            1.22,
+            35.92,
+            64.62
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1191,
+          "lanes": [
+            153,
+            150,
+            149,
+            150,
+            149,
+            151,
+            143,
+            146
+          ],
+          "delta": 5,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25621259,
+          "log_bytes": 27258250,
+          "log_growth": 113020,
+          "worker_log_age_s": [
+            54.38,
+            15.11,
+            72.31,
+            5.37,
+            -1.54,
+            66,
+            6.12,
+            8.4
+          ],
+          "episode_file_age_s": [
+            61.99,
+            29.03,
+            85,
+            5.4,
+            56.35,
+            77.91,
+            19.32,
+            13.63
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3720
+    },
+    {
+      "utc": "2026-10-07T10:14:48.543601+00:00",
+      "snapshot": 20,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1372,
+          "lanes": [
+            171,
+            176,
+            170,
+            173,
+            163,
+            175,
+            169,
+            175
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 3,
+          "partial_tails": 0,
+          "row_bytes": 29413244,
+          "log_bytes": 32563553,
+          "log_growth": 162856,
+          "worker_log_age_s": [
+            26.81,
+            32.55,
+            37.7,
+            50.02,
+            2.97,
+            144.19,
+            7.64,
+            18.84
+          ],
+          "episode_file_age_s": [
+            34.03,
+            32.56,
+            51.4,
+            70.25,
+            3,
+            144.19,
+            15.64,
+            18.84
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1169,
+          "lanes": [
+            150,
+            150,
+            148,
+            145,
+            146,
+            146,
+            143,
+            141
+          ],
+          "delta": 5,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25172136,
+          "log_bytes": 27764992,
+          "log_growth": 119930,
+          "worker_log_age_s": [
+            26.7,
+            -0.83,
+            59.53,
+            26.56,
+            1.87,
+            39.94,
+            74.22,
+            12.58
+          ],
+          "episode_file_age_s": [
+            39.92,
+            12.21,
+            65.39,
+            34.58,
+            22.99,
+            53.26,
+            87.96,
+            21.46
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1200,
+          "lanes": [
+            154,
+            151,
+            150,
+            151,
+            150,
+            152,
+            145,
+            147
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25815067,
+          "log_bytes": 27460499,
+          "log_growth": 202249,
+          "worker_log_age_s": [
+            16.32,
+            26.67,
+            25.37,
+            0.55,
+            26.49,
+            2.45,
+            5.19,
+            29.17
+          ],
+          "episode_file_age_s": [
+            28.73,
+            47.11,
+            32.99,
+            0.58,
+            46.96,
+            23.06,
+            5.22,
+            34.37
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3741
+    },
+    {
+      "utc": "2026-10-07T10:15:40.589838+00:00",
+      "snapshot": 21,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1378,
+          "lanes": [
+            172,
+            176,
+            171,
+            175,
+            164,
+            175,
+            170,
+            175
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 3,
+          "partial_tails": 0,
+          "row_bytes": 29541866,
+          "log_bytes": 32685186,
+          "log_growth": 121633,
+          "worker_log_age_s": [
+            37.01,
+            84.6,
+            26.17,
+            5.41,
+            12.37,
+            196.24,
+            12.88,
+            70.88
+          ],
+          "episode_file_age_s": [
+            51.56,
+            84.6,
+            47.59,
+            13.02,
+            20.65,
+            196.24,
+            21.51,
+            70.89
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1175,
+          "lanes": [
+            150,
+            151,
+            149,
+            146,
+            146,
+            146,
+            145,
+            142
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25301387,
+          "log_bytes": 27906448,
+          "log_growth": 141456,
+          "worker_log_age_s": [
+            78.75,
+            9.62,
+            0.42,
+            0.87,
+            53.91,
+            91.98,
+            3.87,
+            24.96
+          ],
+          "episode_file_age_s": [
+            91.97,
+            30.41,
+            0.46,
+            15.06,
+            75.04,
+            105.3,
+            3.9,
+            39.19
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1207,
+          "lanes": [
+            155,
+            152,
+            151,
+            151,
+            151,
+            152,
+            146,
+            149
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25965933,
+          "log_bytes": 27621239,
+          "log_growth": 160740,
+          "worker_log_age_s": [
+            6.02,
+            -1.58,
+            16.41,
+            31.96,
+            15.26,
+            54.5,
+            8.62,
+            7.95
+          ],
+          "episode_file_age_s": [
+            26.14,
+            40.65,
+            28.25,
+            52.63,
+            22.39,
+            75.11,
+            8.66,
+            13.13
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3760
+    },
+    {
+      "utc": "2026-10-07T10:16:32.683637+00:00",
+      "snapshot": 22,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1384,
+          "lanes": [
+            174,
+            176,
+            172,
+            176,
+            165,
+            175,
+            171,
+            175
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 4,
+          "partial_tails": 0,
+          "row_bytes": 29670496,
+          "log_bytes": 32823958,
+          "log_growth": 138772,
+          "worker_log_age_s": [
+            3.9,
+            136.69,
+            -0.21,
+            42.6,
+            17.49,
+            248.33,
+            1.08,
+            122.98
+          ],
+          "episode_file_age_s": [
+            3.93,
+            136.7,
+            13.64,
+            42.6,
+            17.52,
+            248.33,
+            22.38,
+            122.98
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1184,
+          "lanes": [
+            151,
+            152,
+            149,
+            148,
+            147,
+            147,
+            146,
+            144
+          ],
+          "delta": 9,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25495533,
+          "log_bytes": 28120244,
+          "log_growth": 213796,
+          "worker_log_age_s": [
+            35.45,
+            11.02,
+            39.12,
+            -0.76,
+            11.42,
+            27.97,
+            -0.14,
+            2.32
+          ],
+          "episode_file_age_s": [
+            41.14,
+            23.8,
+            52.55,
+            5.08,
+            32.63,
+            48.95,
+            -0.11,
+            2.35
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1213,
+          "lanes": [
+            156,
+            153,
+            152,
+            152,
+            152,
+            153,
+            146,
+            149
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26095005,
+          "log_bytes": 27758408,
+          "log_growth": 137169,
+          "worker_log_age_s": [
+            16.34,
+            28.08,
+            33.27,
+            12.2,
+            14.74,
+            27,
+            48.49,
+            60.04
+          ],
+          "episode_file_age_s": [
+            28.44,
+            48.91,
+            45.77,
+            24.19,
+            26.66,
+            32.34,
+            60.75,
+            65.22
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3781
+    },
+    {
+      "utc": "2026-10-07T10:17:24.697551+00:00",
+      "snapshot": 23,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1386,
+          "lanes": [
+            174,
+            176,
+            173,
+            176,
+            165,
+            175,
+            172,
+            175
+          ],
+          "delta": 2,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 4,
+          "partial_tails": 0,
+          "row_bytes": 29713360,
+          "log_bytes": 32875022,
+          "log_growth": 51064,
+          "worker_log_age_s": [
+            35,
+            188.71,
+            12.64,
+            94.61,
+            47.74,
+            300.34,
+            18.27,
+            174.99
+          ],
+          "episode_file_age_s": [
+            55.95,
+            188.71,
+            26.61,
+            94.61,
+            69.54,
+            300.35,
+            25.52,
+            174.99
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1187,
+          "lanes": [
+            152,
+            153,
+            149,
+            148,
+            147,
+            147,
+            146,
+            145
+          ],
+          "delta": 3,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25560140,
+          "log_bytes": 28193373,
+          "log_growth": 73129,
+          "worker_log_age_s": [
+            2.51,
+            2.01,
+            91.13,
+            51.26,
+            -1.07,
+            79.98,
+            38.88,
+            21.19
+          ],
+          "episode_file_age_s": [
+            2.54,
+            23.1,
+            104.56,
+            57.09,
+            84.64,
+            100.97,
+            51.91,
+            33.98
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1221,
+          "lanes": [
+            157,
+            154,
+            153,
+            154,
+            152,
+            154,
+            147,
+            150
+          ],
+          "delta": 8,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26267193,
+          "log_bytes": 27938674,
+          "log_growth": 180266,
+          "worker_log_age_s": [
+            24.3,
+            -0.91,
+            19.84,
+            5.35,
+            66.76,
+            7.6,
+            1.2,
+            -1.81
+          ],
+          "episode_file_age_s": [
+            44.3,
+            19.57,
+            40.35,
+            5.38,
+            78.67,
+            16.11,
+            1.23,
+            43.6
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "unique_completed": 3794
+    },
+    {
+      "utc": "2026-10-07T10:18:16.663980+00:00",
+      "snapshot": 24,
+      "tasks": {
+        "stt": {
+          "job": 61653,
+          "task_id": 72847,
+          "completed": 1392,
+          "lanes": [
+            175,
+            176,
+            174,
+            176,
+            167,
+            175,
+            174,
+            175
+          ],
+          "delta": 6,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 4,
+          "partial_tails": 0,
+          "row_bytes": 29841960,
+          "log_bytes": 33014345,
+          "log_growth": 139323,
+          "worker_log_age_s": [
+            -1.59,
+            240.67,
+            18.04,
+            146.58,
+            1.75,
+            352.31,
+            -1.88,
+            226.96
+          ],
+          "episode_file_age_s": [
+            37.5,
+            240.68,
+            26.55,
+            146.58,
+            14.06,
+            352.31,
+            -1.84,
+            226.96
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "dt": {
+          "job": 61654,
+          "task_id": 72848,
+          "completed": 1194,
+          "lanes": [
+            153,
+            153,
+            150,
+            148,
+            149,
+            148,
+            147,
+            146
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 25711026,
+          "log_bytes": 28355315,
+          "log_growth": 161942,
+          "worker_log_age_s": [
+            -0.85,
+            53.97,
+            40.41,
+            103.22,
+            5.61,
+            27.84,
+            0.44,
+            13.47
+          ],
+          "episode_file_age_s": [
+            -0.79,
+            75.07,
+            48.73,
+            109.06,
+            5.64,
+            41.88,
+            0.47,
+            19.42
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        },
+        "at": {
+          "job": 61655,
+          "task_id": 72849,
+          "completed": 1228,
+          "lanes": [
+            158,
+            154,
+            154,
+            155,
+            153,
+            155,
+            148,
+            151
+          ],
+          "delta": 7,
+          "invalid_init": 0,
+          "ready": 8,
+          "complete_shards": 0,
+          "partial_tails": 0,
+          "row_bytes": 26417884,
+          "log_bytes": 28099063,
+          "log_growth": 160389,
+          "worker_log_age_s": [
+            4.26,
+            51.05,
+            -0.41,
+            -2.94,
+            13.89,
+            18.39,
+            -3.48,
+            33.99
+          ],
+          "episode_file_age_s": [
+            17.56,
+            71.54,
+            13.36,
+            9.69,
+            25.85,
+            24.12,
+            8.16,
+            46.79
+          ],
+          "fatal_hits": [],
+          "partition_complete": false
+        }
+      },
+      "final_sr": false,
+      "scheduler": {
+        "stt": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:23",
+          "Status        : RUNNING"
+        ],
+        "dt": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:28",
+          "Status        : RUNNING"
+        ],
+        "at": [
+          "Status        : RUNNING",
+          "Created       : 2026-10-07T16:13:34",
+          "Status        : RUNNING"
+        ]
+      },
+      "unique_completed": 3814
+    }
+  ],
+  "readonly_inline_python": "import json,time,datetime,hashlib,subprocess\nfrom pathlib import Path\nfrom wa.wm.full_mixed_contract import validate_ready,MANIFEST_SHA\nfrom wa.wm.initial_bbox_repair import KEYS,VERSION\nfrom wa.wm.student_eval_contract import REPAIR_SHA\nproject=Path(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928\")\nmanifest_path=Path(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json\")\nraw=manifest_path.read_bytes()\nassert hashlib.sha256(raw).hexdigest()==MANIFEST_SHA\nmanifest=json.loads(raw)\nruns=[(\"stt\",61653,72847),(\"dt\",61654,72848),(\"at\",61655,72849)]\ncontract=dict(checkpoint_sha=\"c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52\",step=59716)\nfatal_patterns=(\"Traceback (most recent call last)\",\"CUDA out of memory\",\"Fatal Python error\",\"AssertionError\")\noffsets={}; previous_counts={}; previous_log_sizes={}\nfor snapshot in range(25):\n    now=time.time(); result=dict(utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),snapshot=snapshot,tasks={},final_sr=False)\n    if snapshot in (0,12,24):\n        states={}\n        for task,jid,tid in runs:\n            p=subprocess.run([\"/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit\",\"detail\",\"--job\",str(jid)],capture_output=True,text=True,check=True,timeout=30)\n            lines=[s.strip() for s in p.stdout.splitlines() if s.strip().startswith(\"Status\") or s.strip().startswith(\"Created\")]\n            assert lines,(\"missing scheduler state\",jid,p.stdout)\n            states[task]=lines\n        result[\"scheduler\"]=states\n    allkeys=set()\n    for task,jid,tid in runs:\n        taskroot=Path(f\"/data/nas_ray/project/md-ak/users/zeying.gong/job_{jid}/task_{tid}\")\n        root=taskroot/f\"wa_student61609_{task}_a800_v1\"\n        lanes=[]; seen=set(); invalid=0; partial=0; completions=0; ready_count=0\n        logs=[taskroot/\"console.log\",taskroot/\".md-ak/workload.log\"]\n        worker_ages=[]; rows_ages=[]; row_bytes=0\n        for lane in range(8):\n            dest=root/f\"shard_{lane:02d}\"\n            ready=json.loads((dest/\"server_ready.json\").read_text())\n            validate_ready(ready,mode=\"mixed\",**contract)\n            assert \"A800\" in ready[\"gpu\"]\n            ready_count+=1\n            f=dest/\"episodes.jsonl\"; data=f.read_bytes(); row_bytes+=len(data)\n            lines=data.splitlines(keepends=True)\n            if lines and not lines[-1].endswith(b\"\\n\"):\n                partial+=1; lines=lines[:-1]\n            local=[json.loads(s) for s in lines if s.strip()]\n            expected={e[\"key\"] for e in manifest[\"tasks\"][task][\"episodes\"] if e[\"shard\"]==lane}\n            for row in local:\n                key=(row[\"task\"],row[\"key\"])\n                assert row[\"task\"]==task and row[\"key\"] in expected,(\"foreign row\",key,lane)\n                assert key not in seen and key not in allkeys,(\"duplicate\",key)\n                seen.add(key);allkeys.add(key)\n                assert row[\"checkpoint_sha256\"]==contract[\"checkpoint_sha\"] and row[\"checkpoint_step\"]==contract[\"step\"]\n                assert row[\"mode\"]==\"mixed\" and row[\"noise_mode\"]==\"zero\"\n                assert row[\"controller\"]==\"learned_yaw_guard_v1\" and row[\"semantic_protocol\"]==\"mp3d_semantic_ply_v1\"\n                if key in KEYS:\n                    assert row[\"initialization_repair\"]==VERSION and row[\"initialization_repair_plan_sha256\"]==REPAIR_SHA\n                else: assert not row.get(\"initialization_repair\")\n                assert type(row[\"policy_init_valid\"]) is bool\n                invalid+=int(not row[\"policy_init_valid\"])\n                assert row[\"success\"] in (False,True,0,1) and row[\"collision\"] in (False,True,0,1)\n            lanes.append(len(local));completions+=int((dest/\"COMPLETE.json\").exists())\n            logs.extend([dest/\"worker.log\",dest/\"server.log\"])\n            worker_ages.append(round(now-(dest/\"worker.log\").stat().st_mtime,2))\n            rows_ages.append(round(now-f.stat().st_mtime,2))\n        hits=[]; logbytes=0\n        for path in logs:\n            assert path.is_file(),(\"required_log_missing\",str(path))\n            size=path.stat().st_size;start=offsets.get(str(path),0)\n            assert size>=start,(\"log_truncated\",str(path))\n            with path.open(\"rb\") as stream:\n                stream.seek(max(0,start-512)); data=stream.read()\n            for marker in fatal_patterns:\n                count=data.count(marker.encode())\n                if count: hits.append(dict(path=str(path),pattern=marker,count=count))\n            offsets[str(path)]=size;logbytes+=size\n        count=len(seen);before=previous_counts.get(task)\n        result[\"tasks\"][task]=dict(job=jid,task_id=tid,completed=count,lanes=lanes,delta=None if before is None else count-before,\n            invalid_init=invalid,ready=ready_count,complete_shards=completions,partial_tails=partial,row_bytes=row_bytes,\n            log_bytes=logbytes,log_growth=None if task not in previous_log_sizes else logbytes-previous_log_sizes[task],\n            worker_log_age_s=worker_ages,episode_file_age_s=rows_ages,fatal_hits=hits,\n            partition_complete=(root/\"PARTITION_COMPLETE.json\").exists())\n        if before is not None: assert count>=before\n        previous_counts[task]=count;previous_log_sizes[task]=logbytes\n    result[\"unique_completed\"]=len(allkeys)\n    print(json.dumps(result,allow_nan=False),flush=True)\n    if any(r[\"fatal_hits\"] for r in result[\"tasks\"].values()): raise RuntimeError(\"specified fatal signature found; inspect original task, do not restart automatically\")\n    if all(r[\"partition_complete\"] for r in result[\"tasks\"].values()): break\n    if snapshot<24:time.sleep(50)\nprint(\"BOUNDED_READONLY_WATCH_FINISHED_NOT_JOB_COMPLETION\",flush=True)\n",
+  "prior_media_check": {
+    "path": "wa/results/STUDENT61609_MEDIA_BOUNDED24_20261007.json",
+    "sha256": "60006fe85ceffc83d2d68a6a28802f6420d988b0a53697b2022c3bd63cd9f6e1",
+    "episodes": 24,
+    "scope": "Fixed first row per task/lane, frames/steps/duration/source-root and hash checks. Not full4215 or every-frame decode."
+  },
+  "prior_mp3d_boundary_check": {
+    "path": "wa/results/STUDENT61609_MP3D_BOUNDARY_20261007.json",
+    "scope": "Separate17:08:36-37 snapshot:8 STT first-completed MP3D/lane paired to both teachers;48teacher files. DT/AT16lanes pending. Not full4215.",
+    "audit_payload_sha256": "492319ba674d22d33118251e5b40a528b05c07eb8e4b596b822c8e1ca70f0074",
+    "snapshot_completed": {
+      "stt": 747,
+      "dt": 631,
+      "at": 648
+    },
+    "snapshot_MP3D": {
+      "stt": 63,
+      "dt": 0,
+      "at": 0
+    },
+    "sampled_MP3D": 8,
+    "runtime_seven_key_repair_seen": 1,
+    "runtime_seven_key_repair_pending": 6
+  },
+  "mp3d_dtat_boundary_check": {
+    "path": "wa/results/STUDENT61609_MP3D_DTAT_BOUNDARY_20261007.json",
+    "sha256": "a295008875e6525abe7247e2d908bcb78d31bc98dbdd680077e5904d8752532c",
+    "audit_payload_sha256": "12d7e9ce59ec243278d7fcd073d88422c14795fbdd297a775a9226482c3fb6e1",
+    "scope": "Separate17:19:01-03 snapshot;fixedfirst-completed MP3D per DT/AT lane,DT7/AT8,oneDTlane3pending;notfull4215",
+    "selected": 15,
+    "teacher_files": 90,
+    "snapshot_completed": {
+      "dt": 733,
+      "at": 747
+    },
+    "snapshot_MP3D": {
+      "dt": 50,
+      "at": 63
+    },
+    "runtime_seven_key_repair_seen": 3,
+    "runtime_seven_key_repair_pending": 4,
+    "repair_rows_in_this_pair_audit": 0
+  },
+  "post_observation_snapshot": {
+    "utc": "2026-10-07T10:22:10.960975+00:00",
+    "snapshot": 0,
+    "tasks": {
+      "stt": {
+        "job": 61653,
+        "task_id": 72847,
+        "completed": 1400,
+        "lanes": [
+          176,
+          176,
+          176,
+          176,
+          171,
+          175,
+          175,
+          175
+        ],
+        "delta": null,
+        "invalid_init": 0,
+        "ready": 8,
+        "complete_shards": 7,
+        "partial_tails": 0,
+        "row_bytes": 30013477,
+        "log_bytes": 33202019,
+        "log_growth": null,
+        "worker_log_age_s": [
+          229.5,
+          474.97,
+          143.67,
+          380.87,
+          36.3,
+          586.61,
+          179.75,
+          461.25
+        ],
+        "episode_file_age_s": [
+          229.51,
+          474.97,
+          143.67,
+          380.88,
+          49.48,
+          586.61,
+          179.76,
+          461.26
+        ],
+        "fatal_hits": [],
+        "partition_complete": false
+      },
+      "dt": {
+        "job": 61654,
+        "task_id": 72848,
+        "completed": 1223,
+        "lanes": [
+          156,
+          156,
+          154,
+          152,
+          152,
+          152,
+          151,
+          150
+        ],
+        "delta": null,
+        "invalid_init": 0,
+        "ready": 8,
+        "complete_shards": 0,
+        "partial_tails": 0,
+        "row_bytes": 26335925,
+        "log_bytes": 29046044,
+        "log_growth": null,
+        "worker_log_age_s": [
+          10.74,
+          -2.52,
+          29.56,
+          1.47,
+          37.07,
+          46.84,
+          1.42,
+          -3.05
+        ],
+        "episode_file_age_s": [
+          23.29,
+          54.2,
+          44.11,
+          14.15,
+          49.63,
+          67.68,
+          1.46,
+          9.49
+        ],
+        "fatal_hits": [],
+        "partition_complete": false
+      },
+      "at": {
+        "job": 61655,
+        "task_id": 72849,
+        "completed": 1257,
+        "lanes": [
+          162,
+          158,
+          158,
+          157,
+          156,
+          159,
+          152,
+          155
+        ],
+        "delta": null,
+        "invalid_init": 0,
+        "ready": 8,
+        "complete_shards": 0,
+        "partial_tails": 0,
+        "row_bytes": 27042353,
+        "log_bytes": 28756687,
+        "log_growth": null,
+        "worker_log_age_s": [
+          5.24,
+          4.61,
+          -0.55,
+          5.07,
+          -0.5,
+          22.23,
+          -2.6,
+          6.28
+        ],
+        "episode_file_age_s": [
+          5.27,
+          9.97,
+          12.26,
+          17.1,
+          -0.47,
+          42.68,
+          10.59,
+          6.31
+        ],
+        "fatal_hits": [],
+        "partition_complete": false
+      }
+    },
+    "final_sr": false,
+    "scheduler": {
+      "stt": [
+        "Status        : RUNNING",
+        "Created       : 2026-10-07T16:13:23",
+        "Status        : RUNNING"
+      ],
+      "dt": [
+        "Status        : RUNNING",
+        "Created       : 2026-10-07T16:13:28",
+        "Status        : RUNNING"
+      ],
+      "at": [
+        "Status        : RUNNING",
+        "Created       : 2026-10-07T16:13:34",
+        "Status        : RUNNING"
+      ]
+    },
+    "unique_completed": 3880
+  },
+  "post_observation_readonly_python": "import json,time,datetime,hashlib,subprocess\nfrom pathlib import Path\nfrom wa.wm.full_mixed_contract import validate_ready,MANIFEST_SHA\nfrom wa.wm.initial_bbox_repair import KEYS,VERSION\nfrom wa.wm.student_eval_contract import REPAIR_SHA\nproject=Path(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928\")\nmanifest_path=Path(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json\")\nraw=manifest_path.read_bytes()\nassert hashlib.sha256(raw).hexdigest()==MANIFEST_SHA\nmanifest=json.loads(raw)\nruns=[(\"stt\",61653,72847),(\"dt\",61654,72848),(\"at\",61655,72849)]\ncontract=dict(checkpoint_sha=\"c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52\",step=59716)\nfatal_patterns=(\"Traceback (most recent call last)\",\"CUDA out of memory\",\"Fatal Python error\",\"AssertionError\")\noffsets={}; previous_counts={}; previous_log_sizes={}\nfor snapshot in range(1):\n    now=time.time(); result=dict(utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),snapshot=snapshot,tasks={},final_sr=False)\n    if snapshot in (0,12,24):\n        states={}\n        for task,jid,tid in runs:\n            p=subprocess.run([\"/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit\",\"detail\",\"--job\",str(jid)],capture_output=True,text=True,check=True,timeout=30)\n            lines=[s.strip() for s in p.stdout.splitlines() if s.strip().startswith(\"Status\") or s.strip().startswith(\"Created\")]\n            assert lines,(\"missing scheduler state\",jid,p.stdout)\n            states[task]=lines\n        result[\"scheduler\"]=states\n    allkeys=set()\n    for task,jid,tid in runs:\n        taskroot=Path(f\"/data/nas_ray/project/md-ak/users/zeying.gong/job_{jid}/task_{tid}\")\n        root=taskroot/f\"wa_student61609_{task}_a800_v1\"\n        lanes=[]; seen=set(); invalid=0; partial=0; completions=0; ready_count=0\n        logs=[taskroot/\"console.log\",taskroot/\".md-ak/workload.log\"]\n        worker_ages=[]; rows_ages=[]; row_bytes=0\n        for lane in range(8):\n            dest=root/f\"shard_{lane:02d}\"\n            ready=json.loads((dest/\"server_ready.json\").read_text())\n            validate_ready(ready,mode=\"mixed\",**contract)\n            assert \"A800\" in ready[\"gpu\"]\n            ready_count+=1\n            f=dest/\"episodes.jsonl\"; data=f.read_bytes(); row_bytes+=len(data)\n            lines=data.splitlines(keepends=True)\n            if lines and not lines[-1].endswith(b\"\\n\"):\n                partial+=1; lines=lines[:-1]\n            local=[json.loads(s) for s in lines if s.strip()]\n            expected={e[\"key\"] for e in manifest[\"tasks\"][task][\"episodes\"] if e[\"shard\"]==lane}\n            for row in local:\n                key=(row[\"task\"],row[\"key\"])\n                assert row[\"task\"]==task and row[\"key\"] in expected,(\"foreign row\",key,lane)\n                assert key not in seen and key not in allkeys,(\"duplicate\",key)\n                seen.add(key);allkeys.add(key)\n                assert row[\"checkpoint_sha256\"]==contract[\"checkpoint_sha\"] and row[\"checkpoint_step\"]==contract[\"step\"]\n                assert row[\"mode\"]==\"mixed\" and row[\"noise_mode\"]==\"zero\"\n                assert row[\"controller\"]==\"learned_yaw_guard_v1\" and row[\"semantic_protocol\"]==\"mp3d_semantic_ply_v1\"\n                if key in KEYS:\n                    assert row[\"initialization_repair\"]==VERSION and row[\"initialization_repair_plan_sha256\"]==REPAIR_SHA\n                else: assert not row.get(\"initialization_repair\")\n                assert type(row[\"policy_init_valid\"]) is bool\n                invalid+=int(not row[\"policy_init_valid\"])\n                assert row[\"success\"] in (False,True,0,1) and row[\"collision\"] in (False,True,0,1)\n            lanes.append(len(local));completions+=int((dest/\"COMPLETE.json\").exists())\n            logs.extend([dest/\"worker.log\",dest/\"server.log\"])\n            worker_ages.append(round(now-(dest/\"worker.log\").stat().st_mtime,2))\n            rows_ages.append(round(now-f.stat().st_mtime,2))\n        hits=[]; logbytes=0\n        for path in logs:\n            assert path.is_file(),(\"required_log_missing\",str(path))\n            size=path.stat().st_size;start=offsets.get(str(path),0)\n            assert size>=start,(\"log_truncated\",str(path))\n            with path.open(\"rb\") as stream:\n                stream.seek(max(0,start-512)); data=stream.read()\n            for marker in fatal_patterns:\n                count=data.count(marker.encode())\n                if count: hits.append(dict(path=str(path),pattern=marker,count=count))\n            offsets[str(path)]=size;logbytes+=size\n        count=len(seen);before=previous_counts.get(task)\n        result[\"tasks\"][task]=dict(job=jid,task_id=tid,completed=count,lanes=lanes,delta=None if before is None else count-before,\n            invalid_init=invalid,ready=ready_count,complete_shards=completions,partial_tails=partial,row_bytes=row_bytes,\n            log_bytes=logbytes,log_growth=None if task not in previous_log_sizes else logbytes-previous_log_sizes[task],\n            worker_log_age_s=worker_ages,episode_file_age_s=rows_ages,fatal_hits=hits,\n            partition_complete=(root/\"PARTITION_COMPLETE.json\").exists())\n        if before is not None: assert count>=before\n        previous_counts[task]=count;previous_log_sizes[task]=logbytes\n    result[\"unique_completed\"]=len(allkeys)\n    print(json.dumps(result,allow_nan=False),flush=True)\n    if any(r[\"fatal_hits\"] for r in result[\"tasks\"].values()): raise RuntimeError(\"specified fatal signature found; inspect original task, do not restart automatically\")\n    if all(r[\"partition_complete\"] for r in result[\"tasks\"].values()): break\n    if snapshot<0:time.sleep(50)\nprint(\"BOUNDED_READONLY_WATCH_FINISHED_NOT_JOB_COMPLETION\",flush=True)\n",
+  "stt_bound": {
+    "path": "wa/results/STUDENT61609_STT_BOUND_20261007T1007Z.json",
+    "sha256": "63ec256edfe57fcb0a1a7f4a645f7174b35a9d90b98990b9093ff8a9f7dd6ca0",
+    "snapshot_completed": 1316,
+    "success": 1195,
+    "failure": 121,
+    "remaining": 89,
+    "upper_bound": 1284,
+    "target": 1289,
+    "scope": "18:07:51-52 separate observed prefixes, independently rehashed18:10; no final SR or early stop."
+  },
+  "diagnostic_preparation": {
+    "status": "CPU_DIAGNOSTIC_PREPARED_NOT_61609_OUTCOME_RESULT",
+    "files": {
+      "wa/tools/audit_hard_stt_outcomes.py": "419af7c93b1e096ad509ce354d6fcb2ae28d4a4feaf5126e08338fadaef30085",
+      "wa/tests/test_hard_stt_outcomes.py": "e014ecb8c91a0cf5dd374bc68946904fffb0648432460f620537ebbf7ef31a50"
+    },
+    "tests": {
+      "command": "CUDA_VISIBLE_DEVICES='' PYTHONDONTWRITEBYTECODE=1 /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -m unittest wa.tests.test_hard_stt_outcomes wa.tests.test_audit_student_goal",
+      "cwd": "checkout",
+      "passed": 30,
+      "new": 11,
+      "reused": 19,
+      "elapsed_seconds": 11.621,
+      "source": "Subagent executed on remote NAS; main reviewed full code and rechecked final file hashes."
+    },
+    "baseline_readonly_selfcheck": {
+      "model": "61377",
+      "episodes": 4215,
+      "source_hashes": 87,
+      "goal_status": "NOT_MET",
+      "original91_recovered": 0,
+      "original91_still_failed": 91,
+      "zero_window_separate": 2,
+      "gains": 0,
+      "regressions": 0,
+      "teacher_solvable_still_failed": {
+        "stt": 93,
+        "dt": 171,
+        "at": 139
+      },
+      "neither_teacher_solved_still_failed": 160,
+      "elapsed_seconds": 14.57,
+      "artifact_written": false
+    },
+    "scope": "Reuses complete-bundle and paired-start goal validation; recomputes success-first/TR teacher eligibility; pins original93/91/10413 identities. Rejects incomplete or duplicate rows, changed plan, output overwrites and dangling output symlink. No 61609 final grouping, model load, GPU, media scan, rollout or training performed."
+  },
+  "latest_post_observation_snapshot": {
+    "utc": "2026-10-07T10:30:27.421323+00:00",
+    "snapshot": 0,
+    "tasks": {
+      "stt": {
+        "job": 61653,
+        "task_id": 72847,
+        "completed": 1405,
+        "lanes": [
+          176,
+          176,
+          176,
+          176,
+          176,
+          175,
+          175,
+          175
+        ],
+        "delta": null,
+        "invalid_init": 0,
+        "ready": 8,
+        "complete_shards": 8,
+        "partial_tails": 0,
+        "row_bytes": 30120684,
+        "log_bytes": 33322700,
+        "log_growth": null,
+        "worker_log_age_s": [
+          725.96,
+          971.43,
+          640.13,
+          877.33,
+          220.78,
+          1083.07,
+          676.21,
+          957.71
+        ],
+        "episode_file_age_s": [
+          725.97,
+          971.43,
+          640.13,
+          877.34,
+          220.78,
+          1083.07,
+          676.22,
+          957.72
+        ],
+        "fatal_hits": [],
+        "partition_complete": true
+      },
+      "dt": {
+        "job": 61654,
+        "task_id": 72848,
+        "completed": 1278,
+        "lanes": [
+          163,
+          163,
+          161,
+          158,
+          159,
+          159,
+          158,
+          157
+        ],
+        "delta": null,
+        "invalid_init": 0,
+        "ready": 8,
+        "complete_shards": 0,
+        "partial_tails": 0,
+        "row_bytes": 27521749,
+        "log_bytes": 30359997,
+        "log_growth": null,
+        "worker_log_age_s": [
+          36.16,
+          18.02,
+          -2.61,
+          -2.64,
+          -1.47,
+          4.14,
+          56.18,
+          4.38
+        ],
+        "episode_file_age_s": [
+          49.28,
+          30.38,
+          10.54,
+          78.49,
+          -1.44,
+          25.36,
+          61.9,
+          26.18
+        ],
+        "fatal_hits": [],
+        "partition_complete": false
+      },
+      "at": {
+        "job": 61655,
+        "task_id": 72849,
+        "completed": 1318,
+        "lanes": [
+          167,
+          166,
+          166,
+          164,
+          164,
+          168,
+          160,
+          163
+        ],
+        "delta": null,
+        "invalid_init": 0,
+        "ready": 8,
+        "complete_shards": 0,
+        "partial_tails": 0,
+        "row_bytes": 28356512,
+        "log_bytes": 30148814,
+        "log_growth": null,
+        "worker_log_age_s": [
+          41.3,
+          3.64,
+          49.12,
+          -2.98,
+          11.94,
+          29.3,
+          2.45,
+          -0.3
+        ],
+        "episode_file_age_s": [
+          61.7,
+          11.47,
+          69.6,
+          10.07,
+          19.55,
+          41.33,
+          2.48,
+          -0.27
+        ],
+        "fatal_hits": [],
+        "partition_complete": false
+      }
+    },
+    "final_sr": false,
+    "scheduler": {
+      "stt": [
+        "Status        : SUCCEEDED",
+        "Created       : 2026-10-07T16:13:23",
+        "Status        : SUCCEEDED"
+      ],
+      "dt": [
+        "Status        : RUNNING",
+        "Created       : 2026-10-07T16:13:28",
+        "Status        : RUNNING"
+      ],
+      "at": [
+        "Status        : RUNNING",
+        "Created       : 2026-10-07T16:13:34",
+        "Status        : RUNNING"
+      ]
+    },
+    "unique_completed": 4001
+  },
+  "raw_stt_terminal": {
+    "scope": "STT-only raw complete counts; full4215 teacher/start/media audits pending",
+    "verified_utc": "2026-10-07T10:32:33.196648+00:00",
+    "task": "stt",
+    "job": 61653,
+    "task_id": 72847,
+    "rows": 1405,
+    "success": 1279,
+    "failure": 126,
+    "initialization_failures": 0,
+    "shortfall": 10,
+    "baseline_raw_delta": 3,
+    "source_hashes": {
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/episodes.jsonl": "b626ec27fe1d00ada80afb867830de43354be6a462aa664ce2df289efe5d63da",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/server_ready.json": "1c7c9021d1ed6234d99dfafcda90eeeda12043d33f41f13f91207fd7d5890da4",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/COMPLETE.json": "1448fb1082636b281cab382d4a7c10ab22647e45d43985e9ef03647cc4b9dde9",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/episodes.jsonl": "6f2fcb8cd96f51c314aacb98f25ba750a2382f558bc3e9dcc7cc61faf58a0439",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/server_ready.json": "8107d9287adbfaf8cc3d4f6655558d2dc46baa3e3192bca5fa5e96d7b24738e0",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/COMPLETE.json": "af488fac38ed40cd3cc51cc84555d50835e5f262383479d99eb6d85f686af850",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/episodes.jsonl": "258ec6cd21da28af410ccb79044c2bcc5a7024feb51ea44b986d5ec2104ad119",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/server_ready.json": "da3df18bf2093bc2831074c48f48fb528f39fdc5c626bcdfc58fd19c4e8c73c0",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/COMPLETE.json": "38a00df0475e4b6f517796a1a7d63acff2bdf2fd53a404213b94e68ae68da433",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/episodes.jsonl": "a58943d23a03af6c508f711dbef3b37699960fdec84efc14722eba95a4f95ba0",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/server_ready.json": "9689b237ca9fa82d9413edfbc958604239f4958ea16277d9371ea75fd89a1a15",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/COMPLETE.json": "8a791850b5feded9213261ef2697677ac2add31cdbbacdd523ddb1f81fd7d60b",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_04/episodes.jsonl": "f5ad2d5af71742bc1a708073e6e8570ed0f39950646dcc740f23eab82254ec43",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_04/server_ready.json": "b24d69a89861f2ca7a2909874fd9a1b71e32b198704c57e369c29a94cf798485",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_04/COMPLETE.json": "583120b109b17b1707ca1c730ff8835578972676af037d2149bff7841932543d",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_05/episodes.jsonl": "91db1c53edb6964c1f2f86121fa823b81d204195898ca1f36df8a200c00ee377",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_05/server_ready.json": "e5bb5d281acb1a99db058506ac5b5182424c0487ac0b475838d259bed3c689dd",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_05/COMPLETE.json": "70242b8976f749129011536e4ae5f082b2c8cee07f6de6c96d8f0e4ef9c96305",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_06/episodes.jsonl": "4287790e293a24b3db526ade051645ac73dd8d0f0c86fe5da9e55d5d447f9aae",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_06/server_ready.json": "35ccc4c236a4c92a4f1fcb55fe691be5babcd8e5a06cd9570a682e7e4bb51923",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_06/COMPLETE.json": "3228771171526321bda9bed623082f2cf6c9d0786a6941d7c44a4a44649b66f6",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/episodes.jsonl": "e0b77fb5e4c6f6a477a96d3b20eac140784d0ced890a42ef8ebcca83b5db6f23",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/server_ready.json": "a9cdf5b40f499e91713d33f44970b8eed900e80f02e18e2e54c729ef516f3b2d",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/COMPLETE.json": "649b17444480c2417273fd43f57a6706ec0f164a46b2c6d18fa7afffe981f56b",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/PARTITION_COMPLETE.json": "2186b0143680d180b78b149daa9ed3431a7cd3e04af33554527955aeec1d9d81"
+    },
+    "lanes": [
+      {
+        "lane": 0,
+        "completed": 176,
+        "success": 158,
+        "episodes_sha256": "b626ec27fe1d00ada80afb867830de43354be6a462aa664ce2df289efe5d63da"
+      },
+      {
+        "lane": 1,
+        "completed": 176,
+        "success": 158,
+        "episodes_sha256": "6f2fcb8cd96f51c314aacb98f25ba750a2382f558bc3e9dcc7cc61faf58a0439"
+      },
+      {
+        "lane": 2,
+        "completed": 176,
+        "success": 161,
+        "episodes_sha256": "258ec6cd21da28af410ccb79044c2bcc5a7024feb51ea44b986d5ec2104ad119"
+      },
+      {
+        "lane": 3,
+        "completed": 176,
+        "success": 152,
+        "episodes_sha256": "a58943d23a03af6c508f711dbef3b37699960fdec84efc14722eba95a4f95ba0"
+      },
+      {
+        "lane": 4,
+        "completed": 176,
+        "success": 163,
+        "episodes_sha256": "f5ad2d5af71742bc1a708073e6e8570ed0f39950646dcc740f23eab82254ec43"
+      },
+      {
+        "lane": 5,
+        "completed": 175,
+        "success": 164,
+        "episodes_sha256": "91db1c53edb6964c1f2f86121fa823b81d204195898ca1f36df8a200c00ee377"
+      },
+      {
+        "lane": 6,
+        "completed": 175,
+        "success": 165,
+        "episodes_sha256": "4287790e293a24b3db526ade051645ac73dd8d0f0c86fe5da9e55d5d447f9aae"
+      },
+      {
+        "lane": 7,
+        "completed": 175,
+        "success": 158,
+        "episodes_sha256": "e0b77fb5e4c6f6a477a96d3b20eac140784d0ced890a42ef8ebcca83b5db6f23"
+      }
+    ],
+    "partition_marker": {
+      "status": "COMPLETE_STUDENT_TASK_PARTITION_NOT_GLOBAL_AUDIT",
+      "task": "stt",
+      "mode": "mixed",
+      "episodes": 1405,
+      "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+      "checkpoint_step": 59716,
+      "combined_sha256": "a26620e3487b490f70a77e2572164684ec510c86f28c0aa3a947d7fb4b9e2423",
+      "global_pair_audit_pending": true
+    },
+    "readonly_verification_python": "import json,hashlib,datetime\nfrom pathlib import Path\nfrom wa.wm.student_eval_contract import validate_student_rows\nfrom wa.wm.full_mixed_contract import validate_ready,MANIFEST_SHA\nroot=Path(\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1\")\nmanifest_path=Path(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json\")\nmraw=manifest_path.read_bytes();assert hashlib.sha256(mraw).hexdigest()==MANIFEST_SHA\nmanifest=json.loads(mraw)\npins=[\"b626ec27fe1d00ada80afb867830de43354be6a462aa664ce2df289efe5d63da\",\"6f2fcb8cd96f51c314aacb98f25ba750a2382f558bc3e9dcc7cc61faf58a0439\",\"258ec6cd21da28af410ccb79044c2bcc5a7024feb51ea44b986d5ec2104ad119\",\"a58943d23a03af6c508f711dbef3b37699960fdec84efc14722eba95a4f95ba0\",\"f5ad2d5af71742bc1a708073e6e8570ed0f39950646dcc740f23eab82254ec43\",\"91db1c53edb6964c1f2f86121fa823b81d204195898ca1f36df8a200c00ee377\",\"4287790e293a24b3db526ade051645ac73dd8d0f0c86fe5da9e55d5d447f9aae\",\"e0b77fb5e4c6f6a477a96d3b20eac140784d0ced890a42ef8ebcca83b5db6f23\"]\ncontract=dict(checkpoint_sha=\"c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52\",step=59716)\nrows=[];lanes=[];hashes={}\nfor i,pin in enumerate(pins):\n shard=root/f\"shard_{i:02d}\"\n path=shard/\"episodes.jsonl\";raw=path.read_bytes()\n assert raw.endswith(b\"\\n\") and hashlib.sha256(raw).hexdigest()==pin\n local=[json.loads(s) for s in raw.splitlines() if s]\n expected={e[\"key\"] for e in manifest[\"tasks\"][\"stt\"][\"episodes\"] if e[\"shard\"]==i}\n assert len(local)==len(expected) and {r[\"key\"] for r in local}==expected\n for name in (\"episodes.jsonl\",\"server_ready.json\",\"COMPLETE.json\"):\n  f=shard/name;assert f.is_file();hashes[str(f)]=hashlib.sha256(f.read_bytes()).hexdigest()\n ready=json.loads((shard/\"server_ready.json\").read_text());validate_ready(ready,mode=\"mixed\",**contract);assert \"A800\" in ready[\"gpu\"]\n rows.extend(local);lanes.append(dict(lane=i,completed=len(local),success=sum(bool(r[\"success\"]) for r in local),episodes_sha256=pin))\nvalidate_student_rows(rows,contract,tasks=('stt',),mode='mixed')\nassert len(rows)==len({(r[\"task\"],r[\"key\"]) for r in rows})==1405\nsuccess=sum(bool(r[\"success\"]) for r in rows);invalid=sum(not r[\"policy_init_valid\"] for r in rows)\nassert success==1279 and invalid==0\np=root/\"PARTITION_COMPLETE.json\";raw=p.read_bytes();sha=hashlib.sha256(raw).hexdigest()\nassert sha==\"2186b0143680d180b78b149daa9ed3431a7cd3e04af33554527955aeec1d9d81\"\nhashes[str(p)]=sha\nprint(json.dumps(dict(scope=\"STT-only raw complete counts; full4215 teacher/start/media audits pending\",verified_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),task=\"stt\",job=61653,task_id=72847,rows=1405,success=success,failure=1405-success,initialization_failures=invalid,shortfall=1289-success,baseline_raw_delta=success-1276,source_hashes=hashes,lanes=lanes,partition_marker=json.loads(raw))))\n",
+    "verification_correction": "First read-only invocation used default tasks=(stt,dt,at) and rejected the STT-only input for incomplete seven-key coverage. This invocation explicitly validates tasks=(stt,) including its two repair keys; no source/result change or weakened full4215 gate.",
+    "scheduler_observation": [
+      "Status        : SUCCEEDED",
+      "Created       : 2026-10-07T16:13:23",
+      "Status        : SUCCEEDED"
+    ],
+    "worker_log_check": {
+      "source": "Independent read-only subagent complete scan at18:29:05..07 Beijing",
+      "required_logs": 18,
+      "specified_fatal_signatures": 0,
+      "ssd_semantic_load_warning_occurrences": 684,
+      "other_warnings": [
+        "Gym",
+        "xFormers"
+      ],
+      "limits": "Four specified signatures only; not an absence-of-all-errors assertion."
+    }
+  }
+}
