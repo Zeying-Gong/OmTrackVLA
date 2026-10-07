@@ -2,9 +2,9 @@
 
 ## 当前结论
 
-新学生61377完整评测3652/4215成功，SR86.642942%，初始化失败0。三类SR均超过同协议LightNav；STT仅净多3条。用户新目标：STT严格超过91.7%，即至少1289/1405（比当前净增13）；DT至少1173/1405、AT至少1203/1405。碰撞继续记录但不是本轮主要优化目标；不改物理与成功判据。达到后再分析UWB有无的影响。
-这是用户授权的评测集内适配，不是未见测试泛化。WA为RGB+首帧GT框+理想模拟极坐标UWB，无文本；LightNav为RGB+文本，不同输入条件。
-已核验24分片完成、4215唯一task/key、每类1405、权重身份、78个源文件哈希与指标重算。2026-10-07全4215条与双教师的初始RGB/动态状态配对审计通过；4215首帧JPEG哈希与视频流/时长元数据检查通过，未逐帧解码所有视频。上述结果真实性审计完成，但STT>91.7%的新目标尚未达到。
+61609 新分支完成4215条完整闭环：STT **1279/1405（91.032028%）**、DT **1178/1405（83.843416%）**、AT **1207/1405（85.907473%）**，合计3664/4215（86.927639%），初始化失败0。相对61377分别净增3、5、4条，DT/AT维持并提升；STT仍差10条才能达到至少1289（严格超过91.7%）。**Goal仍为ACTIVE，不能标记达标；UWB消融尚未启动。**
+三类SR均超过本项目同协议LightNav，但这是用户授权的评测集内适配，不是未见测试泛化。WA为RGB+首帧GT框+理想模拟极坐标UWB，无文本；LightNav为RGB+文本，不同输入条件。
+已核验三个调度任务SUCCEEDED、24分片完成、4215唯一task/key、每类1405、78个源文件哈希；全4215条与双教师的原始RGB/动态状态起点配对通过。4215首帧JPEG哈希与视频流/时长元数据检查通过，未逐帧解码所有视频。指标、逐例增退及固定难例审计均通过；碰撞继续记录但不是本轮主要优化门槛。
 
 ## 模型与训练
 
@@ -35,25 +35,41 @@ SHA256：`c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52`。
 [TensorBoard](http://127.0.0.1:16006/#scalars) 的 `hard_stt_61609` 是已结束训练曲线，不代表仍在训练。查看电脑执行 `ssh -N -L 16006:127.0.0.1:6006 devpod-a800`；既有scalar API曾与NAS实际数据核验。
 候选/拟合依据：[HARD_STT_CANDIDATE_20261007.json](HARD_STT_CANDIDATE_20261007.json)。40项训练CPU测试及4更新开发检查已完成；88早期窗口拟合仅作依据，不是SR。
 
-## 正在运行：61609 三任务24卡完整闭环
+## 已完成：61609 三任务24卡完整闭环
 
-[预检报告](STUDENT61609_PREFLIGHT_20261007.json)：98项相关CPU测试执行通过；新权重真实RTX4090短接口检查通过（2次合成RGB推理，不是Habitat轨迹/端侧时延）；真实数据24路定义预检通过，STT/DT/AT各1405，72个产物哈希回读一致。定义预检未加载模型、reset模拟器或渲染首帧，不能冒充真实闭环。
-独立冻结 `source_student61609_eval24_v1` commit `192b57f5e270acfffd8c7c1a4590cb1b257d92a3`，工作树干净。配置：[STT](../jobs/student61609_stt_a800_v1.yaml)、[DT](../jobs/student61609_dt_a800_v1.yaml)、[AT](../jobs/student61609_at_a800_v1.yaml)，各8A800、1405条，共24卡/4215条。2026-10-07 16:13北京已提交：STT61653/72847、DT61654/72848、AT61655/72849。配置与预检已备份GitHub `b27a39b9`；旧61377/60502结果不复用或覆盖。
-启动审计[STUDENT61609_STARTUP_20261007.json](STUDENT61609_STARTUP_20261007.json)：北京时间16:17:19，实际24×A800-SXM4-80GB及24个模型ready契约通过；完整有效STT25、DT23、AT23，共71条，重复/半行/契约错误/初始化失败均0。24路均有实际trace/steps，尚无COMPLETE；这不是全量SR。真实task根console/workload及worker/server日志未见指定fatal，Gym/xFormers警告保留。
-三个新输出根分别为：
+[预检报告](STUDENT61609_PREFLIGHT_20261007.json)：98项CPU测试、真实权重短接口、24路真实数据定义检查通过。独立冻结 `source_student61609_eval24_v1` commit `192b57f5e270acfffd8c7c1a4590cb1b257d92a3`，运行期间不修改；配置：[STT](../jobs/student61609_stt_a800_v1.yaml)、[DT](../jobs/student61609_dt_a800_v1.yaml)、[AT](../jobs/student61609_at_a800_v1.yaml)。三项各8×A800、各1405条，全部重新运行，没有复用旧模型结果。
+
+| 任务 | Job/Task | 北京时间2026-10-07成功结束 | 成功数 | SR% | 比61377净增 | 新增成功／退步 |
+|---|---|---|---:|---:|---:|---:|
+| STT |61653/72847|18:26:50|1279|91.032028|+3|15／12|
+| DT |61654/72848|18:50:16|1178|83.843416|+5|26／21|
+| AT |61655/72849|18:45:01|1207|85.907473|+4|25／21|
+
+| 任务 | TR% | HumanCollision CR% | macroTR% | 初始化失败 |
+|---|---:|---:|---:|---:|
+| STT |87.522621|3.985765|92.064468|0|
+| DT |79.634758|6.049822|82.210367|0|
+| AT |85.074148|5.053381|88.071922|0|
+
+完整记录：[STUDENT61609_FINAL_20261007.json](STUDENT61609_FINAL_20261007.json)，包含调度终态、监控、审计命令、逐例新增成功/退步和NAS产物hash。最终4215条完整分母均保留。STT原91个有有效教师窗口的难例恢复15、仍失败76；额外2个零窗口难例仍失败，不混入91分母。STT的15项新增成功全部来自原91难例，但12个原成功样本退步（7目标人Collision、1Lost、4Normal未成功），抵消了大部分收益。当前STT仍有88个教师曾成功而学生失败的样本（86有窗口、2零窗口），教师起点成功不等于从学生失败状态也可恢复，不能据此保证下一轮会成功。
+协议仍mixed/zero/seed7/learned_yaw_guard_v1、固定语义修复及7例首框修复。新评测A800，61377基线RTX4090；起点配对通过但不声称跨硬件逐位等价或把全部变化单独归因为采样。没有训练epoch3、改loss/物理/阈值或新增LightNav。
+
+三个运行根：
 
 - STT：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1`
 - DT：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1`
 - AT：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1`
 
-协议仍mixed/zero/seed7/learned_yaw_guard_v1、固定语义修复与7例初始框修复；RGB+首帧GTBBox+理想UWB，无文本。A800实时显示29空闲时选择其优先；资源提交前重查，不能承诺立即调度。61377基线评测为RTX4090，新评测A800，不声称跨硬件逐位一致；需全量初始RGB/状态配对及成功增退分析。
-18:30:27最新进度：STT已SUCCEEDED，1405条/8分片完成；DT1278/1405、AT1318/1405仍RUNNING、各8卡，总4001条，初始化失败0。本轮约20分钟只读观察25个快照从3322增至3814（+492），之后18:22快照3880、18:30快照4001；观察结束不等于三任务结束。见 [本轮连续观察与STT原始终态记录](STUDENT61609_WATCH_20261007T0957Z.json)，[前轮记录](STUDENT61609_WATCH_20261007T0931Z.json)保留。实际日志未发现四种指定致命签名，不代表无警告；STT仍有684条SSD语义加载警告及Gym/xFormers警告。
-固定各任务8分片首条共24条起点配对通过，包含失败而非挑选成功；144份教师证据重新核验，raw sensor SHA一致、动态state atol1e-6。见 [24条配对抽查](STUDENT61609_STARTPAIR_BOUNDED24_20261007.json)，不是全4215条/媒体验收。
-另完成相同固定24条的[录像元信息与一致性抽查](STUDENT61609_MEDIA_BOUNDED24_20261007.json)：视频/complete/动作记录/结果步数一致，时长为帧数÷20；实际路径均属此次新任务，文件hash稳定。不是逐帧视觉审查、HTML链接验收或4215条全量媒体验收，20fps回放时长也不是模拟耗时。
-新[MP3D边界抽查](STUDENT61609_MP3D_BOUNDARY_20261007.json)：17:08:36另一次快照STT747/DT631/AT648，其中MP3D63/0/0；各STT分片首个已完成MP3D共8条（含失败、排除旧24）与双教师起点配对通过，48份教师文件验真。按manifest和实际资产路径识别MP3D，不猜场景ID；DT/AT的16路尚无MP3D，明确待查。七例初始框repair静态计划通过，但运行仅见1例，另6例待查；不是全部修复例或全4215条验收。
-后续[DT/AT MP3D边界抽查](STUDENT61609_MP3D_DTAT_BOUNDARY_20261007.json)：17:19:01–03的独立快照为DT733/AT747，其中MP3D50/63；新增固定15对（DT7/AT8）起点全部通过，90个教师文件hash、原始审计payload及选中row一次保存。DT lane3当时尚无MP3D，仍待查；不重复STT8例。七例repair当时3例运行标记正确、4例待完成，但3例均不在这15例中，不冒称完成了其起点配对。
-61609的STT原始全量计数为1279成功、126失败、初始化失败0：较61377多3条，但距1289目标仍差10。18:29终态检查及18:32独立回读25源hash/1405唯一记录通过；三任务起点/媒体审计、DT/AT最终结果及成败配对分析仍待，不作为已审计完整三任务结果。更早[18:07上界证据](STUDENT61609_STT_BOUND_20261007T1007Z.json)保留：当时121失败已使最多1284<1289；未提前停评或选择性重跑。UWB消融暂不启动，不盲续训。
-新[难例结果分组工具](../tools/audit_hard_stt_outcomes.py)只接受完整配对验证的结果：冻结原91个有窗口hard案例，另2个零窗口单列，核对恢复/旧成功退步/教师可解仍失败。30项CPU测试通过（11新增+19既有），真实61377只读自检4215条/87源hash通过，且正确返回NOT_MET；这是诊断工具验证，不是61609新成绩。它不加载模型、扫描媒体或生成新轨迹；原权重和运行源码不变。
+合并根：`/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61609_full_audit_20261007_v1`。summary SHA `223b4b8140e79842408bc7104d16f75b7b4ff1d409354ee547b00e4b49f937f7`；combined SHA `0ab45e1b35bb0b8809fcc77fcaabca59b35bab0839507d716c371ce2d5a6f358`。
+目标审计：`artifacts/student61609_goal_20261007_v1/goal_report.json`，SHA `92e388281c3074dee918c411f61f3624e545f19d6c9a06a83393fee2817b93a8`，165个源文件哈希验证、状态PASS但goal NOT_MET，差额10/0/0。固定难例审计：`artifacts/student61609_hard_outcomes_20261007_v1/hard_stt_outcomes.json`，SHA `b03ec11a2932ed317d9ebedbd420342f9ac26551b7a39872f4f99e072e681736`，168源hash通过。
+新视频页：`artifacts/student61609_review_20261007_v1`，audit SHA `39d0376cccf925c1735264f686c3908cec67cbb2b9cbebc583c06e3da2b36c73`。19:04实际本机转发HTML/首视频HTTP200；远程HTML/audit/summary/首视频也均200。执行 `ssh -o ExitOnForwardFailure=yes -N -L 18799:127.0.0.1:18799 devpod-4090`，打开 [61609完整4215条结果](http://127.0.0.1:18799/)。18798仍为61377，18797仍为60502，不替换。
+原Gym/xFormers/SSD语义加载警告保留；指定fatal/OOM签名未发现，不写完全无异常。先前各部分监控、24条抽查、MP3D边界和STT乐观上界报告均保留为历史证据；最终完整审计不再把当时“待查”误写为当前缺失。
+
+## 下一轮诊断准备（不是新的训练或成绩）
+
+[固定88窗口回放工具与检查](TEACHER_FIT_REPLAY_PREPARATION_20261007.json)：新10项加既有3项CPU测试通过；真实88窗口、176个历史条件配对、1705项源文件校验通过，用时50.50秒，明确禁止模型创建与checkpoint加载。原报告固定SHA和原样本顺序不变，未按61609成功/失败重新挑选。
+回放将只加载61609，对原40个hard、16个STT成功、16个DT、16个AT窗口分别作正常/重复历史预测，复用61377已保存的逐窗口误差。旧报告没有完整7点预测，因此只比较已有误差/首点，不冒称完整预测轨迹差；新报告将保存完整7×4预测和标签。
+本次尚未执行GPU回放：A800开发卡均已有分配；H100入口可连接但独立NAS缺本次代码、环境、缓存及权重；4090同GPFS，最低占用GPU6连续两次340MiB/27%，未视为独占空闲，没有挤占其他任务或跨NAS迁移。下一步重查资源，执行有界诊断并检查12个退步与76个持续失败的配对轨迹，再选择有限恢复/采样实验，不盲目调大重复数或学习率。
 
 ## 已完成的61377完整闭环结果（均1405条/类）
 
@@ -76,7 +92,7 @@ TR=sum(following_step)/sum(max(total_step,reference_step))；每类52条缺refer
 
 代码分支仍为OmTrackVLA/wa。开发入口devpod-4090，共享百度持久NAS；本轮无跨NAS迁移。训练8A800，评测三任务各8RTX4090，共24卡，全部SUCCEEDED；不复用旧模型行，不因SSH断连重跑。
 STT61423/72526结束2026-10-06 11:43:32；DT61424/72527结束12:12:37；AT61425/72528结束13:21:10（北京时间）。评测冻结commit：5ed88af27ee637129af44b11727f244e312eecbd。
-新checkpoint：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61377/task_72474/wa_dual_teacher_train_a800_v1/checkpoint.pt`
+61377基准checkpoint：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61377/task_72474/wa_dual_teacher_train_a800_v1/checkpoint.pt`
 SHA256：`b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f`；step59065，累计2epochs。
 父checkpoint：`/data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt`
 父SHA256：`ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d`；模型+优化器继承。
@@ -89,14 +105,14 @@ AT结果：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61425/task_72528/w
 各根含PARTITION_COMPLETE.json和combined_episodes.jsonl，逐行artifact_root保留视频出处。不上传checkpoint/数据/视频到GitHub，仅备份代码、配置及关键结果。
 
 合并审计：`/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1`；summary SHA256 `30dfdbd9263ca0ba3615cb1845938de235c7e1b15b2141edb5ac584622f6bbf3`。
-新学生视频浏览：`/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_review_20261007_v1`；audit SHA256 `7d2000efd58135753c9a4b5a8fe5bd3c228593ad2427f6278fc66841a293261d`。HTML、audit.json及首条视频HEAD均返回HTTP200。
+61377基准视频浏览：`/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_review_20261007_v1`；audit SHA256 `7d2000efd58135753c9a4b5a8fe5bd3c228593ad2427f6278fc66841a293261d`。HTML、audit.json及首条视频HEAD均返回HTTP200。
 
-在查看页面的电脑执行：`ssh -N -L 18798:127.0.0.1:18798 devpod-4090`，打开 [新学生4215条结果](http://127.0.0.1:18798/)。旧18797仍为60502结果，不替换或混用。
+在查看页面的电脑执行：`ssh -N -L 18798:127.0.0.1:18798 devpod-4090`，打开 [61377基准4215条结果](http://127.0.0.1:18798/)。旧18797仍为60502结果，不替换或混用。
 
 ## 下一步与边界
 
-Goal与20分钟持续跟进已启用，验收STT至少1289、DT至少1173、AT至少1203。难例覆盖、分组拟合、受限采样接入及开发检查已完成；61609训练最终真实性验收及三任务预检已完成。三任务各8卡完整闭环已提交并有实际结果，继续监控原任务直至最终配对及媒体审计，不提交集群smoke或复用旧模型结果。只在这次闭环结果支持时继续有限尝试；不盲目续训epoch3。
+Goal与20分钟持续跟进保持ACTIVE，验收STT至少1289、DT至少1173、AT至少1203。61609训练与4215条真实性/媒体审计全部完成，三类净增但STT仍差10条。继续固定窗口拟合和增退轨迹诊断，依据证据选择下一项有限实验；不盲目追加epoch3或直接加大难例权重。没有新正式任务，不重跑已经完成的61609闭环。
 达到后先测同权重有/无UWB依赖，再区分无UWB重训的纯视觉能力；两者不是同一实验。当前无真实UWB噪声/丢包/多径、真实机器人、Thor/RDK时延或产品级避障验收。
 UWB只读接口审计保留：[UWB_INTERFACE_AUDIT_20261007.json](UWB_INTERFACE_AUDIT_20261007.json)。image路径不发送测量字段且屏蔽坐标token；控制器使用模型预测geometry，不直接读实测UWB。后续不以“mixed坐标填零”冒充无UWB，不把推理时移除与无UWB训练混为一谈。
 后续入口准备：[UWB_EVAL_MODE_PREPARATION_20261007.json](UWB_EVAL_MODE_PREPARATION_20261007.json)。显式image模式已贯通server、worker、ready、结果、完成标记、合并及视频/HTML；默认mixed不变，image禁止复用旧结果和实测UWB控制器。98项相关CPU测试执行通过（含21项新模式/发布测试），已有61377全4215条/78源文件hash只读回归通过、指标未变；合法False失败保留完整分母。尚未加载真实最终权重验证无UWB端到端行为，未跑image轨迹、未产生UWB消融结果。正式对照仍需先达SR门槛，再做真实接口/observer扰动/数据预检、同权重全量配对；不把LightNav比较当作有无UWB效果。
-旧台账及旧评测修复记录保留。本次备份不修改冻结源码、模型或已完成产物；只为新权重准备独立全量评测，不重复旧模型任务。
+旧台账及旧评测修复记录保留。本次备份为新完整结果、训练和checkpoint路径、诊断代码及后续门槛；不修改冻结源码、权重或旧结果，不重复已完成任务。

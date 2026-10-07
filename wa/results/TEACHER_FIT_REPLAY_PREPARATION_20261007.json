@@ -1,0 +1,49 @@
+{
+  "schema": "wa.fixed88-replay-preparation.v1",
+  "status": "CPU_PREPARED_REAL_INPUTS_PASS_NOT_NEW_MODEL_FIT",
+  "date_beijing": "2026-10-07",
+  "tool": "wa/tools/replay_teacher_group_fit.py",
+  "tool_sha256": "869e5346fb69cfb189746cedc5b72166b0df11b26f3d35c4465256d7650d1a46",
+  "test": "wa/tests/test_replay_teacher_group_fit.py",
+  "test_sha256": "f7e5ae7639bf039340707d254eeced798d19b3705d25f342a087501211bc6c23",
+  "tests": {
+    "count": 13,
+    "new": 10,
+    "legacy": 3,
+    "main_rerun": {
+      "chunk_id": "83bb14",
+      "wall_time_seconds": 0.000012481,
+      "exit_code": 0,
+      "original_token_count": 86,
+      "output": ".{\"stage\": \"candidate_predict\", \"windows\": 16}\n{\"stage\": \"candidate_predict\", \"windows\": 32}\n{\"stage\": \"candidate_predict\", \"windows\": 48}\n{\"stage\": \"candidate_predict\", \"windows\": 64}\n{\"stage\": \"candidate_predict\", \"windows\": 80}\n............\n----------------------------------------------------------------------\nRan 13 tests in 0.291s\n\nOK\n"
+    }
+  },
+  "real_cpu_admission": {
+    "status": "REAL_FIXED88_CPU_ADMISSION_PASS_NO_MODEL_LOADED",
+    "windows": 88,
+    "reference_pairs": 176,
+    "source_hashes": 1705,
+    "reference_sha256": "1463ea39a6fe1acf90fcbd813d1ae23bee6ee0e475a314e5bde174b3fa4f8158",
+    "tool_sha256": "869e5346fb69cfb189746cedc5b72166b0df11b26f3d35c4465256d7650d1a46",
+    "candidate_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "candidate_step": 59716,
+    "old_checkpoints_skipped": {
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt": "ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d",
+      "/data/nas_ray/project/md-ak/users/zeying.gong/job_61377/task_72474/wa_dual_teacher_train_a800_v1/checkpoint.pt": "b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f"
+    },
+    "elapsed_s": 50.500346675515175
+  },
+  "real_cpu_script": "import json,time\nfrom pathlib import Path\nfrom types import SimpleNamespace\nfrom unittest.mock import patch\nfrom wa.tools import replay_teacher_group_fit as m\nfrom wa.wm.dual_teacher_data import DualTeacherData\nr=Path(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928\");start=time.monotonic()\na=SimpleNamespace(training_audit=str(r/\"artifacts/hard_stt_training_audit_61609_v1.json\"),training_audit_sha256=\"59d5b468eec4283db1a1d87ad7b9a9d1bc2123739cffc38cebfc9a1e14dcc727\",candidate_checkpoint=\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt\",candidate_sha256=\"c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52\",candidate_step=59716)\nhashes={}\nwith patch.object(m.torch,\"load\",side_effect=AssertionError(\"No checkpoint loading in CPU admission\")),patch.object(m,\"JointRobotModel\",side_effect=AssertionError(\"No model creation\")):\n reference,baseline=m.read_reference(r/\"artifacts/teacher_group_fit_61377_20261007_v1.json\",hashes)\n skipped=m.verify_reference_sources(reference,\"/data/nas_ray/project/md-ak/users/zeying.gong\",hashes)\n audit,config,env=m.candidate_inputs(a,hashes)\n deps=m.verify_dependencies(r,config,env,hashes)\n data=DualTeacherData(r/\"artifacts/dual_teacher_se2_cache_20261006_v1\")\n for i in range(88):\n  item=m.fixed_sample(data,reference[\"selected\"],baseline,i,hashes)\n  if (i+1)%16==0:print(json.dumps({\"stage\":\"cpu_fixed_window_admission\",\"windows\":i+1,\"elapsed_s\":time.monotonic()-start}),flush=True)\n for p,h in hashes.copy().items():m.verify(p,h,hashes)\n print(json.dumps({\"status\":\"REAL_FIXED88_CPU_ADMISSION_PASS_NO_MODEL_LOADED\",\"windows\":88,\"reference_pairs\":len(baseline),\"source_hashes\":len(hashes),\"reference_sha256\":m.REFERENCE_SHA,\"tool_sha256\":m.sha(m.__file__),\"candidate_sha256\":a.candidate_sha256,\"candidate_step\":a.candidate_step,\"old_checkpoints_skipped\":skipped,\"elapsed_s\":time.monotonic()-start}),flush=True)\n",
+  "limits": [
+    "No model was instantiated or checkpoint loaded. Actual new checkpoint bytes were rehashed against the completed training audit.",
+    "88 identities and 176 history-condition pairs copied exactly from SHA-pinned old report; not reselected using new successes.",
+    "Old report contains errors/first point only, not full seven-point predictions. Future replay saves complete predictions/labels and input tensor hashes.",
+    "No training, rollout, sampling change, formal job, or UWB ablation."
+  ],
+  "resource_readiness": {
+    "a800": "All eight developer GPUs had existing memory allocations; no exclusively idle GPU established.",
+    "h100": "nas-h100 reachable on separate Aliyun NAS but required tool/environment/new checkpoint/cache missing; no migration.",
+    "baidu_4090": "Same GPFS verified; GPU6 lowest memory340MiB utilization27% in two reads, not assumed idle. No GPU diagnostic started."
+  },
+  "next": "Recheck a genuinely idle authorized developer GPU; run the fixed88 candidate-only diagnostic using c510... step59716, compare stored 61377 errors, then inspect the 12 STT regressions and 76 old-hard persistent failures."
+}
