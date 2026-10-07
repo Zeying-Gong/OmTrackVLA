@@ -14,7 +14,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Frozen source_hard_stt_train_v1 commit8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06;clean;159Pythonfiles match developer diagnostic.
 - Config wa/jobs/hard_stt_train_a800_v1.yaml SHA99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184;GitHubfda647a7.
 - Parent59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;new1epoch cumulative2;planned37009updates/end59716.
-- Firstworker read:dataset/8rank initialization andmodel loading;no verifiednewstep yet. xFormers/NCCLdevice warnings retained;no fatal signature in checkedlog.
+- Actual training snapshot:step22950/59716,phase243/37009,elapsed138.624s,loss.11054,gradnorm.64235,peak8.6845GiB. Startupwarnings retained.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
 
 ## Frozen baseline and evidence
