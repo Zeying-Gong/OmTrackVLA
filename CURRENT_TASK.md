@@ -19,9 +19,10 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Actual1184272exposures=726631base+457641teacher;10413hardwindows each3=31239/earlyhard9810;teacherSTT148547DT156048AT153046;8ranks148034each. Heldout73368/mode:ADE/FDE image.265734/.463479 point.253940/.442441 mixed.253890/.441945;notclosedloop.
 - TensorBoard hard_stt_61609 is completed-training curves, not runningtraining; existing6006/exporter. ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars .
 - 24GPU fullmixed preflight PASS:98CPUtestexecutions;actualcheckpoint shortRTX4090interface;24realHabitatdefinitionlanes1405/task,72hashes. Syntheticinterface is not simulatorreset/rollout/firstbenchmarkframe evidence.
-- Active STT61653/72847,DT61654/72848,AT61655/72849 submitted2026-10-07 16:13Beijing;each8A800/1405,total4215,all24ready actualA800verified. Snapshot16:17:19 validcompleted25/23/23=71unique;invalid0;all24shardsnotCOMPLETE. No finalSR.
+- Active STT61653/72847,DT61654/72848,AT61655/72849 submitted2026-10-07 16:13Beijing;each8A800/1405,total4215,all24ready actualA800verified. Snapshot16:33:55 validcompleted257/226/234=717unique;invalid0;all24shardsnotCOMPLETE. No finalSR.
 - Frozen source_student61609_eval24_v1 commit192b57f5e270acfffd8c7c1a4590cb1b257d92a3 clean;configs wa/jobs/student61609_{stt,dt,at}_a800_v1.yaml backedupb27a39b9. Output job_<ID>/task_<ID>/wa_student61609_<task>_a800_v1. Noresume/reuse.
-- Preflight wa/results/STUDENT61609_PREFLIGHT_20261007.json;startup wa/results/STUDENT61609_STARTUP_20261007.json. A80029free checkedbeforethree8GPUsubmissions. GPUchangefrom61377RTX4090 recorded,notbitwiseequivalence;fullstartauditrequired.
+- Preflight wa/results/STUDENT61609_PREFLIGHT_20261007.json;startup STUDENT61609_STARTUP_20261007.json;watch STUDENT61609_WATCH_20261007T0823Z.json. 13snapshots16:23..16:33 grew347->717;actualtasklogs/no4specifiedfatals,alljobsRUNNING;warningsretained.
+- Bounded24startpair PASS144teacherfiles,report STUDENT61609_STARTPAIR_BOUNDED24_20261007.json SHA34d3f00d2271d1988e744657ee6ff2f7586c888528da96013dcfaa164391b785. Fixedfirstrow/task/lane inclfailures;not4215audit. A800vs61377RTX4090notbitwiseequivalence.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
 
 ## Frozen baseline and evidence
