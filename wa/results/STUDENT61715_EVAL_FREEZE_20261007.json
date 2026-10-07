@@ -1,0 +1,318 @@
+{
+  "schema": "wa.student61715.eval-freeze-preparation.v1",
+  "status": "STATIC_DEPENDENCY_CPU_READY_PENDING_FINAL_CHECKPOINT",
+  "checked_at_beijing": "2026-10-07T21:25:29+08:00",
+  "previous_goal_turn": "VERIFIED_WAIT: 10-minute live watch +1500 real updates; no terminal training or new SR",
+  "source": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61715_eval24_v1",
+    "commit": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb",
+    "clean_before_after": true,
+    "independent_worktree": true,
+    "training_source_unchanged": true
+  },
+  "scope": "Checkpoint-independent evaluation readiness only; not a formal submission, simulator rollout, new SR, or final-weight acceptance.",
+  "prior_cpu_and_data_preparation": "wa/results/STUDENT61715_EVAL_PREPARATION_20261007.json",
+  "prior_preparation_scope": {
+    "cpu_tests": 114,
+    "repeated_this_turn": false,
+    "actual_manifest_keys": 4215,
+    "planned_lanes": 24,
+    "each_task": 1405
+  },
+  "file_comparison": {
+    "checked_by": "executor_contract_audit",
+    "baseline_commit": "192b57f5e270acfffd8c7c1a4590cb1b257d92a3",
+    "method": "New freeze bytes equal git show baseline:<path>; canonical SHA is json.dumps(proof,sort_keys=True,separators=(',',':')).",
+    "canonical_sha256": "e0c397be92fd4c1b332604829924736a67d7418e6e93bca3459ddb888575e5c0",
+    "proof": [
+      {
+        "path": "wa/scripts/eval_full_mixed.sh",
+        "sha256": "9b909878647bae92540e3207d31efce54db856db2bc59b774db9377e9722f32f",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/eval_full_mixed_launch.py",
+        "sha256": "14fbbbe8aee87904c36a0f80dd3a428ebfd3a30d05972111ebb23e8e8fe40fd2",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/eval_full_mixed.py",
+        "sha256": "6d4f27759b8e14c385d2bd4aa1a502c6e0fd2cf4e0aee77753ec30cb7531b647",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/eval_server.py",
+        "sha256": "49d7b0b5b60f98a479a870f65821ec0a0b0a69f8b60cf9f5a5a6c9cd9b217fb1",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/diagnostic_agent.py",
+        "sha256": "6ea51590ad4a187ac8fd89cb2bf06c9095c72994a98f8ad3ad1142fa0408678a",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/learned_yaw_control.py",
+        "sha256": "cf917b6657116bfaa78743b444689c4ee818a0b75189c9c8c8ffb1012deffbc9",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/uwb_control.py",
+        "sha256": "210cdf8e9bd2b02abaeb567f39e5551366c80de57ddd0f6fcc9303ea6b8f1ab1",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/review_recorder.py",
+        "sha256": "1a079b5336bc09568fae84b2c4e04328e700536e5c5370b401ed77c2d025afaf",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/full_mixed_contract.py",
+        "sha256": "089337a5c295a9791756f18db462bf9d0154845ba1641d8bf1fd08ea65404355",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/student_eval_contract.py",
+        "sha256": "fdc7e9ad6c9aa14fd1c09ecfdc810f7b32a51f41eaeaf9381080a5e503886dfd",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/student_eval_partition.py",
+        "sha256": "24a7769bbe8ca9e0550f14c77ee126a272f3f8b228739c7b025de3b901d7ec9e",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/student_eval_finalize.py",
+        "sha256": "79d9764d60fbe07ec1b84d29a71adf4722b1b5df3454e28000f44b57033d13ba",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/student_pair_audit.py",
+        "sha256": "fed4c1a7b2fd85f9bf88076572bc92445bc87bb8ce34a45f0d9fb15652e0d376",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/semantic_scene.py",
+        "sha256": "043294941c3313528a11ad579b375b2caa60d7c902e7d773f8922576d2325b2f",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/config/mp3d_semantic_ply_v1.scene_dataset_config.json",
+        "sha256": "1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/training.py",
+        "sha256": "43e2705aeb1175ae5e73225587d0d8caa5cdea6deff43ecec4150721e8ea2bc8",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/adapters.py",
+        "sha256": "24d239540315dba258759e14953e61a3a3fe7e9676f7a36e8a58dc672063507a",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/loaders.py",
+        "sha256": "185bc69497b821b05f971ec587134cd1322e59efd18db8e6f0adde89bb9f7cb7",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/tools/merge_student_partitions.py",
+        "sha256": "ae8bbd5f213adb85e8ab5500b8a8e960fdac11f6841101bd8cf69cd60e638187",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/tools/build_student_review.py",
+        "sha256": "a067d4af591a1c332efa209e967d27d793146dc4968cfe49d8c3b048303fdd1e",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/tools/audit_student_goal.py",
+        "sha256": "15cda9d9665136b99cf0a771573986404706fec45a932299fc3cedd57f7c5ceb",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/closed_loop_dependencies.sha256",
+        "sha256": "33a501d7ab3bbb4bcb248c625fcad8eee3f2cccab723db47c20697282899e991",
+        "same_as_61609": true
+      },
+      {
+        "path": "wa/wm/full_eval_dependencies.sha256",
+        "sha256": "5e870e9d6fdbe36bda9df47b134bce08a6fbc278bfa5a5990b55de2a6175db08",
+        "same_as_61609": true
+      }
+    ]
+  },
+  "dependencies": {
+    "manifests": 2,
+    "checked_entries": 10,
+    "agent_elapsed_s": 0.01,
+    "main_independently_rechecked": true,
+    "command": "sha256sum -c wa/wm/closed_loop_dependencies.sha256 wa/wm/full_eval_dependencies.sha256",
+    "main_verification_and_scheduler_stdout": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb\n33a501d7ab3bbb4bcb248c625fcad8eee3f2cccab723db47c20697282899e991  wa/wm/closed_loop_dependencies.sha256\n5e870e9d6fdbe36bda9df47b134bce08a6fbc278bfa5a5990b55de2a6175db08  wa/wm/full_eval_dependencies.sha256\n/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_text_action_v3/control.py: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_text_action_v3/eval_agent.py: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_text_action_v2/control.py: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/trained_agent.py: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/scripts/da3/run_evt_ten.py: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/habitat-lab/habitat/config/benchmark/nav/track/track_infer_stt.yaml: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/common.py: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/habitat-lab/habitat/config/benchmark/nav/track/track_infer_dt.yaml: OK\n/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/habitat-lab/habitat/config/benchmark/nav/track/track_infer_at.yaml: OK\nJob ID        : 61715\nUser          : zeying.gong\nTask Name     : wa_stt_anchor_independent_epoch2_v1\nStatus        : RUNNING\nCluster       : baidu_bj_a800\nGPUs          : 8\nRun ID        : 2026-10-07_12-23-07\nCreated       : 2026-10-07T20:23:08\nUpdated       : 2026-10-07T20:23:14\n\n--- Task 72909 ---\n  Task Index    : 0\n  Task Type     : shell\n  Status        : RUNNING\n  MLflow URL    : http://nlb-1w7nbiacb73i3n5223.cn-beijing.nlb.aliyuncsslb.com:8812/#/experiments/30076/runs/188f107e9b9f474795d7eaae0667b10d\n  Log Dir       : /data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909\n  Backend       : k8s\n\n"
+  },
+  "cpu_imports": {
+    "checked_by": "executor_contract_audit",
+    "checked_at_beijing": "2026-10-07T21:22:54+08:00",
+    "probe": {
+      "python": "3.11.15",
+      "torch": "2.8.0+cu128",
+      "numpy": "2.2.6",
+      "Pillow": "12.2.0",
+      "einops": "0.8.2",
+      "elapsed_s": 1.7123,
+      "modules": [
+        "torch",
+        "numpy",
+        "PIL",
+        "einops",
+        "wa.wm.training.JointRobotModel"
+      ],
+      "cuda_initialized": false,
+      "model_constructed": false
+    },
+    "habitat": {
+      "python": "3.9.19",
+      "torch": "2.5.0+cu124",
+      "elapsed_s": 3.3874,
+      "modules": [
+        "habitat",
+        "habitat_sim",
+        "magnum",
+        "torch",
+        "numpy",
+        "omegaconf"
+      ],
+      "cuda_initialized": false,
+      "simulator_constructed": false,
+      "reset_or_render": false
+    },
+    "upstream_source_pins": "DINOv2 and JEPA expected commits and tracked-clean PASS",
+    "shell_syntax_scripts": 3,
+    "xvfb_bundle_debs": 34,
+    "installer_executed": false,
+    "checkpoint_contents_read": false
+  },
+  "retained_diagnostic_limitations": [
+    "First /usr/bin/time attempt exited127 because unavailable; shell builtin time succeeded. No hash was performed by the failed attempt.",
+    "An overly broad model-env distribution query exited1 at missing omegaconf; actual required model modules subsequently imported. No installation or package change.",
+    "Three candidate build directories from the inherited script do not exist; actual habitat_sim and magnum imported from existing Habitat environment.",
+    "Gym maintenance warning retained. This does not validate GPU worker rendering or all Habitat binaries."
+  ],
+  "live_training": {
+    "checked_utc": "2026-10-07T13:25:29.168745+00:00",
+    "job": 61715,
+    "task": 72909,
+    "status": "LIVE_FINITE_LR_LOSS_LOG_AUDIT_PASS_NOT_FINAL",
+    "records": 371,
+    "partial_trailing_bytes": 0,
+    "prefix2033_unchanged": true,
+    "first": {
+      "step": 22708,
+      "total_steps": 59716,
+      "phase_step": 1,
+      "epoch": 1,
+      "loss": 0.09069979190826416,
+      "flow": 0.07113401591777802,
+      "geometry": 0.0002614361001178622,
+      "world": 0.19435055553913116,
+      "loss_aggregation": "DDP_mean_over_accumulation_group",
+      "loss_rank0_last_microbatch": 0.1330556571483612,
+      "lr": [
+        2.5000001076719927e-7,
+        5.000000215343985e-7,
+        0.000005000000215343985,
+        0.000001000000043068797,
+        0.00001000000043068797
+      ],
+      "grad_norm": 0.6656566262245178,
+      "peak_allocated_gib": 8.66770315170288,
+      "elapsed_s": 2.4103260207921267
+    },
+    "last": {
+      "step": 31950,
+      "total_steps": 59716,
+      "phase_step": 9243,
+      "epoch": 1,
+      "loss": 0.12142454087734222,
+      "flow": 0.10119332373142242,
+      "geometry": 0.00016229861648753285,
+      "world": 0.2015008181333542,
+      "loss_aggregation": "DDP_mean_over_accumulation_group",
+      "loss_rank0_last_microbatch": 0.1440117508172989,
+      "lr": [
+        2.1711870770168643e-7,
+        4.3423741540337286e-7,
+        0.000004342374154033728,
+        8.684748308067457e-7,
+        0.000008684748308067456
+      ],
+      "grad_norm": 0.727187991142273,
+      "peak_allocated_gib": 9.37112808227539,
+      "elapsed_s": 3677.7632873766124
+    },
+    "logs": {
+      "console.log": {
+        "bytes": 203576,
+        "mtime": 1791379421.0950038,
+        "fatal_counts": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        },
+        "tail": [
+          "{\"step\": 31675, \"total_steps\": 59716, \"phase_step\": 8968, \"epoch\": 1, \"loss\": 0.10088163614273071, \"flow\": 0.08233579248189926, \"geometry\": 0.0002827289281412959, \"world\": 0.1840447336435318, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.02053060010075569, \"lr\": [2.1895223357101917e-07, 4.3790446714203835e-07, 4.379044671420383e-06, 8.758089342840767e-07, 8.758089342840766e-06], \"grad_norm\": 0.5693842768669128, \"peak_allocated_gib\": 9.350147247314453, \"elapsed_s\": 3563.4488579723984}",
+          "{\"step\": 31700, \"total_steps\": 59716, \"phase_step\": 8993, \"epoch\": 1, \"loss\": 0.13559997081756592, \"flow\": 0.11422259360551834, \"geometry\": 0.0028227013535797596, \"world\": 0.19966046512126923, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.031517431139945984, \"lr\": [2.1878736863999247e-07, 4.3757473727998494e-07, 4.375747372799849e-06, 8.751494745599699e-07, 8.751494745599698e-06], \"grad_norm\": 0.6772488951683044, \"peak_allocated_gib\": 9.352054595947266, \"elapsed_s\": 3573.2833881694824}"
+        ]
+      },
+      ".md-ak/workload.log": {
+        "bytes": 23385,
+        "mtime": 1791379503.5060039,
+        "fatal_counts": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        },
+        "tail": [
+          "2026-10-07T21:25:03.499+08:00 [INFO] [k8s] K8s Job ray-a800/job-61715-0 phase=Running",
+          "2026-10-07T21:25:03.505+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        ]
+      }
+    },
+    "terminal_files_exist": {
+      "metrics.json": false,
+      "actual_exposure_epoch1.json": false,
+      "checkpoint.pt": false
+    },
+    "checkpoint_loaded_or_hashed": false
+  },
+  "final_checkpoint": {
+    "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+    "sha256": null,
+    "accepted_step": null,
+    "audit_status": "PENDING_TRAINING_TERMINAL",
+    "loaded_or_hashed": false
+  },
+  "evaluation_jobs_submitted": [],
+  "next_required": [
+    "Fresh scheduler SUCCEEDED, complete73368 heldout windows per mode and final metrics/exposure/checkpoint; run frozen training audit_stt_anchor_training.py once into unique NAS output.",
+    "Using accepted actual new checkpoint SHA and step, perform real short developer interface and 24-lane actual Habitat definitions preflight.",
+    "Create independent STT/DT/AT each8GPU configs from frozen source; fresh resources/NAS/environment/hash/duplicate checks, announce and back up before full submissions; no cluster smoke.",
+    "Complete4215 unique results, raw initial RGB/state pairing, media/metrics and goal audit. No UWB ablation until SR gates achieved."
+  ],
+  "goal": {
+    "status": "ACTIVE",
+    "latest_completed_success": {
+      "stt": 1279,
+      "dt": 1178,
+      "at": 1207
+    },
+    "required_success": {
+      "stt": 1289,
+      "dt": 1173,
+      "at": 1203
+    },
+    "new_closed_loop_result": false
+  }
+}
