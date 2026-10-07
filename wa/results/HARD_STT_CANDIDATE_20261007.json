@@ -1,6 +1,14 @@
 {
   "updated": "2026-10-07",
-  "status": "READY_FOR_BOUNDED_FORMAL_TRAINING_NOT_SUBMITTED",
+  "status": "FORMAL_61609_SUBMITTED_NOT_COMPLETED",
+  "formal_job": {
+    "job": 61609,
+    "task": 72803,
+    "submitted_beijing": "2026-10-07T10:35:58+08:00",
+    "source_commit": "8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06",
+    "config_sha256": "99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184",
+    "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1"
+  },
   "acceptance": {
     "stt_success_min": 1289,
     "dt_success_min": 1173,

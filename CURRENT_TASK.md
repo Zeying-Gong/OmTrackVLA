@@ -7,6 +7,14 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Current student: STT1276 (90.818505%), DT1173 (83.487544%), AT1203 (85.622776%).
 - STT needs at least +13 net successes; DT/AT must not regress. Collision recorded, not primary optimization gate.
 - After this gate, quantify with/without-UWB effects; distinguish input removal from no-UWB training.
+
+## Active formal run — do not duplicate
+- 61609/72803 submitted2026-10-07 10:35:58Beijing; schedulerRUNNING; worker verified8 A800-SXM4-80GB.
+- Output:/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1
+- Frozen source_hard_stt_train_v1 commit8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06;clean;159Pythonfiles match developer diagnostic.
+- Config wa/jobs/hard_stt_train_a800_v1.yaml SHA99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184;GitHubfda647a7.
+- Parent59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;new1epoch cumulative2;planned37009updates/end59716.
+- Firstworker read:dataset/8rank initialization andmodel loading;no verifiednewstep yet. xFormers/NCCLdevice warnings retained;no fatal signature in checkedlog.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
 
 ## Frozen baseline and evidence
@@ -30,7 +38,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Two more hard cases BHXhpBwSMLh/11 and XNeHsjL6nBB/4 have zero valid windows; filters unchanged.
 - Coverage artifacts/stt_start_coverage_61377_20261007_v2.json SHA8559e02a411358ba6dd59d7f2cb7da968d81e1542398b08dc09271d6d62ae3ec; v1 preserved.
 - Opt-in plan/runtime accounting integrated into train.py;40CPUtestsPASS plus real4update diagnosticPASS;originalmodel/loss unchanged.
-- Candidate91hard/10413windows each3;allbase+teacher once. Exact8rank1184272actualsimulated;reportSHA663c66b1. Not yet formally trained.
+- Candidate91hard/10413windows each3;allbase+teacher once. Exact8rank1184272actualsimulated;reportSHA663c66b1. Formal61609submitted;not complete.
 - STT read-only failure analysis:18gains/18regressions;129failures=61targetCollision/49Lost/19Normal-no-success;93teacher-solvable.
 - 51/61collisions ended<=40steps;58/61last5commands alreadybackward. Not evidence of general yaw saturation or wall collisions.
 - SSH same-entry handshake intermittent; standard ControlMaster connection reuse enabled per-command only, no SSH config/credential change.
@@ -38,7 +46,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 ## Next bounded experiment gates
 - Full pair/media and88window teacher-fit COMPLETE;hardCollisionADE.55880->.48717;successfulSTT.27892->.25227;label-fit notSR.
 - RealRTX4090 diagnostic4updates22708..22711 consumed16samples10base6teacher3hard;peak7.309GiB;no checkpoint.
-- Evidence:wa/results/HARD_STT_CANDIDATE_20261007.json. Candidate plan/artifacts frozen;next independent8A8001epoch from59866+optimizer.
+- Evidence:wa/results/HARD_STT_CANDIDATE_20261007.json. Monitor61609 steps/checkpoint andfinal actual_exposure_epoch1.json/npz;do notduplicate.
 - FullSTT/DT/AT24GPU closedloop required before claiming gain;actualperwindow exposure recorded and validated after epoch.
 - Do not blindly continue epoch3, change architecture/loss/physics/success thresholds, or invent task-ID inputs.
 - Teacher demonstrations: successful branch first; if both succeed choose higher tracking rate, exact tie LightNav.
