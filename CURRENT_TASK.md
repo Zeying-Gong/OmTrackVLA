@@ -14,21 +14,28 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Checkpoint: /data/nas_ray/project/md-ak/users/zeying.gong/job_61377/task_72474/wa_dual_teacher_train_a800_v1/checkpoint.pt
 - SHA256 b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f; step59065.
 - 61423/72526 STT,61424/72527 DT,61425/72528 AT SUCCEEDED; each8RTX4090,1405new rows.
-- 24COMPLETE/4215unique/78sourcehashes previously verified; invalid0; full start/media audit still PENDING.
+- 24COMPLETE/4215unique/78sourcehashes verified; invalid0; full4215 initial pair audit PASS, media audit PENDING.
 - Old60502 checkpoint and3627/4215 baseline unchanged. Student3652/4215; LightNav3345/4215, different inputs.
 - Code/results backed up in GitHub wa20b94dc0; ledger wa/results/PROJECT_LEDGER_20261007.md.
 
-## Work in progress — do not duplicate
-- Full merge/start audit started 2026-10-07 on devpod-4090, PID3216342, local control session1145.
-- Read-only audit plus new report directory; NOT new rollout, training or GPU job.
-- Output planned: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1
-- Last process check elapsed3m41 CPU31s, stateDsl (I/O waiting); no completion output yet.
-- Next poll existing process/session/output before invoking merger again; run build_student_review only after merge succeeds.
-- devpod-4090 intermittent SSH handshake closures; bounded spaced retries same entry. No host/credential workaround.
-- Read-only parallel STT failure and training-exposure audits are underway; no new experiment submitted.
+## Latest completed work and active audit — do not duplicate
+- Full merge/start audit session1145 exited0:4215 paired against both teachers; statusPASS.
+- Merged: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1
+- Summary SHA30dfdbd9263ca0ba3615cb1845938de235c7e1b15b2141edb5ac584622f6bbf3; pair audit SHAdc98149bdcfb6baf05d1fae167de572b476679f48384dd91ea92e57851645844.
+- Media builder active local control session20033; output planned artifacts/student61377_review_20261007_v1.
+- Media not yet completed or served. Poll existing process/output before invoking builder again. No new rollout/GPU job.
+- STT start coverage v2 PASS:1358teacher episodes;93student-failure demonstrations,91nonzero/10413valid windows.
+- Of91nonzero failures,90have teacher windows within actual first2s;3270early windows. Only XNeHsjL6nBB/9 lacks early windows.
+- Two more hard cases BHXhpBwSMLh/11 and XNeHsjL6nBB/4 have zero valid windows; filters unchanged.
+- Coverage artifacts/stt_start_coverage_61377_20261007_v2.json SHA8559e02a411358ba6dd59d7f2cb7da968d81e1542398b08dc09271d6d62ae3ec; v1 preserved.
+- New opt-in teacher_window_plan.py plus coverage audit:14CPU testsPASS; bounded extras<=2, old repeats1 mapping unchanged.
+- Sampler component NOT integrated into train.py; no runtime exposure/group fitting claim or formal plan released.
+- STT read-only failure analysis:18gains/18regressions;129failures=61targetCollision/49Lost/19Normal-no-success;93teacher-solvable.
+- 51/61collisions ended<=40steps;58/61last5commands alreadybackward. Not evidence of general yaw saturation or wall collisions.
+- SSH same-entry handshake intermittent; standard ControlMaster connection reuse enabled per-command only, no SSH config/credential change.
 
 ## Next bounded experiment gates
-- First preserve full audit and diagnose STT student failures/teacher successes and old-baseline regressions.
+- Finish media audit/report; next measure hard/early-window fitting against61377 and parent before selecting bounded sampling weights.
 - Add and test task/teacher/failure-group diagnostics and deterministic exposure accounting before choosing sampling changes.
 - Do not blindly continue epoch3, change architecture/loss/physics/success thresholds, or invent task-ID inputs.
 - Teacher demonstrations: successful branch first; if both succeed choose higher tracking rate, exact tie LightNav.

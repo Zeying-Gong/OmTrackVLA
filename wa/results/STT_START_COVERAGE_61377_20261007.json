@@ -1,0 +1,113 @@
+{
+  "status": "COVERAGE_AUDIT_PASS",
+  "date": "2026-10-07",
+  "experiment": "evaluation_set_adaptation_v1",
+  "student_checkpoint_sha256": "b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f",
+  "coverage_report": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/stt_start_coverage_61377_20261007_v2.json",
+  "coverage_sha256": "8559e02a411358ba6dd59d7f2cb7da968d81e1542398b08dc09271d6d62ae3ec",
+  "coverage_tool_sha256": "16f387c5d5eaeaa48e54f1d7b9ffde4ae47571f89340cfbbdbe56242437a2c1c",
+  "pinned_index_evidence": {
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_se2_cache_20261006_v1/index/audit.json": "5aa41388f10be824101588eb064b7392e6538db0183b5402a736dfce5c450027",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_se2_cache_20261006_v1/index/train_episodes_audit.json": "89d06351fbcbe575a46b373c85e693c94081e192be2db15174c6f93acf8a6a74"
+  },
+  "groups": {
+    "all_STT_with_demo": {
+      "episodes": 1358,
+      "valid_windows": 127721,
+      "early_windows": 49097,
+      "early_candidate": 55920,
+      "zero_early": [
+        "5jp3fCRSRjc/32",
+        "Nfvxx8J5NCo/13",
+        "BHXhpBwSMLh/11",
+        "XNeHsjL6nBB/9",
+        "XNeHsjL6nBB/4",
+        "h1zeeAwLh9Z/3",
+        "hkr2MGpHD6B/16",
+        "hkr2MGpHD6B/32",
+        "2n8kARJN3HM/126",
+        "E9uDoFAP3SH/127",
+        "Vt2qJdWjCF2/93",
+        "HxpKQynjfin/27",
+        "oLBMNvg9in8/80",
+        "HxpKQynjfin/37"
+      ],
+      "no_window_before_05s": 40,
+      "no_window_before_1s": 40
+    },
+    "successful_STT_with_demo": {
+      "episodes": 1265,
+      "valid_windows": 117308,
+      "early_windows": 45827,
+      "early_candidate": 52085,
+      "zero_early": [
+        "5jp3fCRSRjc/32",
+        "Nfvxx8J5NCo/13",
+        "h1zeeAwLh9Z/3",
+        "hkr2MGpHD6B/16",
+        "hkr2MGpHD6B/32",
+        "2n8kARJN3HM/126",
+        "E9uDoFAP3SH/127",
+        "Vt2qJdWjCF2/93",
+        "HxpKQynjfin/27",
+        "oLBMNvg9in8/80",
+        "HxpKQynjfin/37"
+      ],
+      "no_window_before_05s": 36,
+      "no_window_before_1s": 36
+    },
+    "failed_STT_with_demo": {
+      "episodes": 93,
+      "valid_windows": 10413,
+      "early_windows": 3270,
+      "early_candidate": 3835,
+      "zero_early": [
+        "BHXhpBwSMLh/11",
+        "XNeHsjL6nBB/9",
+        "XNeHsjL6nBB/4"
+      ],
+      "no_window_before_05s": 4,
+      "no_window_before_1s": 4
+    },
+    "failed_STT_nonzero": {
+      "episodes": 91,
+      "valid_windows": 10413,
+      "early_windows": 3270,
+      "early_candidate": 3761,
+      "zero_early": [
+        "XNeHsjL6nBB/9"
+      ],
+      "no_window_before_05s": 2,
+      "no_window_before_1s": 2
+    },
+    "collision_within40steps_with_demo": {
+      "episodes": 44,
+      "valid_windows": 3189,
+      "early_windows": 1408,
+      "early_candidate": 1777,
+      "zero_early": [
+        "BHXhpBwSMLh/11",
+        "XNeHsjL6nBB/9",
+        "XNeHsjL6nBB/4"
+      ],
+      "no_window_before_05s": 4,
+      "no_window_before_1s": 4
+    }
+  },
+  "initial_pair_audit": {
+    "status": "PASS",
+    "episodes": 4215,
+    "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1",
+    "hashes": {
+      "summary.json": "30dfdbd9263ca0ba3615cb1845938de235c7e1b15b2141edb5ac584622f6bbf3",
+      "combined_episodes.jsonl": "62ac4c5a2bb28e8db89dbf1f67c968725977ca2bb321abcc78536b16e233d14b",
+      "student_teacher_pair_audit.json": "dc98149bdcfb6baf05d1fae167de572b476679f48384dd91ea92e57851645844"
+    }
+  },
+  "media": "PENDING",
+  "limits": [
+    "Cached teacher coverage is not proof of fitting or closed-loop gain.",
+    "Evaluation-set adaptation; different input systems; not unseen generalization.",
+    "No new training or rollout. Plan helper not connected to train.py."
+  ]
+}
