@@ -4,7 +4,7 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 
 ## Acceptance and latest verified result
 - Same1405/task: STT>=1289 (>91.7%), DT>=1173, AT>=1203; then same-weight with/withoutUWB study.
-- Latest61609: STT1279 (91.032028%), DT1178 (83.843416%), AT1207 (85.907473%); total3664/4215,invalid0.
+- Retained best61609: STT1279 (91.032028%), DT1178 (83.843416%), AT1207 (85.907473%); total3664/4215,invalid0.
 - Versus61377: net+3/+5/+4. DT/AT met; STT gap10; goal NOT_MET,not research/product completion.
 - Paired gains/regressions STT15/12,DT26/21,AT25/21. No selective reruns or dropped failures.
 - Explicit evaluation-set adaptation authorized; never claim untouched-test generalization. WA and LightNav have different inputs.
@@ -41,7 +41,7 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - TRreference-normalized;52missingreference/taskactualfallback;macroTRseparate. CRtargetdistanceever<.5m,notgeneralobstaclecontact.
 - Gym/xFormers/SSDsemanticwarningsretained;specifiedfatalpatterns0. Earlierwrongrun/console.logmonitorclaimwithdrawn;actualtaskconsole/.md-ak/workload used. HistoricalSTTupperbound/partialwatchrecords retained.
 
-## Active bounded work — accepted61715 training; STT/DT complete but not improved, AT running
+## Active bounded work — 61715 fully audited; NOT_MET; retain61609 and prepare failure-state recovery
 - Realfixed88replay completed onidledevpod4090GPU6:597.856s,1.482GiB,88windows/176predictions/1713sourcehashes PASS. No training/rollout.
 - Artifact artifacts/teacher_group_fit_61609_replay_20261007_v1.json SHA3db61f67a648258593382dd2adbfd508a2d8dbe0aeb077648b0e8b51f54d7f73;reference1463ea39 fixedidentities/order unchanged.
 - NormalhistoryADE61377->61609:hardCollision.487173->.467611,hardOther.394402->.383305,successSTT.252272->.255145,DT.290127->.310269,AT.400361->.371023. Smallselectedsample/notSR;DTfitworsebutfullSRup.
@@ -64,16 +64,16 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - Finaltraining/evalrelease:wa/results/STUDENT61715_RELEASE_20261008.json GitHubd5c0c325;startupSTUDENT61715_EVAL_STARTUP_20261008.json;liveSTUDENT61715_EVAL_PROGRESS_20261008_0220.json. Original3jobs/source/weight unchanged,no duplicate/restart.
 - Frozenaudit_stt_anchor_training PASS24596hashes/actual8rankexposure/parentANDoptimizer/LRloss/heldout;artifacts/stt_anchor_training_audit_61715_v1.json SHAd91dbb222847a30ddb843f895d3cdc84be17a98c871fb1f0f97a5212859aaa80. Auditusedtraindd1fec9e release,notlatercheckout.
 - TB stt_anchor_61715:02:56:50remote6006/02:58:09local16006 verified44HTTP200,23tags;traininglosslast59700 normal25stepcadence,final12offline scalars59716/73368each finite+NASmetricsdelta<=1.09e-8. PublisherFINAL_METRICS_EXPORTED/PIDended;history+offlinevalidation,notongoingtraining/closedloopSR. ssh -N -L 16006:127.0.0.1:6006 devpod-a800 ;http://127.0.0.1:16006/#scalars
-- FinalofflineADE/FDE image.26574965/.46344470 point.25376165/.44215970 mixed.25379827/.44177998;73368each/notSR. STT1277/1405 andDT1166/1405 complete;bothbelow61609. No fullyaudited61715three-taskresult yet.
+- 61715 final: offline73368/mode ADE/FDE image .26574965/.46344470, point .25376165/.44215970, mixed .25379827/.44177998; notSR. Closedloop4215 unique success1277/1166/1207,total3650,invalid0; SR90.889680/82.989324/85.907473. Full audits PASS; fixed goal NOT_MET12/7/0; versus best61609 -2/-12/0. Do not promote.
 - Initialization remains59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;1new/cumulative2epochs;not61609epoch3,noLR/loss/controllerchange.
-- Reserveonlyif61715fullresultsevidencefailure-state recoveryneed:readonly18sourcepins checked;oldLightNavtrain-only replay canreusebutcurrentdualteacherstep0/Oraclebinding-not-forwarded/no failure-keyplan/nonzero-suffixadmission absent. Currentevaltracesnotfullperstepreplay. Explicitnewadaptationprotocol+integrationchecksrequired;no newcollector/training. DetailSTUDENT61715_EVAL_WATCH_20261008_0305.json.
-- Eval05:35:16Beijing STT61792/72986 SUCCEEDED1405 andDT61793/72987 SUCCEEDED1405;AT61794/72988 RUNNING1322,total4132/4215/initinvalid0. STT8COMPLETE/26sourcehashes/1405exactkeys PASS:1277 SR90.889680%,vs61609-2,goal1289gap12;pair7gains9regressions. DT1166 SR82.989324%,vs61609-12,goal1173gap7;pair10gains22regressions. New26retained05:06..05:35snapshots/all24contracts/72continuousincrementallogs/no5fatalpatterns. EvidenceSTUDENT61715_STT_DT_PARTITIONS_20261008_0535.json;DT22diagnosisSTUDENT61715_DT_REGRESSIONS_20261008.json(88sourcehashPASS);NormalnotSuccess,finalLostpostunlogged. No candidatepromotion/newjob.
-- Evalfrozen source_student61715_eval24_v1 clean5a23a982;original114CPU/definition/interfacePASS. Separatepostprocessingfreeze source_student61715_result_audit_v1 32fa14084e71eacb6c9527e493580f089a5b7428;23tool/dependency/testfilesbyte/hashPASS03:50. STT/DTpartitionintegrityPASS butglobal_pair_audit_pending=true;no summary expectedperpartition. AfterATcomplete usefreeze merge4215 then61377goal/61609comparison/media. Awaitcompleteevidencebeforeboundednewrecipe;UWBafterSRgate;monitorwaACTIVE20min.
+- Recovery preparation only: ReplayThenTeacher.bind_environment now forwards the same env to Oracle-capable teacher; two-line fix, eight CPU tests and original self-test PASS. No real nonzero Habitat takeover, new collector/schema/cache/training yet. New explicit failure-state protocol must freeze failed keys and shared WA prefix, compare teachers at same k, admit only successful teacher-owned suffixes; no fallback, WA-prefix labels or repeat counting. Keep old4215 step0 admission strict. Best61609 proposed as prefix source after full audit.
+- Terminal:61792/72986 STT,61793/72987 DT,61794/72988 AT allSUCCEEDED1405each/24COMPLETE/3PARTITION/24ready. Full61609 pair gains/regressions7/9,10/22,10/10. Reportwa/results/STUDENT61715_FINAL_20261008.json;72logs98647173bytes five literal fatalpatterns0; retain STT00 Xvfb Unix-listener ERROR206B/xFormerswarnings. No new GPU jobs.
+- Runtime5a23a982 unchanged;auditfreeze32fa1408 clean. Merge/start PASS78sourcehashes/4215new/0reuse:summary07e6b309 combined35b8e74e pairdc98149b. Goal8ad3350b PASS/NOT_MET;compare61609 db53fb99 PASS;media665138a7 PASS4215initial pairs/JPEG/MP4metadata-duration,notallframes. All4auditcommands finishedonce0 by06:12:50; no active audit process/rerun. Reviewartifacts/student61715_review_20261008_v1; newlocalhost18800 remote/local HTML-audit-video200 verified06:18:41,mainauditHEAD20006:20:22; old18799retained. ssh -o ExitOnForwardFailure=yes -N -L 18800:127.0.0.1:18800 devpod-4090 ;http://127.0.0.1:18800/ Next explicitfailure-state protocol and real nonzero Oracle/LN developer check; no newtrainingrecipe yet. Goal/wa20min ACTIVE.
 - AfterSRgate only:explicitimage-mode sameweight UWBablation afterrealinterface/observerperturbation/Habitatcheck;notmixedzero ornoUWB-retrainingclaim.
 - Preserveallcheckpoints/results/failures;GitHubexistingwa announcebeforeeachpush. No weight/data/video upload. CURRENT<=80,PROGRESS<=150. Goal/20minmonitor remainACTIVE.
 
 ## Preserved baseline
 - 61377checkpoint:/data/nas_ray/project/md-ak/users/zeying.gong/job_61377/task_72474/wa_dual_teacher_train_a800_v1/checkpoint.pt;SHAb5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f step59065.
 - Baselineartifacts/student61377_full_audit_20261007_v1 summarySHA30dfdbd9263ca0ba3615cb1845938de235c7e1b15b2141edb5ac584622f6bbf3;1276/1173/1203;fullpair/mediaPASS.
-- LightNav1273/1128/944,Oracle1281/1210/1226,differentinputsystems;currentWAall3exceedLNbutSTTgoalnotmet.
+- LightNav1273/1128/944,Oracle1281/1210/1226,differentinputsystems;best61609 and latest61715 each exceed LN counts but STT>91.7 goal notmet; not untouched-test generalization.
 - Old60502step45900/SHA20cc84b3f231ad4056e16b91c52c84cb14e18d886a80324b5f27ffd773be5331 and3627/4215 preserved;no overwrite.

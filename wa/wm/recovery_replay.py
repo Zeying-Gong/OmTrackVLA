@@ -47,6 +47,8 @@ class ReplayThenTeacher:
         self.environment=None
     def bind_environment(self,env):
         self.environment=env
+        if hasattr(self.teacher,'bind_environment'):
+            self.teacher.bind_environment(env)
     def __getattr__(self,key):
         return getattr(self.teacher,key)
     def reset(self,*args,**kwargs):

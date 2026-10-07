@@ -1,0 +1,204 @@
+{
+  "scope": "61715终态日志与ready只读核验；非结果/媒体审计",
+  "host": "devpod-zeying-gong-4090-7f59ffb47c-rpkjh",
+  "nas": "mt-tutz0R-pfs-haZOBP gpfs",
+  "scan_utc": [
+    "2026-10-07T21:54:38.530426Z",
+    "2026-10-07T21:55:10.032900Z"
+  ],
+  "literal_recheck_utc": "2026-10-07T21:55:49.735790Z",
+  "logs_checked": 72,
+  "log_bytes": 98647173,
+  "ready_checked": 24,
+  "ready_pass": 24,
+  "ready_contract": {
+    "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+    "step": 59716,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "mode": "mixed",
+    "noise_mode": "zero",
+    "sampling_steps": 4,
+    "seed": "7+step",
+    "text_used": false,
+    "world_predictor_inference": false
+  },
+  "primary_literal_counts": {
+    "Traceback (most recent call last)": 0,
+    "CUDA out of memory": 0,
+    "FloatingPointError": 0,
+    "Segmentation fault": 0,
+    "Fatal Python error": 0
+  },
+  "auxiliary_regex_counts": {
+    "python_traceback": 0,
+    "oom": 0,
+    "exception_error": 0,
+    "native_crash": 0,
+    "process_termination": 0
+  },
+  "warning_matches": {
+    "worker.log": 0,
+    "server.log": 144,
+    "xvfb.log": 0
+  },
+  "warning_interpretation": "24个server均有SwiGLU/Attention/Block三类xFormers不可用UserWarning；每事件另打印warnings.warn源码行，因此共144匹配行、72次警告。",
+  "additional_error_context": {
+    "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_00/xvfb.log",
+    "bytes": 206,
+    "lines": [
+      "_XSERVTransmkdir: ERROR: Cannot create /tmp/.X11-unix",
+      "_XSERVTransSocketUNIXCreateListener: mkdir(/tmp/.X11-unix) failed, errno = 17",
+      "_XSERVTransMakeAllCOTSServerListeners: failed to create listener for unix"
+    ],
+    "interpretation": "未命中既定fatal模式，但必须保留；不能宣称日志完全无ERROR。本次未诊断其影响。"
+  },
+  "read_errors": [],
+  "sha_changed_between_passes": [],
+  "roots": {
+    "stt": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+    "dt": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1",
+    "at": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1"
+  },
+  "inventory_format": "worker数组按shard_00至shard_07排序，每项为[bytes,SHA256]；文件为roots[task]/shard_NN/worker.log",
+  "workers": {
+    "stt": [
+      [
+        4168761,
+        "c3e1576a27d865ff9d654e1a73d00a0e0d20c03ff6069d6f83f0c448738d7cfd"
+      ],
+      [
+        4168654,
+        "d69cbb9ab5910549def137e63e717f9a9d8c619c91e095202ab653a17f33c0ac"
+      ],
+      [
+        4161721,
+        "116b65d574856721d40bb2d70013593b7716fab0cd5ca4e00de16cab81e2f1c4"
+      ],
+      [
+        4158456,
+        "353c4eb050d7984a35d661f85a35213597f08807d12a3279bf40fa0a32913082"
+      ],
+      [
+        4170421,
+        "d52394e454f282797519c3c12819a87e5dcb385e251f249027d8c8e4a7447950"
+      ],
+      [
+        4148305,
+        "0af615fcbc95ae2f839824d521ef7a9cdf46c543634c3ac3a9918901257c30b3"
+      ],
+      [
+        4141198,
+        "82fa587793b87e580e1a15fcfb95b829dd705a31c23a45a00b2c5f6eaf1b20ca"
+      ],
+      [
+        4144410,
+        "5754bb2940e5784f9dde34789525e67f67ce0b0857d0a4cadee5b0ba8f8f9fbf"
+      ]
+    ],
+    "dt": [
+      [
+        4175929,
+        "f5fa54df8003ea75458ab607fe3424fafd8fd9b96805bc2956f5cc6d7d128354"
+      ],
+      [
+        4172132,
+        "82cd3045a6219fa02e2b481a1dac843f6bbd384f4bdc130cd6a5592e7ca62bfe"
+      ],
+      [
+        4169150,
+        "426df07c59ad2afec33a759b69e0ab240ea0d01082861b529114352c22dee532"
+      ],
+      [
+        4160156,
+        "21deb35db119a35d8a51cb06b21789fd8121bd845c233fd7045459263dea658c"
+      ],
+      [
+        4178399,
+        "36ad446304b8ec509ac2d852cfb8eca32d642ef5019bc11ff48016bba5d3704d"
+      ],
+      [
+        4154449,
+        "bac62f884584216759b69ac13ad9f3f1769ff37158178c9db369206862a0cde5"
+      ],
+      [
+        4145230,
+        "00dc22eba77055f24de69f84600ec70fd2cfa3f1ec34c2e40a79ee4a6eda3a11"
+      ],
+      [
+        4149317,
+        "168ce2206d29f35084465aee75e1f06ccb8efb9f93feeff30a9705ffeb313e69"
+      ]
+    ],
+    "at": [
+      [
+        4016212,
+        "1156c1ca589d3ab65b2492cd147ee63ea769a9608217aabc3b632d7a998b75fc"
+      ],
+      [
+        4017434,
+        "c07d13e0aa8f096caababdc2afe66518fd4bc08f1316146be742713e2480b92b"
+      ],
+      [
+        4017804,
+        "645bb3d71a4d1212ab79275f37c188f362fc26e43fc44e5a3c8be572840899b0"
+      ],
+      [
+        4010059,
+        "1225eb46a44ca0ae2547897af40f306dc28f1fefe84de01928568ad16bfcb66d"
+      ],
+      [
+        4019388,
+        "102b11c5c5ebcaaa7a73e6618fea59ff00852d8beffd61b8db4490c0e5df1203"
+      ],
+      [
+        3997464,
+        "5e99562c11a92f9ecc0445470ae622183f28e762d4371b14f80f18d5314da9c3"
+      ],
+      [
+        3991402,
+        "af61d48dcaf6a23aa8bf305dcc9afa175de2c9603394b66f1bb042852985b7cc"
+      ],
+      [
+        3990116,
+        "ef724d667d1a5c0814fb20f310ce4fc3b0f99020e1072978525bfaf444244929"
+      ]
+    ]
+  },
+  "server_log_groups": [
+    {
+      "tasks": [
+        "stt",
+        "at"
+      ],
+      "shards": "00..07",
+      "bytes_each": 850,
+      "sha256": "170c56b4a6b07abb3abd916ffe09af4b22650227df770de0c16b1a23d0b0a753"
+    },
+    {
+      "tasks": [
+        "dt"
+      ],
+      "shards": "00..07",
+      "bytes_each": 850,
+      "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02"
+    }
+  ],
+  "xvfb_log_groups": [
+    {
+      "task": "stt",
+      "shard": "00",
+      "bytes": 206,
+      "sha256": "8f7562ea7a26c0b273b3c823d6a68f13aaefb3291119b6b2dfd142b6c0ee0cec"
+    },
+    {
+      "scope": "其余23份",
+      "bytes_each": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limits": [
+    "两种明确检索口径均扫描完整72份日志；零命中不代表不存在其他类型错误。",
+    "ready严格检查字段类型和值；GPU名称不证明24个不同物理UUID。",
+    "未读取checkpoint、运行模型/仿真、变动任务或写任何文件。"
+  ]
+}

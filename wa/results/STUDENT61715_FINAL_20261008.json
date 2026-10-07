@@ -1,0 +1,3305 @@
+{
+  "schema_version": 1,
+  "status": "FULL4215_AUDIT_PASS_GOAL_NOT_MET_CANDIDATE_NOT_PROMOTED",
+  "checked_utc": "2026-10-07T22:03:02.267373+00:00",
+  "previous_goal_turn": "PROGRESS: STT/DT complete partition evidence and diagnosis backed to wa97a0821b",
+  "startup": {
+    "utc": "2026-10-07T21:47:56.366674+00:00",
+    "hostname": "devpod-zeying-gong-4090-7f59ffb47c-rpkjh",
+    "nas": "mt-tutz0R-pfs-haZOBP gpfs   /data/nas_ray",
+    "head": "97a0821ba83e4a3ad0f811bb16ac7e617c184ad3",
+    "clean": true,
+    "project_agents_file": null
+  },
+  "terminal_snapshot": {
+    "utc": "2026-10-07T22:03:02.267373+00:00",
+    "jobs": [
+      {
+        "kind": "stt",
+        "job": 61792,
+        "task": 72986,
+        "states": [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ],
+        "count": 1405,
+        "unique": 1405,
+        "invalid": 0,
+        "lanes": [
+          176,
+          176,
+          176,
+          176,
+          176,
+          175,
+          175,
+          175
+        ],
+        "ready_valid": 8,
+        "bad_init_field": 0,
+        "complete": 8,
+        "partition": true
+      },
+      {
+        "kind": "dt",
+        "job": 61793,
+        "task": 72987,
+        "states": [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ],
+        "count": 1405,
+        "unique": 1405,
+        "invalid": 0,
+        "lanes": [
+          176,
+          176,
+          176,
+          176,
+          176,
+          175,
+          175,
+          175
+        ],
+        "ready_valid": 8,
+        "bad_init_field": 0,
+        "complete": 8,
+        "partition": true
+      },
+      {
+        "kind": "at",
+        "job": 61794,
+        "task": 72988,
+        "states": [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ],
+        "count": 1405,
+        "unique": 1405,
+        "invalid": 0,
+        "lanes": [
+          176,
+          176,
+          176,
+          176,
+          176,
+          175,
+          175,
+          175
+        ],
+        "ready_valid": 8,
+        "bad_init_field": 0,
+        "complete": 8,
+        "partition": true
+      }
+    ]
+  },
+  "terminal_row_ready_log_evidence": {
+    "utc": "2026-10-07T22:03:02.267373+00:00",
+    "snapshot": 0,
+    "jobs": [
+      {
+        "kind": "stt",
+        "job": 61792,
+        "task": 72986,
+        "scheduler_exit": 0,
+        "states": [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ],
+        "lanes": [
+          {
+            "lane": 0,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3773029,
+            "rows_sha": "d95ee377f0adaa88eb81865924b3623635389e93873f7ef68396362c5fcb53f3",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4168761,
+                "from": 4168505,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 206,
+                "from": 0,
+                "read": 206,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "9ef6c1cc1281d81e383ccc15650f01a5215dda33ca61291801a58623c3c02c0e",
+            "ready_contract": true
+          },
+          {
+            "lane": 1,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3773256,
+            "rows_sha": "44dafbdeb3ec89e484eeb573fbd71ac2bbda9319416122f34310ebeaa707f5f6",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4168654,
+                "from": 4168398,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "dd8dd6849587d992691b64d1cd40ad14ba13faad79bd0e2e1113bcfb733bf8db",
+            "ready_contract": true
+          },
+          {
+            "lane": 2,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3773489,
+            "rows_sha": "759ffa2faad22cb1959e391a9090b0c039087634c2d4b6f1e0108c49b8689b9c",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4161721,
+                "from": 4161465,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "618472906e720f6b071350716240437457423bf4c8564404ac099a8fa8710195",
+            "ready_contract": true
+          },
+          {
+            "lane": 3,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3773134,
+            "rows_sha": "5ee183b468f64c3108973d9365b901215c5237a6f04d2983d8e5242af68ae367",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4158456,
+                "from": 4158200,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "15e3d65d233f5f52c86c9923f639fd7edbb765ec8a317a0227957b2118129874",
+            "ready_contract": true
+          },
+          {
+            "lane": 4,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3773031,
+            "rows_sha": "177c77ab13854dcb5ecf3521e6096472a7d4b613754ea0a5a193b5340f73cf39",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4170421,
+                "from": 4170165,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "4b319bbdce49d47e1334af99233685744e21f323897ef26efb75191b148247d7",
+            "ready_contract": true
+          },
+          {
+            "lane": 5,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3751501,
+            "rows_sha": "ea5b0d5d800f4b5319771e6b8b173c7c073d12744a5f1e123393e2d6a1c9256d",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4148305,
+                "from": 4148049,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "978155b178878a52de0be2d9cff9a194aa955b2b8cde10adbc2e918b0840629b",
+            "ready_contract": true
+          },
+          {
+            "lane": 6,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3751612,
+            "rows_sha": "e2c836ef5f174a1e8dfe080967510e4afd217b2ae205c3761bb22c20929e3c95",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4141198,
+                "from": 4140942,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "e92534ae083275e62e00f3ff72839429a58e02adfdc05044faaa46818232dda0",
+            "ready_contract": true
+          },
+          {
+            "lane": 7,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3751632,
+            "rows_sha": "f64e0148c42412356fe831b27b39b0642e8f7d672e07e70f210bb00b1006a250",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4144410,
+                "from": 4144154,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "119993a9f90fbf98cb7035d3a410717e560c4de8dfe605c8264b626c0961e638",
+            "ready_contract": true
+          }
+        ],
+        "count": 1405,
+        "unique": 1405,
+        "invalid": 0,
+        "complete": 8,
+        "partition": true
+      },
+      {
+        "kind": "dt",
+        "job": 61793,
+        "task": 72987,
+        "scheduler_exit": 0,
+        "states": [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ],
+        "lanes": [
+          {
+            "lane": 0,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3790756,
+            "rows_sha": "8177c703c943a7a505141176057d38b4bf3e4c7f43c0518f52ef0d760e8ba5ab",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4175929,
+                "from": 4175673,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "7d13a3a6943978c0518b26d8f1e8eda8581d5757e142a9076b428cff9e4cecba",
+            "ready_contract": true
+          },
+          {
+            "lane": 1,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3790633,
+            "rows_sha": "0720f88d75ea01efa050229140060537be5000490193a1fc69c8eb7d26994bd1",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4172132,
+                "from": 4171876,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "4f1d658599a3ed4bc3db22528721967182c4214a7b4892a6ed401a8a9cccd7e6",
+            "ready_contract": true
+          },
+          {
+            "lane": 2,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3790021,
+            "rows_sha": "0fb8d96c4e5aa714a8a99d6df46490b642826b86bf7f192dc6286f8dccdd0c30",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4169150,
+                "from": 4168894,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "125acf58c19d05e717ede02e85de7b4b47409e5574b886db782aed29baa4250a",
+            "ready_contract": true
+          },
+          {
+            "lane": 3,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3789921,
+            "rows_sha": "845c1821b7088b4090fcdb64f5416d65e8828fd6ad527e7d1f39fcdaf6779db4",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4160156,
+                "from": 4159900,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "a10b5aeaaa36076ccc87464172482c76f630ed884c3066cb7732e6d42518470c",
+            "ready_contract": true
+          },
+          {
+            "lane": 4,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3790916,
+            "rows_sha": "063ec2b10327dd65593d4d5d7ef26c82551afd52ab2c6141e36995c28881f84c",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4178399,
+                "from": 4178143,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "6642155c27d7cf0764e9e826e8212e70478a059eeb778ac8076b9fb9d58e39a5",
+            "ready_contract": true
+          },
+          {
+            "lane": 5,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3769245,
+            "rows_sha": "8ecfa8ab4d96f452efde112187959ca89f06e25963099190acd9ee59a279df76",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4154449,
+                "from": 4154193,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "213df96043f14f81380f70c3b8b3b77428bc6ffd2058a492e1e13ffc3789b6d6",
+            "ready_contract": true
+          },
+          {
+            "lane": 6,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3768606,
+            "rows_sha": "a15614887f8761a46922e2691d2a3cdcc083d4b8394f222a5a4d86a4afaafaea",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4145230,
+                "from": 4144974,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "3740876ab1bf6d237d3f5c5cc5eeeef97a3de0c0b68a0e81ad98c620eea9762f",
+            "ready_contract": true
+          },
+          {
+            "lane": 7,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3769193,
+            "rows_sha": "6d73fe5ff4b723ddc0aa539596abd524fdba5d26552157f843d6722caa76b06b",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4149317,
+                "from": 4149061,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "40347cc1f895345e80255c4e261f4ca98ea3c5632650c331d453aa7586b56754",
+            "ready_contract": true
+          }
+        ],
+        "count": 1405,
+        "unique": 1405,
+        "invalid": 0,
+        "complete": 8,
+        "partition": true
+      },
+      {
+        "kind": "at",
+        "job": 61794,
+        "task": 72988,
+        "scheduler_exit": 0,
+        "states": [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ],
+        "lanes": [
+          {
+            "lane": 0,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3786991,
+            "rows_sha": "0976fc694d49d90709ad1015e26ddf9082919b27f9b430135a24c983d6fd4c38",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4016212,
+                "from": 4015956,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "261d9f49774be152955e5a7854812082a7b2a1ea4362a71d704b0ec891d296bc",
+            "ready_contract": true
+          },
+          {
+            "lane": 1,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3786841,
+            "rows_sha": "12f85079e4ff2583b52cf1c971f7ecd91c91e42fcc05eae1cdefdb228668cf5a",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4017434,
+                "from": 4017178,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "de3be8fb4a872c76c61e2a35a8ee3a21dc13dc0ecbfbebbfb0193560ea0312f4",
+            "ready_contract": true
+          },
+          {
+            "lane": 2,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3786307,
+            "rows_sha": "fe97bd3c10aecbd912c990d2eef165463bca7361b2feb4a90ace97b29028ca71",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4017804,
+                "from": 4017548,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "e64eee6e11b9c78c845fa2d1158709e4735f84386d6eba28d8d0292cc6764e91",
+            "ready_contract": true
+          },
+          {
+            "lane": 3,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3786270,
+            "rows_sha": "617ede5721442c857ec156fcf7eadda980340534fbe39a63b59248943e9920a3",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4010059,
+                "from": 4009803,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "2de0d31567639aab46cb3e7cd3a5ab64b21b2fbcbe5fc4fc8f17ead9d9a96d80",
+            "ready_contract": true
+          },
+          {
+            "lane": 4,
+            "count": 176,
+            "unique": 176,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3787108,
+            "rows_sha": "b69e3fbc85b02d5fcc48d4932655a1188ae2d89e00e68dc39b85a5b814632774",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 4019388,
+                "from": 3951748,
+                "read": 67640,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "7b602ba2e75f7bb80237650f11b6dafab2f5f5521618d1178d90566e065a9d3a",
+            "ready_contract": true
+          },
+          {
+            "lane": 5,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3765484,
+            "rows_sha": "59ef2810ea3b801cc4209a4954a2a8143729f7e4022ee9d9453534431ee4bd7d",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 3997464,
+                "from": 3997208,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "f2682480f6b8a236ddd5545e52bfaaebf1f9ffbbb8150add4eb9e4797f701c97",
+            "ready_contract": true
+          },
+          {
+            "lane": 6,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3764954,
+            "rows_sha": "f6020e58ef916886556c19de4677664aafe547e259bab723bc07824d3897e24f",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 3991402,
+                "from": 3968864,
+                "read": 22538,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "d15568e3cf3b0bd1a93c03bb93dd9fdd972694ab4f365d559c6a802bab20aa28",
+            "ready_contract": true
+          },
+          {
+            "lane": 7,
+            "count": 175,
+            "unique": 175,
+            "invalid": 0,
+            "bad_init_field": 0,
+            "rows_bytes": 3765758,
+            "rows_sha": "4ff3597a252d49fa1cd3eab92407cf4f16385bedc4e34f7768cf76ced97d542c",
+            "partial": false,
+            "complete": true,
+            "logs": [
+              {
+                "name": "worker.log",
+                "size": 3990116,
+                "from": 3989860,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "server.log",
+                "size": 850,
+                "from": 594,
+                "read": 256,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              },
+              {
+                "name": "xvfb.log",
+                "size": 0,
+                "from": 0,
+                "read": 0,
+                "fatal": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "truncated": false
+              }
+            ],
+            "ready_sha": "41702ee1c18241d800ce7683dcbfc540d989982a3fdb807a05f25de4e2121f78",
+            "ready_contract": true
+          }
+        ],
+        "count": 1405,
+        "unique": 1405,
+        "invalid": 0,
+        "complete": 8,
+        "partition": true
+      }
+    ]
+  },
+  "log_coverage": {
+    "stt/0/worker.log": {
+      "read_start": 4168505,
+      "read_end": 4168761,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/0/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/0/xvfb.log": {
+      "read_start": 0,
+      "read_end": 206,
+      "count": 1,
+      "total_read_bytes": 206,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/1/worker.log": {
+      "read_start": 4168398,
+      "read_end": 4168654,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/1/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/1/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/2/worker.log": {
+      "read_start": 4161465,
+      "read_end": 4161721,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/2/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/2/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/3/worker.log": {
+      "read_start": 4158200,
+      "read_end": 4158456,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/3/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/3/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/4/worker.log": {
+      "read_start": 4170165,
+      "read_end": 4170421,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/4/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/4/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/5/worker.log": {
+      "read_start": 4148049,
+      "read_end": 4148305,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/5/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/5/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/6/worker.log": {
+      "read_start": 4140942,
+      "read_end": 4141198,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/6/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/6/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/7/worker.log": {
+      "read_start": 4144154,
+      "read_end": 4144410,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/7/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "stt/7/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/0/worker.log": {
+      "read_start": 4175673,
+      "read_end": 4175929,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/0/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/0/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/1/worker.log": {
+      "read_start": 4171876,
+      "read_end": 4172132,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/1/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/1/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/2/worker.log": {
+      "read_start": 4168894,
+      "read_end": 4169150,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/2/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/2/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/3/worker.log": {
+      "read_start": 4159900,
+      "read_end": 4160156,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/3/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/3/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/4/worker.log": {
+      "read_start": 4178143,
+      "read_end": 4178399,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/4/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/4/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/5/worker.log": {
+      "read_start": 4154193,
+      "read_end": 4154449,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/5/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/5/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/6/worker.log": {
+      "read_start": 4144974,
+      "read_end": 4145230,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/6/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/6/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/7/worker.log": {
+      "read_start": 4149061,
+      "read_end": 4149317,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/7/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "dt/7/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/0/worker.log": {
+      "read_start": 4015956,
+      "read_end": 4016212,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/0/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/0/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/1/worker.log": {
+      "read_start": 4017178,
+      "read_end": 4017434,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/1/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/1/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/2/worker.log": {
+      "read_start": 4017548,
+      "read_end": 4017804,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/2/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/2/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/3/worker.log": {
+      "read_start": 4009803,
+      "read_end": 4010059,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/3/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/3/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/4/worker.log": {
+      "read_start": 3951748,
+      "read_end": 4019388,
+      "count": 1,
+      "total_read_bytes": 67640,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/4/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/4/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/5/worker.log": {
+      "read_start": 3997208,
+      "read_end": 3997464,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/5/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/5/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/6/worker.log": {
+      "read_start": 3968864,
+      "read_end": 3991402,
+      "count": 1,
+      "total_read_bytes": 22538,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/6/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/6/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/7/worker.log": {
+      "read_start": 3989860,
+      "read_end": 3990116,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/7/server.log": {
+      "read_start": 594,
+      "read_end": 850,
+      "count": 1,
+      "total_read_bytes": 256,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "at/7/xvfb.log": {
+      "read_start": 0,
+      "read_end": 0,
+      "count": 1,
+      "total_read_bytes": 0,
+      "fatal": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "completed": 4215,
+  "expected": 4215,
+  "invalid_initializations": 0,
+  "observed_success_counts": {
+    "stt": 1277,
+    "dt": 1166,
+    "at": 1207
+  },
+  "success_total": 3650,
+  "count_sources": {
+    "stt": "wa/results/STUDENT61715_STT_DT_PARTITIONS_20261008_0535.json",
+    "dt": "wa/results/STUDENT61715_STT_DT_PARTITIONS_20261008_0535.json",
+    "at": {
+      "utc": "2026-10-07T21:59:54.038030+00:00",
+      "scope": "AT completed partition only; full start/media audit pending",
+      "count": 1405,
+      "unique": 1405,
+      "success": 1207,
+      "collision": 70,
+      "invalid": 0,
+      "SR": 85.90747330960853
+    }
+  },
+  "current_best_fully_audited": {
+    "checkpoint_job": 61609,
+    "success": {
+      "stt": 1279,
+      "dt": 1178,
+      "at": 1207
+    },
+    "total": 3664
+  },
+  "candidate_delta_vs_best": {
+    "stt": -2,
+    "dt": -12,
+    "at": 0,
+    "total": -14
+  },
+  "candidate_promoted": false,
+  "goal": {
+    "status": "ACTIVE",
+    "required": {
+      "stt": 1289,
+      "dt": 1173,
+      "at": 1203
+    },
+    "observed_shortfall": {
+      "stt": 12,
+      "dt": 7,
+      "at": 0
+    },
+    "formal_goal_report_pending": false,
+    "uwb_after_sr_gate": true,
+    "formal_goal_status": "NOT_MET",
+    "formal_goal_report_sha256": "8ad3350b8c5289830c8004d0b45c46d7bf412880c46ff3d44ffb7b600dae6bb7"
+  },
+  "full_log_audit": {
+    "path": "wa/results/STUDENT61715_TERMINAL_LOGS_20261008.json",
+    "sha256": "81cbd04c3d00c9d38604982445b7b91270fcdc4af6822a42968aa0ccc369f375",
+    "logs": 72,
+    "bytes": 98647173,
+    "ready": 24,
+    "primary_literal_counts": {
+      "Traceback (most recent call last)": 0,
+      "CUDA out of memory": 0,
+      "FloatingPointError": 0,
+      "Segmentation fault": 0,
+      "Fatal Python error": 0
+    },
+    "additional_error_context": {
+      "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_00/xvfb.log",
+      "bytes": 206,
+      "lines": [
+        "_XSERVTransmkdir: ERROR: Cannot create /tmp/.X11-unix",
+        "_XSERVTransSocketUNIXCreateListener: mkdir(/tmp/.X11-unix) failed, errno = 17",
+        "_XSERVTransMakeAllCOTSServerListeners: failed to create listener for unix"
+      ],
+      "interpretation": "未命中既定fatal模式，但必须保留；不能宣称日志完全无ERROR。本次未诊断其影响。"
+    },
+    "boundary": "GPU names do not prove24distinctphysicalUUID; no5patterns does not mean no errors."
+  },
+  "full_audit": {
+    "freeze": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61715_result_audit_v1",
+    "commit": "32fa14084e71eacb6c9527e493580f089a5b7428",
+    "commands": {
+      "freeze": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61715_result_audit_v1",
+      "commit": "32fa14084e71eacb6c9527e493580f089a5b7428",
+      "python": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python",
+      "roots": {
+        "stt": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+        "dt": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1",
+        "at": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1"
+      },
+      "paths": {
+        "merged": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_full_audit_20261008_v1",
+        "goal": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_goal_20261008_v1",
+        "review": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_review_20261008_v1",
+        "comparison": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_vs61609_20261008_v1"
+      },
+      "merge": [
+        "-B",
+        "-m",
+        "wa.tools.merge_student_partitions",
+        "--stt",
+        "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+        "--dt",
+        "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1",
+        "--at",
+        "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1",
+        "--manifest",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json",
+        "--teacher-selections",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl",
+        "--checkpoint-sha",
+        "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+        "--checkpoint-step",
+        "59716",
+        "--mode",
+        "mixed",
+        "--output",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_full_audit_20261008_v1"
+      ],
+      "goal": [
+        "-B",
+        "-m",
+        "wa.tools.audit_student_goal",
+        "--candidate",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_full_audit_20261008_v1",
+        "--manifest",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json",
+        "--teacher-selections",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl",
+        "--checkpoint-sha",
+        "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+        "--checkpoint-step",
+        "59716",
+        "--baseline",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1",
+        "--output",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_goal_20261008_v1"
+      ],
+      "comparison": [
+        "-B",
+        "-m",
+        "wa.tools.compare_student61609",
+        "--candidate",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_full_audit_20261008_v1",
+        "--manifest",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json",
+        "--teacher-selections",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl",
+        "--checkpoint-sha",
+        "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+        "--checkpoint-step",
+        "59716",
+        "--baseline",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61609_full_audit_20261007_v1",
+        "--output",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_vs61609_20261008_v1"
+      ],
+      "review": [
+        "-B",
+        "-m",
+        "wa.tools.build_student_review",
+        "--merged",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_full_audit_20261008_v1",
+        "--manifest",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json",
+        "--teachers",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl",
+        "--ffprobe",
+        "/data/nas_ray/home/zeying.gong/algorithm/envs/habitat/bin/ffprobe",
+        "--mode",
+        "mixed",
+        "--output",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_review_20261008_v1"
+      ],
+      "preconditions": [
+        "all3 scheduler JobTask SUCCEEDED",
+        "24shard COMPLETE and3PARTITION_COMPLETE exact1405/contracts",
+        "all4outputsabsent/not-symlink/outsideinputs",
+        "freezeHEADclean"
+      ],
+      "parallel_after_merge": [
+        "goal",
+        "comparison",
+        "review"
+      ],
+      "met_fields": [
+        "audit_status PASS",
+        "goal_status MET",
+        "all3tasks met true",
+        "candidateSHA/step match",
+        "full4215"
+      ],
+      "scope": "Executed once after terminal gate; all four commands exited0, no rerun."
+    },
+    "gate_verified_utc": "2026-10-07T21:52:08.219614+00:00",
+    "gate": "3SUCCEEDED/24COMPLETE/3PARTITION_COMPLETE; all1405",
+    "merge_started_once": true,
+    "merge_process_session": 56395,
+    "remote_pid": 3632881,
+    "output_overwrite": false,
+    "active_checked": {
+      "elapsed": "09:53",
+      "cpu_time": "00:01:06",
+      "rchar": 4726695059,
+      "scope": "process read bytes; not episode progress"
+    },
+    "status": "MERGE_INITIAL_PAIR_GOAL_COMPARISON_MEDIA_AUDIT_PASS",
+    "next": "All original eval and CPU audits complete. Keep best61609; implement and verify separate failure-state teacher recovery protocol before any collection/training.",
+    "merge_process_exit": 0,
+    "merge_files": {
+      "student_teacher_pair_audit.json": {
+        "bytes": 5846457,
+        "sha256": "dc98149bdcfb6baf05d1fae167de572b476679f48384dd91ea92e57851645844"
+      },
+      "combined_episodes.jsonl": {
+        "bytes": 91129538,
+        "sha256": "35b8e74eb0e0e697e343053400849304c363686b5069bb58a93cfade9250eb37"
+      },
+      "summary.json": {
+        "bytes": 20706,
+        "sha256": "07e6b309bae096b4088f6dfaa0769d3e5923258986fffd279827f8f65b7fc8e0"
+      }
+    },
+    "metrics_percent": {
+      "stt": {
+        "episodes": 1405,
+        "SR": 90.88967971530249,
+        "CR": 3.701067615658363,
+        "TR": 87.37340588022403,
+        "macro_TR": 91.98103809963479,
+        "finish": 92.31316725978648,
+        "invalid_init_count": 0,
+        "reference_missing": 52
+      },
+      "dt": {
+        "episodes": 1405,
+        "SR": 82.98932384341637,
+        "CR": 6.476868327402135,
+        "TR": 79.39108008451754,
+        "macro_TR": 82.21196270102185,
+        "finish": 89.25266903914591,
+        "invalid_init_count": 0,
+        "reference_missing": 52
+      },
+      "at": {
+        "episodes": 1405,
+        "SR": 85.90747330960853,
+        "CR": 4.98220640569395,
+        "TR": 85.07121938930817,
+        "macro_TR": 88.1213855427569,
+        "finish": 90.88967971530249,
+        "invalid_init_count": 0,
+        "reference_missing": 52
+      }
+    },
+    "source_hash_count": 78,
+    "merge_pair_validation": {
+      "episodes": 4215,
+      "pair_sha256": "dc98149bdcfb6baf05d1fae167de572b476679f48384dd91ea92e57851645844",
+      "comparison": "raw sensor SHA with shape/dtype/all channels; recorded dynamic state atol1e-6"
+    },
+    "secondary_process_session": 79691,
+    "secondary_process_exit": 0,
+    "secondary_results": [
+      {
+        "audit": "goal",
+        "begin_utc": "2026-10-07T22:08:22.680425+00:00",
+        "end_utc": "2026-10-07T22:08:46.234712+00:00",
+        "exit": 0,
+        "files": {
+          "goal_report.json": {
+            "bytes": 42577,
+            "sha256": "8ad3350b8c5289830c8004d0b45c46d7bf412880c46ff3d44ffb7b600dae6bb7"
+          }
+        },
+        "reports": {
+          "goal_report.json": {
+            "schema": "wa.student-goal-audit.v1",
+            "audit_status": "PASS",
+            "goal_status": "NOT_MET",
+            "episodes": 4215,
+            "targets": {
+              "stt": 1289,
+              "dt": 1173,
+              "at": 1203
+            },
+            "tasks": {
+              "stt": {
+                "episodes": 1405,
+                "required_success": 1289,
+                "candidate_success": 1277,
+                "baseline_success": 1276,
+                "met": false,
+                "shortfall": 12,
+                "net_success": 1,
+                "gains": 15,
+                "regressions": 14,
+                "gain_keys": 15,
+                "regression_keys": 14,
+                "candidate_SR": 90.88967971530249,
+                "baseline_SR": 90.8185053380783,
+                "candidate_collision_count": 52,
+                "baseline_collision_count": 61,
+                "candidate_CR": 3.701067615658363,
+                "baseline_CR": 4.341637010676156,
+                "candidate_invalid_init_count": 0,
+                "baseline_invalid_init_count": 0,
+                "candidate_invalid_init_percent": 0,
+                "baseline_invalid_init_percent": 0
+              },
+              "dt": {
+                "episodes": 1405,
+                "required_success": 1173,
+                "candidate_success": 1166,
+                "baseline_success": 1173,
+                "met": false,
+                "shortfall": 7,
+                "net_success": -7,
+                "gains": 23,
+                "regressions": 30,
+                "gain_keys": 23,
+                "regression_keys": 30,
+                "candidate_SR": 82.98932384341637,
+                "baseline_SR": 83.48754448398577,
+                "candidate_collision_count": 91,
+                "baseline_collision_count": 93,
+                "candidate_CR": 6.476868327402135,
+                "baseline_CR": 6.619217081850533,
+                "candidate_invalid_init_count": 0,
+                "baseline_invalid_init_count": 0,
+                "candidate_invalid_init_percent": 0,
+                "baseline_invalid_init_percent": 0
+              },
+              "at": {
+                "episodes": 1405,
+                "required_success": 1203,
+                "candidate_success": 1207,
+                "baseline_success": 1203,
+                "met": true,
+                "shortfall": 0,
+                "net_success": 4,
+                "gains": 27,
+                "regressions": 23,
+                "gain_keys": 27,
+                "regression_keys": 23,
+                "candidate_SR": 85.90747330960853,
+                "baseline_SR": 85.62277580071175,
+                "candidate_collision_count": 70,
+                "baseline_collision_count": 72,
+                "candidate_CR": 4.98220640569395,
+                "baseline_CR": 5.124555160142349,
+                "candidate_invalid_init_count": 0,
+                "baseline_invalid_init_count": 0,
+                "candidate_invalid_init_percent": 0,
+                "baseline_invalid_init_percent": 0
+              }
+            },
+            "candidate_checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+            "candidate_checkpoint_step": 59716,
+            "baseline_checkpoint_sha256": "b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f",
+            "baseline_checkpoint_step": 59065,
+            "baseline_self_check": false,
+            "manifest_sha256": "a1f515534153ccaa720f787f01ea23b9097c174fe25020f756c7d7947eedf98f",
+            "teacher_reference_sha256": "f45f21d71b63d7f2a0898e1e762c393a95b0f3eaf8291bd1affbc827d23354d8",
+            "lightnav_comparison": {
+              "all_three_strictly_exceed": true,
+              "tasks": {
+                "stt": {
+                  "episodes": 1405,
+                  "student_success": 1277,
+                  "lightnav_success": 1273,
+                  "strictly_exceeds": true,
+                  "SR_delta_percentage_points": 0.2846975088967972,
+                  "student_only_success": 58,
+                  "lightnav_only_success": 54
+                },
+                "dt": {
+                  "episodes": 1405,
+                  "student_success": 1166,
+                  "lightnav_success": 1128,
+                  "strictly_exceeds": true,
+                  "SR_delta_percentage_points": 2.704626334519573,
+                  "student_only_success": 144,
+                  "lightnav_only_success": 106
+                },
+                "at": {
+                  "episodes": 1405,
+                  "student_success": 1207,
+                  "lightnav_success": 944,
+                  "strictly_exceeds": true,
+                  "SR_delta_percentage_points": 18.718861209964412,
+                  "student_only_success": 316,
+                  "lightnav_only_success": 53
+                }
+              },
+              "scope": "evaluation-set adaptation; different input systems; not unseen generalization"
+            },
+            "candidate_metrics_percent": {
+              "stt": {
+                "episodes": 1405,
+                "SR": 90.88967971530249,
+                "CR": 3.701067615658363,
+                "TR": 87.37340588022403,
+                "macro_TR": 91.98103809963479,
+                "finish": 92.31316725978648,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              },
+              "dt": {
+                "episodes": 1405,
+                "SR": 82.98932384341637,
+                "CR": 6.476868327402135,
+                "TR": 79.39108008451754,
+                "macro_TR": 82.21196270102185,
+                "finish": 89.25266903914591,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              },
+              "at": {
+                "episodes": 1405,
+                "SR": 85.90747330960853,
+                "CR": 4.98220640569395,
+                "TR": 85.07121938930817,
+                "macro_TR": 88.1213855427569,
+                "finish": 90.88967971530249,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              }
+            },
+            "baseline_metrics_percent": {
+              "stt": {
+                "episodes": 1405,
+                "SR": 90.8185053380783,
+                "CR": 4.341637010676156,
+                "TR": 87.23816888528836,
+                "macro_TR": 92.06101906960204,
+                "finish": 92.17081850533808,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              },
+              "dt": {
+                "episodes": 1405,
+                "SR": 83.48754448398577,
+                "CR": 6.619217081850533,
+                "TR": 79.23499260308795,
+                "macro_TR": 81.92228026380673,
+                "finish": 88.96797153024912,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              },
+              "at": {
+                "episodes": 1405,
+                "SR": 85.62277580071175,
+                "CR": 5.124555160142349,
+                "TR": 85.0365844697089,
+                "macro_TR": 87.90346653225178,
+                "finish": 90.67615658362989,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              }
+            },
+            "pair_validation": {
+              "episodes": 4215,
+              "source": "pinned 61377 complete paired-start audit",
+              "comparison": "stored raw sensor SHA exact; dynamic state atol1e-6; teacher evidence hashes exact",
+              "scope": "Transitive check against immutable audited baseline; no media/RGB re-decoding or teacher artifact rehash"
+            },
+            "limits": [
+              "Evaluation-set adaptation, not untouched-test generalization.",
+              "CR is target-person distance ever<0.5m, not general obstacle contact.",
+              "Collision and initialization failures reported over full 1405/task; only fixed success counts gate this goal.",
+              "LightNav comparison retains its original meaning and different-input-system caveat.",
+              "Goal MET is not product safety, real-UWB, latency, or unseen-generalization certification."
+            ],
+            "candidate_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_full_audit_20261008_v1",
+            "baseline_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1",
+            "source_hashes": 165,
+            "pinned_baseline_artifacts": {
+              "summary.json": "30dfdbd9263ca0ba3615cb1845938de235c7e1b15b2141edb5ac584622f6bbf3",
+              "combined_episodes.jsonl": "62ac4c5a2bb28e8db89dbf1f67c968725977ca2bb321abcc78536b16e233d14b",
+              "student_teacher_pair_audit.json": "dc98149bdcfb6baf05d1fae167de572b476679f48384dd91ea92e57851645844"
+            }
+          }
+        }
+      },
+      {
+        "audit": "comparison",
+        "begin_utc": "2026-10-07T22:08:22.680737+00:00",
+        "end_utc": "2026-10-07T22:08:46.503655+00:00",
+        "exit": 0,
+        "files": {
+          "comparison.json": {
+            "bytes": 54595,
+            "sha256": "db53fb99f85b4473544bb24b4c65bc99570a963c507533b1bd4f2d07b154a611"
+          }
+        },
+        "reports": {
+          "comparison.json": {
+            "schema": "wa.student61609-comparison.v1",
+            "audit_status": "PASS",
+            "comparison_baseline": 61609,
+            "episodes": 4215,
+            "tasks": {
+              "stt": {
+                "episodes": 1405,
+                "candidate_success": 1277,
+                "baseline_success": 1279,
+                "net_success": -2,
+                "gains": 7,
+                "regressions": 9,
+                "gain_keys": 7,
+                "regression_keys": 9,
+                "common_success": 1270,
+                "common_failure": 119,
+                "common_failure_keys": {
+                  "count": 119
+                },
+                "candidate_SR": 90.88967971530249,
+                "candidate_collision_count": 52,
+                "candidate_CR": 3.701067615658363,
+                "candidate_invalid_init_count": 0,
+                "candidate_invalid_init_percent": 0,
+                "baseline_SR": 91.03202846975088,
+                "baseline_collision_count": 56,
+                "baseline_CR": 3.98576512455516,
+                "baseline_invalid_init_count": 0,
+                "baseline_invalid_init_percent": 0
+              },
+              "dt": {
+                "episodes": 1405,
+                "candidate_success": 1166,
+                "baseline_success": 1178,
+                "net_success": -12,
+                "gains": 10,
+                "regressions": 22,
+                "gain_keys": 10,
+                "regression_keys": 22,
+                "common_success": 1156,
+                "common_failure": 217,
+                "common_failure_keys": {
+                  "count": 217
+                },
+                "candidate_SR": 82.98932384341637,
+                "candidate_collision_count": 91,
+                "candidate_CR": 6.476868327402135,
+                "candidate_invalid_init_count": 0,
+                "candidate_invalid_init_percent": 0,
+                "baseline_SR": 83.84341637010677,
+                "baseline_collision_count": 85,
+                "baseline_CR": 6.049822064056939,
+                "baseline_invalid_init_count": 0,
+                "baseline_invalid_init_percent": 0
+              },
+              "at": {
+                "episodes": 1405,
+                "candidate_success": 1207,
+                "baseline_success": 1207,
+                "net_success": 0,
+                "gains": 10,
+                "regressions": 10,
+                "gain_keys": 10,
+                "regression_keys": 10,
+                "common_success": 1197,
+                "common_failure": 188,
+                "common_failure_keys": {
+                  "count": 188
+                },
+                "candidate_SR": 85.90747330960853,
+                "candidate_collision_count": 70,
+                "candidate_CR": 4.98220640569395,
+                "candidate_invalid_init_count": 0,
+                "candidate_invalid_init_percent": 0,
+                "baseline_SR": 85.90747330960853,
+                "baseline_collision_count": 71,
+                "baseline_CR": 5.05338078291815,
+                "baseline_invalid_init_count": 0,
+                "baseline_invalid_init_percent": 0
+              }
+            },
+            "baseline_self_check": false,
+            "candidate_checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+            "candidate_checkpoint_step": 59716,
+            "baseline_checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+            "baseline_checkpoint_step": 59716,
+            "candidate_metrics_percent": {
+              "stt": {
+                "episodes": 1405,
+                "SR": 90.88967971530249,
+                "CR": 3.701067615658363,
+                "TR": 87.37340588022403,
+                "macro_TR": 91.98103809963479,
+                "finish": 92.31316725978648,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              },
+              "dt": {
+                "episodes": 1405,
+                "SR": 82.98932384341637,
+                "CR": 6.476868327402135,
+                "TR": 79.39108008451754,
+                "macro_TR": 82.21196270102185,
+                "finish": 89.25266903914591,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              },
+              "at": {
+                "episodes": 1405,
+                "SR": 85.90747330960853,
+                "CR": 4.98220640569395,
+                "TR": 85.07121938930817,
+                "macro_TR": 88.1213855427569,
+                "finish": 90.88967971530249,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              }
+            },
+            "baseline_metrics_percent": {
+              "stt": {
+                "episodes": 1405,
+                "SR": 91.03202846975088,
+                "CR": 3.98576512455516,
+                "TR": 87.52262061773456,
+                "macro_TR": 92.06446758414903,
+                "finish": 92.45551601423487,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              },
+              "dt": {
+                "episodes": 1405,
+                "SR": 83.84341637010677,
+                "CR": 6.049822064056939,
+                "TR": 79.63475803237277,
+                "macro_TR": 82.21036672715765,
+                "finish": 89.9644128113879,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              },
+              "at": {
+                "episodes": 1405,
+                "SR": 85.90747330960853,
+                "CR": 5.05338078291815,
+                "TR": 85.07414825445389,
+                "macro_TR": 88.07192201858976,
+                "finish": 90.96085409252669,
+                "invalid_init_count": 0,
+                "reference_missing": 52
+              }
+            },
+            "manifest_sha256": "a1f515534153ccaa720f787f01ea23b9097c174fe25020f756c7d7947eedf98f",
+            "teacher_reference_sha256": "f45f21d71b63d7f2a0898e1e762c393a95b0f3eaf8291bd1affbc827d23354d8",
+            "pair_validation": {
+              "episodes": 4215,
+              "reference": "pinned 61609 complete paired-start audit",
+              "comparison": "raw sensor SHA exact; dynamic state atol1e-6; teacher evidence hashes exact",
+              "scope": "transitive verification; no media decoding or teacher artifact rehash"
+            },
+            "goal_audit_required": "Run audit_student_goal with its original 61377 baseline and fixed targets.",
+            "limits": [
+              "Evaluation-set adaptation, not untouched-test generalization.",
+              "All initialization failures remain in 1405/task denominators.",
+              "TR in metrics_percent is reference-step normalized; macro_TR remains separate.",
+              "CR is target-person distance ever<0.5m, not general obstacle contact.",
+              "Different GPU hardware does not establish bitwise equivalence or sampling-only causality.",
+              "No goal_status is decided by this comparison. No model, media or checkpoint was loaded."
+            ],
+            "candidate_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_full_audit_20261008_v1",
+            "baseline_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61609_full_audit_20261007_v1",
+            "candidate_partition_roots": {
+              "stt": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+              "dt": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1",
+              "at": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1"
+            },
+            "baseline_partition_roots": {
+              "stt": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1",
+              "dt": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1",
+              "at": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1"
+            },
+            "source_hashes": 166,
+            "pinned_baseline_artifacts": {
+              "summary.json": "223b4b8140e79842408bc7104d16f75b7b4ff1d409354ee547b00e4b49f937f7",
+              "combined_episodes.jsonl": "0ab45e1b35bb0b8809fcc77fcaabca59b35bab0839507d716c371ce2d5a6f358",
+              "student_teacher_pair_audit.json": "dc98149bdcfb6baf05d1fae167de572b476679f48384dd91ea92e57851645844"
+            }
+          }
+        }
+      },
+      {
+        "audit": "review",
+        "begin_utc": "2026-10-07T22:08:22.681438+00:00",
+        "end_utc": "2026-10-07T22:12:49.957746+00:00",
+        "exit": 0,
+        "files": {
+          "index.html": {
+            "bytes": 607029,
+            "sha256": "650db002ae5b505c9f8c5ac1410ceb8b61a006495060e8b08efbec997cc4fa9c"
+          },
+          "episodes.json": {
+            "bytes": 754024,
+            "sha256": "8aab91f89672d8869b591758d94a38d5774001c4d9ec5c2d468eb6b73f836eed"
+          },
+          "audit.json": {
+            "bytes": 15467,
+            "sha256": "665138a7108d2ca2b9bdc1e3cdea3f859a26eb0b63aa5d02c432b130ba64c843"
+          },
+          "summary.json": {
+            "bytes": 20706,
+            "sha256": "07e6b309bae096b4088f6dfaa0769d3e5923258986fffd279827f8f65b7fc8e0"
+          }
+        },
+        "reports": {
+          "audit.json": {
+            "status": "PASS",
+            "episodes": 4215,
+            "mode": "mixed",
+            "initial_pairs": 4215,
+            "first_jpeg_hashes": 4215,
+            "video_metadata": 4215,
+            "video_scope": "metadata and duration, not every frame decoded",
+            "source_hashes": 78
+          }
+        }
+      }
+    ]
+  },
+  "replay_binding_fix": {
+    "scope": "Required env forwarding for Oracle-capable teacher; no collection/training/protocol changes",
+    "files": {
+      "wa/wm/recovery_replay.py": {
+        "bytes": 4988,
+        "sha256": "5415ce31f94fe491a6eb113e16ed519160f2e8dc61295bf0edd5a52b89d77075"
+      },
+      "wa/tests/test_recovery_replay_binding.py": {
+        "bytes": 7866,
+        "sha256": "4ff86cd7bb74dff66f60540d188e619030c0bc6bce3fa82ee9124b357830cff4"
+      }
+    },
+    "tests": [
+      {
+        "command": [
+          "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python",
+          "-B",
+          "-m",
+          "unittest",
+          "-v",
+          "wa.tests.test_recovery_replay_binding"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "test_binder_failure_is_not_swallowed (wa.tests.test_recovery_replay_binding.RecoveryReplayBindingTests.test_binder_failure_is_not_swallowed) ... ok\ntest_dynamic_time_and_joint_mismatch_fail_closed (wa.tests.test_recovery_replay_binding.RecoveryReplayBindingTests.test_dynamic_time_and_joint_mismatch_fail_closed) ... ok\ntest_legacy_teacher_without_binder_remains_compatible (wa.tests.test_recovery_replay_binding.RecoveryReplayBindingTests.test_legacy_teacher_without_binder_remains_compatible) ... ok\ntest_prefix_executes_original_wa_actions_while_teacher_warms_up (wa.tests.test_recovery_replay_binding.RecoveryReplayBindingTests.test_prefix_executes_original_wa_actions_while_teacher_warms_up) ... ok\ntest_required_oracle_environment_is_forwarded_by_identity (wa.tests.test_recovery_replay_binding.RecoveryReplayBindingTests.test_required_oracle_environment_is_forwarded_by_identity) ... ok\ntest_reset_and_rebind_preserve_current_environment (wa.tests.test_recovery_replay_binding.RecoveryReplayBindingTests.test_reset_and_rebind_preserve_current_environment) ... ok\ntest_rgb_mismatch_fails_before_teacher_call_or_step_advance (wa.tests.test_recovery_replay_binding.RecoveryReplayBindingTests.test_rgb_mismatch_fails_before_teacher_call_or_step_advance) ... ok\ntest_takeover_frame_is_still_checked_before_teacher_execution (wa.tests.test_recovery_replay_binding.RecoveryReplayBindingTests.test_takeover_frame_is_still_checked_before_teacher_execution) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.005s\n\nOK\n"
+      },
+      {
+        "command": [
+          "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python",
+          "-B",
+          "-m",
+          "wa.wm.recovery_replay"
+        ],
+        "exit": 0,
+        "stdout": "PASS prefix replay; causal teacher warmup; takeover; reset; divergence; candidates\n",
+        "stderr": ""
+      }
+    ],
+    "main_reviewed": true,
+    "changes": "Two added binder-forwarding lines; eight new CPU tests.",
+    "limitations": [
+      "Mock Oracle and original CPU selftest only; no real nonzero Habitat takeover yet.",
+      "Legacy train-only admission/doc and allfrozenworktrees unchanged.",
+      "No new recovery manifest/schema/cache/training recipe submitted."
+    ]
+  },
+  "next_recovery_design": {
+    "status": "READ_ONLY_DESIGN_NOT_EXECUTED",
+    "prefix_model_proposal": "61609 retained after full61715 audit; new failure-state source manifest must pin it before collection.",
+    "required": [
+      "Independentexplicitfailure-state-adaptation protocol, not weakening old4215step0 admission.",
+      "Frozen failurekeys/checkpoint/controller/source/seed7/semantic/BBox and bounded same-k late-to-early candidates.",
+      "Real full WA prefix recording with raw RGB/dynamic state/executed normalizedaction/time/owner, then bothteacher sameprefix replays; no teleport.",
+      "Success-first/no-fallback eligibleteacher; dualsuccess same-k originalfollowing_rate higher, tieLightNav; repeat validation not duplicate demos.",
+      "Only teacher-owned successfulsuffix current>=takeover andfuture0.7s fullyteacher; failedWA actions never positive labels; historymayincludeoldobservations.",
+      "OriginalSE2 interpolation/transitionfilters/heldout unchanged; no privilegedteachergeometry inpolicyinputs.",
+      "If WArerun succeeds on fixedoriginalfailedkey: record no-recovery-needed; no scorebackfill orWAprefixpositive labels; preserveoriginalkeyaccounting.",
+      "Real nonzero Oracle+LightNav short developer integration required beforeformal8GPUcollection; no cluster smoke."
+    ]
+  },
+  "actions": {
+    "new_gpu_jobs": 0,
+    "stopped_jobs": 0,
+    "training": 0,
+    "collection": 0,
+    "modified_runtime_freezes": 0,
+    "checkpoint_changes": 0,
+    "serving_new_review": {
+      "host": "devpod-4090",
+      "port": 18800,
+      "bind": "127.0.0.1",
+      "pid": 3650320,
+      "artifact_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_review_20261008_v1",
+      "command": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -m http.server 18800 --bind 127.0.0.1 --directory /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_review_20261008_v1",
+      "verified_beijing": "2026-10-08 06:18:41",
+      "root_and_audit_remote_and_local_get": {
+        "status": 200,
+        "index_sha256": "650db002ae5b505c9f8c5ac1410ceb8b61a006495060e8b08efbec997cc4fa9c",
+        "audit_sha256": "665138a7108d2ca2b9bdc1e3cdea3f859a26eb0b63aa5d02c432b130ba64c843"
+      },
+      "video": {
+        "task": "stt",
+        "key": "bzCsHPLDztK/1",
+        "job": 61792,
+        "task_id": 72986,
+        "remote_get": 200,
+        "local_head": 200,
+        "bytes": 3994530,
+        "sha256": "b8f4ccd5be9c98d9b65b6bacca852bf8a4e8249ddff0765ef67aa12b8cabf97a"
+      },
+      "main_local_audit_head": {
+        "status": 200,
+        "bytes": 15467,
+        "date_utc": "2026-10-07T22:20:22Z"
+      },
+      "forward_command": "ssh -o ExitOnForwardFailure=yes -N -L 18800:127.0.0.1:18800 devpod-4090",
+      "url": "http://127.0.0.1:18800/",
+      "old61609_preserved": {
+        "port": 18799,
+        "pid": 3392963
+      },
+      "boundary": "Not all-frame decoding or browser seek test. Existing ControlMaster forward lifetime is finite. Initial0.5s connection refused then same PID became ready; no restart. HTTP server logs /dev/null; do not infer absence of historical requests/errors."
+    }
+  },
+  "limitations": [
+    "Evaluation-set adaptation, not untouched-test generalization.",
+    "All4215 merge/teacher initial-pair/fixed-goal/comparison/media audits PASS. Goal evaluator correctly reports NOT_MET; not acceptance success.",
+    "TRreference normalization and macroTR remain separate; CRpersondistance<.5m only.",
+    "61715evaluatedRTX4090 vs61609A800: no isolated sampling causalclaim.",
+    "Media verified first JPEG SHA plus stream metadata and positive finite duration; not every video frame decoded."
+  ],
+  "final_audits_completed_utc": "2026-10-07T22:12:49.984503+00:00",
+  "git_backup_preflight": {
+    "initial_commit_attempt": "FAILED_AUTHOR_IDENTITY_NOT_CONFIGURED",
+    "head_unchanged": "97a0821ba83e4a3ad0f811bb16ac7e617c184ad3",
+    "prior3authors": "Codex <codex@openai.com>",
+    "recovery": "Use git -c user.name=Codex -c user.email=codex@openai.com for this commit only; no global identity edits."
+  }
+}
