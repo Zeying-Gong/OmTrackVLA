@@ -8,9 +8,12 @@
 
 ## 下一轮准备进度｜2026-10-07 20:14
 
-固定预算重平衡的代码已接入运行时，66项新旧CPU测试及全量8路采样索引核验通过。开发机RTX4090完成16个真实样本、4次模型与优化器更新，四类采样组均有消费；只做前置检查，未保存新checkpoint。代码与诊断已推送GitHub `wa`：`dd1fec9e2cba0450be7a33387c8a2e550db4cd91`。20:20冻结独立训练源码与配置，通过原始权重完整SHA、环境和依赖检查，准备提交一次完整8×A800训练；此记录时尚未提交。
+固定预算重平衡的代码已接入运行时，66项新旧CPU测试及全量8路采样索引核验通过。开发机RTX4090完成16个真实样本、4次模型与优化器更新，四类采样组均有消费；只做前置检查，未保存新checkpoint。代码与诊断已推送GitHub `wa`：`dd1fec9e2cba0450be7a33387c8a2e550db4cd91`。20:20冻结独立训练源码与配置，通过原始权重完整SHA、环境和依赖检查，随后20:23提交 **61715/72909（8×A800）**。20:33:41实际已到 **step24150／新增1443步，共计划37009步**，源码与父模型契约通过；尚未完成训练，不能写成新SR。
 下一轮计划保持总曝光1,184,272次和DT/AT数据不变：困难STT前2秒保持3次，后段由3次降为2次；补充10个新退步episode的886个有效教师窗口，并为其余1248个成功STT episode选6257个唯一时序分位窗口加一次曝光。选中anchor窗口共12514次，全部anchor episode池共122679次，二者口径不同。
 仍从59866模型及优化器独立开始、新增1epoch／累计2，不续训61609第三轮、不加LR、不改loss／控制器／物理／阈值。性能是否提升必须看训练后的完整4215条配对闭环。详情见[运行时前置检查](STT_ANCHOR_RUNTIME_PREFLIGHT_20261007.json)、[冻结发布记录](STT_ANCHOR_RELEASE_20261007.json)与[正式配置](../jobs/stt_anchor_train_a800_v1.yaml)。配置含完整命令与NAS输出路径，冻结源码为 `source_stt_anchor_train_v1`（`dd1fec9e`），配置SHA `4a5b465a9533c779a7990aa754575caee34dc302fa0238ecd62d3471cb3879ef`。
+
+新任务输出：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1`；最终 `checkpoint.pt` 和SHA待训练终态审计，勿与同样预计step59716的61609权重混淆。
+[启动与实际进度证据](STT_ANCHOR_STARTUP_61715_20261007.json)。新TensorBoard选择 `stt_anchor_61715`：先运行 `ssh -o ExitOnForwardFailure=yes -N -L 16006:127.0.0.1:6006 devpod-a800`，打开 [localhost曲线](http://127.0.0.1:16006/#scalars)。已验证实际SSH转发与标量；事件walltime为导出时间，非训练发生时间。
 
 ## 模型与训练
 

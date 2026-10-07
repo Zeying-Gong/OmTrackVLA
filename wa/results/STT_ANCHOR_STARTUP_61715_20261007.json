@@ -1,0 +1,367 @@
+{
+  "status": "RUNNING_ACTUAL_8A800_REAL_UPDATES",
+  "job_id": 61715,
+  "task_id": 72909,
+  "submitted_at_beijing": "2026-10-07T20:23:08+08:00",
+  "checked_at_beijing": "2026-10-07T20:33:41+08:00",
+  "cluster": "baidu_bj_a800",
+  "source_commit": "dd1fec9e2cba0450be7a33387c8a2e550db4cd91",
+  "source_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_stt_anchor_train_v1",
+  "config_sha256": "4a5b465a9533c779a7990aa754575caee34dc302fa0238ecd62d3471cb3879ef",
+  "config_backup_commit": "b240ebd41a54feb2d8e3ff96fcd65db6150352cb",
+  "scheduler": {
+    "state": "RUNNING",
+    "checked_after_11_minutes": true,
+    "node": "172.20.0.20",
+    "pod": "ray-a800/job-61715-0-s6nwk"
+  },
+  "first_snapshot": {
+    "status": "ACTUAL_8A800_STARTUP_CONTRACT_PASS",
+    "checked_utc": "2026-10-07T12:26:10.545287+00:00",
+    "job_id": 61715,
+    "task_id": 72909,
+    "run": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1",
+    "config": {
+      "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928",
+      "encoder_weight": "/data/nas_ray/home/zeying.gong/datasets_processed/threepanel_debug_v2/traversability_stepp_v1/_weights/dinov2_vits14_pretrain.pth",
+      "wla_source": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/dependencies/wla_v1",
+      "wla_checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_58346/task_69086/wla_teacher_train/training/checkpoints/step-0043203.pt",
+      "cache": "/data/nas_ray/home/zeying.gong/datasets/wla_evt_se2_cache_20260925_v2",
+      "index_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/robot_transition_audit_v2",
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1",
+      "kind": "jepa",
+      "batch_size": 2,
+      "accumulation": 2,
+      "workers": 2,
+      "epochs": 1,
+      "seed": 42,
+      "world_weight": 0.1,
+      "diagnostic": false,
+      "lane": "managed",
+      "data_root": null,
+      "source_prefix": null,
+      "resume": "/data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt",
+      "resume_sha256": "ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d",
+      "completed_epochs": 1,
+      "history_repeat_probability": 0.25,
+      "recovery_cache": null,
+      "recovery_index": null,
+      "recovery_repeats": 16,
+      "dual_teacher_cache": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_se2_cache_20261006_v1",
+      "teacher_window_plan": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/stt_anchor_candidate_61609_20261007_v1",
+      "teacher_plan_report_sha256": "bbe21c78d1b38731f812866158ea1492c0950d6f05843bfbc8d95fd4da3ff8bd",
+      "dual_teacher_repeats": 1,
+      "evaluation_set_adaptation": true,
+      "contract": "evt_normalized_command3_actual_dt_v1",
+      "cache_sha256": "eb5a52d3478bab1391d12a990dcdc57ce2c77cef787109d29f7f286be797f901",
+      "index_audit_sha256": "3138364dea80543fc83be476e1af8191a4eca3711a9b353591311fc8daf5c2d3",
+      "effective_batch": 32,
+      "train_rows": 1184273,
+      "heldout_rows": 73368,
+      "world_size": 8,
+      "precision": "fp32 training / bf16 frozen encoder",
+      "base_lrs": [
+        2.5000001076719927e-7,
+        5.000000215343985e-7,
+        0.000005000000215343985,
+        0.000001000000043068797,
+        0.00001000000043068797
+      ]
+    },
+    "environment_contract": {
+      "commit": "dd1fec9e2cba0450be7a33387c8a2e550db4cd91",
+      "dirty": "",
+      "torch": "2.8.0+cu128",
+      "gpu_names": [
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB"
+      ]
+    },
+    "source_hashes_verified": 175,
+    "artifact_hashes": {
+      "config.json": "95d99141f3e93303a591faa23847a0f570c03058f3ba5d0dd7d667e3d5a4601b",
+      "environment.json": "bc25c06dd5f4afa172e9c0672c41bb50ad811aa52c949caee9f93c43adc41dc9",
+      "dual_teacher_exposure.json": "b16a8c9d8967dc7243dbd21dc55fac251542c548831069531c26cdd8ca559015"
+    },
+    "train_prefix_bytes": 6851,
+    "train_prefix_sha256": "66b10c05eac3ae887090c89a13439b3a2fdb0425fbb0b9f224edbb4646051674",
+    "log_records": 13,
+    "first": {
+      "step": 22708,
+      "total_steps": 59716,
+      "phase_step": 1,
+      "epoch": 1,
+      "loss": 0.09069979190826416,
+      "flow": 0.07113401591777802,
+      "geometry": 0.0002614361001178622,
+      "world": 0.19435055553913116,
+      "loss_aggregation": "DDP_mean_over_accumulation_group",
+      "loss_rank0_last_microbatch": 0.1330556571483612,
+      "lr": [
+        2.5000001076719927e-7,
+        5.000000215343985e-7,
+        0.000005000000215343985,
+        0.000001000000043068797,
+        0.00001000000043068797
+      ],
+      "grad_norm": 0.6656566262245178,
+      "peak_allocated_gib": 8.66770315170288,
+      "elapsed_s": 2.4103260207921267
+    },
+    "last": {
+      "step": 23000,
+      "total_steps": 59716,
+      "phase_step": 293,
+      "epoch": 1,
+      "loss": 0.10890693962574005,
+      "flow": 0.08775502443313599,
+      "geometry": 0.0002873025368899107,
+      "world": 0.21008270978927612,
+      "loss_aggregation": "DDP_mean_over_accumulation_group",
+      "loss_rank0_last_microbatch": 0.09355812519788742,
+      "lr": [
+        2.499654525717148e-7,
+        4.999309051434296e-7,
+        0.0000049993090514342954,
+        9.998618102868593e-7,
+        0.000009998618102868591
+      ],
+      "grad_norm": 0.6652928590774536,
+      "peak_allocated_gib": 8.688297271728516,
+      "elapsed_s": 116.37724785320461
+    },
+    "logs": {
+      "console.log": {
+        "bytes": 17457,
+        "mtime": 1791375925.9315965,
+        "fatal_counts": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        },
+        "tail": [
+          "{\"step\": 22850, \"total_steps\": 59716, \"phase_step\": 143, \"epoch\": 1, \"loss\": 0.12517212331295013, \"flow\": 0.10524266958236694, \"geometry\": 0.00022325378085952252, \"world\": 0.1981782764196396, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.13220666348934174, \"lr\": [2.4999183781384506e-07, 4.999836756276901e-07, 4.999836756276901e-06, 9.999673512553802e-07, 9.999673512553802e-06], \"grad_norm\": 0.8043607473373413, \"peak_allocated_gib\": 8.67685317993164, \"elapsed_s\": 58.82222199253738}",
+          "{\"step\": 22875, \"total_steps\": 59716, \"phase_step\": 168, \"epoch\": 1, \"loss\": 0.11100222915410995, \"flow\": 0.08930442482233047, \"geometry\": 0.000838818377815187, \"world\": 0.21278400719165802, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.18245171010494232, \"lr\": [2.499887067382985e-07, 4.99977413476597e-07, 4.999774134765969e-06, 9.99954826953194e-07, 9.999548269531938e-06], \"grad_norm\": 0.7224137783050537, \"peak_allocated_gib\": 8.678760528564453, \"elapsed_s\": 68.488441452384}",
+          "{\"step\": 22900, \"total_steps\": 59716, \"phase_step\": 193, \"epoch\": 1, \"loss\": 0.15401165187358856, \"flow\": 0.1344870924949646, \"geometry\": 0.00020807569671887904, \"world\": 0.1942051500082016, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.14384309947490692, \"lr\": [2.4998506905270317e-07, 4.999701381054063e-07, 4.999701381054063e-06, 9.999402762108127e-07, 9.999402762108126e-06], \"grad_norm\": 0.7322758436203003, \"peak_allocated_gib\": 8.680667877197266, \"elapsed_s\": 78.11940952390432}"
+        ]
+      },
+      ".md-ak/workload.log": {
+        "bytes": 847,
+        "mtime": 1791375963.46827,
+        "fatal_counts": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        },
+        "tail": [
+          "2026-10-07T20:25:33.491+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+          "2026-10-07T20:26:03.459+08:00 [INFO] [k8s] K8s Job ray-a800/job-61715-0 phase=Running",
+          "2026-10-07T20:26:03.468+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        ]
+      }
+    },
+    "actual_exposure_final_exists": false,
+    "checkpoint_exists": false,
+    "metrics_exists": false
+  },
+  "latest_snapshot": {
+    "status": "ACTUAL_8A800_STARTUP_CONTRACT_PASS",
+    "checked_utc": "2026-10-07T12:33:41.538291+00:00",
+    "job_id": 61715,
+    "task_id": 72909,
+    "run": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1",
+    "config": {
+      "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928",
+      "encoder_weight": "/data/nas_ray/home/zeying.gong/datasets_processed/threepanel_debug_v2/traversability_stepp_v1/_weights/dinov2_vits14_pretrain.pth",
+      "wla_source": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/dependencies/wla_v1",
+      "wla_checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_58346/task_69086/wla_teacher_train/training/checkpoints/step-0043203.pt",
+      "cache": "/data/nas_ray/home/zeying.gong/datasets/wla_evt_se2_cache_20260925_v2",
+      "index_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/robot_transition_audit_v2",
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1",
+      "kind": "jepa",
+      "batch_size": 2,
+      "accumulation": 2,
+      "workers": 2,
+      "epochs": 1,
+      "seed": 42,
+      "world_weight": 0.1,
+      "diagnostic": false,
+      "lane": "managed",
+      "data_root": null,
+      "source_prefix": null,
+      "resume": "/data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt",
+      "resume_sha256": "ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d",
+      "completed_epochs": 1,
+      "history_repeat_probability": 0.25,
+      "recovery_cache": null,
+      "recovery_index": null,
+      "recovery_repeats": 16,
+      "dual_teacher_cache": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_se2_cache_20261006_v1",
+      "teacher_window_plan": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/stt_anchor_candidate_61609_20261007_v1",
+      "teacher_plan_report_sha256": "bbe21c78d1b38731f812866158ea1492c0950d6f05843bfbc8d95fd4da3ff8bd",
+      "dual_teacher_repeats": 1,
+      "evaluation_set_adaptation": true,
+      "contract": "evt_normalized_command3_actual_dt_v1",
+      "cache_sha256": "eb5a52d3478bab1391d12a990dcdc57ce2c77cef787109d29f7f286be797f901",
+      "index_audit_sha256": "3138364dea80543fc83be476e1af8191a4eca3711a9b353591311fc8daf5c2d3",
+      "effective_batch": 32,
+      "train_rows": 1184273,
+      "heldout_rows": 73368,
+      "world_size": 8,
+      "precision": "fp32 training / bf16 frozen encoder",
+      "base_lrs": [
+        2.5000001076719927e-7,
+        5.000000215343985e-7,
+        0.000005000000215343985,
+        0.000001000000043068797,
+        0.00001000000043068797
+      ]
+    },
+    "environment_contract": {
+      "commit": "dd1fec9e2cba0450be7a33387c8a2e550db4cd91",
+      "dirty": "",
+      "torch": "2.8.0+cu128",
+      "gpu_names": [
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB"
+      ]
+    },
+    "source_hashes_verified": 175,
+    "artifact_hashes": {
+      "config.json": "95d99141f3e93303a591faa23847a0f570c03058f3ba5d0dd7d667e3d5a4601b",
+      "environment.json": "bc25c06dd5f4afa172e9c0672c41bb50ad811aa52c949caee9f93c43adc41dc9",
+      "dual_teacher_exposure.json": "b16a8c9d8967dc7243dbd21dc55fac251542c548831069531c26cdd8ca559015"
+    },
+    "train_prefix_bytes": 31107,
+    "train_prefix_sha256": "bfe90b4287c7c43a2da106023bac8636bb104b60dfd37be12d08912c2ebc3d04",
+    "log_records": 59,
+    "first": {
+      "step": 22708,
+      "total_steps": 59716,
+      "phase_step": 1,
+      "epoch": 1,
+      "loss": 0.09069979190826416,
+      "flow": 0.07113401591777802,
+      "geometry": 0.0002614361001178622,
+      "world": 0.19435055553913116,
+      "loss_aggregation": "DDP_mean_over_accumulation_group",
+      "loss_rank0_last_microbatch": 0.1330556571483612,
+      "lr": [
+        2.5000001076719927e-7,
+        5.000000215343985e-7,
+        0.000005000000215343985,
+        0.000001000000043068797,
+        0.00001000000043068797
+      ],
+      "grad_norm": 0.6656566262245178,
+      "peak_allocated_gib": 8.66770315170288,
+      "elapsed_s": 2.4103260207921267
+    },
+    "last": {
+      "step": 24150,
+      "total_steps": 59716,
+      "phase_step": 1443,
+      "epoch": 1,
+      "loss": 0.09784546494483948,
+      "flow": 0.07888619601726532,
+      "geometry": 0.0002898751699831337,
+      "world": 0.1881432980298996,
+      "loss_aggregation": "DDP_mean_over_accumulation_group",
+      "loss_rank0_last_microbatch": 0.05122696980834007,
+      "lr": [
+        2.4915823625982725e-7,
+        4.983164725196545e-7,
+        0.0000049831647251965445,
+        9.96632945039309e-7,
+        0.000009966329450393089
+      ],
+      "grad_norm": 0.5852490067481995,
+      "peak_allocated_gib": 8.77603530883789,
+      "elapsed_s": 567.4261030964553
+    },
+    "logs": {
+      "console.log": {
+        "bytes": 42766,
+        "mtime": 1791376395.7723017,
+        "fatal_counts": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        },
+        "tail": [
+          "{\"step\": 24050, \"total_steps\": 59716, \"phase_step\": 1343, \"epoch\": 1, \"loss\": 0.15423484146595, \"flow\": 0.1341366469860077, \"geometry\": 0.0007241746643558145, \"world\": 0.19736114144325256, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.0785876139998436, \"lr\": [2.4927081707942375e-07, 4.985416341588475e-07, 4.985416341588475e-06, 9.97083268317695e-07, 9.97083268317695e-06], \"grad_norm\": 0.7070310115814209, \"peak_allocated_gib\": 8.76840591430664, \"elapsed_s\": 528.5320281013846}",
+          "{\"step\": 24075, \"total_steps\": 59716, \"phase_step\": 1368, \"epoch\": 1, \"loss\": 0.13365291059017181, \"flow\": 0.11398042738437653, \"geometry\": 0.0006671486189588904, \"world\": 0.19338901340961456, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.16408462822437286, \"lr\": [2.492434266286834e-07, 4.984868532573668e-07, 4.9848685325736676e-06, 9.969737065147335e-07, 9.969737065147335e-06], \"grad_norm\": 0.8194072246551514, \"peak_allocated_gib\": 8.770313262939453, \"elapsed_s\": 538.2658850681037}",
+          "{\"step\": 24100, \"total_steps\": 59716, \"phase_step\": 1393, \"epoch\": 1, \"loss\": 0.13355237245559692, \"flow\": 0.11131153255701065, \"geometry\": 0.0011188305215910077, \"world\": 0.21681419014930725, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.11068987101316452, \"lr\": [2.4921553292437716e-07, 4.984310658487543e-07, 4.984310658487544e-06, 9.968621316975087e-07, 9.968621316975088e-06], \"grad_norm\": 0.64094477891922, \"peak_allocated_gib\": 8.772220611572266, \"elapsed_s\": 547.9607481658459}"
+        ]
+      },
+      ".md-ak/workload.log": {
+        "bytes": 3712,
+        "mtime": 1791376413.5537636,
+        "fatal_counts": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        },
+        "tail": [
+          "2026-10-07T20:33:03.444+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+          "2026-10-07T20:33:33.535+08:00 [INFO] [k8s] K8s Job ray-a800/job-61715-0 phase=Running",
+          "2026-10-07T20:33:33.553+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        ]
+      }
+    },
+    "actual_exposure_final_exists": false,
+    "checkpoint_exists": false,
+    "metrics_exists": false
+  },
+  "first_train_prefix_unchanged": true,
+  "new_updates": 1443,
+  "planned_new_updates": 37009,
+  "training_progress_not_sr": true,
+  "expected_final_checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+  "checkpoint_sha256": null,
+  "tensorboard": {
+    "run": "stt_anchor_61715",
+    "publisher_pid": 2863913,
+    "source": "source_stt_anchor_train_v1/wa/tools/tensorboard_jsonl.py",
+    "source_sha256": "f017b74b3b4959316115688edecfe7b91358e915e747ed5ff5aa43887dfcc9a0",
+    "events": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/tensorboard_59566/events/stt_anchor_61715",
+    "log": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/tb_stt_anchor_61715.log",
+    "remote": "http://127.0.0.1:6006/",
+    "local": "http://127.0.0.1:16006/#scalars",
+    "forward": "ssh -o ExitOnForwardFailure=yes -N -L 16006:127.0.0.1:6006 devpod-a800",
+    "checks": "remote runs/scalars includes61715,43loss records22708..23750; local16006 runsHTTP200 contains61715 afterexplicitSSHforward",
+    "initial_local_check": "connection refused; no listener; created loopback-only forward successfully",
+    "walltime_note": "Event walltime is export time, not original training timestamp.",
+    "old_services_unchanged": true
+  },
+  "monitor": {
+    "id": "wa",
+    "status": "ACTIVE",
+    "interval_minutes": 20,
+    "goal": "ACTIVE",
+    "user_requested_report_each_run": true
+  },
+  "next": "Wait actual updates and all three73368-window heldout metrics; independent schedulerSUCCEEDED and audit_stt_anchor_training from frozen source; then3x8GPU all4215 paired closed-loop. No UWB untilSRgate.",
+  "warnings": [
+    "NCCL device mapping and xFormers availability warnings retained.",
+    "Specified fatal patterns0 in both actual logs; this is not proof of no possible warnings/errors.",
+    "No terminal actual exposure, finalcheckpoint ormetrics yet; do not load/hash active checkpoint.",
+    "No new SR; old61609 result1279/1178/1207 remains latest complete."
+  ]
+}
