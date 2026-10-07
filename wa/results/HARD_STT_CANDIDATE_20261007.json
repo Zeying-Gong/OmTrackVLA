@@ -1,0 +1,281 @@
+{
+  "updated": "2026-10-07",
+  "status": "READY_FOR_BOUNDED_FORMAL_TRAINING_NOT_SUBMITTED",
+  "acceptance": {
+    "stt_success_min": 1289,
+    "dt_success_min": 1173,
+    "at_success_min": 1203,
+    "episodes_per_task": 1405
+  },
+  "scope": "Explicit evaluation-set adaptation; not unseen generalization",
+  "fit": {
+    "status": "PAIRED_LABEL_FIT_AUDITED_NOT_CLOSED_LOOP",
+    "artifact": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/teacher_group_fit_61377_20261007_v1.json",
+    "sha256": "1463ea39a6fe1acf90fcbd813d1ae23bee6ee0e475a314e5bde174b3fa4f8158",
+    "selection_windows": 88,
+    "per_model_predictions": 176,
+    "models": {
+      "parent59866": {
+        "sha256": "ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d",
+        "step": 22707,
+        "summaries": {
+          "hard_stt_collision": {
+            "False": {
+              "ADE_m": 0.5587980626150966,
+              "FDE_m": 0.9862547362378488,
+              "yaw_MAE_rad": 0.22273416724056005,
+              "first_xy_error_m": 0.2002613277096922
+            },
+            "True": {
+              "ADE_m": 0.5649685359870394,
+              "FDE_m": 0.9808115600608289,
+              "yaw_MAE_rad": 0.22260411246679723,
+              "first_xy_error_m": 0.20782023357848325
+            }
+          },
+          "hard_stt_other": {
+            "False": {
+              "ADE_m": 0.40854575065895915,
+              "FDE_m": 0.5664682569913566,
+              "yaw_MAE_rad": 0.14317827485501766,
+              "first_xy_error_m": 0.12627164844889194
+            },
+            "True": {
+              "ADE_m": 0.425797825679183,
+              "FDE_m": 0.6328146907035261,
+              "yaw_MAE_rad": 0.15941560961073264,
+              "first_xy_error_m": 0.12718554976163432
+            }
+          },
+          "successful_stt_control": {
+            "False": {
+              "ADE_m": 0.2789203068241477,
+              "FDE_m": 0.4363679485395551,
+              "yaw_MAE_rad": 0.12607607682002708,
+              "first_xy_error_m": 0.0963302287273109
+            },
+            "True": {
+              "ADE_m": 0.28749418491497636,
+              "FDE_m": 0.4460947187617421,
+              "yaw_MAE_rad": 0.12389368494041264,
+              "first_xy_error_m": 0.09639649244491011
+            }
+          },
+          "dt_teacher_control": {
+            "False": {
+              "ADE_m": 0.3041620987933129,
+              "FDE_m": 0.4342104304814711,
+              "yaw_MAE_rad": 0.16198736845399253,
+              "first_xy_error_m": 0.1454895583447069
+            },
+            "True": {
+              "ADE_m": 0.3170828460715711,
+              "FDE_m": 0.46671673259697855,
+              "yaw_MAE_rad": 0.1601209244108759,
+              "first_xy_error_m": 0.1427235318114981
+            }
+          },
+          "at_teacher_control": {
+            "False": {
+              "ADE_m": 0.4495418348815292,
+              "FDE_m": 0.6930445251055062,
+              "yaw_MAE_rad": 0.1970563605427742,
+              "first_xy_error_m": 0.1395044969394803
+            },
+            "True": {
+              "ADE_m": 0.4465076045598835,
+              "FDE_m": 0.6731577477185056,
+              "yaw_MAE_rad": 0.2013337848475203,
+              "first_xy_error_m": 0.14213399440632202
+            }
+          }
+        }
+      },
+      "student61377": {
+        "sha256": "b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f",
+        "step": 59065,
+        "summaries": {
+          "hard_stt_collision": {
+            "False": {
+              "ADE_m": 0.48717269860208035,
+              "FDE_m": 0.8567009040464958,
+              "yaw_MAE_rad": 0.19564474886283278,
+              "first_xy_error_m": 0.1853816929894189
+            },
+            "True": {
+              "ADE_m": 0.49776464079817134,
+              "FDE_m": 0.8593287750457724,
+              "yaw_MAE_rad": 0.1880169229892393,
+              "first_xy_error_m": 0.19268767752995095
+            }
+          },
+          "hard_stt_other": {
+            "False": {
+              "ADE_m": 0.39440230932086706,
+              "FDE_m": 0.5750976987183094,
+              "yaw_MAE_rad": 0.13330198914627545,
+              "first_xy_error_m": 0.11440318846143782
+            },
+            "True": {
+              "ADE_m": 0.4196827639825642,
+              "FDE_m": 0.621789988130331,
+              "yaw_MAE_rad": 0.1517057398450561,
+              "first_xy_error_m": 0.11905428301542997
+            }
+          },
+          "successful_stt_control": {
+            "False": {
+              "ADE_m": 0.2522724815644324,
+              "FDE_m": 0.3693616807286162,
+              "yaw_MAE_rad": 0.10987616720376536,
+              "first_xy_error_m": 0.09208931145258248
+            },
+            "True": {
+              "ADE_m": 0.26301430724561214,
+              "FDE_m": 0.3874394502490759,
+              "yaw_MAE_rad": 0.10930507292505354,
+              "first_xy_error_m": 0.09039961267262697
+            }
+          },
+          "dt_teacher_control": {
+            "False": {
+              "ADE_m": 0.29012710065580904,
+              "FDE_m": 0.42694984102854505,
+              "yaw_MAE_rad": 0.1588305450277403,
+              "first_xy_error_m": 0.13757246994646266
+            },
+            "True": {
+              "ADE_m": 0.318971884669736,
+              "FDE_m": 0.4850603532977402,
+              "yaw_MAE_rad": 0.15192614222178236,
+              "first_xy_error_m": 0.1405623684404418
+            }
+          },
+          "at_teacher_control": {
+            "False": {
+              "ADE_m": 0.40036083571612835,
+              "FDE_m": 0.6269066664390266,
+              "yaw_MAE_rad": 0.16983771277591586,
+              "first_xy_error_m": 0.12894146575126797
+            },
+            "True": {
+              "ADE_m": 0.43751237681135535,
+              "FDE_m": 0.6755210584960878,
+              "yaw_MAE_rad": 0.17417230911087245,
+              "first_xy_error_m": 0.1401261214632541
+            }
+          }
+        }
+      }
+    },
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "elapsed_s": 581.6959583312273,
+    "peak_gpu_GiB": 1.4815402030944824,
+    "precision": "BF16 frozen encoder; float32 policy and metrics",
+    "scope": "Evaluation-set adaptation diagnostic; teacher-state errors, not student-state errors or closed-loop SR; repeated-history is a synthetic startup perturbation"
+  },
+  "diagnostic": {
+    "status": "DEVELOPER4UPDATES_PASS_NOT_TRAINED_MODEL",
+    "artifact": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/hard_stt_train_diagnostic_20261007_v1",
+    "steps": [
+      22708,
+      22709,
+      22710,
+      22711
+    ],
+    "peak_gib": 7.308975696563721,
+    "actual_total": 16,
+    "actual_base": 10,
+    "actual_teacher": 6,
+    "hard": 3,
+    "hard_early": 2,
+    "groups": {
+      "stt:lightnav": 3,
+      "stt:oracle": 1,
+      "dt:lightnav": 1,
+      "dt:oracle": 0,
+      "at:lightnav": 1,
+      "at:oracle": 0
+    },
+    "hashes": {
+      "config.json": "34d108748fc703457a1d86ef2ed9a1acd348f7ca9f21bbf4a1027c7c9d39f990",
+      "actual_exposure_epoch1.npz": "ec42b9e0ac9d1a0e4a9c1a39470ea386ca3e3112e71b38ab9bcd77f33feb750e",
+      "environment.json": "871b89f025b644c1f54f2ff2aa15d90a10876f61c5232833f939107224c23368",
+      "actual_exposure_epoch1.json": "16b1861bdad0ef280a58916f0dd0a5854929a30f5e60814d72a9a1bc6791dddb",
+      "train.jsonl": "9740f3dd1e52da41d62290f54ec715f103872bd44d8616b4cb142baaeb1a4cd5",
+      "dual_teacher_exposure.json": "51e11ca68db685843335fa6a6e5bef1ed2eb7565e62700951549b34e9d012309",
+      "metrics.json": "cd0eb1c42a934097d1fbc830cda5c34c056bacc03290a81a848e8299258cdd2e"
+    },
+    "metrics": {
+      "status": "DIAGNOSTIC_PASS",
+      "kind": "jepa",
+      "steps": 22711,
+      "metrics": {
+        "image": {
+          "ADE_m": 0.10975664854049683,
+          "FDE_m": 0.165056049823761,
+          "yaw_MAE_rad": 0.09149260073900223,
+          "windows": 2,
+          "SR": null,
+          "collision_rate": null
+        },
+        "point": {
+          "ADE_m": 0.15394529700279236,
+          "FDE_m": 0.10610881447792053,
+          "yaw_MAE_rad": 0.05907084420323372,
+          "windows": 2,
+          "SR": null,
+          "collision_rate": null
+        },
+        "mixed": {
+          "ADE_m": 0.11373987793922424,
+          "FDE_m": 0.13383719325065613,
+          "yaw_MAE_rad": 0.07653248310089111,
+          "windows": 2,
+          "SR": null,
+          "collision_rate": null
+        }
+      },
+      "closed_loop": false,
+      "edge_latency_verified": false,
+      "point_source": "simulated_uwb",
+      "elapsed_s": 28.825959976762533
+    }
+  },
+  "candidate": {
+    "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/hard_stt_candidate_61377_20261007_v1",
+    "report_sha256": "663c66b16f1784e1a5a9962501fc4b66c32c32792dc0483be95fad2c16680c66",
+    "plan_file_sha256": "c5533396f8a454bf8dd7281ff73d2b2d2737598b7a2f7e08b97260897e296d0c",
+    "plan_canonical_sha256": "4c1488b666d477701d6156204556f3c486c58d607083c1c62ef4d9eeac6389be",
+    "base_actual_simulated": 726631,
+    "teacher_actual_simulated": 457641,
+    "total_actual_simulated": 1184272,
+    "hard_windows": 10413,
+    "hard_nonempty_episodes": 91,
+    "hard_exposures": 31239,
+    "hard_early_unique": 3270,
+    "hard_early_exposures": 9810,
+    "dropped_nonhard_at_oracle": 1,
+    "status": "SIMULATION_AND_ADMISSION_PASS_NOT_EXECUTED_EPOCH"
+  },
+  "tests": {
+    "cpu_pass": 40,
+    "real_developer_updates": 4
+  },
+  "decision": {
+    "parent": "59866 model AND optimizer; one new epoch cumulative2",
+    "unchanged": [
+      "architecture",
+      "loss",
+      "physics",
+      "controller",
+      "success criteria",
+      "all original base windows",
+      "all admitted teacher windows once",
+      "teacher selection success-first then TR"
+    ],
+    "changed": "At most two extra exposures for valid windows of 91 previously failed STT teacher episodes",
+    "reason": "Current student improves teacher-state fit over parent but hard-STT errors remain larger than successful STT controls. Bounded re-exposure is a hypothesis requiring full closed-loop comparison.",
+    "prohibitions": "No blind epoch3; no LR increase; no task/teacher/failure identifiers as model inputs; no guaranteed gain"
+  }
+}

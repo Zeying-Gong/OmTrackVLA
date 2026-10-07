@@ -26,6 +26,8 @@ def arguments():
     p.add_argument('--recovery-index')
     p.add_argument('--recovery-repeats',type=int,default=16)
     p.add_argument('--dual-teacher-cache')
+    p.add_argument('--teacher-window-plan')
+    p.add_argument('--teacher-plan-report-sha256')
     p.add_argument('--dual-teacher-repeats',type=int)
     p.add_argument('--evaluation-set-adaptation',action='store_true')
     return p.parse_args()
@@ -61,6 +63,10 @@ def main():
         if a.recovery_cache or not a.resume:raise ValueError('independent teacher stage requires parent and excludes legacy recovery mix')
         if a.dual_teacher_repeats is None or not 1<=a.dual_teacher_repeats<=32:raise ValueError('explicit bounded teacher exposure required')
     elif a.dual_teacher_repeats is not None:raise ValueError('teacher repeats without cache')
+    if bool(a.teacher_window_plan)!=bool(a.teacher_plan_report_sha256):raise ValueError('candidate path/hash pair required')
+    if a.teacher_window_plan and (not a.dual_teacher_cache or a.dual_teacher_repeats!=1 or
+        a.completed_epochs!=1 or a.epochs!=1 or a.seed!=42 or a.batch_size!=2 or a.accumulation!=2):
+        raise ValueError('hard-STT candidate fixes base/teacher once, one independent continuation, seed42/batch2/accum2')
     rank=int(os.environ.get('RANK',0));world=int(os.environ.get('WORLD_SIZE',1));local=int(os.environ.get('LOCAL_RANK',0))
     if not a.diagnostic and world!=8:raise ValueError('full recipe requires8 ranks')
     torch.cuda.set_device(local);device=torch.device('cuda',local)
@@ -82,10 +88,12 @@ def main():
     for part in ('train','heldout'):
         if sha(Path(a.index_root)/f'{part}_valid.npy')!=selection['splits'][part]['index_sha256']:raise ValueError('index hash mismatch')
     limit=world*a.batch_size*a.accumulation*2 if a.diagnostic else None
-    train=RobotWorldData(a.cache,'train',a.index_root,limit,a.data_root,a.source_prefix)
+    train=RobotWorldData(a.cache,'train',a.index_root,None if a.teacher_window_plan else limit,a.data_root,a.source_prefix)
     val=RobotWorldData(a.cache,'heldout',a.index_root,world*a.batch_size if a.diagnostic else None,a.data_root,a.source_prefix)
     recovery_exposure=None
     if bool(a.recovery_cache)!=bool(a.recovery_index):raise ValueError('recovery cache/index pair required')
+    planned_mix=plan_records=plan_windows=None
+    runtime_exposure=None
     if a.recovery_cache:
         if not a.resume:raise ValueError('recovery stage requires explicit parent checkpoint')
         from wa.wm.recovery_mix import RecoveryMix
@@ -106,14 +114,31 @@ def main():
         from wa.wm.recovery_mix import RecoveryMix
         from wa.wm.dual_teacher_selection import EXPERIMENT
         teachers=DualTeacherData(a.dual_teacher_cache,development=a.diagnostic)
-        if a.diagnostic:
+        if a.diagnostic and not a.teacher_window_plan:
             teachers=Subset(teachers,np.linspace(0,len(teachers)-1,min(limit,len(teachers)),dtype=int).tolist())
         for suffix in ('pose.npy','history.npy','episode.npy','episodes.json'):
             if sha(Path(a.cache)/f'heldout_{suffix}')!=sha(Path(a.dual_teacher_cache)/f'heldout_{suffix}'):raise ValueError('original heldout files changed')
-        train=RecoveryMix(train,teachers,a.dual_teacher_repeats)
-        teacher_exposure=dict(experiment=EXPERIMENT,base_windows=len(train.base),teacher_unique_windows=len(teachers),
-            teacher_repeats=a.dual_teacher_repeats,teacher_exposures=len(teachers)*a.dual_teacher_repeats,
-            total_windows=len(train),teacher_fraction=len(teachers)*a.dual_teacher_repeats/len(train),
+        if a.teacher_window_plan:
+            from wa.wm.teacher_plan_runtime import load_candidate,diagnostic_positions
+            from wa.wm.teacher_window_plan import ExposureTaggedData,strip_exposure_tag
+            from wa.wm.runtime_exposure import RuntimeExposure
+            candidate_root=Path(a.root)/'artifacts'
+            planned_mix,plan_records,plan_windows,plan_report=load_candidate(
+                a.teacher_window_plan,a.teacher_plan_report_sha256,train,teachers,
+                base_index=a.index_root,student_rows=candidate_root/'student61377_full_audit_20261007_v1/combined_episodes.jsonl',
+                teacher_selections=candidate_root/'dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl')
+            mixed=planned_mix
+            train=ExposureTaggedData(mixed)
+            if a.diagnostic:
+                train=Subset(train,diagnostic_positions(mixed,plan_records,plan_windows,limit*2))
+        else:
+            mixed=RecoveryMix(train,teachers,a.dual_teacher_repeats)
+            train=mixed
+        teacher_exposures=len(mixed)-len(mixed.base)
+        teacher_exposure=dict(experiment=EXPERIMENT,base_windows=len(mixed.base),teacher_unique_windows=len(teachers),
+            teacher_repeats=a.dual_teacher_repeats,teacher_exposures=teacher_exposures,
+            hard_stt_plan_sha256=planned_mix.plan_sha256 if planned_mix is not None else None,
+            total_windows=len(mixed),teacher_fraction=teacher_exposures/len(mixed),
             cache_sha256=sha(Path(a.dual_teacher_cache)/'complete.json'),
             evaluation_interpretation='in-set adaptation; unchanged heldout files do NOT establish unseen generalization',
             note='Pre-DDP exposure; sampler and batch drop_last discard final rows; audit actual rank exposure before submission.')
@@ -149,7 +174,13 @@ def main():
     for epoch in range(a.epochs):
         sampler.set_epoch(epoch+a.completed_epochs);wrapped.train();optimizer.zero_grad(set_to_none=True)
         group_log=torch.zeros(4,device=device)
+        if planned_mix is not None:
+            runtime_exposure=RuntimeExposure(planned_mix,episode_index=plan_windows['episode_index'],
+                episodes=plan_records,hard=plan_windows['hard'],early=plan_windows['early'])
         for i,batch in enumerate(loader):
+            exposure_ids=None
+            if runtime_exposure is not None:
+                batch,exposure_ids=strip_exposure_tag(batch)  # CPU bookkeeping never enters moved/model.
             batch=moved(batch,device);modes=torch.randint(0,3,(len(batch['pose']),),device=device)
             batch=repeat_current_history(batch,a.history_repeat_probability,history_rng)
             group_start=i//a.accumulation*a.accumulation
@@ -160,6 +191,7 @@ def main():
                 values=wrapped(batch,modes,a.world_weight)
                 if not torch.isfinite(values['loss']):raise FloatingPointError('nonfinite loss')
                 (values['loss']/group_count).backward()
+            if runtime_exposure is not None:runtime_exposure.consume(exposure_ids)
             group_log+=torch.stack([values[k].detach().float() for k in ('loss','flow','geometry','world')])/group_count
             if sync:
                 phase_step=step-resume_step
@@ -180,6 +212,30 @@ def main():
                 group_log.zero_()
                 if rank==0 and not a.diagnostic and step%2000==0:
                     torch.save({'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT},output/f'step-{step:07d}.pt')
+        if runtime_exposure is not None:
+            state=runtime_exposure.state()
+            if world>1:
+                contexts=[None]*world
+                dist.all_gather_object(contexts,runtime_exposure.context_sha256)
+                runtime_exposure.validate_contexts(contexts)
+                actual=state['position_counts'].to(device)
+                dist.all_reduce(actual,op=dist.ReduceOp.SUM)
+                state['position_counts']=actual.cpu()
+                del actual
+            if rank==0:
+                exposure=(runtime_exposure.summarize(state) if a.diagnostic else
+                    runtime_exposure.finalize(state=state,world=world,batch=a.batch_size,
+                        seed=a.seed,epoch=epoch+a.completed_epochs))
+                if a.diagnostic:exposure['status']='DIAGNOSTIC_PARTIAL_EXPOSURE_ONLY'
+                exposure['optimizer_steps_completed']=step-resume_step
+                exposure['diagnostic']=a.diagnostic
+                base_counts,teacher_counts=runtime_exposure.source_counts(state)
+                np.savez_compressed(output/f'actual_exposure_epoch{epoch+a.completed_epochs}.npz',
+                    position_counts=state['position_counts'].numpy(),
+                    base_counts=base_counts.numpy(),teacher_counts=teacher_counts.numpy())
+                with (output/f'actual_exposure_epoch{epoch+a.completed_epochs}.json').open('x') as f:
+                    json.dump(exposure,f,indent=2)
+            if world>1:dist.barrier()
     if rank==0 and not a.diagnostic:
         torch.save({'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT,'completed_epochs':a.completed_epochs+a.epochs,'parent_checkpoint':a.resume,'parent_sha256':a.resume_sha256},output/'checkpoint.pt')
     if world>1:dist.barrier()

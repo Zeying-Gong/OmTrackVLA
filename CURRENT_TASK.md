@@ -29,15 +29,17 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Of91nonzero failures,90have teacher windows within actual first2s;3270early windows. Only XNeHsjL6nBB/9 lacks early windows.
 - Two more hard cases BHXhpBwSMLh/11 and XNeHsjL6nBB/4 have zero valid windows; filters unchanged.
 - Coverage artifacts/stt_start_coverage_61377_20261007_v2.json SHA8559e02a411358ba6dd59d7f2cb7da968d81e1542398b08dc09271d6d62ae3ec; v1 preserved.
-- New opt-in teacher_window_plan.py plus coverage audit:14CPU testsPASS; bounded extras<=2, old repeats1 mapping unchanged.
-- Sampler component NOT integrated into train.py; no runtime exposure/group fitting claim or formal plan released.
+- Opt-in plan/runtime accounting integrated into train.py;40CPUtestsPASS plus real4update diagnosticPASS;originalmodel/loss unchanged.
+- Candidate91hard/10413windows each3;allbase+teacher once. Exact8rank1184272actualsimulated;reportSHA663c66b1. Not yet formally trained.
 - STT read-only failure analysis:18gains/18regressions;129failures=61targetCollision/49Lost/19Normal-no-success;93teacher-solvable.
 - 51/61collisions ended<=40steps;58/61last5commands alreadybackward. Not evidence of general yaw saturation or wall collisions.
 - SSH same-entry handshake intermittent; standard ControlMaster connection reuse enabled per-command only, no SSH config/credential change.
 
 ## Next bounded experiment gates
-- Full pair/media report COMPLETE. Next measure hard/early-window fitting against61377 and parent before selecting bounded sampling weights.
-- Add and test task/teacher/failure-group diagnostics and deterministic exposure accounting before choosing sampling changes.
+- Full pair/media and88window teacher-fit COMPLETE;hardCollisionADE.55880->.48717;successfulSTT.27892->.25227;label-fit notSR.
+- RealRTX4090 diagnostic4updates22708..22711 consumed16samples10base6teacher3hard;peak7.309GiB;no checkpoint.
+- Evidence:wa/results/HARD_STT_CANDIDATE_20261007.json. Candidate plan/artifacts frozen;next independent8A8001epoch from59866+optimizer.
+- FullSTT/DT/AT24GPU closedloop required before claiming gain;actualperwindow exposure recorded and validated after epoch.
 - Do not blindly continue epoch3, change architecture/loss/physics/success thresholds, or invent task-ID inputs.
 - Teacher demonstrations: successful branch first; if both succeed choose higher tracking rate, exact tie LightNav.
 - Failed/fallback branches excluded from demonstration labels. Record actual old/new/task/episode exposure.
