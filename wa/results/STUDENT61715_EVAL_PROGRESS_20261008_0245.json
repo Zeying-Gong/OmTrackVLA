@@ -1,0 +1,1070 @@
+{
+  "status": "PARTIAL_RUNNING_AND_FINALIZER_READY_NOT_FINAL_RESULT",
+  "timestamp_beijing": "2026-10-08T02:45:26+08:00",
+  "checkout_start": "c462e9bba0d549f01975ccd25bc12550a6b8658f",
+  "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+  "checkpoint_step": 59716,
+  "goal": {
+    "status": "ACTIVE",
+    "full_denominator_each": 1405,
+    "stt_min_success": 1289,
+    "dt_min_success": 1173,
+    "at_min_success": 1203,
+    "after_success": "same-weight image-mode UWB ablation; no-UWB retraining is separate"
+  },
+  "latest_complete_result": {
+    "model": 61609,
+    "success": {
+      "stt": 1279,
+      "dt": 1178,
+      "at": 1207
+    },
+    "stt_gap": 10,
+    "new_61715_sr": null
+  },
+  "observation": {
+    "script": "import json,datetime,time,subprocess,re\nfrom pathlib import Path\nJ=Path(\"/data/nas_ray/project/md-ak/users/zeying.gong\")\ncli=\"/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit\"\nfor i in range(6):\n o={\"utc\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"snapshot\":i,\"jobs\":[]}\n for kind,job,task in ((\"stt\",61792,72986),(\"dt\",61793,72987),(\"at\",61794,72988)):\n  p=J/(\"job_%d\"%job)/(\"task_%d\"%task);root=p/(\"wa_student61715_%s_4090_v1\"%kind)\n  v={\"kind\":kind,\"job\":job,\"task_id\":task,\"output_exists\":root.exists(),\"ready\":0,\"completed\":0,\"unique\":0,\"invalid\":0,\"logs\":{}}\n  for n in (\"console.log\",\".md-ak/workload.log\"):\n   f=p/n;v[\"logs\"][n]={\"exists\":f.exists()}\n   if f.exists():\n    t=f.read_text(errors=\"replace\")\n    v[\"logs\"][n].update(bytes=f.stat().st_size,mtime=f.stat().st_mtime,tail=t.splitlines()[-2:],fatal={x:t.count(x) for x in (\"Traceback (most recent call last)\",\"CUDA out of memory\",\"FloatingPointError\",\"Segmentation fault\")})\n  if root.exists():\n   v[\"ready\"]=len(list(root.glob(\"**/*ready*.json\")))\n   rows=[]\n   for f in root.glob(\"shard_*/episodes.jsonl\"):\n    for line in f.read_text().splitlines():\n     try:rows.append(json.loads(line))\n     except json.JSONDecodeError:v[\"partial_line\"]=True\n   v[\"completed\"]=len(rows);v[\"unique\"]=len({(r[\"task\"],r[\"key\"]) for r in rows});v[\"invalid\"]=sum(r.get(\"policy_init_valid\") is False for r in rows)\n  if i in (0,5):\n   q=subprocess.run([cli,\"detail\",\"--job\",str(job)],capture_output=True,text=True,timeout=25)\n   v[\"scheduler_exit\"]=q.returncode;v[\"scheduler_states\"]=re.findall(r\"Status\\s*:\\s*(\\w+)\",q.stdout)\n  o[\"jobs\"].append(v)\n print(json.dumps(o),flush=True)\n\n if any(any(v for z in x[\"logs\"].values() for v in z.get(\"fatal\",{}).values()) or any(v in (\"FAILED\",\"STOPPED\",\"SUCCEEDED\") for v in x.get(\"scheduler_states\",[])) for x in o[\"jobs\"]):\n  print(json.dumps({\"watch_exit\":\"FATAL_OR_TERMINAL_INSPECT_ORIGINAL_JOBS\"}),flush=True);break\n if i==0:first_readies=[x[\"ready\"] for x in o[\"jobs\"]]\n elif [x[\"ready\"] for x in o[\"jobs\"]]!=first_readies:\n  print(json.dumps({\"watch_exit\":\"ADDITIONAL_MODELS_READY_INSPECT\"}),flush=True);break\n if i<5:time.sleep(180)\nelse:print(json.dumps({\"watch_exit\":\"BOUNDED_LIVE_OBSERVATION_COMPLETE\",\"snapshots\":6}),flush=True)\n",
+    "snapshots": [
+      {
+        "utc": "2026-10-07T18:29:48.372382+00:00",
+        "snapshot": 0,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 35933,
+                "mtime": 1791397782.360539,
+                "tail": [
+                  "2026-10-08T02:29:42.343+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+                  "2026-10-08T02:29:42.360+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "SUBMITTED",
+              "SUBMITTED"
+            ]
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 174,
+            "unique": 174,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 47019,
+                "mtime": 1791397782.4048219,
+                "tail": [
+                  "2026-10-08T02:29:42.404+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+                  "2026-10-08T02:29:42.404+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "RUNNING",
+              "RUNNING"
+            ]
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 35455,
+                "mtime": 1791397782.3099668,
+                "tail": [
+                  "2026-10-08T02:29:42.300+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+                  "2026-10-08T02:29:42.309+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "SUBMITTED",
+              "SUBMITTED"
+            ]
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T18:33:04.651875+00:00",
+        "snapshot": 1,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 38801,
+                "mtime": 1791397962.3492587,
+                "tail": [
+                  "2026-10-08T02:32:42.340+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+                  "2026-10-08T02:32:42.349+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 210,
+            "unique": 210,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 51333,
+                "mtime": 1791397962.3888257,
+                "tail": [
+                  "2026-10-08T02:32:42.388+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+                  "2026-10-08T02:32:42.388+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 38323,
+                "mtime": 1791397962.3101852,
+                "tail": [
+                  "2026-10-08T02:32:42.300+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+                  "2026-10-08T02:32:42.309+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T18:36:10.520896+00:00",
+        "snapshot": 2,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 41669,
+                "mtime": 1791398142.319612,
+                "tail": [
+                  "2026-10-08T02:35:42.310+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+                  "2026-10-08T02:35:42.318+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 244,
+            "unique": 244,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 55647,
+                "mtime": 1791398142.3671393,
+                "tail": [
+                  "2026-10-08T02:35:42.366+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+                  "2026-10-08T02:35:42.367+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 41669,
+                "mtime": 1791398172.2672257,
+                "tail": [
+                  "2026-10-08T02:36:12.258+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+                  "2026-10-08T02:36:12.266+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T18:39:15.801274+00:00",
+        "snapshot": 3,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 45015,
+                "mtime": 1791398352.4104342,
+                "tail": [
+                  "2026-10-08T02:39:12.398+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+                  "2026-10-08T02:39:12.410+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 275,
+            "unique": 275,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 60680,
+                "mtime": 1791398352.454204,
+                "tail": [
+                  "2026-10-08T02:39:12.453+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+                  "2026-10-08T02:39:12.454+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 44537,
+                "mtime": 1791398352.2989967,
+                "tail": [
+                  "2026-10-08T02:39:12.289+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+                  "2026-10-08T02:39:12.298+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T18:42:20.714887+00:00",
+        "snapshot": 4,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 47883,
+                "mtime": 1791398532.2512214,
+                "tail": [
+                  "2026-10-08T02:42:12.241+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+                  "2026-10-08T02:42:12.251+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 312,
+            "unique": 312,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 64994,
+                "mtime": 1791398532.2919974,
+                "tail": [
+                  "2026-10-08T02:42:12.291+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+                  "2026-10-08T02:42:12.291+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 47405,
+                "mtime": 1791398532.2067156,
+                "tail": [
+                  "2026-10-08T02:42:12.194+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+                  "2026-10-08T02:42:12.206+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T18:45:26.464380+00:00",
+        "snapshot": 5,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 50751,
+                "mtime": 1791398712.319923,
+                "tail": [
+                  "2026-10-08T02:45:12.309+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+                  "2026-10-08T02:45:12.319+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "SUBMITTED",
+              "SUBMITTED"
+            ]
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 351,
+            "unique": 351,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 69308,
+                "mtime": 1791398712.3611681,
+                "tail": [
+                  "2026-10-08T02:45:12.360+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+                  "2026-10-08T02:45:12.361+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "RUNNING",
+              "RUNNING"
+            ]
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 50273,
+                "mtime": 1791398712.2796025,
+                "tail": [
+                  "2026-10-08T02:45:12.263+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+                  "2026-10-08T02:45:12.279+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "SUBMITTED",
+              "SUBMITTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "exit": "BOUNDED_LIVE_OBSERVATION_COMPLETE",
+    "notes": [
+      "DT174->351 unique completed across this observation;8 actual ready throughout;invalid0",
+      "STT61792 andAT61794 remainedSUBMITTED/no output/zero completion; requested8 each is not assignedGPU evidence",
+      "DT continuedRUNNING despite stale FailedScheduling event lines; no stop/restart/requeue",
+      "Four selectedfatal patterns0 in taskconsole/workload snapshots; full24 workerlogs separateprior02:20audit; warnings retained"
+    ]
+  },
+  "bounded8": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61715_dt_bounded8_20261008_v1/report.json",
+    "sha256": "4a10e81d61fef4dff2b90931a0e9dcc8dbca55c6bc3eb9b7acbd53ffc07a53c2",
+    "status": "BOUNDED8_START_AND_MEDIA_PASS_NOT_FULL_RESULT",
+    "snapshot_utc": "2026-10-07T18:41:48.431298+00:00",
+    "source_commit": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb",
+    "sample_selection": "First newline-complete JSONL record from each of eight DT shards; also require exact first manifest assignment; no success selection.",
+    "sampled": 8,
+    "records": [
+      {
+        "shard": 0,
+        "task": "dt",
+        "key": "bzCsHPLDztK/1",
+        "ready_sha256": "7d13a3a6943978c0518b26d8f1e8eda8581d5757e142a9076b428cff9e4cecba",
+        "raw_initial_rgb_sha256": "146b5e06170b30ee2ae08f217f61cca2988ffd6f52e5b28b221bbe05f4ef7678",
+        "initial_state_json_sorted_sha256": "b287b01b86035de519f8185da39c1dfc9eabb7adc9925eb321be9f1119cda5dc",
+        "pair": "PASS_RAW_RGB_AND_DYNAMIC_STATE_BOTH_TEACHERS",
+        "jpeg_hash_match": true,
+        "video_duration_s": 3.1,
+        "recorded_frames": 62,
+        "media_status": "PASS"
+      },
+      {
+        "shard": 1,
+        "task": "dt",
+        "key": "bzCsHPLDztK/8",
+        "ready_sha256": "4f1d658599a3ed4bc3db22528721967182c4214a7b4892a6ed401a8a9cccd7e6",
+        "raw_initial_rgb_sha256": "dae0163b6bc2b020b83f9f6ecf5f54fe1fb037330b8641e1830929a7726e524c",
+        "initial_state_json_sorted_sha256": "125497a87126399b037252133a04c15de14f95fcfaf8ddd387cdb4aeb2d2a25a",
+        "pair": "PASS_RAW_RGB_AND_DYNAMIC_STATE_BOTH_TEACHERS",
+        "jpeg_hash_match": true,
+        "video_duration_s": 0.55,
+        "recorded_frames": 11,
+        "media_status": "PASS"
+      },
+      {
+        "shard": 2,
+        "task": "dt",
+        "key": "fsQtJ8t3nTf/9",
+        "ready_sha256": "125acf58c19d05e717ede02e85de7b4b47409e5574b886db782aed29baa4250a",
+        "raw_initial_rgb_sha256": "9e5062a80d71ce4696c0a3c602f931831929f663fb9a35d61347f65930b76ac0",
+        "initial_state_json_sorted_sha256": "e44de13f3f88c5e2bf4a00b1b5a62c83555750d3caa273e6a7adcf333621bd5a",
+        "pair": "PASS_RAW_RGB_AND_DYNAMIC_STATE_BOTH_TEACHERS",
+        "jpeg_hash_match": true,
+        "video_duration_s": 15,
+        "recorded_frames": 300,
+        "media_status": "PASS"
+      },
+      {
+        "shard": 3,
+        "task": "dt",
+        "key": "uSKXQ5fFg6u/0",
+        "ready_sha256": "a10b5aeaaa36076ccc87464172482c76f630ed884c3066cb7732e6d42518470c",
+        "raw_initial_rgb_sha256": "255cfb8b199c14cce8b9eddb65bb3b9dd86723ec619f57086c5df85b2222215d",
+        "initial_state_json_sorted_sha256": "406ec430b1722fa3d3f2f0a2641eabbf8019f0a9d957740d118e0d60d33840a7",
+        "pair": "PASS_RAW_RGB_AND_DYNAMIC_STATE_BOTH_TEACHERS",
+        "jpeg_hash_match": true,
+        "video_duration_s": 2.8,
+        "recorded_frames": 56,
+        "media_status": "PASS"
+      },
+      {
+        "shard": 4,
+        "task": "dt",
+        "key": "uSKXQ5fFg6u/4",
+        "ready_sha256": "6642155c27d7cf0764e9e826e8212e70478a059eeb778ac8076b9fb9d58e39a5",
+        "raw_initial_rgb_sha256": "2faabab91ba6b488b0f4f4dfe878d6e553c5a8697548820268abcce7646e95be",
+        "initial_state_json_sorted_sha256": "4b7cd19c83bd6890e257394f3c4a81a583070161a3aca205cbcfe38e1547a055",
+        "pair": "PASS_RAW_RGB_AND_DYNAMIC_STATE_BOTH_TEACHERS",
+        "jpeg_hash_match": true,
+        "video_duration_s": 3.1,
+        "recorded_frames": 62,
+        "media_status": "PASS"
+      },
+      {
+        "shard": 5,
+        "task": "dt",
+        "key": "uSKXQ5fFg6u/5",
+        "ready_sha256": "213df96043f14f81380f70c3b8b3b77428bc6ffd2058a492e1e13ffc3789b6d6",
+        "raw_initial_rgb_sha256": "b5e12515cace39965c3ccd07f4615e0f663b29afc5fd8839fb287e2a8e902af4",
+        "initial_state_json_sorted_sha256": "873bb1cb47f3288f866bf957c7d601ab920764b1ba0ecbcb861eac4fc4c516bd",
+        "pair": "PASS_RAW_RGB_AND_DYNAMIC_STATE_BOTH_TEACHERS",
+        "jpeg_hash_match": true,
+        "video_duration_s": 2.85,
+        "recorded_frames": 57,
+        "media_status": "PASS"
+      },
+      {
+        "shard": 6,
+        "task": "dt",
+        "key": "uSKXQ5fFg6u/6",
+        "ready_sha256": "3740876ab1bf6d237d3f5c5cc5eeeef97a3de0c0b68a0e81ad98c620eea9762f",
+        "raw_initial_rgb_sha256": "c559d7ab55b91f440b0ee7c592583e6f9d8b940d368f5b4b5335c46c2f9311d3",
+        "initial_state_json_sorted_sha256": "13cc2762f3fd68ab6e9bc7147a2c8839739d728d97a8574a86792b06b1b4c500",
+        "pair": "PASS_RAW_RGB_AND_DYNAMIC_STATE_BOTH_TEACHERS",
+        "jpeg_hash_match": true,
+        "video_duration_s": 2.55,
+        "recorded_frames": 51,
+        "media_status": "PASS"
+      },
+      {
+        "shard": 7,
+        "task": "dt",
+        "key": "uSKXQ5fFg6u/9",
+        "ready_sha256": "40347cc1f895345e80255c4e261f4ca98ea3c5632650c331d453aa7586b56754",
+        "raw_initial_rgb_sha256": "192298ce6f4fdbb86f8a51455a05f9afacc8e9e635846466017bf7d9d3b196d1",
+        "initial_state_json_sorted_sha256": "dde23b08d450d2fbcbd523fc4ac6700e9462e24239c9870ac479d12bcc7abf73",
+        "pair": "PASS_RAW_RGB_AND_DYNAMIC_STATE_BOTH_TEACHERS",
+        "jpeg_hash_match": true,
+        "video_duration_s": 3.3,
+        "recorded_frames": 66,
+        "media_status": "PASS"
+      }
+    ],
+    "ffprobe": "/data/nas_ray/home/zeying.gong/algorithm/envs/habitat/bin/ffprobe",
+    "ffprobe_version": "ffprobe version 7.0.1 Copyright (c) 2007-2024 the FFmpeg developers",
+    "limits": [
+      "8 DT starts only, not full1405 DT or4215; no SR estimate",
+      "No checkpoint read/hash or model/GPU/simulator execution",
+      "Student raw initial sensor digest compared to both teachers; teacher RGB PNGs and state evidence reverified by existing public function",
+      "No writes or modifications to any project/runtime output",
+      "Existing NAS ffprobe7.0.1 verifies8 video streams768x432, positive duration and recorded-frame/20fps consistency; not every frame decode"
+    ],
+    "artifact_persistence": "Subagent exclusively saved new derivedreport; main reread/hash verified; no runtime result changes"
+  },
+  "comparison_tool": {
+    "status": "IMPLEMENTED_CPU_TESTED_NOT_RUN_ON_INCOMPLETE_RESULTS",
+    "files": {
+      "wa/tools/compare_student61609.py": {
+        "sha256": "61e7066f491cd877e135721db29514d5d20774be6cce75c4742bc2dc6b030265",
+        "bytes": 10077,
+        "ast": "PASS"
+      },
+      "wa/tests/test_compare_student61609.py": {
+        "sha256": "b0766b59fcd894d8658b0e2b920fd4e0229e86e4355c8d8bacda35dfc2f8ff31",
+        "bytes": 15237,
+        "ast": "PASS"
+      }
+    },
+    "test_command": "CUDA_VISIBLE_DEVICES=\"\" PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 PYTHONPATH=\"$PWD\" /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -m unittest wa.tests.test_compare_student61609 wa.tests.test_audit_student_goal wa.tests.test_hard_stt_outcomes wa.tests.test_merge_student_partitions -v",
+    "tests": 57,
+    "new_tests": 18,
+    "test_seconds": 19.201,
+    "test_stdout": "test_61609_pins_are_passed_and_failed_load_never_compares (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_61609_pins_are_passed_and_failed_load_never_compares) ... ok\ntest_baseline_counts_cannot_be_relabelled (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_baseline_counts_cannot_be_relabelled) ... ok\ntest_cli_explicit_step_and_no_expensive_read_for_existing_output (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_cli_explicit_step_and_no_expensive_read_for_existing_output) ... ok\ntest_complete_counts_and_no_redefined_goal (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_complete_counts_and_no_redefined_goal) ... ok\ntest_diagnose_success_keeps_two_identities_roots_and_source_inventory (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_diagnose_success_keeps_two_identities_roots_and_source_inventory) ... ok\ntest_each_61609_pin_is_independently_enforced (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_each_61609_pin_is_independently_enforced) ... ok\ntest_existing_symlink_protected_and_nonfinite_output_rejected (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_existing_symlink_protected_and_nonfinite_output_rejected) ... ok\ntest_final_at_row_is_also_paired_and_shapes_are_checked (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_final_at_row_is_also_paired_and_shapes_are_checked) ... ok\ntest_identical_baseline_self_check (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_identical_baseline_self_check) ... ok\ntest_initialization_failure_is_kept (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_initialization_failure_is_kept) ... ok\ntest_missing_duplicate_foreign_and_mixed_model_rejected (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_missing_duplicate_foreign_and_mixed_model_rejected) ... ok\ntest_pair_hash_change_and_nonbinary_metric_rejected (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_pair_hash_change_and_nonbinary_metric_rejected) ... ok\ntest_recovery_regression_and_common_groups_reconcile (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_recovery_regression_and_common_groups_reconcile) ... ok\ntest_reference_normalized_tr_is_not_macro_average (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_reference_normalized_tr_is_not_macro_average) ... ok\ntest_rgb_state_nonfinite_and_pair_hash_rejected (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_rgb_state_nonfinite_and_pair_hash_rejected) ... ok\ntest_same_sha_foreign_step_or_different_rows_rejected (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_same_sha_foreign_step_or_different_rows_rejected) ... ok\ntest_semantic_bbox_summary_and_teacher_claims_fail_closed (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_semantic_bbox_summary_and_teacher_claims_fail_closed) ... ok\ntest_source_mutation_during_diagnosis_rejected (wa.tests.test_compare_student61609.Student61609ComparisonTests.test_source_mutation_during_diagnosis_rejected) ... ok\ntest_baseline_sha_requires_identical_self_check (wa.tests.test_audit_student_goal.StudentGoalTests.test_baseline_sha_requires_identical_self_check) ... ok\ntest_changed_baseline_counts_rejected (wa.tests.test_audit_student_goal.StudentGoalTests.test_changed_baseline_counts_rejected) ... ok\ntest_cli_requires_explicit_actual_identity (wa.tests.test_audit_student_goal.StudentGoalTests.test_cli_requires_explicit_actual_identity) ... ok\ntest_each_task_one_below_fails_even_if_all_exceed_lightnav (wa.tests.test_audit_student_goal.StudentGoalTests.test_each_task_one_below_fails_even_if_all_exceed_lightnav) ... ok\ntest_exact_boundary_met_and_full_denominators (wa.tests.test_audit_student_goal.StudentGoalTests.test_exact_boundary_met_and_full_denominators) ... ok\ntest_existing_output_rejected_before_reading_any_input (wa.tests.test_audit_student_goal.StudentGoalTests.test_existing_output_rejected_before_reading_any_input) ... ok\ntest_frozen_baseline_self_check_is_not_met (wa.tests.test_audit_student_goal.StudentGoalTests.test_frozen_baseline_self_check_is_not_met) ... ok\ntest_gain_regression_net_and_keys (wa.tests.test_audit_student_goal.StudentGoalTests.test_gain_regression_net_and_keys) ... ok\ntest_json_boolean_outcomes_preserve_success_and_collision_counts (wa.tests.test_audit_student_goal.StudentGoalTests.test_json_boolean_outcomes_preserve_success_and_collision_counts) ... ok\ntest_load_rechecks_frozen_pins_and_all_source_shards (wa.tests.test_audit_student_goal.StudentGoalTests.test_load_rechecks_frozen_pins_and_all_source_shards) ... ok\ntest_missing_duplicate_and_foreign_task_rejected (wa.tests.test_audit_student_goal.StudentGoalTests.test_missing_duplicate_and_foreign_task_rejected) ... ok\ntest_mixed_checkpoint_and_old_model_rejected (wa.tests.test_audit_student_goal.StudentGoalTests.test_mixed_checkpoint_and_old_model_rejected) ... ok\ntest_nonbinary_and_nonfinite_outcome_rejected (wa.tests.test_audit_student_goal.StudentGoalTests.test_nonbinary_and_nonfinite_outcome_rejected) ... ok\ntest_pair_status_count_keys_and_teacher_evidence_rejected (wa.tests.test_audit_student_goal.StudentGoalTests.test_pair_status_count_keys_and_teacher_evidence_rejected) ... ok\ntest_real_runner_false_init_failure_stays_in_full_denominator (wa.tests.test_audit_student_goal.StudentGoalTests.test_real_runner_false_init_failure_stays_in_full_denominator) ... ok\ntest_semantic_and_seven_bbox_protocol_required (wa.tests.test_audit_student_goal.StudentGoalTests.test_semantic_and_seven_bbox_protocol_required) ... ok\ntest_source_hash_inventory_cannot_shadow_prior_evidence (wa.tests.test_audit_student_goal.StudentGoalTests.test_source_hash_inventory_cannot_shadow_prior_evidence) ... ok\ntest_summary_metrics_counts_identity_and_reference_cannot_be_forged (wa.tests.test_audit_student_goal.StudentGoalTests.test_summary_metrics_counts_identity_and_reference_cannot_be_forged) ... ok\ntest_wrong_rgb_dynamic_state_and_nan_start_rejected (wa.tests.test_audit_student_goal.StudentGoalTests.test_wrong_rgb_dynamic_state_and_nan_start_rejected) ... ok\ntest_dangling_output_symlink_rejected_without_target_creation (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_dangling_output_symlink_rejected_without_target_creation) ... ok\ntest_duplicate_plan_and_changed_hard_qualification_rejected (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_duplicate_plan_and_changed_hard_qualification_rejected) ... ok\ntest_gains_regressions_reconcile_and_report_scene_status (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_gains_regressions_reconcile_and_report_scene_status) ... ok\ntest_incomplete_bundle_prevents_grouping (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_incomplete_bundle_prevents_grouping) ... ok\ntest_missing_duplicate_and_rgb_mismatch_fail_closed (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_missing_duplicate_and_rgb_mismatch_fail_closed) ... ok\ntest_nonfixed_plan_hash_refused_without_loading_json (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_nonfixed_plan_hash_refused_without_loading_json) ... ok\ntest_not_met_valid_selfcheck_and_no_recovery (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_not_met_valid_selfcheck_and_no_recovery) ... ok\ntest_original91_and_two_zero_window_cases_are_disjoint (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_original91_and_two_zero_window_cases_are_disjoint) ... ok\ntest_output_no_overwrite_or_write_into_inputs (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_output_no_overwrite_or_write_into_inputs) ... ok\ntest_selected_fallback_success_not_counted_as_admitted (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_selected_fallback_success_not_counted_as_admitted) ... ok\ntest_teacher_selection_not_trusted (wa.tests.test_hard_stt_outcomes.HardOutcomesTests.test_teacher_selection_not_trusted) ... ok\ntest_changed_rows (wa.tests.test_merge_student_partitions.MergeTests.test_changed_rows) ... ok\ntest_complete (wa.tests.test_merge_student_partitions.MergeTests.test_complete) ... ok\ntest_duplicate_roots (wa.tests.test_merge_student_partitions.MergeTests.test_duplicate_roots) ... ok\ntest_forged_combined_disagrees_shards (wa.tests.test_merge_student_partitions.MergeTests.test_forged_combined_disagrees_shards) ... ok\ntest_missing_partition (wa.tests.test_merge_student_partitions.MergeTests.test_missing_partition) ... ok\ntest_wrong_ready (wa.tests.test_merge_student_partitions.MergeTests.test_wrong_ready) ... ok\ntest_24_lanes_disjoint_full_coverage (wa.tests.test_student_eval_partition.PartitionTests.test_24_lanes_disjoint_full_coverage) ... ok\ntest_scope (wa.tests.test_student_eval_partition.PartitionTests.test_scope) ... ok\ntest_write_and_foreign (wa.tests.test_student_eval_partition.PartitionTests.test_write_and_foreign) ... ok\n\n----------------------------------------------------------------------\nRan 57 tests in 19.201s\n\nOK\n",
+    "independent_review": "No blocking defect; suggested purefixture diagnose-success path added and final57testsPASS",
+    "contract": [
+      "61609 pinned SHA/step59716/three artifact hashes/success1279,1178,1207",
+      "All3 complete partitions/all4215keys/rawRGB+dynamicstart pairs required; no partialSR",
+      "Fullper-task gains/regressions/common_success/common_failure counts and keys with reconciliation",
+      "SR/CR/invalid full1405 denominator; reference-stepTR distinctfrommacroTR",
+      "Does not generate goal_status; original61377 goal baseline unchanged",
+      "No weights/models/simulator loaded; no scheduler/GPU proof or fullmedia audit; no overwrite/input-rootoutput; endhash recheck"
+    ]
+  },
+  "uwb_readonly_preparation": {
+    "status": "STATIC_REVIEW_ONLY_NO_NEW_UWB_EXPERIMENT",
+    "sha_groups": {
+      "wa/results/UWB_INTERFACE_AUDIT_20261007.json": [
+        "eval_server",
+        "training",
+        "adapters",
+        "eval_agent",
+        "diagnostic_agent",
+        "learned_yaw_control"
+      ],
+      "wa/results/UWB_EVAL_MODE_PREPARATION_20261007.json": [
+        "review_recorder",
+        "student_eval_contract",
+        "eval_full_mixed",
+        "eval_full_mixed_launch",
+        "tests.new_mode_module/test_uwb_eval_mode.py"
+      ]
+    },
+    "total_matching_items": 11,
+    "findings": [
+      "image-mode request allowlist onlyrgb_png/timestamp_s/initial_bbox; mixed polar0 is not no-UWB",
+      "image training mode masks UWB validity; adapter masks invalidpolar/age before arithmetic and coordinate token",
+      "image diagnostic agent does not construct/sampleSimulatedUWB; history clock fromsimulationtime",
+      "learned_yaw_guard uses modelpredicted geometry; measured-distance branch forbidden byimagecontract",
+      "observer GT path is diagnostic only bystaticreview, not empirical sideeffectproof"
+    ],
+    "required_after_sr_gate": [
+      "finalweight realimage interface with valid/NaN/extremeinternalUWB perturbations and strict noUWB RPC",
+      "observer-only visibility/worldrecord perturbation and observer-off compare, preservingrealstateRGBtemplate",
+      "short realHabitat image-mode developercheck",
+      "then sameweight3x8image full4215/newoutputs and sameinitialstates paired metrics"
+    ],
+    "not_claimed": [
+      "Finalweight image/UWB perturbation check not yet run",
+      "No UWB closedloop results",
+      "Inference removal not no-UWB training"
+    ]
+  },
+  "frozen_runtime": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61715_eval24_v1",
+    "head": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb",
+    "status": ""
+  },
+  "next": [
+    "Keeporiginal61792/61793/61794; monitoractualassignedGPUs/readies/completions/fatalerrors",
+    "Afterall3complete merge+4215teacherstarts+fixed61377goal+new61609comparison+fullmedia with existingNASffprobe",
+    "IfSTTtargetnotmet use boundedfailure evidence before next authorized experiment; no blindepoch3",
+    "UWBformalcomparison onlyafterSR gates"
+  ],
+  "boundaries": [
+    "Evaluation-set adaptation explicitlyauthorized; not untouchedtest",
+    "61715evaluatedRTX4090 versus61609A800: no bitwise/puresamplingcausalclaim",
+    "No runtime freeze/model/checkpoint/output changes or newformaljob thisturn",
+    "Originalheldout/model/loss/LR/physics/controller/successcriteria unchanged",
+    "Goal andexisting20minheartbeat remainACTIVE"
+  ]
+}
