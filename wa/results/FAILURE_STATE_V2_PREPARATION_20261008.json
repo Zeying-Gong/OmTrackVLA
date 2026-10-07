@@ -1,0 +1,193 @@
+{
+  "schema": "failure_state_v2_preparation_v1",
+  "time": "2026-10-08T07:54:00+08:00",
+  "status": "PASS_CPU_RECORDED_EVIDENCE_ONLY_RUNTIME_PENDING",
+  "base_git": "9b9b1e931c1785fbc31e1fe2a9791747d7f97b77",
+  "goal": "ACTIVE_NOT_MET",
+  "new_training": false,
+  "new_closed_loop_score": false,
+  "new_formal_job": false,
+  "training_released": false,
+  "code": {
+    "wa/tests/test_failure_state_continuation.py": "187ac2646c8b50998d3598c143d5f62d901d24dd305bb2caf830becd42596591",
+    "wa/tests/test_failure_state_protocol_v2.py": "35ab7728622f7fc35da09beb077e0b29fe1d73cb2dfed3dd45e738c862474b4a",
+    "wa/tests/test_failure_state_teacher_adapter.py": "5b2e3c5cfcb20f040f7296f2d4f36951f2c918334187800e4b69f76a1423e417",
+    "wa/tests/test_failure_state_teacher_error.py": "086e30cb53ef600eb900e25823c55e22c3b2d7364565a0a252d0487ae10cfc1c",
+    "wa/wm/failure_state_continuation.py": "ababb3eff425144ad6689c6884e09d679b349cb15a9d5ad698f6270153156783",
+    "wa/wm/failure_state_protocol_v2.py": "b442765d3b20db777dce3f76bc28bdf9a3664211da31b19f99b77b4f91da6f0b",
+    "wa/wm/failure_state_teacher_adapter.py": "7d0a20ac3fd9a281437dc8946a71359faf1d1def4ef79b698bde8d6ed8beb5a3",
+    "wa/wm/failure_state_teacher_error.py": "c7ccee9353e49d57f21ca4c760f076db5fdff8507386124ebaba4aed3d357737"
+  },
+  "cpu_tests": {
+    "total": 164,
+    "scope": "original87 + typederror27 + boundary8 + protocol23 + continuation19",
+    "result": "PASS",
+    "real_simulator": false
+  },
+  "independent_reviews": {
+    "typed_error": "PASS",
+    "narrow_adapter": "PASS",
+    "v2_selection": "PASS",
+    "normal_branch_persistence": "still Runtime/recorder responsibility"
+  },
+  "protocol": {
+    "experiment": "evaluation_adaptation_failure_state_v2",
+    "sha256": "f3f14b8aa935eaf6c3a7352703fe9f30bd9e28ba1825ff30e82b0cfd98800f31",
+    "base_sha256": "734ef66947dd0c318bdee5cb990929b313647370003ff889ff29f77391ed2e4a",
+    "changes": "known teacher runtime-invalid union; no fake result/TR/proof and no fallback execution",
+    "unchanged": "fixed backoffs, same-k success/TR/tieLN, one independent winner repeat, zero-window backoff, model/physics/criteria/LR/loss"
+  },
+  "recorded_failure_schema_check": {
+    "diagnostic_document_canonical_sha256": "fa6090ce84fb122020cd32d0f115836a4197b17fb0325a2b3e238cfa12cf4a39",
+    "no_new_rollout": true,
+    "no_training_release": true,
+    "observed_partial": {
+      "actual_takeover": null,
+      "actual_takeover_state_sha256": null,
+      "evidence_files": {
+        "partial_actions": {
+          "bytes": 7294,
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61833/task_73055/wa_failure_state_collect_a800_v1/lane1/collection/stt/rJhMRvNn4DS/8/lightnav_0035/partial_actions.json",
+          "sha256": "ab87c148f7969c1cc06a5d9627b16da22dabce429c39a29d5a099223368c3ca5"
+        },
+        "partial_replay": {
+          "bytes": 1525440,
+          "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61833/task_73055/wa_failure_state_collect_a800_v1/lane1/collection/stt/rJhMRvNn4DS/8/lightnav_0035/partial_replay.json",
+          "sha256": "721ecae0e671901e5370e90fe1d6d7ab7cdb0c4472fe1aeea5facb14e57d6519"
+        }
+      },
+      "failed_action_step": 32,
+      "failure_phase": "before_takeover",
+      "hidden_rng_contact_state_proven": false,
+      "initial_rgb_sha256": "457817e87112f0b72eb60d886c288c80138cc81b9b170b62d86b99e59b5fab93",
+      "initial_state_sha256": "5e4d9f75a2cd93dcbe4e85def1c94313db30fa9a5b9811b67e1b412a2f339856",
+      "last_observation_step": 32,
+      "maximum_prefix_state_difference": 0,
+      "observations": 33,
+      "prefix_validation_complete": false,
+      "recorded_actions": 32,
+      "required_prefix_frames": 36,
+      "verified_prefix_frames": 33
+    },
+    "prospective_v2_protocol_sha": "f3f14b8aa935eaf6c3a7352703fe9f30bd9e28ba1825ff30e82b0cfd98800f31",
+    "source_protocol": "v1_61833_unchanged",
+    "status": "PASS_RECORDED_FAILURE_SCHEMA_ONLY"
+  },
+  "continuation": {
+    "bytes": 157247,
+    "canonical_sha256": "814a8b6137882d8ee63f3bcbf2e55e1b9b2f17f33faa25a3c831cce1295d9ea0",
+    "lanes": [
+      15,
+      16,
+      16,
+      16,
+      16,
+      16,
+      15,
+      15
+    ],
+    "new": 125,
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_continuation_61833_v2.json",
+    "reused": 1,
+    "sha256": "06d098f30ec52d988dc707249e73b17d11642f44846a75015455315891182822",
+    "status": "PERSISTED_OVERLAY_RELOAD_PASS",
+    "schema": "wa_failure_state_continuation_v1",
+    "experiment": "evaluation_adaptation_failure_state_v1",
+    "source_protocol_preserved": true,
+    "prospective_runtime_protocol_must_be_pinned_separately": true,
+    "artifact_count": 180,
+    "source_pins": 26,
+    "owned_exits": 24,
+    "candidate_windows": 26,
+    "scheduler_recheck_required": true
+  },
+  "preserved_serialization_failure": {
+    "expected_canonical": "814a8b6137882d8ee63f3bcbf2e55e1b9b2f17f33faa25a3c831cce1295d9ea0",
+    "failed_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_continuation_61833_v1.json",
+    "failed_sha256": "0dad4bf32387c9015c029309b63edb3f3e5b814ca58d6eca83fa7ca499e4edd2",
+    "first": [
+      {
+        "expected": 0,
+        "expected_type": "float",
+        "path": "/remaining_entries/0/baseline_result/success",
+        "saved": 0,
+        "saved_type": "int"
+      },
+      {
+        "expected": 0,
+        "expected_type": "float",
+        "path": "/remaining_entries/0/baseline_result/collision",
+        "saved": 0,
+        "saved_type": "int"
+      },
+      {
+        "expected": 0,
+        "expected_type": "float",
+        "path": "/remaining_entries/1/baseline_result/success",
+        "saved": 0,
+        "saved_type": "int"
+      },
+      {
+        "expected": 1,
+        "expected_type": "float",
+        "path": "/remaining_entries/1/baseline_result/collision",
+        "saved": 1,
+        "saved_type": "int"
+      },
+      {
+        "expected": 0,
+        "expected_type": "float",
+        "path": "/remaining_entries/2/baseline_result/success",
+        "saved": 0,
+        "saved_type": "int"
+      },
+      {
+        "expected": 0,
+        "expected_type": "float",
+        "path": "/remaining_entries/2/baseline_result/collision",
+        "saved": 0,
+        "saved_type": "int"
+      },
+      {
+        "expected": 0,
+        "expected_type": "float",
+        "path": "/remaining_entries/3/baseline_result/success",
+        "saved": 0,
+        "saved_type": "int"
+      },
+      {
+        "expected": 1,
+        "expected_type": "float",
+        "path": "/remaining_entries/3/baseline_result/collision",
+        "saved": 1,
+        "saved_type": "int"
+      }
+    ],
+    "only_equal_int_float": true,
+    "saved_canonical": "2d66f72fde6490faf67b75c7f72ab05b44ddcb978a3c24d80c1069be00039e74",
+    "total_differences": 512
+  },
+  "safety": {
+    "original_v1_tracked_diff": false,
+    "frozen_source_clean": true,
+    "legacy_bound_teacher_unchanged": true,
+    "legacy_lightnav_client_unchanged": true,
+    "unknown_exceptions_fatal": true,
+    "zero_fallback_actions_returned_by_classified_boundary": true,
+    "formal_or_gpu_replay_not_run": true
+  },
+  "pending": [
+    "Integrate separate v2 Runtime/recorder with strict metadata; do not relabel frozen v1 data",
+    "Connect continuation overlay to launcher/collector with exact125 workset and final1+125 coverage",
+    "Real short development check of classified failure and independent same-k Oracle; no cluster smoke",
+    "Pin protocol/overlay/code/config and fullpreflight, announce then submit full125 missing collection8GPU",
+    "Independently audit all suffix SE2/yaw/history/student inputs before newcache/training"
+  ],
+  "best_unchanged": {
+    "stt": 1279,
+    "dt": 1178,
+    "at": 1207,
+    "stt_gap": 10
+  },
+  "automation": "Existing wa ACTIVE every20min; no duplicate monitor"
+}
