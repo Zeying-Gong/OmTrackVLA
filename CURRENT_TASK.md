@@ -8,16 +8,19 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - STT needs at least +13 net successes; DT/AT must not regress. Collision recorded, not primary optimization gate.
 - After this gate, quantify with/without-UWB effects; distinguish input removal from no-UWB training.
 
-## Active formal run — do not duplicate
-- 61609/72803 submitted2026-10-07 10:35:58Beijing; schedulerRUNNING; worker verified8 A800-SXM4-80GB.
+## Completed training and prepared 24GPU evaluation — do not duplicate
+- 61609/72803 SUCCEEDED2026-10-07 15:50:25Beijing; actual8 A800-SXM4-80GB; finalstep59716/new37009updates/cumulative2epochs.
 - Output:/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1
 - Frozen source_hard_stt_train_v1 commit8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06;clean;159Pythonfiles match developer diagnostic.
 - Config wa/jobs/hard_stt_train_a800_v1.yaml SHA99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184;GitHubfda647a7.
-- Parent59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;new1epoch cumulative2;planned37009updates/end59716.
-- Actual2026-10-07 15:28Beijing: lastlogged59700/59716;actual exposure reports37009updates andmatches frozen8rank plan exactly (base726631+teacher457641=1184272;hard31239/earlyhard9810). Checkpoint/exposure files present since14:58;metrics absent;no checkpointload/finaltrainingPASS/newSR.
-- Monitoring correction: earlier inline watcher used nonexistent run/console.log andsilently treatedmissing as empty;its nofatal claim iswithdrawn (step records remainvalid). Actual logs are task_72803/console.log andtask_72803/.md-ak/workload.log;fullscan15:24 andcorrectedwatch15:28 found0specifiedfatal signatures. Missingrequiredlog nowraises,notempty. SchedulerRUNNING;wait finalmetrics/acceptance.
-- Final phase order verified in frozen source: exposure write/barrier -> direct checkpoint save/barrier -> 8rank heldout(image/point/mixed) -> metrics/COMPLETE. No atomic-save sentinel; do not load active checkpoint or launch evaluation before final acceptance. Old61377 checkpoint->metrics tail51m02s is historical estimate only.
-- Live TensorBoard run hard_stt_61609 verified from scalar API. Existing server6006/exporter2619386; ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars . No new local tunnel.
+- Parent59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;independent1new epoch cumulative2;not61377epoch3.
+- Final checkpoint.pt SHAc510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52. Full audit artifacts/hard_stt_training_audit_61609_v1.json SHA59d5b468eec4283db1a1d87ad7b9a9d1bc2123739cffc38cebfc9a1e14dcc727 PASS24198sourcehashes/optimizer/step/actualexposure/heldout;OFFLINE_ONLY,no newSR.
+- Monitoring correction: earlier inline watcher used nonexistent run/console.log andsilently treatedmissing as empty;its nofatal claim iswithdrawn (step records remainvalid). Actual logs are task_72803/console.log andtask_72803/.md-ak/workload.log;fullscan15:24 andcorrectedwatch15:28 found0specifiedfatal signatures. Missingrequiredlog nowraises,notempty. Terminaltrainingaudit15:50+PASS;preservethiscorrection.
+- Actual1184272exposures=726631base+457641teacher;10413hardwindows each3=31239/earlyhard9810;teacherSTT148547DT156048AT153046;8ranks148034each. Heldout73368/mode:ADE/FDE image.265734/.463479 point.253940/.442441 mixed.253890/.441945;notclosedloop.
+- TensorBoard hard_stt_61609 is completed-training curves, not runningtraining; existing6006/exporter. ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars .
+- 24GPU fullmixed preflight PASS:98CPUtestexecutions;actualcheckpoint shortRTX4090interface;24realHabitatdefinitionlanes1405/task,72hashes. Syntheticinterface is not simulatorreset/rollout/firstbenchmarkframe evidence.
+- New frozen source_student61609_eval24_v1 commit192b57f5e270acfffd8c7c1a4590cb1b257d92a3 clean;3configs wa/jobs/student61609_{stt,dt,at}_a800_v1.yaml prepared,NOTSUBMITTED yet. Noresume/reuse;each8GPU/1405,total4215.
+- Preflight report wa/results/STUDENT61609_PREFLIGHT_20261007.json;A80029free snapshot, recheckbefore3submissions. GPUchangefrom61377 RTX4090 is recorded,notbitwise-equivalenceclaim;fullstartauditrequired.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
 
 ## Frozen baseline and evidence
@@ -41,7 +44,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Two more hard cases BHXhpBwSMLh/11 and XNeHsjL6nBB/4 have zero valid windows; filters unchanged.
 - Coverage artifacts/stt_start_coverage_61377_20261007_v2.json SHA8559e02a411358ba6dd59d7f2cb7da968d81e1542398b08dc09271d6d62ae3ec; v1 preserved.
 - Opt-in plan/runtime accounting integrated into train.py;40CPUtestsPASS plus real4update diagnosticPASS;originalmodel/loss unchanged.
-- Candidate91hard/10413windows each3;allbase+teacher once. Exact8rank1184272actualsimulated;reportSHA663c66b1. Formal61609submitted;not complete.
+- Candidate91hard/10413windows each3;allbase+teacher once. Exact8rank1184272actualsimulated;reportSHA663c66b1. Formal61609completed/fulltrainingauditPASS;closedloop pending.
 - STT read-only failure analysis:18gains/18regressions;129failures=61targetCollision/49Lost/19Normal-no-success;93teacher-solvable.
 - 51/61collisions ended<=40steps;58/61last5commands alreadybackward. Not evidence of general yaw saturation or wall collisions.
 - SSH same-entry handshake intermittent; standard ControlMaster connection reuse enabled per-command only, no SSH config/credential change.
@@ -49,11 +52,11 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 ## Next bounded experiment gates
 - Full pair/media and88window teacher-fit COMPLETE;hardCollisionADE.55880->.48717;successfulSTT.27892->.25227;label-fit notSR.
 - RealRTX4090 diagnostic4updates22708..22711 consumed16samples10base6teacher3hard;peak7.309GiB;no checkpoint.
-- Evidence:wa/results/HARD_STT_CANDIDATE_20261007.json. Monitor61609 steps/checkpoint andfinal actual_exposure_epoch1.json/npz;do notduplicate.
-- Final tools: wa.tools.audit_hard_stt_training checks completed metadata/exact actual exposure/source+YAML pins; live run correctly INCOMPLETE without checkpoint load. Scheduler terminal status checked separately.
+- Evidence:wa/results/HARD_STT_CANDIDATE_20261007.json. Trainingandactual_exposure_epoch1.json/npz finalauditPASS;do notduplicate training.
+- Final tools: wa.tools.audit_hard_stt_training checks completed metadata/exact actual exposure/source+YAML pins; completed61609auditPASS;live-checkpoint guard previouslyPASS. Scheduler terminal status checked separately.
 - wa.tools.audit_student_goal checks full4215 new rows and paired61377 baseline, fixed1289/1173/1203 thresholds and gains/regressions. 27 new audit tests PASS (plus6 existing runtime tests); not a new model result. Boolean false init/policy failures remain in denominator; regression fixture PASS.
 - Goal-auditor real61377 self-check:81sourcehashes PASS,4215rows,NOT_MET with13/0/0shortfall whileLightNav superiority=True. Read-only/no new result artifact;61609 closedloop still pending.
-- FullSTT/DT/AT24GPU closedloop required before claiming gain;actualperwindow exposure recorded and validated after epoch.
+- FullSTT/DT/AT24GPU closedloop is next; new61609SRunknown;actualperwindow exposure validated.
 - Do not blindly continue epoch3, change architecture/loss/physics/success thresholds, or invent task-ID inputs.
 - Teacher demonstrations: successful branch first; if both succeed choose higher tracking rate, exact tie LightNav.
 - Failed/fallback branches excluded from demonstration labels. Record actual old/new/task/episode exposure.

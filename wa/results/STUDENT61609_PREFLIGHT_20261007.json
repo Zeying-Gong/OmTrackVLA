@@ -1,0 +1,268 @@
+{
+  "schema": "wa.student-evaluation-preflight.v1",
+  "status": "PREFLIGHT_READY_NOT_CLOSED_LOOP_RESULT",
+  "date_beijing": "2026-10-07",
+  "checkpoint": {
+    "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+    "sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "step": 59716,
+    "completed_epochs": 2,
+    "provenance": "Identity taken from the independently re-read completed training audit; this report generation did not load or rehash the large checkpoint."
+  },
+  "training": {
+    "job": 61609,
+    "task": 72803,
+    "audit": {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/hard_stt_training_audit_61609_v1.json",
+      "sha256": "59d5b468eec4283db1a1d87ad7b9a9d1bc2123739cffc38cebfc9a1e14dcc727",
+      "status": "TRAINING_ARTIFACT_AUDIT_PASS_OFFLINE_ONLY"
+    },
+    "source_commit": "8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06",
+    "scheduler": {
+      "status": "SUCCEEDED",
+      "finished_beijing": "2026-10-07T15:50:25+08:00",
+      "evidence": "Main-thread scheduler record; not re-queried by this report writer."
+    },
+    "optimizer_updates": 37009,
+    "last_logged_step": 59700,
+    "final_step_authority": "checkpoint + final metrics",
+    "initialization": "Parent model AND optimizer restored, as validated by the training audit.",
+    "exposure": {
+      "status": "ACTUAL_EXPOSURE_MATCHES_SIMULATION",
+      "actual_total": 1184272,
+      "actual_base": 726631,
+      "actual_teacher": 457641,
+      "hard_teacher_exposures": 31239,
+      "early_teacher_exposures": 150430,
+      "hard_early_teacher_exposures": 9810,
+      "unconsumed_positions": 1
+    },
+    "offline_validation": {
+      "modes": [
+        "image",
+        "point",
+        "mixed"
+      ],
+      "windows_per_mode": 73368,
+      "closed_loop_SR": null,
+      "collision_rate": null,
+      "scope": "Offline trajectory errors only; full per-mode values remain in the pinned audit."
+    }
+  },
+  "evaluation_source": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1",
+    "commit": "192b57f5e270acfffd8c7c1a4590cb1b257d92a3",
+    "clean": true,
+    "evidence": "Independently re-read git HEAD and empty git status --porcelain."
+  },
+  "definition_check": {
+    "artifact": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61609_eval24_definition_v1/report.json",
+    "sha256": "bfa25ae12131f40f27c7c7a1df0e596f25e88494ee15ff89268894eed235cd5b",
+    "status": "PASS",
+    "command": "python -B -m wa.wm.eval_full_mixed --audit-only (exact per-lane argv and environment in pinned run_manifest.json)",
+    "run_manifest_sha256": "cb15681c451eaf8155679418dc69092f8bfc0be7553bfc94af173d084f3d4dfb",
+    "started_utc": "2026-10-07T07:59:34.230081+00:00",
+    "finished_utc": "2026-10-07T08:00:06.667652+00:00",
+    "audit_pass_count": 24,
+    "counts_per_task": {
+      "stt": [
+        176,
+        176,
+        176,
+        176,
+        176,
+        175,
+        175,
+        175
+      ],
+      "dt": [
+        176,
+        176,
+        176,
+        176,
+        176,
+        175,
+        175,
+        175
+      ],
+      "at": [
+        176,
+        176,
+        176,
+        176,
+        176,
+        175,
+        175,
+        175
+      ]
+    },
+    "total": 4215,
+    "maximum_parallel_workers": 4,
+    "gpu_used": false,
+    "checkpoint_read": false,
+    "model_loaded": false,
+    "simulator_reset": false,
+    "rendered_first_frame": false,
+    "rollout": false,
+    "readback_verification": {
+      "files_hashed": 72,
+      "status": "PASS",
+      "scope": "24 worker.log, 24 AUDIT_PASS and 24 semantic_protocol files independently re-read and matched after the CPU check."
+    },
+    "warnings": {
+      "gym_unmaintained_warning_logs": 24,
+      "fatal_signatures_found": 0,
+      "scope": "Worker logs checked for Traceback, Fatal Python error and CUDA out of memory signatures; this is not an exhaustive warning classifier."
+    },
+    "boundary": "Real Habitat episode definitions and declared student/semantic/seven-bbox contracts only; no first-frame render, checkpoint load, model inference, controller execution, SR or collision result."
+  },
+  "developer_interface": {
+    "artifact": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61609_developer_interface_v1.json",
+    "sha256": "25196ced4f806ca049c684be82635d10bca1577428f6e932280820a0527c7957",
+    "status": "DEVELOPER_INTERFACE_PASS_NOT_BENCHMARK",
+    "execution_evidence": {
+      "session": 13590,
+      "exit_code": 0,
+      "source": "Main-thread execution record; artifact and frozen developer-check source independently re-read."
+    },
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "mode": "mixed",
+    "noise_mode": "zero",
+    "sampling_steps": 4,
+    "seed": "7+step",
+    "metadata_identity": "validate_ready passed for the actual checkpoint SHA, step 59716 and mixed mode; main-thread validation.",
+    "input": {
+      "rgb": "Two black synthetic 224x224 RGB images",
+      "first_frame_bbox": [
+        20,
+        20,
+        120,
+        200
+      ],
+      "timestamps_s": [
+        0,
+        0.05
+      ],
+      "uwb_polar": [
+        2,
+        0.1
+      ],
+      "uwb_timestamp_s": 0,
+      "uwb_valid": true,
+      "uwb_source": "ideal_simulated_uwb",
+      "range_noise_m": 0,
+      "bearing_noise_rad": 0,
+      "delay_s": 0
+    },
+    "outputs": {
+      "predictions": 2,
+      "xy_shape": [
+        7,
+        2
+      ],
+      "yaw_shape": [
+        7
+      ],
+      "target_geometry_shape": [
+        3
+      ],
+      "all_finite": true,
+      "template_valid": true
+    },
+    "first_inference_s": 5.1478034146130085,
+    "second_inference_s": 0.0659369258210063,
+    "timing_scope": "Cold first and one subsequent synthetic-input inference on a developer RTX 4090. Not a benchmark latency distribution, end-to-end navigation latency, Jetson Thor measurement or <=200 ms product validation.",
+    "warnings": {
+      "xformers_unavailable": true,
+      "evidence": "Main-thread console observation; JSON does not contain the warning text."
+    },
+    "text_used": false,
+    "world_predictor_inference": false,
+    "boundary": "No simulator reset/render, real benchmark first frame, controller execution or closed-loop rollout. Does not establish equivalence of RTX 4090 and A800 execution."
+  },
+  "cpu_tests": {
+    "passed": 98,
+    "elapsed_s": 10.301,
+    "session": 91908,
+    "exit_code": 0,
+    "evidence": "Main-thread test execution record; not rerun by this report writer."
+  },
+  "planned_evaluation": {
+    "cluster": "baidu_a800",
+    "image": "x5-builder:cuda12.8-isaac5.0.0-v2.test1",
+    "gpu_model_guard": "Exactly 8 visible GPU names containing A800 per task",
+    "tasks": [
+      {
+        "task": "stt",
+        "episodes": 1405,
+        "gpus": 8,
+        "config": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61609_stt_a800_v1.yaml",
+        "sha256": "c394ae653205fb98b5ce08f34d7d9df61a56794dae03abfe468046bafea2a648"
+      },
+      {
+        "task": "dt",
+        "episodes": 1405,
+        "gpus": 8,
+        "config": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61609_dt_a800_v1.yaml",
+        "sha256": "b2bb2794e7411e67b53d6558108d645601649b2ed4a8a8c1b63082a9ef063d1e"
+      },
+      {
+        "task": "at",
+        "episodes": 1405,
+        "gpus": 8,
+        "config": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61609_at_a800_v1.yaml",
+        "sha256": "2c9406d45d9c35cc03b3c6ed7138a8f3458b7d2bc8eae16909b427a3516025d4"
+      }
+    ],
+    "total_gpus": 24,
+    "total_episodes": 4215,
+    "mode": "mixed",
+    "controller": "learned_yaw_guard_v1",
+    "student_contract": "evaluation_set_adaptation_v1",
+    "input_protocol": "RGB history + first-frame BBox template + ideal simulated current polar UWB; no text.",
+    "no_resume_or_targeted_row_reuse": true,
+    "manifest": {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json",
+      "sha256": "a1f515534153ccaa720f787f01ea23b9097c174fe25020f756c7d7947eedf98f"
+    },
+    "semantic": {
+      "version": "mp3d_semantic_ply_v1",
+      "config_sha256": "1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6"
+    },
+    "initial_bbox_repair": {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json",
+      "sha256": "6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a",
+      "fixed_episode_count": 7
+    },
+    "paired_teacher_reference": {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl",
+      "sha256": "f45f21d71b63d7f2a0898e1e762c393a95b0f3eaf8291bd1affbc827d23354d8"
+    },
+    "output_policy": "New job/task-specific NAS directories only; preserve all student61377 outputs.",
+    "minimum_success_counts": {
+      "stt": 1289,
+      "dt": 1173,
+      "at": 1203
+    },
+    "formal_job_ids": null,
+    "closed_loop_result": null
+  },
+  "resource_snapshot": {
+    "cluster": "baidu_a800",
+    "free_gpus": 29,
+    "observed_beijing": "2026-10-07T15:54:00+08:00",
+    "evidence": "Main-thread resource snapshot, minute precision.",
+    "historical_only": true,
+    "must_recheck_before_submission": true
+  },
+  "limits": [
+    "This report proves bounded preflight readiness only; no student61609 closed-loop SR, collision or initialization result exists here.",
+    "Successful training, finite predictions and offline trajectory errors are not evidence of improvement over student61377 or LightNav.",
+    "Evaluation-set adaptation, not untouched-test generalization. Retain this disclosure in all subsequent reports.",
+    "No real first-frame RGB was rendered by the CPU definition check; full physics, initial RGB pairing, controller invariants and media must be audited after formal evaluation.",
+    "The GPU synthetic check is not a robot/embedded deployment, a benchmark episode or an end-to-end latency measurement.",
+    "The unchanged mixed protocol uses ideal simulated UWB, not measured hardware UWB; no image-vs-mixed formal experiment is included.",
+    "Resource availability and duplicate-job checks must be refreshed immediately before submitting the three full 8-GPU tasks.",
+    "This report writer did not submit jobs, alter runtime source, modify old checkpoints or overwrite student61377 results."
+  ]
+}
