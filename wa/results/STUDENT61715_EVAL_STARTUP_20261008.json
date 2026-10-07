@@ -1,0 +1,250 @@
+{
+  "status": "SUBMITTED_POD_PENDING_NO_EVALUATION_PROGRESS",
+  "checked_utc": "2026-10-07T17:58:52.256713+00:00",
+  "release_commit": "d5c0c325db44dc66582f777cea386fc8f3dc4264",
+  "release_report_sha256": "916d9d8413a48b501406a5e6e2d8e243453e7fb388f5e6b83ef6e2fdf296033d",
+  "requested_gpus": 24,
+  "actual_assigned_gpus": "UNVERIFIED_PODS_UNSCHEDULED",
+  "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+  "checkpoint_step": 59716,
+  "source_commit": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb",
+  "submissions": [
+    {
+      "task": "stt",
+      "job": 61792,
+      "started_utc": "2026-10-07T17:51:38.644253+00:00",
+      "finished_utc": "2026-10-07T17:51:39.241736+00:00",
+      "returncode": 0,
+      "argv": [
+        "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit",
+        "submit",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61715_stt_4090_v1.yaml"
+      ],
+      "config_sha256": "ad8447f41920820ee1a6aab7f3b071add1955b0c066f03dc6c7e4cb92da9e70c"
+    },
+    {
+      "task": "dt",
+      "job": 61793,
+      "started_utc": "2026-10-07T17:51:39.242376+00:00",
+      "finished_utc": "2026-10-07T17:51:39.853574+00:00",
+      "returncode": 0,
+      "argv": [
+        "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit",
+        "submit",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61715_dt_4090_v1.yaml"
+      ],
+      "config_sha256": "12abc5a01138b3aef0a19df2ddc9bd435c40700b93fac9e7f3a3c09062e14f05"
+    },
+    {
+      "task": "at",
+      "job": 61794,
+      "started_utc": "2026-10-07T17:51:39.867730+00:00",
+      "finished_utc": "2026-10-07T17:51:40.472951+00:00",
+      "returncode": 0,
+      "argv": [
+        "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit",
+        "submit",
+        "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61715_at_4090_v1.yaml"
+      ],
+      "config_sha256": "b47a2a93f29174db99e030959e5c68e85432a9741ee6a1fe0e31b7ab6c0592d3"
+    }
+  ],
+  "scheduler_detail_observed": {
+    "checked_beijing": "2026-10-08 01:53:42",
+    "source": "independent executor_contract_audit read-only detail",
+    "states": [
+      "SUBMITTED",
+      "SUBMITTED",
+      "SUBMITTED"
+    ]
+  },
+  "nas_snapshot": {
+    "checked_utc": "2026-10-07T17:58:52.256713+00:00",
+    "jobs": [
+      {
+        "task_kind": "stt",
+        "job": 61792,
+        "task_id": 72986,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+        "output_exists": false,
+        "logs": {
+          "console.log": {
+            "exists": true,
+            "bytes": 292,
+            "mtime": 1791395500.2162192,
+            "sha256": "e560c9788e84079ec64b5d45d932ba6f4200b144214cab0a4254f7a37007276e",
+            "tail": [
+              "2026-10-08T01:51:40.205+08:00 [INFO] [md_ak] Task #72986 claimed for Job #61792",
+              "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+              "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+            ],
+            "fatal": {
+              "Traceback (most recent call last)": 0,
+              "CUDA out of memory": 0,
+              "FloatingPointError": 0,
+              "Segmentation fault": 0
+            }
+          },
+          ".md-ak/workload.log": {
+            "exists": true,
+            "bytes": 6297,
+            "mtime": 1791395922.374707,
+            "sha256": "d2f75a20e4ef61eae111839ed643db05912ff98649b188f24a7d5aa780338b36",
+            "tail": [
+              "2026-10-08T01:57:12.440+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:57:42.375+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+              "2026-10-08T01:57:42.385+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+              "2026-10-08T01:57:42.395+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:58:12.366+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+              "2026-10-08T01:58:12.376+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+              "2026-10-08T01:58:12.386+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:58:42.346+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+              "2026-10-08T01:58:42.364+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-",
+              "2026-10-08T01:58:42.374+08:00 [WARNING] [k8s] Pod job-61792-0-m9ltf event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+            ],
+            "fatal": {
+              "Traceback (most recent call last)": 0,
+              "CUDA out of memory": 0,
+              "FloatingPointError": 0,
+              "Segmentation fault": 0
+            }
+          }
+        },
+        "readies": [],
+        "completed": 0,
+        "unique": 0
+      },
+      {
+        "task_kind": "dt",
+        "job": 61793,
+        "task_id": 72987,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1",
+        "output_exists": false,
+        "logs": {
+          "console.log": {
+            "exists": true,
+            "bytes": 292,
+            "mtime": 1791395500.8173566,
+            "sha256": "043f519772f766ac9255537ab3416e6cbccb76b58856be7e83931680ffcd4dcb",
+            "tail": [
+              "2026-10-08T01:51:40.810+08:00 [INFO] [md_ak] Task #72987 claimed for Job #61793",
+              "2026-10-08T01:51:40.811+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+              "2026-10-08T01:51:40.817+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+            ],
+            "fatal": {
+              "Traceback (most recent call last)": 0,
+              "CUDA out of memory": 0,
+              "FloatingPointError": 0,
+              "Segmentation fault": 0
+            }
+          },
+          ".md-ak/workload.log": {
+            "exists": true,
+            "bytes": 6297,
+            "mtime": 1791395922.265593,
+            "sha256": "f4f30fb2f181f1de6a2a932d33bcfc6e342c198772de512e94ecb8129104d43b",
+            "tail": [
+              "2026-10-08T01:57:12.361+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:57:42.295+08:00 [INFO] [k8s] K8s Job ray-4090/job-61793-0 phase=Running",
+              "2026-10-08T01:57:42.306+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Pending node=-",
+              "2026-10-08T01:57:42.317+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:58:12.288+08:00 [INFO] [k8s] K8s Job ray-4090/job-61793-0 phase=Running",
+              "2026-10-08T01:58:12.298+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Pending node=-",
+              "2026-10-08T01:58:12.308+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:58:42.239+08:00 [INFO] [k8s] K8s Job ray-4090/job-61793-0 phase=Running",
+              "2026-10-08T01:58:42.252+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Pending node=-",
+              "2026-10-08T01:58:42.265+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+            ],
+            "fatal": {
+              "Traceback (most recent call last)": 0,
+              "CUDA out of memory": 0,
+              "FloatingPointError": 0,
+              "Segmentation fault": 0
+            }
+          }
+        },
+        "readies": [],
+        "completed": 0,
+        "unique": 0
+      },
+      {
+        "task_kind": "at",
+        "job": 61794,
+        "task_id": 72988,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1",
+        "output_exists": false,
+        "logs": {
+          "console.log": {
+            "exists": true,
+            "bytes": 292,
+            "mtime": 1791395501.471647,
+            "sha256": "07836a91c262cf18431185920605f98fac85937eebee0b4e4aa33abdc7943c42",
+            "tail": [
+              "2026-10-08T01:51:41.464+08:00 [INFO] [md_ak] Task #72988 claimed for Job #61794",
+              "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+              "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+            ],
+            "fatal": {
+              "Traceback (most recent call last)": 0,
+              "CUDA out of memory": 0,
+              "FloatingPointError": 0,
+              "Segmentation fault": 0
+            }
+          },
+          ".md-ak/workload.log": {
+            "exists": true,
+            "bytes": 5819,
+            "mtime": 1791395922.3244264,
+            "sha256": "692a5a47f96c83f33238afcf11a3c1dd5b1988a65291e96eac362c5090855df7",
+            "tail": [
+              "2026-10-08T01:57:12.402+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:57:42.336+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+              "2026-10-08T01:57:42.346+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+              "2026-10-08T01:57:42.356+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:58:12.327+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+              "2026-10-08T01:58:12.338+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+              "2026-10-08T01:58:12.348+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu.",
+              "2026-10-08T01:58:42.290+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+              "2026-10-08T01:58:42.309+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-",
+              "2026-10-08T01:58:42.324+08:00 [WARNING] [k8s] Pod job-61794-0-dczp7 event=FailedScheduling message=0/29 nodes are unavailable: 1 node(s) didn't match Pod's node affinity/selector, 1 node(s) had untolerated taint {ai-infra.mondo/dedicated: ci}, 11 Insufficient cpu, 16 Insufficient nvidia.com/gpu."
+            ],
+            "fatal": {
+              "Traceback (most recent call last)": 0,
+              "CUDA out of memory": 0,
+              "FloatingPointError": 0,
+              "Segmentation fault": 0
+            }
+          }
+        },
+        "readies": [],
+        "completed": 0,
+        "unique": 0
+      }
+    ]
+  },
+  "completed_total": 0,
+  "each_task_total": 1405,
+  "total_expected": 4215,
+  "ready_count": 0,
+  "limits": [
+    "No outputs/shard results yet; zero completed is not SR0%.",
+    "K8s Job Running wraps an actual Pending Pod; not worker progress.",
+    "Aggregate72free4090 does not guarantee8GPU+CPU on an eligible single node.",
+    "11InsufficientCPU/16InsufficientGPU/1affinity/1CItaint nodes at snapshot; preserve queue, no automatic stop/resubmit.",
+    "Evaluation-set adaptation; no untouched-test generalization.",
+    "Same mode/physics/model/controller/threshold; 4090vs61609 A800 hardware difference disclosed."
+  ],
+  "monitor": {
+    "id": "wa",
+    "kind": "heartbeat",
+    "status": "ACTIVE",
+    "interval_minutes": 20,
+    "prompt_updated_to_jobs": [
+      61792,
+      61793,
+      61794
+    ],
+    "same_thread_preserved": true
+  },
+  "next": "Wait for node assignment then verify24actualGPU/readycontracts and real unique completed counts. Final4215/24COMPLETE/3PARTITION_COMPLETE/pairedinitialstate+media/goal audit. UWB only afterallSRgates."
+}
