@@ -1,0 +1,588 @@
+{
+  "schema": "wa.stt-anchor.live-watch.v1",
+  "status": "VERIFIED_WAIT_NOT_FINAL",
+  "previous_goal_turn": "PROGRESS: independent evalfreeze/dependency/CPU import evidence, state and GitHub wa368fa31c saved; no SR gate achieved.",
+  "job": 61715,
+  "task": 72909,
+  "cluster": "baidu_bj_a800",
+  "expected_gpus": 8,
+  "watch": {
+    "session_id": 43489,
+    "exit_code": 0,
+    "requested_interval_seconds": 120,
+    "requested_intervals": 10,
+    "actual_span_seconds": 1201.3,
+    "watch_exit": "BOUNDED_VERIFIED_WAIT_COMPLETE",
+    "snapshots": 11,
+    "start_phase_step": 10493,
+    "end_phase_step": 13468,
+    "new_updates_observed": 2975,
+    "checkpoint_read_or_hashed": false
+  },
+  "snapshots": [
+    {
+      "checked_utc": "2026-10-07T13:33:52.677533+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 0,
+      "step": 33200,
+      "phase_step": 10493,
+      "planned_phase_steps": 37009,
+      "log_records": 421,
+      "partial_trailing_bytes": 0,
+      "loss": 0.09863390773534775,
+      "grad_norm": 0.9361530542373657,
+      "train_elapsed_s": 4181.903842365369,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 229004,
+          "mtime": 1791379903.8952868,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 32900, \"total_steps\": 59716, \"phase_step\": 10193, \"epoch\": 1, \"loss\": 0.09369511902332306, \"flow\": 0.07403171062469482, \"geometry\": 0.0001857283932622522, \"world\": 0.19570539891719818, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.13770949840545654, \"lr\": [2.1045738225013354e-07, 4.209147645002671e-07, 4.209147645002671e-06, 8.418295290005342e-07, 8.418295290005341e-06], \"grad_norm\": 0.7155004739761353, \"peak_allocated_gib\": 9.443607330322266, \"elapsed_s\": 4056.0835466925055}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 26632,
+          "mtime": 1791380013.4915636,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:33:33.491+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false,
+      "scheduler_returncode": 0,
+      "scheduler_statuses": [
+        "RUNNING",
+        "RUNNING"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-07T13:35:53.255262+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 1,
+      "step": 33500,
+      "phase_step": 10793,
+      "planned_phase_steps": 37009,
+      "log_records": 433,
+      "partial_trailing_bytes": 0,
+      "loss": 0.07160335779190063,
+      "grad_norm": 0.44638171792030334,
+      "train_elapsed_s": 4300.32760717161,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 237481,
+          "mtime": 1791380068.686325,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 33300, \"total_steps\": 59716, \"phase_step\": 10593, \"epoch\": 1, \"loss\": 0.12453339993953705, \"flow\": 0.10355827212333679, \"geometry\": 0.0005019079544581473, \"world\": 0.20724184811115265, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.020836953073740005, \"lr\": [2.0750813556274126e-07, 4.150162711254825e-07, 4.150162711254825e-06, 8.30032542250965e-07, 8.30032542250965e-06], \"grad_norm\": 0.6135915517807007, \"peak_allocated_gib\": 9.474124908447266, \"elapsed_s\": 4220.872910823673}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 27396,
+          "mtime": 1791380133.5152714,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:35:33.515+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false
+    },
+    {
+      "checked_utc": "2026-10-07T13:37:53.268055+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 2,
+      "step": 33800,
+      "phase_step": 11093,
+      "planned_phase_steps": 37009,
+      "log_records": 445,
+      "partial_trailing_bytes": 0,
+      "loss": 0.11692023277282715,
+      "grad_norm": 0.5941953659057617,
+      "train_elapsed_s": 4419.151488259435,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 245954,
+          "mtime": 1791380227.635549,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 33700, \"total_steps\": 59716, \"phase_step\": 10993, \"epoch\": 1, \"loss\": 0.11398177593946457, \"flow\": 0.09395068883895874, \"geometry\": 0.000225761832552962, \"world\": 0.19918204843997955, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.01575520820915699, \"lr\": [2.0447818176914396e-07, 4.089563635382879e-07, 4.089563635382879e-06, 8.179127270765758e-07, 8.179127270765759e-06], \"grad_norm\": 0.5555136799812317, \"peak_allocated_gib\": 9.504642486572266, \"elapsed_s\": 4379.823227778077}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 28160,
+          "mtime": 1791380253.4851398,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:37:33.485+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false
+    },
+    {
+      "checked_utc": "2026-10-07T13:39:53.281551+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 3,
+      "step": 34100,
+      "phase_step": 11393,
+      "planned_phase_steps": 37009,
+      "log_records": 457,
+      "partial_trailing_bytes": 0,
+      "loss": 0.14082148671150208,
+      "grad_norm": 0.6342432498931885,
+      "train_elapsed_s": 4540.603914896026,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 254428,
+          "mtime": 1791380388.4167013,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 34100, \"total_steps\": 59716, \"phase_step\": 11393, \"epoch\": 1, \"loss\": 0.14082148671150208, \"flow\": 0.12113101780414581, \"geometry\": 0.0006756422808393836, \"world\": 0.19352644681930542, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.26082587242126465, \"lr\": [2.013710138751379e-07, 4.027420277502758e-07, 4.027420277502758e-06, 8.054840555005516e-07, 8.054840555005515e-06], \"grad_norm\": 0.6342432498931885, \"peak_allocated_gib\": 9.535160064697266, \"elapsed_s\": 4540.603914896026}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 28924,
+          "mtime": 1791380373.476648,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:39:33.476+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false
+    },
+    {
+      "checked_utc": "2026-10-07T13:41:53.295157+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 4,
+      "step": 34400,
+      "phase_step": 11693,
+      "planned_phase_steps": 37009,
+      "log_records": 469,
+      "partial_trailing_bytes": 0,
+      "loss": 0.097757987678051,
+      "grad_norm": 0.6576281189918518,
+      "train_elapsed_s": 4662.988332897425,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 254428,
+          "mtime": 1791380388.4167013,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 34100, \"total_steps\": 59716, \"phase_step\": 11393, \"epoch\": 1, \"loss\": 0.14082148671150208, \"flow\": 0.12113101780414581, \"geometry\": 0.0006756422808393836, \"world\": 0.19352644681930542, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.26082587242126465, \"lr\": [2.013710138751379e-07, 4.027420277502758e-07, 4.027420277502758e-06, 8.054840555005516e-07, 8.054840555005515e-06], \"grad_norm\": 0.6342432498931885, \"peak_allocated_gib\": 9.535160064697266, \"elapsed_s\": 4540.603914896026}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 29688,
+          "mtime": 1791380493.4405704,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:41:33.440+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false
+    },
+    {
+      "checked_utc": "2026-10-07T13:43:53.305995+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 5,
+      "step": 34675,
+      "phase_step": 11968,
+      "planned_phase_steps": 37009,
+      "log_records": 480,
+      "partial_trailing_bytes": 0,
+      "loss": 0.08904591202735901,
+      "grad_norm": 0.41438573598861694,
+      "train_elapsed_s": 4777.385024251416,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 262904,
+          "mtime": 1791380555.5622919,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 34500, \"total_steps\": 59716, \"phase_step\": 11793, \"epoch\": 1, \"loss\": 0.07768860459327698, \"flow\": 0.05898459628224373, \"geometry\": 0.00019589217845350504, \"world\": 0.18606062233448029, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.11841703951358795, \"lr\": [1.9819021390084713e-07, 3.9638042780169426e-07, 3.963804278016943e-06, 7.927608556033885e-07, 7.927608556033886e-06], \"grad_norm\": 0.7824236154556274, \"peak_allocated_gib\": 9.565677642822266, \"elapsed_s\": 4707.7490866128355}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 30452,
+          "mtime": 1791380613.502028,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:43:33.501+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false,
+      "scheduler_returncode": 0,
+      "scheduler_statuses": [
+        "RUNNING",
+        "RUNNING"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-07T13:45:53.921289+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 6,
+      "step": 35000,
+      "phase_step": 12293,
+      "planned_phase_steps": 37009,
+      "log_records": 493,
+      "partial_trailing_bytes": 0,
+      "loss": 0.08089946210384369,
+      "grad_norm": 0.49697646498680115,
+      "train_elapsed_s": 4905.563229048625,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 271388,
+          "mtime": 1791380714.0495503,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 34900, \"total_steps\": 59716, \"phase_step\": 12193, \"epoch\": 1, \"loss\": 0.07987689226865768, \"flow\": 0.06216621398925781, \"geometry\": 0.00017764553194865584, \"world\": 0.17621855437755585, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.04605958238244057, \"lr\": [1.949394487512819e-07, 3.898788975025638e-07, 3.898788975025638e-06, 7.797577950051276e-07, 7.797577950051276e-06], \"grad_norm\": 0.717766523361206, \"peak_allocated_gib\": 9.596195220947266, \"elapsed_s\": 4866.237160773948}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 31216,
+          "mtime": 1791380733.405139,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:45:33.404+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false
+    },
+    {
+      "checked_utc": "2026-10-07T13:47:53.935658+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 7,
+      "step": 35300,
+      "phase_step": 12593,
+      "planned_phase_steps": 37009,
+      "log_records": 505,
+      "partial_trailing_bytes": 0,
+      "loss": 0.15390382707118988,
+      "grad_norm": 0.7771221399307251,
+      "train_elapsed_s": 5023.824358819053,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 279866,
+          "mtime": 1791380871.636648,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 35300, \"total_steps\": 59716, \"phase_step\": 12593, \"epoch\": 1, \"loss\": 0.15390382707118988, \"flow\": 0.13276100158691406, \"geometry\": 0.002528641140088439, \"world\": 0.19878491759300232, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.088704913854599, \"lr\": [1.9162246598903989e-07, 3.8324493197807977e-07, 3.832449319780797e-06, 7.664898639561595e-07, 7.664898639561595e-06], \"grad_norm\": 0.7771221399307251, \"peak_allocated_gib\": 9.626712799072266, \"elapsed_s\": 5023.824358819053}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 31980,
+          "mtime": 1791380853.4493904,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:47:33.449+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false
+    },
+    {
+      "checked_utc": "2026-10-07T13:49:53.949487+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 8,
+      "step": 35600,
+      "phase_step": 12893,
+      "planned_phase_steps": 37009,
+      "log_records": 517,
+      "partial_trailing_bytes": 0,
+      "loss": 0.0826522707939148,
+      "grad_norm": 1.046038269996643,
+      "train_elapsed_s": 5142.563336176798,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 279866,
+          "mtime": 1791380871.636648,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 35300, \"total_steps\": 59716, \"phase_step\": 12593, \"epoch\": 1, \"loss\": 0.15390382707118988, \"flow\": 0.13276100158691406, \"geometry\": 0.002528641140088439, \"world\": 0.19878491759300232, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.088704913854599, \"lr\": [1.9162246598903989e-07, 3.8324493197807977e-07, 3.832449319780797e-06, 7.664898639561595e-07, 7.664898639561595e-06], \"grad_norm\": 0.7771221399307251, \"peak_allocated_gib\": 9.626712799072266, \"elapsed_s\": 5023.824358819053}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 32744,
+          "mtime": 1791380973.5231192,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:49:33.522+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false
+    },
+    {
+      "checked_utc": "2026-10-07T13:51:53.963455+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 9,
+      "step": 35900,
+      "phase_step": 13193,
+      "planned_phase_steps": 37009,
+      "log_records": 529,
+      "partial_trailing_bytes": 0,
+      "loss": 0.08261847496032715,
+      "grad_norm": 0.6504503488540649,
+      "train_elapsed_s": 5261.769971517846,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 288366,
+          "mtime": 1791381029.9389234,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 35700, \"total_steps\": 59716, \"phase_step\": 12993, \"epoch\": 1, \"loss\": 0.12689226865768433, \"flow\": 0.10899898409843445, \"geometry\": 0.0002491201157681644, \"world\": 0.17768731713294983, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.04510613903403282, \"lr\": [1.8824308951402306e-07, 3.764861790280461e-07, 3.7648617902804613e-06, 7.529723580560922e-07, 7.529723580560923e-06], \"grad_norm\": 1.246303915977478, \"peak_allocated_gib\": 9.657230377197266, \"elapsed_s\": 5182.126040345058}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 33508,
+          "mtime": 1791381093.4676156,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:51:33.467+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false
+    },
+    {
+      "checked_utc": "2026-10-07T13:53:53.977883+00:00",
+      "job": 61715,
+      "task": 72909,
+      "snapshot": 10,
+      "step": 36175,
+      "phase_step": 13468,
+      "planned_phase_steps": 37009,
+      "log_records": 540,
+      "partial_trailing_bytes": 0,
+      "loss": 0.10002914071083069,
+      "grad_norm": 0.5996634364128113,
+      "train_elapsed_s": 5381.445898132399,
+      "prefix_unchanged": true,
+      "config_hashes_unchanged": true,
+      "finite_original_loss_and_lr": true,
+      "logs": {
+        "console.log": {
+          "bytes": 296864,
+          "mtime": 1791381199.5795426,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "{\"step\": 36100, \"total_steps\": 59716, \"phase_step\": 13393, \"epoch\": 1, \"loss\": 0.20461459457874298, \"flow\": 0.18049836158752441, \"geometry\": 0.007214084267616272, \"world\": 0.20509202778339386, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.03847835212945938, \"lr\": [1.8480521515515122e-07, 3.6961043031030243e-07, 3.6961043031030243e-06, 7.392208606206049e-07, 7.392208606206049e-06], \"grad_norm\": 1.190842628479004, \"peak_allocated_gib\": 9.687747955322266, \"elapsed_s\": 5351.766951996833}"
+        },
+        ".md-ak/workload.log": {
+          "bytes": 34272,
+          "mtime": 1791381213.3674126,
+          "fatal_counts": {
+            "Traceback (most recent call last)": 0,
+            "CUDA out of memory": 0,
+            "FloatingPointError": 0,
+            "Segmentation fault": 0
+          },
+          "last": "2026-10-07T21:53:33.367+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        }
+      },
+      "terminal_files_exist": {
+        "metrics.json": false,
+        "actual_exposure_epoch1.json": false,
+        "checkpoint.pt": false
+      },
+      "checkpoint_read_or_hashed": false,
+      "scheduler_returncode": 0,
+      "scheduler_statuses": [
+        "RUNNING",
+        "RUNNING"
+      ]
+    }
+  ],
+  "readonly_script": "import json,hashlib,datetime,math,time,re,subprocess\nfrom pathlib import Path\ntask=Path(\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909\")\nrun=task/\"wa_stt_anchor_train_a800_v1\"\npins={\"config.json\":\"95d99141f3e93303a591faa23847a0f570c03058f3ba5d0dd7d667e3d5a4601b\",\"environment.json\":\"bc25c06dd5f4afa172e9c0672c41bb50ad811aa52c949caee9f93c43adc41dc9\",\"dual_teacher_exposure.json\":\"b16a8c9d8967dc7243dbd21dc55fac251542c548831069531c26cdd8ca559015\"}\ncli=\"/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit\"\nprevious_raw=None;records=[]\nfor attempt in range(11):\n now=datetime.datetime.now(datetime.timezone.utc).isoformat()\n for name,h in pins.items():assert hashlib.sha256((run/name).read_bytes()).hexdigest()==h,name\n config=json.loads((run/\"config.json\").read_text())\n raw=(run/\"train.jsonl\").read_bytes()\n if previous_raw is not None:assert raw.startswith(previous_raw),\"training log prefix changed\"\n assert hashlib.sha256(raw[:31107]).hexdigest()==\"bfe90b4287c7c43a2da106023bac8636bb104b60dfd37be12d08912c2ebc3d04\"\n chunks=raw.split(b\"\\n\");partial=chunks.pop();rows=[json.loads(x) for x in chunks if x]\n for index,r in enumerate(rows):\n  assert r[\"step\"]==22707+r[\"phase_step\"] and r[\"total_steps\"]==59716\n  assert index==0 or r[\"step\"]>rows[index-1][\"step\"]\n  assert all(math.isfinite(r[x]) for x in (\"loss\",\"flow\",\"geometry\",\"world\",\"grad_norm\",\"elapsed_s\"))\n  assert math.isclose(r[\"loss\"],r[\"flow\"]+.5*r[\"geometry\"]+.1*r[\"world\"],rel_tol=2e-5,abs_tol=2e-6)\n  mul=.1+.9*.5*(1+math.cos(math.pi*(r[\"phase_step\"]-1)/37009))\n  assert len(r[\"lr\"])==len(config[\"base_lrs\"])==5\n  assert all(math.isclose(v,b*mul,rel_tol=1e-12,abs_tol=0) for v,b in zip(r[\"lr\"],config[\"base_lrs\"]))\n logs={}\n for name in (\"console.log\",\".md-ak/workload.log\"):\n  p=task/name;t=p.read_text(errors=\"replace\")\n  logs[name]={\"bytes\":p.stat().st_size,\"mtime\":p.stat().st_mtime,\"fatal_counts\":{x:t.count(x) for x in (\"Traceback (most recent call last)\",\"CUDA out of memory\",\"FloatingPointError\",\"Segmentation fault\")},\"last\":t.splitlines()[-1]}\n snapshot={\"checked_utc\":now,\"job\":61715,\"task\":72909,\"snapshot\":attempt,\"step\":rows[-1][\"step\"],\"phase_step\":rows[-1][\"phase_step\"],\"planned_phase_steps\":37009,\"log_records\":len(rows),\"partial_trailing_bytes\":len(partial),\"loss\":rows[-1][\"loss\"],\"grad_norm\":rows[-1][\"grad_norm\"],\"train_elapsed_s\":rows[-1][\"elapsed_s\"],\"prefix_unchanged\":True,\"config_hashes_unchanged\":True,\"finite_original_loss_and_lr\":True,\"logs\":logs,\"terminal_files_exist\":{n:(run/n).exists() for n in (\"metrics.json\",\"actual_exposure_epoch1.json\",\"checkpoint.pt\")},\"checkpoint_read_or_hashed\":False}\n if attempt in (0,5,10) or snapshot[\"terminal_files_exist\"][\"metrics.json\"]:\n  try:\n   response=subprocess.run([cli,\"detail\",\"--job\",\"61715\"],capture_output=True,text=True,timeout=20)\n   snapshot[\"scheduler_returncode\"]=response.returncode\n   snapshot[\"scheduler_statuses\"]=re.findall(r\"Status\\s*:\\s*(\\w+)\",response.stdout)\n   if response.returncode: snapshot[\"scheduler_error_tail\"]=response.stderr[-600:]\n  except subprocess.TimeoutExpired:snapshot[\"scheduler_observation_timeout\"]=True\n records.append(snapshot);print(json.dumps(snapshot),flush=True)\n previous_raw=raw\n fatal=any(v for x in logs.values() for v in x[\"fatal_counts\"].values())\n terminal=any(x in (\"FAILED\",\"SUCCEEDED\",\"STOPPED\",\"CANCELLED\") for x in snapshot.get(\"scheduler_statuses\",[]))\n if fatal or terminal:\n  print(json.dumps({\"watch_exit\":\"ACTION_REQUIRED\" if fatal else \"TERMINAL_OBSERVED\",\"snapshots\":len(records),\"checkpoint_read_or_hashed\":False}),flush=True);break\n if attempt<10:time.sleep(120)\nelse:\n print(json.dumps({\"watch_exit\":\"BOUNDED_VERIFIED_WAIT_COMPLETE\",\"snapshots\":len(records),\"start_phase_step\":records[0][\"phase_step\"],\"end_phase_step\":records[-1][\"phase_step\"],\"new_updates_observed\":records[-1][\"phase_step\"]-records[0][\"phase_step\"],\"checkpoint_read_or_hashed\":False}),flush=True)\n",
+  "unchanged": {
+    "training_source": "source_stt_anchor_train_v1",
+    "training_commit": "dd1fec9e2cba0450be7a33387c8a2e550db4cd91",
+    "evaluation_source": "source_student61715_eval24_v1",
+    "evaluation_commit": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb",
+    "new_formal_jobs": 0,
+    "stopped_jobs": 0,
+    "checkpoint_read_or_hashed": false
+  },
+  "limits": [
+    "All inspected logged records finite/original loss and LR; this is not proof of new-model SR.",
+    "Specified four fatal signatures absent in both actual task console/workload logs; retained NCCL/xFormers warnings are not erased.",
+    "Console collection can lag while train/workload advance; no restart on observation timeout.",
+    "No final metrics, actual_exposure_epoch1 or checkpoint.pt at last snapshot; planned59716 cannot substitute for terminal training audit.",
+    "No new GPU diagnostic, model load, simulation rollout or previously completed114CPU/4215input audit repeated."
+  ],
+  "next": "Continue same live61715; after SUCCEEDED plus completeheldout and terminalartifacts, use frozen audit_stt_anchor_training.py. Then actual finalweight interface/24Habitatlanes/config/resource/dup checks and three8GPU full4215 evaluation. Do not start UWB study before full SR gates.",
+  "goal": {
+    "status": "ACTIVE",
+    "last_verified_success": {
+      "stt": 1279,
+      "dt": 1178,
+      "at": 1207
+    },
+    "required": {
+      "stt": 1289,
+      "dt": 1173,
+      "at": 1203
+    },
+    "new_sr_available": false
+  }
+}
