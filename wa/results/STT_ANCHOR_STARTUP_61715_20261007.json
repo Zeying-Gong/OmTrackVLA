@@ -11,9 +11,9 @@
   "config_backup_commit": "b240ebd41a54feb2d8e3ff96fcd65db6150352cb",
   "scheduler": {
     "state": "RUNNING",
-    "checked_after_11_minutes": true,
     "node": "172.20.0.20",
-    "pod": "ray-a800/job-61715-0-s6nwk"
+    "pod": "ray-a800/job-61715-0-s6nwk",
+    "check_time_note": "Scheduler RUNNING snapshot collected separately around 11 minutes after submission; NAS latest_snapshot is 633 seconds after submission."
   },
   "first_snapshot": {
     "status": "ACTUAL_8A800_STARTUP_CONTRACT_PASS",
