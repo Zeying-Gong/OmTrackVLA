@@ -1,0 +1,130 @@
+{
+  "schema": "wa.student61609-evaluation24-startup.v1",
+  "status": "RUNNING_WITH_VERIFIED_EPISODES_NOT_FINAL_RESULT",
+  "snapshot_beijing": "2026-10-07T16:17:19+08:00",
+  "checked_by": "Independent read-only startup audit; no runtime/source/output edits",
+  "source": {
+    "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1",
+    "commit": "192b57f5e270acfffd8c7c1a4590cb1b257d92a3",
+    "clean": true
+  },
+  "config_backup_commit": "b27a39b9ad4100f0caa6cb8234c8db525bfabd48",
+  "checkpoint": {
+    "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+    "sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "step": 59716
+  },
+  "runs": [
+    {
+      "task": "stt",
+      "job": 61653,
+      "task_id": 72847,
+      "created_beijing": "2026-10-07T16:13:23+08:00",
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1",
+      "config": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61609_stt_a800_v1.yaml",
+      "config_sha256": "c394ae653205fb98b5ce08f34d7d9df61a56794dae03abfe468046bafea2a648",
+      "gpus": 8,
+      "actual_gpu": "NVIDIA A800-SXM4-80GB",
+      "ready_validated": 8,
+      "valid_completed": 25,
+      "completed_per_lane": [
+        3,
+        4,
+        3,
+        4,
+        3,
+        4,
+        1,
+        3
+      ],
+      "initialization_failures": 0,
+      "complete_shards": 0,
+      "expected_episodes": 1405
+    },
+    {
+      "task": "dt",
+      "job": 61654,
+      "task_id": 72848,
+      "created_beijing": "2026-10-07T16:13:28+08:00",
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1",
+      "config": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61609_dt_a800_v1.yaml",
+      "config_sha256": "b2bb2794e7411e67b53d6558108d645601649b2ed4a8a8c1b63082a9ef063d1e",
+      "gpus": 8,
+      "actual_gpu": "NVIDIA A800-SXM4-80GB",
+      "ready_validated": 8,
+      "valid_completed": 23,
+      "completed_per_lane": [
+        3,
+        4,
+        1,
+        2,
+        5,
+        4,
+        1,
+        3
+      ],
+      "initialization_failures": 0,
+      "complete_shards": 0,
+      "expected_episodes": 1405
+    },
+    {
+      "task": "at",
+      "job": 61655,
+      "task_id": 72849,
+      "created_beijing": "2026-10-07T16:13:34+08:00",
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1",
+      "config": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61609_at_a800_v1.yaml",
+      "config_sha256": "2c9406d45d9c35cc03b3c6ed7138a8f3458b7d2bc8eae16909b427a3516025d4",
+      "gpus": 8,
+      "actual_gpu": "NVIDIA A800-SXM4-80GB",
+      "ready_validated": 8,
+      "valid_completed": 23,
+      "completed_per_lane": [
+        3,
+        4,
+        3,
+        2,
+        3,
+        4,
+        1,
+        3
+      ],
+      "initialization_failures": 0,
+      "complete_shards": 0,
+      "expected_episodes": 1405
+    }
+  ],
+  "startup": {
+    "valid_complete": 71,
+    "unique": 71,
+    "duplicate": 0,
+    "jsonl_partial_tail": 0,
+    "row_contract_errors": 0,
+    "ready_validated": 24,
+    "all_lanes_have_actual_trace_and_steps": true,
+    "final_sr_available": false,
+    "runtime_contract": "mixed / zero / sampling_steps4 / seed7+step / no text / world_predictor_inference=false",
+    "logs_checked": "Each task root console.log and .md-ak/workload.log plus 24 worker and 24 server logs; missing files not treated as empty.",
+    "specified_fatal_signature_matches": 0,
+    "warnings": "Gym unmaintained and xFormers unavailable warnings retained; not completely warning-free.",
+    "scope": "Current completed rows checked for identity/mode/control/semantic/repair fields. Not full manifest, paired initial RGB/state, final metric or media acceptance."
+  },
+  "goal_min_success": {
+    "stt": 1289,
+    "dt": 1173,
+    "at": 1203
+  },
+  "monitor": {
+    "automation_id": "wa",
+    "status": "ACTIVE",
+    "interval_minutes": 20,
+    "target": "existing thread"
+  },
+  "limits": [
+    "Evaluation-set adaptation, not unseen test generalization.",
+    "Different GPU hardware from the RTX4090 baseline; no bitwise-equivalence claim.",
+    "All 4215 fresh rows required; no old model row reuse.",
+    "Final counts and SR unknown. Early counts may grow after this snapshot.",
+    "No UWB ablation started; SR gate first."
+  ]
+}

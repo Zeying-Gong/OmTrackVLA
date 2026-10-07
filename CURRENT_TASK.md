@@ -8,7 +8,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - STT needs at least +13 net successes; DT/AT must not regress. Collision recorded, not primary optimization gate.
 - After this gate, quantify with/without-UWB effects; distinguish input removal from no-UWB training.
 
-## Completed training and prepared 24GPU evaluation — do not duplicate
+## Active 24GPU evaluation and completed training — do not duplicate
 - 61609/72803 SUCCEEDED2026-10-07 15:50:25Beijing; actual8 A800-SXM4-80GB; finalstep59716/new37009updates/cumulative2epochs.
 - Output:/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1
 - Frozen source_hard_stt_train_v1 commit8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06;clean;159Pythonfiles match developer diagnostic.
@@ -19,8 +19,9 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Actual1184272exposures=726631base+457641teacher;10413hardwindows each3=31239/earlyhard9810;teacherSTT148547DT156048AT153046;8ranks148034each. Heldout73368/mode:ADE/FDE image.265734/.463479 point.253940/.442441 mixed.253890/.441945;notclosedloop.
 - TensorBoard hard_stt_61609 is completed-training curves, not runningtraining; existing6006/exporter. ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars .
 - 24GPU fullmixed preflight PASS:98CPUtestexecutions;actualcheckpoint shortRTX4090interface;24realHabitatdefinitionlanes1405/task,72hashes. Syntheticinterface is not simulatorreset/rollout/firstbenchmarkframe evidence.
-- New frozen source_student61609_eval24_v1 commit192b57f5e270acfffd8c7c1a4590cb1b257d92a3 clean;3configs wa/jobs/student61609_{stt,dt,at}_a800_v1.yaml prepared,NOTSUBMITTED yet. Noresume/reuse;each8GPU/1405,total4215.
-- Preflight report wa/results/STUDENT61609_PREFLIGHT_20261007.json;A80029free snapshot, recheckbefore3submissions. GPUchangefrom61377 RTX4090 is recorded,notbitwise-equivalenceclaim;fullstartauditrequired.
+- Active STT61653/72847,DT61654/72848,AT61655/72849 submitted2026-10-07 16:13Beijing;each8A800/1405,total4215,all24ready actualA800verified. Snapshot16:17:19 validcompleted25/23/23=71unique;invalid0;all24shardsnotCOMPLETE. No finalSR.
+- Frozen source_student61609_eval24_v1 commit192b57f5e270acfffd8c7c1a4590cb1b257d92a3 clean;configs wa/jobs/student61609_{stt,dt,at}_a800_v1.yaml backedupb27a39b9. Output job_<ID>/task_<ID>/wa_student61609_<task>_a800_v1. Noresume/reuse.
+- Preflight wa/results/STUDENT61609_PREFLIGHT_20261007.json;startup wa/results/STUDENT61609_STARTUP_20261007.json. A80029free checkedbeforethree8GPUsubmissions. GPUchangefrom61377RTX4090 recorded,notbitwiseequivalence;fullstartauditrequired.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
 
 ## Frozen baseline and evidence
@@ -56,7 +57,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Final tools: wa.tools.audit_hard_stt_training checks completed metadata/exact actual exposure/source+YAML pins; completed61609auditPASS;live-checkpoint guard previouslyPASS. Scheduler terminal status checked separately.
 - wa.tools.audit_student_goal checks full4215 new rows and paired61377 baseline, fixed1289/1173/1203 thresholds and gains/regressions. 27 new audit tests PASS (plus6 existing runtime tests); not a new model result. Boolean false init/policy failures remain in denominator; regression fixture PASS.
 - Goal-auditor real61377 self-check:81sourcehashes PASS,4215rows,NOT_MET with13/0/0shortfall whileLightNav superiority=True. Read-only/no new result artifact;61609 closedloop still pending.
-- FullSTT/DT/AT24GPU closedloop is next; new61609SRunknown;actualperwindow exposure validated.
+- FullSTT/DT/AT24GPU closedloop nowrunning;monitor existing61653/61654/61655,do notduplicate. New61609SRunknown;actualtrainingperwindow exposure validated.
 - Do not blindly continue epoch3, change architecture/loss/physics/success thresholds, or invent task-ID inputs.
 - Teacher demonstrations: successful branch first; if both succeed choose higher tracking rate, exact tie LightNav.
 - Failed/fallback branches excluded from demonstration labels. Record actual old/new/task/episode exposure.

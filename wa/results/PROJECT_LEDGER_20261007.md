@@ -35,10 +35,17 @@ SHA256：`c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52`。
 [TensorBoard](http://127.0.0.1:16006/#scalars) 的 `hard_stt_61609` 是已结束训练曲线，不代表仍在训练。查看电脑执行 `ssh -N -L 16006:127.0.0.1:6006 devpod-a800`；既有scalar API曾与NAS实际数据核验。
 候选/拟合依据：[HARD_STT_CANDIDATE_20261007.json](HARD_STT_CANDIDATE_20261007.json)。40项训练CPU测试及4更新开发检查已完成；88早期窗口拟合仅作依据，不是SR。
 
-## 已就绪：61609 三任务24卡闭环预检
+## 正在运行：61609 三任务24卡完整闭环
 
 [预检报告](STUDENT61609_PREFLIGHT_20261007.json)：98项相关CPU测试执行通过；新权重真实RTX4090短接口检查通过（2次合成RGB推理，不是Habitat轨迹/端侧时延）；真实数据24路定义预检通过，STT/DT/AT各1405，72个产物哈希回读一致。定义预检未加载模型、reset模拟器或渲染首帧，不能冒充真实闭环。
-独立冻结 `source_student61609_eval24_v1` commit `192b57f5e270acfffd8c7c1a4590cb1b257d92a3`，工作树干净。配置：[STT](../jobs/student61609_stt_a800_v1.yaml)、[DT](../jobs/student61609_dt_a800_v1.yaml)、[AT](../jobs/student61609_at_a800_v1.yaml)，各8A800、1405条，共24卡/4215条。当前配置已准备，尚未正式提交；提交后补Job/Task。旧61377/60502结果不复用或覆盖。
+独立冻结 `source_student61609_eval24_v1` commit `192b57f5e270acfffd8c7c1a4590cb1b257d92a3`，工作树干净。配置：[STT](../jobs/student61609_stt_a800_v1.yaml)、[DT](../jobs/student61609_dt_a800_v1.yaml)、[AT](../jobs/student61609_at_a800_v1.yaml)，各8A800、1405条，共24卡/4215条。2026-10-07 16:13北京已提交：STT61653/72847、DT61654/72848、AT61655/72849。配置与预检已备份GitHub `b27a39b9`；旧61377/60502结果不复用或覆盖。
+启动审计[STUDENT61609_STARTUP_20261007.json](STUDENT61609_STARTUP_20261007.json)：北京时间16:17:19，实际24×A800-SXM4-80GB及24个模型ready契约通过；完整有效STT25、DT23、AT23，共71条，重复/半行/契约错误/初始化失败均0。24路均有实际trace/steps，尚无COMPLETE；这不是全量SR。真实task根console/workload及worker/server日志未见指定fatal，Gym/xFormers警告保留。
+三个新输出根分别为：
+
+- STT：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1`
+- DT：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1`
+- AT：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1`
+
 协议仍mixed/zero/seed7/learned_yaw_guard_v1、固定语义修复与7例初始框修复；RGB+首帧GTBBox+理想UWB，无文本。A800实时显示29空闲时选择其优先；资源提交前重查，不能承诺立即调度。61377基线评测为RTX4090，新评测A800，不声称跨硬件逐位一致；需全量初始RGB/状态配对及成功增退分析。
 61609尚无新SR；完成后独立验收STT≥1289、DT≥1173、AT≥1203，再决定UWB对照，不盲续训。
 
@@ -82,7 +89,7 @@ AT结果：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61425/task_72528/w
 
 ## 下一步与边界
 
-Goal与20分钟持续跟进已启用，验收STT至少1289、DT至少1173、AT至少1203。难例覆盖、分组拟合、受限采样接入及开发检查已完成；61609训练最终真实性验收及三任务预检已完成。核查资源并备份后，一次提交三任务各8卡完整闭环，不提交集群smoke或复用旧模型结果。只在这次闭环结果支持时继续有限尝试；不盲目续训epoch3。
+Goal与20分钟持续跟进已启用，验收STT至少1289、DT至少1173、AT至少1203。难例覆盖、分组拟合、受限采样接入及开发检查已完成；61609训练最终真实性验收及三任务预检已完成。三任务各8卡完整闭环已提交并有实际结果，继续监控原任务直至最终配对及媒体审计，不提交集群smoke或复用旧模型结果。只在这次闭环结果支持时继续有限尝试；不盲目续训epoch3。
 达到后先测同权重有/无UWB依赖，再区分无UWB重训的纯视觉能力；两者不是同一实验。当前无真实UWB噪声/丢包/多径、真实机器人、Thor/RDK时延或产品级避障验收。
 UWB只读接口审计保留：[UWB_INTERFACE_AUDIT_20261007.json](UWB_INTERFACE_AUDIT_20261007.json)。image路径不发送测量字段且屏蔽坐标token；控制器使用模型预测geometry，不直接读实测UWB。后续不以“mixed坐标填零”冒充无UWB，不把推理时移除与无UWB训练混为一谈。
 后续入口准备：[UWB_EVAL_MODE_PREPARATION_20261007.json](UWB_EVAL_MODE_PREPARATION_20261007.json)。显式image模式已贯通server、worker、ready、结果、完成标记、合并及视频/HTML；默认mixed不变，image禁止复用旧结果和实测UWB控制器。98项相关CPU测试执行通过（含21项新模式/发布测试），已有61377全4215条/78源文件hash只读回归通过、指标未变；合法False失败保留完整分母。尚未加载真实最终权重验证无UWB端到端行为，未跑image轨迹、未产生UWB消融结果。正式对照仍需先达SR门槛，再做真实接口/observer扰动/数据预检、同权重全量配对；不把LightNav比较当作有无UWB效果。
