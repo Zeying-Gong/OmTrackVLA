@@ -1,0 +1,3860 @@
+{
+  "status": "VERIFIED_LIVE_WAIT_WITH_NEW_COMPLETION_AND_TENSORBOARD_EVIDENCE",
+  "previous_goal_turn": "PROGRESS:57CPU finalizer tests/bounded8 audit/tool/state backup32fa1408",
+  "timestamp_beijing": "2026-10-08T03:05:35+08:00",
+  "checkout_start": "32fa14084e71eacb6c9527e493580f089a5b7428",
+  "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+  "checkpoint_step": 59716,
+  "observation": {
+    "script": "import json,datetime,time,subprocess,re\nfrom pathlib import Path\nJ=Path(\"/data/nas_ray/project/md-ak/users/zeying.gong\")\ncli=\"/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit\"\nfor i in range(6):\n o={\"utc\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"snapshot\":i,\"jobs\":[]}\n for kind,job,task in ((\"stt\",61792,72986),(\"dt\",61793,72987),(\"at\",61794,72988)):\n  p=J/(\"job_%d\"%job)/(\"task_%d\"%task);root=p/(\"wa_student61715_%s_4090_v1\"%kind)\n  v={\"kind\":kind,\"job\":job,\"task_id\":task,\"output_exists\":root.exists(),\"ready\":0,\"completed\":0,\"unique\":0,\"invalid\":0,\"logs\":{}}\n  for n in (\"console.log\",\".md-ak/workload.log\"):\n   f=p/n;v[\"logs\"][n]={\"exists\":f.exists()}\n   if f.exists():\n    t=f.read_text(errors=\"replace\")\n    v[\"logs\"][n].update(bytes=f.stat().st_size,mtime=f.stat().st_mtime,tail=t.splitlines()[-2:],fatal={x:t.count(x) for x in (\"Traceback (most recent call last)\",\"CUDA out of memory\",\"FloatingPointError\",\"Segmentation fault\")})\n  if root.exists():\n   v[\"ready\"]=len(list(root.glob(\"**/*ready*.json\")))\n   rows=[]\n   for f in root.glob(\"shard_*/episodes.jsonl\"):\n    for line in f.read_text().splitlines():\n     try:rows.append(json.loads(line))\n     except json.JSONDecodeError:v[\"partial_line\"]=True\n   v[\"completed\"]=len(rows);v[\"unique\"]=len({(r[\"task\"],r[\"key\"]) for r in rows});v[\"invalid\"]=sum(r.get(\"policy_init_valid\") is False for r in rows)\n  if i in (0,5):\n   q=subprocess.run([cli,\"detail\",\"--job\",str(job)],capture_output=True,text=True,timeout=25)\n   v[\"scheduler_exit\"]=q.returncode;v[\"scheduler_states\"]=re.findall(r\"Status\\s*:\\s*(\\w+)\",q.stdout)\n  o[\"jobs\"].append(v)\n print(json.dumps(o),flush=True)\n\n if any(any(v for z in x[\"logs\"].values() for v in z.get(\"fatal\",{}).values()) or any(v in (\"FAILED\",\"STOPPED\",\"SUCCEEDED\") for v in x.get(\"scheduler_states\",[])) for x in o[\"jobs\"]):\n  print(json.dumps({\"watch_exit\":\"FATAL_OR_TERMINAL_INSPECT_ORIGINAL_JOBS\"}),flush=True);break\n if i==0:first_readies=[x[\"ready\"] for x in o[\"jobs\"]]\n elif [x[\"ready\"] for x in o[\"jobs\"]]!=first_readies:\n  print(json.dumps({\"watch_exit\":\"ADDITIONAL_MODELS_READY_INSPECT\"}),flush=True);break\n if i<5:time.sleep(120)\nelse:print(json.dumps({\"watch_exit\":\"BOUNDED_LIVE_OBSERVATION_COMPLETE\",\"snapshots\":6}),flush=True)\n",
+    "snapshots": [
+      {
+        "utc": "2026-10-07T18:55:03.339172+00:00",
+        "snapshot": 0,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 58348,
+                "mtime": 1791399282.2675369,
+                "tail": [
+                  "2026-10-08T02:54:42.257+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+                  "2026-10-08T02:54:42.267+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "SUBMITTED",
+              "SUBMITTED"
+            ]
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 459,
+            "unique": 459,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 81484,
+                "mtime": 1791399282.3164403,
+                "tail": [
+                  "2026-10-08T02:54:42.305+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Running node=172.20.32.147",
+                  "2026-10-08T02:54:42.316+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "RUNNING",
+              "RUNNING"
+            ]
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 58051,
+                "mtime": 1791399312.2609797,
+                "tail": [
+                  "2026-10-08T02:55:12.249+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+                  "2026-10-08T02:55:12.260+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "SUBMITTED",
+              "SUBMITTED"
+            ]
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T18:57:17.130039+00:00",
+        "snapshot": 1,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 59253,
+                "mtime": 1791399432.2867842,
+                "tail": [
+                  "2026-10-08T02:57:12.276+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+                  "2026-10-08T02:57:12.286+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 488,
+            "unique": 488,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 83594,
+                "mtime": 1791399432.3334265,
+                "tail": [
+                  "2026-10-08T02:57:12.323+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Running node=172.20.32.147",
+                  "2026-10-08T02:57:12.333+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 58775,
+                "mtime": 1791399432.2489057,
+                "tail": [
+                  "2026-10-08T02:57:12.237+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+                  "2026-10-08T02:57:12.248+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T18:59:22.065910+00:00",
+        "snapshot": 2,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 59977,
+                "mtime": 1791399552.2985675,
+                "tail": [
+                  "2026-10-08T02:59:12.288+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+                  "2026-10-08T02:59:12.298+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 511,
+            "unique": 511,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 85282,
+                "mtime": 1791399552.347112,
+                "tail": [
+                  "2026-10-08T02:59:12.337+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Running node=172.20.32.147",
+                  "2026-10-08T02:59:12.346+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 59499,
+                "mtime": 1791399552.2612774,
+                "tail": [
+                  "2026-10-08T02:59:12.250+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+                  "2026-10-08T02:59:12.261+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T19:01:26.511615+00:00",
+        "snapshot": 3,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 60701,
+                "mtime": 1791399672.2710044,
+                "tail": [
+                  "2026-10-08T03:01:12.260+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+                  "2026-10-08T03:01:12.270+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 531,
+            "unique": 531,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 86970,
+                "mtime": 1791399672.3178418,
+                "tail": [
+                  "2026-10-08T03:01:12.308+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Running node=172.20.32.147",
+                  "2026-10-08T03:01:12.317+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 60223,
+                "mtime": 1791399672.233928,
+                "tail": [
+                  "2026-10-08T03:01:12.223+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+                  "2026-10-08T03:01:12.233+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T19:03:30.540924+00:00",
+        "snapshot": 4,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 61425,
+                "mtime": 1791399792.3136322,
+                "tail": [
+                  "2026-10-08T03:03:12.302+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+                  "2026-10-08T03:03:12.313+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 554,
+            "unique": 554,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 88658,
+                "mtime": 1791399792.3611393,
+                "tail": [
+                  "2026-10-08T03:03:12.351+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Running node=172.20.32.147",
+                  "2026-10-08T03:03:12.360+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 60947,
+                "mtime": 1791399792.2766764,
+                "tail": [
+                  "2026-10-08T03:03:12.266+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+                  "2026-10-08T03:03:12.276+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T19:05:35.177544+00:00",
+        "snapshot": 5,
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task_id": 72986,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395500.2162192,
+                "tail": [
+                  "2026-10-08T01:51:40.210+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:40.216+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 62149,
+                "mtime": 1791399912.242128,
+                "tail": [
+                  "2026-10-08T03:05:12.231+08:00 [INFO] [k8s] K8s Job ray-4090/job-61792-0 phase=Running",
+                  "2026-10-08T03:05:12.241+08:00 [INFO] [k8s] Pod ray-4090/job-61792-0-m9ltf phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "SUBMITTED",
+              "SUBMITTED"
+            ]
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task_id": 72987,
+            "output_exists": true,
+            "ready": 8,
+            "completed": 580,
+            "unique": 580,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 948,
+                "mtime": 1791396437.6727798,
+                "tail": [
+                  "2026-10-08 02:07:17.671  [INFO    ] md_ak.jobs.job_api:196 — Updated task 72987 metadata: {'mlflow_experiment_id': '30120', 'mlflow_run_id': '22c2af2d958c477081a206d925f409ff'}",
+                  "2026-10-08 02:07:17.672  [INFO    ] md_ak.runtime.runner:329 — Executing task: shell"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 90346,
+                "mtime": 1791399912.3039958,
+                "tail": [
+                  "2026-10-08T03:05:12.278+08:00 [INFO] [k8s] Pod ray-4090/job-61793-0-mz5z2 phase=Running node=172.20.32.147",
+                  "2026-10-08T03:05:12.303+08:00 [WARNING] [k8s] Pod job-61793-0-mz5z2 event=FailedScheduling message=Pod ray-4090/job-61793-0-mz5z2 can possibly be assigned to 172.20.32.147, once resource is released and minAvailable is satisfied"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "RUNNING",
+              "RUNNING"
+            ]
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task_id": 72988,
+            "output_exists": false,
+            "ready": 0,
+            "completed": 0,
+            "unique": 0,
+            "invalid": 0,
+            "logs": {
+              "console.log": {
+                "exists": true,
+                "bytes": 292,
+                "mtime": 1791395501.471647,
+                "tail": [
+                  "2026-10-08T01:51:41.465+08:00 [INFO] [md_ak] Prepared task configuration: cluster=baidu_bj_4090 backend=k8s type=shell",
+                  "2026-10-08T01:51:41.471+08:00 [INFO] [k8s] Creating K8s Job in namespace=ray-4090 num_gpus=8"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              },
+              ".md-ak/workload.log": {
+                "exists": true,
+                "bytes": 61671,
+                "mtime": 1791399912.200117,
+                "tail": [
+                  "2026-10-08T03:05:12.188+08:00 [INFO] [k8s] K8s Job ray-4090/job-61794-0 phase=Running",
+                  "2026-10-08T03:05:12.199+08:00 [INFO] [k8s] Pod ray-4090/job-61794-0-dczp7 phase=Pending node=-"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0
+                }
+              }
+            },
+            "scheduler_exit": 0,
+            "scheduler_states": [
+              "SUBMITTED",
+              "SUBMITTED"
+            ]
+          }
+        ]
+      }
+    ],
+    "exit": "BOUNDED_LIVE_OBSERVATION_COMPLETE",
+    "dt_new_unique": 121,
+    "notes": [
+      "Same61792/61793/61794 queried;no job restart/resubmission",
+      "DT8actualready/459->580;invalid0",
+      "STT/ATSUBMITTED/nooutput/zero completed, requested8each notassignedGPUproof",
+      "taskconsole/workload four selectedfatalpatterns0; historical FailedScheduling messages notcurrentDTstate"
+    ]
+  },
+  "worker_snapshot": {
+    "checked_utc": "2026-10-07T18:56:21.819868+00:00",
+    "jobs": [
+      {
+        "kind": "stt",
+        "job": 61792,
+        "task_id": 72986,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+        "shards": [],
+        "scheduler": {
+          "returncode": 0,
+          "states": [
+            "SUBMITTED",
+            "SUBMITTED"
+          ]
+        },
+        "completed": 0,
+        "unique": 0,
+        "invalid": 0
+      },
+      {
+        "kind": "dt",
+        "job": 61793,
+        "task_id": 72987,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1",
+        "shards": [
+          {
+            "shard": "shard_00",
+            "logs": {
+              "worker.log": {
+                "bytes": 1464172,
+                "mtime": 1791399366.9099545,
+                "sha256": "68a1bca17738473e4be8248d1d9378a19bd56a8fea74093f36c6523c1554abcd",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4705734,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.963295,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:42973"
+            },
+            "rows_mtime": 1791399363.2621524,
+            "completed": 62,
+            "keys": [
+              [
+                "dt",
+                "bzCsHPLDztK/1"
+              ],
+              [
+                "dt",
+                "uSKXQ5fFg6u/12"
+              ],
+              [
+                "dt",
+                "F7EAMsdDASd/15"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/3"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/1"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/10"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/0"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/18"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/14"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/11"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/5"
+              ],
+              [
+                "dt",
+                "4ok3usBNeis/9"
+              ],
+              [
+                "dt",
+                "8CRYizAb6yd/17"
+              ],
+              [
+                "dt",
+                "kJJyRFXVpx2/8"
+              ],
+              [
+                "dt",
+                "SiKqEZx7Ejt/9"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/9"
+              ],
+              [
+                "dt",
+                "qyAac8rV8Zk/4"
+              ],
+              [
+                "dt",
+                "ziup5kvtCCR/12"
+              ],
+              [
+                "dt",
+                "BHXhpBwSMLh/3"
+              ],
+              [
+                "dt",
+                "XNeHsjL6nBB/6"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/4"
+              ],
+              [
+                "dt",
+                "58NLZxWBSpk/19"
+              ],
+              [
+                "dt",
+                "T6nG3E2Uui9/6"
+              ],
+              [
+                "dt",
+                "QaLdnwvtxbs/15"
+              ],
+              [
+                "dt",
+                "7GAhQPFzMot/10"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/5"
+              ],
+              [
+                "dt",
+                "XMHNu9rRQ1y/17"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/15"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/32"
+              ],
+              [
+                "dt",
+                "TEEsavR23oF/2"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/6"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/19"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/34"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/10"
+              ],
+              [
+                "dt",
+                "XB4GS9ShBRE/2"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/7"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/19"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/3"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/17"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/33"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/8"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/10"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/23"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/6"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/21"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/3"
+              ],
+              [
+                "dt",
+                "vBMLrTe4uLA/4"
+              ],
+              [
+                "dt",
+                "X4qjx5vquwH/22"
+              ],
+              [
+                "dt",
+                "y9hTuugGdiq/16"
+              ],
+              [
+                "dt",
+                "6D36GQHuP8H/20"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/14"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/6"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/18"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/32"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/41"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/2"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/16"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/40"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/21"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/2"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/18"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/29"
+              ]
+            ],
+            "invalid": 0
+          },
+          {
+            "shard": "shard_01",
+            "logs": {
+              "worker.log": {
+                "bytes": 1465184,
+                "mtime": 1791399367.3598852,
+                "sha256": "2a983eb802cb8afd2274e2783930e1354d302024bb949b83853c66f3edd9e518",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.495115,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.969489,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:45495"
+            },
+            "rows_mtime": 1791399363.648679,
+            "completed": 62,
+            "keys": [
+              [
+                "dt",
+                "bzCsHPLDztK/8"
+              ],
+              [
+                "dt",
+                "uSKXQ5fFg6u/14"
+              ],
+              [
+                "dt",
+                "FnSn2KSrALj/1"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/4"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/2"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/11"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/1"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/1"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/2"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/12"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/6"
+              ],
+              [
+                "dt",
+                "4ok3usBNeis/10"
+              ],
+              [
+                "dt",
+                "8CRYizAb6yd/18"
+              ],
+              [
+                "dt",
+                "kJJyRFXVpx2/9"
+              ],
+              [
+                "dt",
+                "SiKqEZx7Ejt/10"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/13"
+              ],
+              [
+                "dt",
+                "qyAac8rV8Zk/8"
+              ],
+              [
+                "dt",
+                "ziup5kvtCCR/13"
+              ],
+              [
+                "dt",
+                "BHXhpBwSMLh/7"
+              ],
+              [
+                "dt",
+                "XNeHsjL6nBB/8"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/5"
+              ],
+              [
+                "dt",
+                "58NLZxWBSpk/22"
+              ],
+              [
+                "dt",
+                "QaLdnwvtxbs/0"
+              ],
+              [
+                "dt",
+                "q5QZSEeHe5g/5"
+              ],
+              [
+                "dt",
+                "7GAhQPFzMot/12"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/6"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/2"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/16"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/35"
+              ],
+              [
+                "dt",
+                "TEEsavR23oF/7"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/7"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/20"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/35"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/11"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/0"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/8"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/21"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/7"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/19"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/34"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/10"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/12"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/24"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/8"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/26"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/4"
+              ],
+              [
+                "dt",
+                "vBMLrTe4uLA/5"
+              ],
+              [
+                "dt",
+                "X4qjx5vquwH/23"
+              ],
+              [
+                "dt",
+                "svBbv1Pavdk/3"
+              ],
+              [
+                "dt",
+                "6D36GQHuP8H/23"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/16"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/7"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/20"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/33"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/42"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/3"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/22"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/42"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/22"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/3"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/19"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/30"
+              ]
+            ],
+            "invalid": 0
+          },
+          {
+            "shard": "shard_02",
+            "logs": {
+              "worker.log": {
+                "bytes": 1412797,
+                "mtime": 1791399372.9829974,
+                "sha256": "142551cb88c4387752f1d956e527e8783a4af2bcd64189e12cee88833c0bee56",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.5110395,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.970005,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:33759"
+            },
+            "rows_mtime": 1791399368.9474885,
+            "completed": 60,
+            "keys": [
+              [
+                "dt",
+                "fsQtJ8t3nTf/9"
+              ],
+              [
+                "dt",
+                "L53DsRRk4Ch/7"
+              ],
+              [
+                "dt",
+                "FnSn2KSrALj/3"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/5"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/3"
+              ],
+              [
+                "dt",
+                "z9YwN9M8FpG/4"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/2"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/2"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/3"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/13"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/8"
+              ],
+              [
+                "dt",
+                "uLz9jNga3kC/8"
+              ],
+              [
+                "dt",
+                "8CRYizAb6yd/20"
+              ],
+              [
+                "dt",
+                "kJJyRFXVpx2/10"
+              ],
+              [
+                "dt",
+                "SiKqEZx7Ejt/13"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/15"
+              ],
+              [
+                "dt",
+                "qyAac8rV8Zk/9"
+              ],
+              [
+                "dt",
+                "ziup5kvtCCR/14"
+              ],
+              [
+                "dt",
+                "BHXhpBwSMLh/11"
+              ],
+              [
+                "dt",
+                "XNeHsjL6nBB/9"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/6"
+              ],
+              [
+                "dt",
+                "58NLZxWBSpk/25"
+              ],
+              [
+                "dt",
+                "QaLdnwvtxbs/3"
+              ],
+              [
+                "dt",
+                "q5QZSEeHe5g/10"
+              ],
+              [
+                "dt",
+                "7GAhQPFzMot/15"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/7"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/7"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/17"
+              ],
+              [
+                "dt",
+                "zt1RVoi7PcG/1"
+              ],
+              [
+                "dt",
+                "TEEsavR23oF/11"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/10"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/21"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/36"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/12"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/1"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/9"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/24"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/9"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/20"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/36"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/11"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/14"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/28"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/9"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/27"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/5"
+              ],
+              [
+                "dt",
+                "vBMLrTe4uLA/7"
+              ],
+              [
+                "dt",
+                "7MXmsvcQjpJ/6"
+              ],
+              [
+                "dt",
+                "svBbv1Pavdk/4"
+              ],
+              [
+                "dt",
+                "6D36GQHuP8H/24"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/18"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/9"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/21"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/34"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/43"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/5"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/23"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/3"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/25"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/5"
+              ]
+            ],
+            "invalid": 0
+          },
+          {
+            "shard": "shard_03",
+            "logs": {
+              "worker.log": {
+                "bytes": 1240215,
+                "mtime": 1791399382.7510216,
+                "sha256": "648096496978194887eaf36b5a691e04bdbc7f4c438baa189897efcd90f507e1",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4702392,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.975344,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:36637"
+            },
+            "rows_mtime": 1791399379.7711504,
+            "completed": 53,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/0"
+              ],
+              [
+                "dt",
+                "rJhMRvNn4DS/4"
+              ],
+              [
+                "dt",
+                "FnSn2KSrALj/5"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/6"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/4"
+              ],
+              [
+                "dt",
+                "z9YwN9M8FpG/8"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/3"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/6"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/4"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/14"
+              ],
+              [
+                "dt",
+                "u8ug2rtNARf/4"
+              ],
+              [
+                "dt",
+                "8CRYizAb6yd/3"
+              ],
+              [
+                "dt",
+                "kJJyRFXVpx2/2"
+              ],
+              [
+                "dt",
+                "AYpsNQsWncn/3"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/1"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/17"
+              ],
+              [
+                "dt",
+                "ziup5kvtCCR/2"
+              ],
+              [
+                "dt",
+                "7UrtFsADwob/5"
+              ],
+              [
+                "dt",
+                "XNeHsjL6nBB/1"
+              ],
+              [
+                "dt",
+                "SByzJLxpRGn/2"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/7"
+              ],
+              [
+                "dt",
+                "LNg5mXe1BDj/0"
+              ],
+              [
+                "dt",
+                "QaLdnwvtxbs/4"
+              ],
+              [
+                "dt",
+                "q5QZSEeHe5g/11"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/0"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/9"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/9"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/19"
+              ],
+              [
+                "dt",
+                "zt1RVoi7PcG/12"
+              ],
+              [
+                "dt",
+                "TEEsavR23oF/12"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/13"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/26"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/38"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/18"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/2"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/3"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/25"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/10"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/23"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/0"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/12"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/15"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/35"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/12"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/29"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/6"
+              ],
+              [
+                "dt",
+                "vBMLrTe4uLA/8"
+              ],
+              [
+                "dt",
+                "y9hTuugGdiq/1"
+              ],
+              [
+                "dt",
+                "svBbv1Pavdk/8"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/0"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/20"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/10"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/22"
+              ]
+            ],
+            "invalid": 0
+          },
+          {
+            "shard": "shard_04",
+            "logs": {
+              "worker.log": {
+                "bytes": 1321968,
+                "mtime": 1791399371.723714,
+                "sha256": "86762b44226a8bf99e308abdfc1c495131faac536cd2d21d694e65c3d3695378",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4704227,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.981129,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:36293"
+            },
+            "rows_mtime": 1791399366.9027774,
+            "completed": 56,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/4"
+              ],
+              [
+                "dt",
+                "rJhMRvNn4DS/5"
+              ],
+              [
+                "dt",
+                "FnSn2KSrALj/8"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/7"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/6"
+              ],
+              [
+                "dt",
+                "z9YwN9M8FpG/9"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/5"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/7"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/6"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/0"
+              ],
+              [
+                "dt",
+                "4ok3usBNeis/3"
+              ],
+              [
+                "dt",
+                "8CRYizAb6yd/5"
+              ],
+              [
+                "dt",
+                "kJJyRFXVpx2/3"
+              ],
+              [
+                "dt",
+                "5cdEh9F2hJL/7"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/2"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/18"
+              ],
+              [
+                "dt",
+                "ziup5kvtCCR/4"
+              ],
+              [
+                "dt",
+                "7UrtFsADwob/8"
+              ],
+              [
+                "dt",
+                "XNeHsjL6nBB/2"
+              ],
+              [
+                "dt",
+                "SByzJLxpRGn/8"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/8"
+              ],
+              [
+                "dt",
+                "LNg5mXe1BDj/5"
+              ],
+              [
+                "dt",
+                "QaLdnwvtxbs/6"
+              ],
+              [
+                "dt",
+                "W7k2QWzBrFY/9"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/1"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/11"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/10"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/23"
+              ],
+              [
+                "dt",
+                "zt1RVoi7PcG/13"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/1"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/14"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/29"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/40"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/20"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/3"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/4"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/27"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/11"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/26"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/1"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/14"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/17"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/2"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/14"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/32"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/7"
+              ],
+              [
+                "dt",
+                "X4qjx5vquwH/3"
+              ],
+              [
+                "dt",
+                "y9hTuugGdiq/3"
+              ],
+              [
+                "dt",
+                "6D36GQHuP8H/2"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/1"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/2"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/11"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/24"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/36"
+              ],
+              [
+                "dt",
+                "MHPLjHsuG27/3"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/9"
+              ]
+            ],
+            "invalid": 0
+          },
+          {
+            "shard": "shard_05",
+            "logs": {
+              "worker.log": {
+                "bytes": 1538446,
+                "mtime": 1791399352.233076,
+                "sha256": "4f11602a1dd29dedf0cfa93f50e18e59eb79757e1fd4c8edaa324477a6dd4a18",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4914079,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.986517,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:42475"
+            },
+            "rows_mtime": 1791399347.2973588,
+            "completed": 65,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/5"
+              ],
+              [
+                "dt",
+                "rJhMRvNn4DS/8"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/0"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/8"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/7"
+              ],
+              [
+                "dt",
+                "hyFzGGJCSYs/0"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/7"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/8"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/7"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/1"
+              ],
+              [
+                "dt",
+                "4ok3usBNeis/6"
+              ],
+              [
+                "dt",
+                "8CRYizAb6yd/7"
+              ],
+              [
+                "dt",
+                "kJJyRFXVpx2/4"
+              ],
+              [
+                "dt",
+                "5cdEh9F2hJL/8"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/6"
+              ],
+              [
+                "dt",
+                "qyAac8rV8Zk/0"
+              ],
+              [
+                "dt",
+                "ziup5kvtCCR/7"
+              ],
+              [
+                "dt",
+                "7UrtFsADwob/9"
+              ],
+              [
+                "dt",
+                "XNeHsjL6nBB/3"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/0"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/9"
+              ],
+              [
+                "dt",
+                "LNg5mXe1BDj/9"
+              ],
+              [
+                "dt",
+                "QaLdnwvtxbs/8"
+              ],
+              [
+                "dt",
+                "W7k2QWzBrFY/11"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/2"
+              ],
+              [
+                "dt",
+                "XMHNu9rRQ1y/4"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/11"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/26"
+              ],
+              [
+                "dt",
+                "zt1RVoi7PcG/14"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/2"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/15"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/30"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/3"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/23"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/4"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/11"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/29"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/12"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/27"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/2"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/4"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/18"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/3"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/16"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/0"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/9"
+              ],
+              [
+                "dt",
+                "X4qjx5vquwH/7"
+              ],
+              [
+                "dt",
+                "y9hTuugGdiq/8"
+              ],
+              [
+                "dt",
+                "6D36GQHuP8H/4"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/2"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/3"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/13"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/25"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/37"
+              ],
+              [
+                "dt",
+                "MHPLjHsuG27/5"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/13"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/32"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/12"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/31"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/15"
+              ],
+              [
+                "dt",
+                "dVW2D7TDctW/25"
+              ],
+              [
+                "dt",
+                "mv2HUxq3B53/1"
+              ],
+              [
+                "dt",
+                "mv2HUxq3B53/19"
+              ],
+              [
+                "dt",
+                "rsggHU7g7dh/11"
+              ],
+              [
+                "dt",
+                "rsggHU7g7dh/35"
+              ]
+            ],
+            "invalid": 0
+          },
+          {
+            "shard": "shard_06",
+            "logs": {
+              "worker.log": {
+                "bytes": 1394506,
+                "mtime": 1791399356.6680424,
+                "sha256": "c00f91ce03c095539991576f676918cbd81798178156e8b3a0cde79b7e69dfc8",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.45673,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.992227,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:44587"
+            },
+            "rows_mtime": 1791399352.8848863,
+            "completed": 59,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/6"
+              ],
+              [
+                "dt",
+                "F7EAMsdDASd/10"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/1"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/9"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/8"
+              ],
+              [
+                "dt",
+                "u1bkiGRVyu9/0"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/12"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/12"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/2"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/2"
+              ],
+              [
+                "dt",
+                "4ok3usBNeis/7"
+              ],
+              [
+                "dt",
+                "8CRYizAb6yd/8"
+              ],
+              [
+                "dt",
+                "kJJyRFXVpx2/5"
+              ],
+              [
+                "dt",
+                "5cdEh9F2hJL/9"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/7"
+              ],
+              [
+                "dt",
+                "qyAac8rV8Zk/2"
+              ],
+              [
+                "dt",
+                "ziup5kvtCCR/9"
+              ],
+              [
+                "dt",
+                "7UrtFsADwob/12"
+              ],
+              [
+                "dt",
+                "XNeHsjL6nBB/4"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/2"
+              ],
+              [
+                "dt",
+                "58NLZxWBSpk/0"
+              ],
+              [
+                "dt",
+                "LNg5mXe1BDj/12"
+              ],
+              [
+                "dt",
+                "QaLdnwvtxbs/11"
+              ],
+              [
+                "dt",
+                "7GAhQPFzMot/3"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/3"
+              ],
+              [
+                "dt",
+                "XMHNu9rRQ1y/5"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/12"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/29"
+              ],
+              [
+                "dt",
+                "BAbdmeyTvMZ/9"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/3"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/17"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/32"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/7"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/24"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/5"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/12"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/34"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/13"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/28"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/4"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/5"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/19"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/4"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/19"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/1"
+              ],
+              [
+                "dt",
+                "vBMLrTe4uLA/0"
+              ],
+              [
+                "dt",
+                "X4qjx5vquwH/14"
+              ],
+              [
+                "dt",
+                "y9hTuugGdiq/13"
+              ],
+              [
+                "dt",
+                "6D36GQHuP8H/9"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/3"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/4"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/14"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/27"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/38"
+              ],
+              [
+                "dt",
+                "MHPLjHsuG27/7"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/14"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/34"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/14"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/32"
+              ]
+            ],
+            "invalid": 0
+          },
+          {
+            "shard": "shard_07",
+            "logs": {
+              "worker.log": {
+                "bytes": 1369699,
+                "mtime": 1791399384.0271955,
+                "sha256": "1a978afe29f55b1c762ae96ed276ca30a06669d5a867e58f95a6c57d82b26349",
+                "tail": [
+                  "Finished navigation! Current wait step: 7",
+                  "Finished navigation! Current wait step: 8",
+                  "Finished navigation! Current wait step: 9",
+                  "Finished navigation! Current wait step: 10"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4521658,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.997715,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:42191"
+            },
+            "rows_mtime": 1791399340.5897481,
+            "completed": 58,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/9"
+              ],
+              [
+                "dt",
+                "F7EAMsdDASd/11"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/2"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/0"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/9"
+              ],
+              [
+                "dt",
+                "u1bkiGRVyu9/5"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/13"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/13"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/4"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/3"
+              ],
+              [
+                "dt",
+                "4ok3usBNeis/8"
+              ],
+              [
+                "dt",
+                "8CRYizAb6yd/12"
+              ],
+              [
+                "dt",
+                "kJJyRFXVpx2/6"
+              ],
+              [
+                "dt",
+                "SiKqEZx7Ejt/6"
+              ],
+              [
+                "dt",
+                "Nfvxx8J5NCo/8"
+              ],
+              [
+                "dt",
+                "qyAac8rV8Zk/3"
+              ],
+              [
+                "dt",
+                "ziup5kvtCCR/10"
+              ],
+              [
+                "dt",
+                "7UrtFsADwob/13"
+              ],
+              [
+                "dt",
+                "XNeHsjL6nBB/5"
+              ],
+              [
+                "dt",
+                "h1zeeAwLh9Z/3"
+              ],
+              [
+                "dt",
+                "58NLZxWBSpk/14"
+              ],
+              [
+                "dt",
+                "T6nG3E2Uui9/0"
+              ],
+              [
+                "dt",
+                "QaLdnwvtxbs/12"
+              ],
+              [
+                "dt",
+                "7GAhQPFzMot/6"
+              ],
+              [
+                "dt",
+                "RJaJt8UjXav/4"
+              ],
+              [
+                "dt",
+                "XMHNu9rRQ1y/8"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/14"
+              ],
+              [
+                "dt",
+                "5jp3fCRSRjc/30"
+              ],
+              [
+                "dt",
+                "TEEsavR23oF/1"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/5"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/18"
+              ],
+              [
+                "dt",
+                "HY1NcmCgn3n/33"
+              ],
+              [
+                "dt",
+                "CrMo8WxCyVb/9"
+              ],
+              [
+                "dt",
+                "rXXL6twQiWc/11"
+              ],
+              [
+                "dt",
+                "QHhQZWdMpGJ/6"
+              ],
+              [
+                "dt",
+                "p53SfW6mjZe/16"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/2"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/16"
+              ],
+              [
+                "dt",
+                "hkr2MGpHD6B/32"
+              ],
+              [
+                "dt",
+                "wcojb4TFT35/5"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/8"
+              ],
+              [
+                "dt",
+                "3t8DB4Uzvkt/20"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/5"
+              ],
+              [
+                "dt",
+                "cvZr5TUy5C5/20"
+              ],
+              [
+                "dt",
+                "VBzV5z6i1WS/2"
+              ],
+              [
+                "dt",
+                "vBMLrTe4uLA/1"
+              ],
+              [
+                "dt",
+                "X4qjx5vquwH/20"
+              ],
+              [
+                "dt",
+                "y9hTuugGdiq/15"
+              ],
+              [
+                "dt",
+                "6D36GQHuP8H/18"
+              ],
+              [
+                "dt",
+                "GLAQ4DNUx5U/6"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/5"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/16"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/28"
+              ],
+              [
+                "dt",
+                "auFeVz9Go4m/40"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/1"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/15"
+              ],
+              [
+                "dt",
+                "YRUkbU5xsYj/36"
+              ],
+              [
+                "dt",
+                "dHwjuKfkRUR/18"
+              ]
+            ],
+            "invalid": 0
+          }
+        ],
+        "scheduler": {
+          "returncode": 0,
+          "states": [
+            "RUNNING",
+            "RUNNING"
+          ]
+        },
+        "completed": 475,
+        "unique": 475,
+        "invalid": 0
+      },
+      {
+        "kind": "at",
+        "job": 61794,
+        "task_id": 72988,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1",
+        "shards": [],
+        "scheduler": {
+          "returncode": 0,
+          "states": [
+            "SUBMITTED",
+            "SUBMITTED"
+          ]
+        },
+        "completed": 0,
+        "unique": 0,
+        "invalid": 0
+      }
+    ],
+    "frozen_commit": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb",
+    "frozen_status": "",
+    "checkout_commit": "32fa14084e71eacb6c9527e493580f089a5b7428",
+    "checkout_status": ""
+  },
+  "worker_contract_parent_checked": true,
+  "dt_lane_growth_since_0220": [
+    {
+      "shard": "shard_00",
+      "previous_complete": 10,
+      "current_complete": 62,
+      "new_complete": 52,
+      "worker_log_bytes_growth": 1230905,
+      "server_log_bytes_growth": 0
+    },
+    {
+      "shard": "shard_01",
+      "previous_complete": 11,
+      "current_complete": 62,
+      "new_complete": 51,
+      "worker_log_bytes_growth": 1209048,
+      "server_log_bytes_growth": 0
+    },
+    {
+      "shard": "shard_02",
+      "previous_complete": 9,
+      "current_complete": 60,
+      "new_complete": 51,
+      "worker_log_bytes_growth": 1201574,
+      "server_log_bytes_growth": 0
+    },
+    {
+      "shard": "shard_03",
+      "previous_complete": 11,
+      "current_complete": 53,
+      "new_complete": 42,
+      "worker_log_bytes_growth": 984534,
+      "server_log_bytes_growth": 0
+    },
+    {
+      "shard": "shard_04",
+      "previous_complete": 10,
+      "current_complete": 56,
+      "new_complete": 46,
+      "worker_log_bytes_growth": 1087934,
+      "server_log_bytes_growth": 0
+    },
+    {
+      "shard": "shard_05",
+      "previous_complete": 9,
+      "current_complete": 65,
+      "new_complete": 56,
+      "worker_log_bytes_growth": 1329274,
+      "server_log_bytes_growth": 0
+    },
+    {
+      "shard": "shard_06",
+      "previous_complete": 8,
+      "current_complete": 59,
+      "new_complete": 51,
+      "worker_log_bytes_growth": 1206718,
+      "server_log_bytes_growth": 0
+    },
+    {
+      "shard": "shard_07",
+      "previous_complete": 11,
+      "current_complete": 58,
+      "new_complete": 47,
+      "worker_log_bytes_growth": 1111663,
+      "server_log_bytes_growth": 0
+    }
+  ],
+  "worker_notes": [
+    "02:56 snapshot475unique;all8ready actualRTX4090/SHA9631778c/step59716/mixedzero4steps/no text/no onlineWM validated",
+    "All8worker.log grew andeverylane gained42..56 completions since02:20;server.log bytecounts unchanged alone is not stall",
+    "Five specifiedfatalpatterns0 in24worker/server/Xvfb logs;warnings retained;notuniversal no-errors claim"
+  ],
+  "tensorboard": {
+    "evidence_source": "Independent agent read-only HTTP/CLI evidence; parent preserves returned raw scalar values; no second HTTP pass",
+    "checked_utc": {
+      "remote": "2026-10-07T18:56:50.276551+00:00",
+      "local": "2026-10-07T18:58:09.270643+00:00"
+    },
+    "hostname": "devpod-zeying-gong-a800-76db9f7cd-7cchd",
+    "nas": "mt-tutz0R-pfs-haZOBP gpfs",
+    "run": "stt_anchor_61715",
+    "run_present_both": true,
+    "tags_count": 23,
+    "http_requests": {
+      "bases": {
+        "remote": "http://127.0.0.1:6006",
+        "local": "http://127.0.0.1:16006"
+      },
+      "common_paths": [
+        "/",
+        "/data/runs",
+        "/data/plugin/scalars/tags"
+      ],
+      "scalar_path_prefix": "/data/plugin/scalars/scalars?run=stt_anchor_61715&tag=",
+      "common_encoded_tag_suffixes": [
+        "train_ddp_accumulation_mean%2Floss",
+        "train_ddp_accumulation_mean%2Fflow",
+        "train_ddp_accumulation_mean%2Fgeometry",
+        "train_ddp_accumulation_mean%2Fworld",
+        "diagnostics%2Fgrad_norm",
+        "offline_validation%2Fimage%2FADE_m",
+        "offline_validation%2Fimage%2FFDE_m",
+        "offline_validation%2Fimage%2Fyaw_MAE_rad",
+        "offline_validation%2Fimage%2Fwindows",
+        "offline_validation%2Fpoint%2FADE_m",
+        "offline_validation%2Fpoint%2FFDE_m",
+        "offline_validation%2Fpoint%2Fyaw_MAE_rad",
+        "offline_validation%2Fpoint%2Fwindows",
+        "offline_validation%2Fmixed%2FADE_m",
+        "offline_validation%2Fmixed%2FFDE_m",
+        "offline_validation%2Fmixed%2Fyaw_MAE_rad",
+        "offline_validation%2Fmixed%2Fwindows"
+      ],
+      "remote_additional_encoded_tag_suffixes": [
+        "train_ddp_accumulation_mean_rolling100%2Floss",
+        "train_ddp_accumulation_mean_rolling100%2Fflow",
+        "train_ddp_accumulation_mean_rolling100%2Fgeometry",
+        "train_ddp_accumulation_mean_rolling100%2Fworld"
+      ],
+      "url_construction": "base + common_path OR base + scalar_path_prefix + encoded_tag_suffix",
+      "all_http_codes": 200,
+      "request_counts": {
+        "remote": 24,
+        "local": 20
+      }
+    },
+    "last_loss": {
+      "tag": "train_ddp_accumulation_mean/loss",
+      "step": 59700,
+      "value": 0.18124324083328247,
+      "nas_train_jsonl_step": 59700,
+      "lag_steps": 0
+    },
+    "final_scalar_columns": [
+      "tag",
+      "step",
+      "value"
+    ],
+    "final_scalars": [
+      [
+        "offline_validation/image/ADE_m",
+        59716,
+        0.26574966311454773
+      ],
+      [
+        "offline_validation/image/FDE_m",
+        59716,
+        0.46344470977783203
+      ],
+      [
+        "offline_validation/image/yaw_MAE_rad",
+        59716,
+        0.1247137114405632
+      ],
+      [
+        "offline_validation/image/windows",
+        59716,
+        73368
+      ],
+      [
+        "offline_validation/point/ADE_m",
+        59716,
+        0.2537616491317749
+      ],
+      [
+        "offline_validation/point/FDE_m",
+        59716,
+        0.4421597123146057
+      ],
+      [
+        "offline_validation/point/yaw_MAE_rad",
+        59716,
+        0.11409131437540054
+      ],
+      [
+        "offline_validation/point/windows",
+        59716,
+        73368
+      ],
+      [
+        "offline_validation/mixed/ADE_m",
+        59716,
+        0.2537982761859894
+      ],
+      [
+        "offline_validation/mixed/FDE_m",
+        59716,
+        0.4417799711227417
+      ],
+      [
+        "offline_validation/mixed/yaw_MAE_rad",
+        59716,
+        0.11410831660032272
+      ],
+      [
+        "offline_validation/mixed/windows",
+        59716,
+        73368
+      ]
+    ],
+    "all_queried_scalar_values_finite": true,
+    "metrics_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/metrics.json",
+    "max_abs_tb_vs_metrics_delta": 1.0868083044623944e-8,
+    "metrics_closed_loop": false,
+    "publisher": {
+      "log": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/tb_stt_anchor_61715.log",
+      "last_line": "FINAL_METRICS_EXPORTED",
+      "previous_lines": "TRAIN_EVENTS 1481 LAST_STEP 59700 WAITING_FOR_VALIDATION",
+      "pid": 2863913,
+      "present": false,
+      "ps_exit_code": 1
+    },
+    "scope": "Completed training history and final offline validation; not active training or closedloop SR. No service/file/process change orcheckpointread.",
+    "forwarding_command": "ssh -N -L 16006:127.0.0.1:6006 devpod-a800",
+    "browser_url": "http://127.0.0.1:16006/#scalars",
+    "tag_case_note": "Agent rechecked existing raw taglist only: both loss tags lowercase. %2F is slash, following loss remains lowercase."
+  },
+  "latest_complete_result": {
+    "model": 61609,
+    "success": {
+      "stt": 1279,
+      "dt": 1178,
+      "at": 1207
+    },
+    "new_61715_full_sr": null
+  },
+  "goal": {
+    "status": "ACTIVE",
+    "min_success": {
+      "stt": 1289,
+      "dt": 1173,
+      "at": 1203
+    },
+    "denominator_each": 1405,
+    "after_gate": "same-weight with/withoutUWB paired study; separate fromno-UWB retraining"
+  },
+  "next": [
+    "Keep original3evaljobs;waitactualcompleted1405each beforefullSR",
+    "Threefullpartitions:merge+4215initialstate/teacherpair+fixed61377goal+new61609comparison+fullmedia",
+    "Do notcollect/train basedonpartialDT;boundedrecovery onlyif fullcandidate evidence requiresit",
+    "Do notstartformalUWB ablation beforeSRgate"
+  ],
+  "boundaries": [
+    "Currentturn noformaljob/training/rollout/checkpointread orcodechange",
+    "Frozenruntime5a23a982 clean;nooverwrite/checkpoint/physics/controller/loss/criteriachange",
+    "Explicitbenchmarkadaptation;notunseen-testgeneralization",
+    "EvaluationGPU61715RTX4090vs61609A800 disclosed",
+    "Watcher finished normally;originalschedulerjobs stillRUNNING/SUBMITTED, not terminal"
+  ],
+  "recovery_readiness": {
+    "status": "READ_ONLY_NOT_READY_FOR_DUAL_TEACHER_FAILURE_STATE_COLLECTION",
+    "source_check": {
+      "utc": "2026-10-07T19:11:57.343821+00:00",
+      "hashes": {
+        "wa/wm/recovery_collect.py": "ff7561baa29d2023c1d03cf9f62d3d8854afc3faf99a07ce0b57e728d1fb0ff7",
+        "wa/wm/recovery_replay.py": "d5d3c3d8093a2b58c3c7b9db14286d7f2ba4f38c6dc998109e7614047f77600e",
+        "wa/wm/recovery_recorder.py": "19ee9fd41afbbcc1081178919a157f8cc83adb80824ff8af0aee6c2b6d75ba4a",
+        "wa/tools/recovery_dev_launch.py": "0785d6bf94ab11d7d31eadf2deeb98f0eff1ca14e154e9c8bcdc02032b2910eb",
+        "wa/tools/recovery_full_launch.py": "6b42a728433a5bdc55cb5c9ac6689a8ce33d66b37aaa578f878e714d2de768d6",
+        "wa/wm/dual_teacher_collect.py": "704daa7cbf81b6efb60557652ecb8955618c0ba2062de347b6caacb39430e617",
+        "wa/wm/dual_teacher_selection.py": "045ed3bcb1d2911ec7e468c1b9b2175f5254e65a4d30bded694dafee91804cb3",
+        "wa/wm/oracle_teacher.py": "1d9e90ed1778832803d60636cfd2ea6b80abb7491f95135d24cff7a6e7edce10",
+        "wa/wm/diagnostic_agent.py": "6ea51590ad4a187ac8fd89cb2bf06c9095c72994a98f8ad3ad1142fa0408678a",
+        "wa/wm/dual_teacher_pair_evidence.py": "29276ca5bda0462ef34cbcb2cd99860370f76f3ef44d376daa00bc63e3089ad3",
+        "wa/tools/audit_dual_teacher.py": "275120da415e401a206241e5d88d329f1a011631f720d0052d1f86633ddcee66",
+        "wa/tools/build_dual_teacher_cache.py": "aec2bcdb77bf96f1cabcaca1a7f8b9e93004708df13c42a5be236332d6f5b449",
+        "wa/wm/dual_teacher_data.py": "13e607914e8b430e0c1dd87baefea9b79c4b28f74dada664b8247185363b8195",
+        "wa/tests/test_dual_teacher_selection.py": "86b48b73c5d4650c7ca2cf54ba7725e6338454f0219e43dc0e9cb94a03c5870c",
+        "wa/tests/test_oracle_teacher.py": "de9e3a3f210b4f7ff3e4db080caf19cdf8d0b4a65e43c58dd6ab8dd554a0cbfe",
+        "wa/tests/test_bound_teacher_fallback.py": "ac156196ff6e8ca99c5976dcef24ae7e9b0af719750f76a65b5833aa673b8b51",
+        "wa/tests/test_dual_teacher_pair_evidence.py": "ef5dcd1615c3861b259bb66a5e65499a9f7b61247bd5029daa66da5a8be2ae45"
+      },
+      "snippets": {
+        "wa/wm/recovery_replay.py": [
+          "39:",
+          "40:class ReplayThenTeacher:",
+          "41:    \"\"\"Teacher observes every prefix frame; its prefix actions are discarded.\"\"\"",
+          "42:    def __init__(self,teacher,prefix,takeover_step,rgb_key):",
+          "43:        if not 0<=takeover_step<=len(prefix):",
+          "44:            raise ValueError('takeover outside recorded prefix')",
+          "45:        self.teacher=teacher;self.prefix=prefix;self.takeover=takeover_step",
+          "46:        self.rgb_key=rgb_key;self.step=0;self.last_trajectory=None",
+          "47:        self.environment=None",
+          "48:    def bind_environment(self,env):",
+          "49:        self.environment=env",
+          "50:    def __getattr__(self,key):",
+          "51:        return getattr(self.teacher,key)",
+          "52:    def reset(self,*args,**kwargs):",
+          "53:        self.step=0;self.last_trajectory=None",
+          "54:        return self.teacher.reset(*args,**kwargs)",
+          "55:    def act(self,observations,detector,episode_id,instruction=None):",
+          "56:        t=self.step",
+          "57:        if t<=self.takeover and t<len(self.prefix):",
+          "58:            if rgb_hash(observations[self.rgb_key])!=self.prefix[t]['rgb_sha256']:",
+          "59:                raise RuntimeError(f'REPLAY_DIVERGED at step {t}')",
+          "60:            if self.environment is not None:",
+          "61:                check_dynamic_state(self.prefix[t]['dynamic_state'],dynamic_state(self.environment))",
+          "62:        expert=np.asarray(self.teacher.act(observations,detector,episode_id,instruction),dtype=float)",
+          "63:        if expert.shape!=(3,) or not np.isfinite(expert).all():",
+          "64:            raise RuntimeError('invalid expert action')",
+          "65:        if getattr(self.teacher,'reply_error',None) is not None:",
+          "66:            raise RuntimeError('teacher transport fallback invalidates branch')",
+          "67:        action=np.asarray(self.prefix[t]['action'],dtype=float) if t<self.takeover else expert",
+          "68:        if action.shape!=(3,) or not np.isfinite(action).all() or (abs(action)>1).any():",
+          "69:            raise RuntimeError('invalid normalized action')",
+          "70:        self.last_trajectory=None if t<self.takeover else getattr(self.teacher,'last_trajectory',None)",
+          "71:        self.step+=1",
+          "72:        return action.tolist()"
+        ],
+        "wa/wm/dual_teacher_collect.py": [
+          "24:        self.environment = None",
+          "25:        self.fallback_count = 0",
+          "26:        self.allow_released_fallback = allow_released_fallback",
+          "27:        self.fallback_events = []",
+          "28:        self.action_step = 0",
+          "29:    def bind_environment(self, env):",
+          "30:        self.environment = env",
+          "31:        if hasattr(self.teacher, \"bind_environment\"):",
+          "32:            self.teacher.bind_environment(env)",
+          "33:    def reset(self, *args, **kwargs):",
+          "34:        self.teacher.reset(*args, **kwargs)",
+          "147:            for name in (\"lightnav\",\"oracle\"):",
+          "148:                random.seed(7);np.random.seed(7);torch.manual_seed(7);torch.cuda.manual_seed_all(7)",
+          "149:                teacher=LightNav(str(base/\"lightnav_client\"),a.teacher_url) if name==\"lightnav\" else OracleTeacher()",
+          "150:                agent=BoundTeacher(teacher,allow_released_fallback=name==\"lightnav\")",
+          "151:                rec=AdaptationRecorder(base/name,dict(experiment=EXPERIMENT,partition=\"evaluation_adaptation\",",
+          "152:                    task=task,key=key,teacher=name,camera_alignment_verified=True,",
+          "153:                    scene_id=actual[key].scene_id,episode_id=str(actual[key].episode_id),",
+          "154:                    source_dataset_sha256=spec[\"sha256\"],protocol_sha256=protocol),",
+          "155:                    agent,fixes.get((task,key)),first)",
+          "156:                subset=copy.copy(ds);subset.episodes=[prepare_episode(actual[key],BENCH)]",
+          "157:                try:",
+          "158:                    trained_agent.evaluate_agent(copy.deepcopy(cfg),subset,str(base/(name+\"_metrics\")),",
+          "159:                                                 agent_factory=lambda _:agent,recorder=rec)",
+          "160:                finally:teacher.close()",
+          "161:                if first is None:first=rec.first",
+          "162:                # Tolerance-verified second branch refers to the exact first-branch state evidence.",
+          "163:                state_sha=hashlib.sha256(json.dumps(first[\"state\"],sort_keys=True).encode()).hexdigest()",
+          "164:                result=json.loads((base/name/\"result.json\").read_text())",
+          "165:                branches[name]=dict(experiment=EXPERIMENT,teacher=name,complete=True,replay_verified=True,",
+          "166:                    transport_fallback=bool(agent.fallback_count),task=task,key=key,takeover_step=0,seed=7,",
+          "167:                    fallback_policy=\"released_lightnav_client_v1\" if name==\"lightnav\" else None,",
+          "168:                    fallback_events=agent.fallback_events,",
+          "169:                    protocol_sha256=protocol,initial_rgb_sha256=first[\"rgb\"],takeover_state_sha256=state_sha,",
+          "170:                    result=result,artifact_root=str(base/name))"
+        ],
+        "wa/wm/oracle_teacher.py": [
+          "25:        self.controller.reset()",
+          "26:        self.last_trajectory = None",
+          "27:        self.last_decision = None",
+          "28:        self.reply_error = None",
+          "29:",
+          "30:    def act(self, observations, detector, episode_id, instruction=None):",
+          "31:        del detector, instruction",
+          "32:        if self.environment is None:",
+          "33:            raise RuntimeError(\"Oracle requires benchmark environment binding\")",
+          "34:        env = self.environment",
+          "35:        if str(env.current_episode.episode_id) != str(episode_id):",
+          "36:            raise RuntimeError(\"Oracle episode mismatch\")",
+          "37:        sim = env.sim",
+          "38:        robot = sim.agents_mgr[1].articulated_agent",
+          "39:        human = sim.agents_mgr[0].articulated_agent",
+          "40:        m = self.module"
+        ],
+        "wa/wm/diagnostic_agent.py": [
+          "20:        if path=='/predict' and self.mode=='mixed':",
+          "21:            data=dict(data,uwb=self.uwb_sensor.sample(data['timestamp_s']))",
+          "22:        return super().rpc(path,data)",
+          "23:    def act(self,*args,**kwargs):",
+          "24:        if os.environ.get('WA_STUDENT_EVAL') and self.sim_step==0:",
+          "25:            from wa.wm.recovery_replay import rgb_hash,dynamic_state",
+          "26:            observations=args[0] if args else kwargs['observations']",
+          "27:            self.initial_pair_evidence=dict(",
+          "28:                rgb=rgb_hash(observations['agent_1_articulated_agent_jaw_rgb']),",
+          "29:                state=dynamic_state(self.diagnostic_env))",
+          "30:        # Observer-only evidence. Never include this object in predict RPC.",
+          "31:        observer_state=None",
+          "32:        if os.environ.get('WA_DIAG_OBSERVER_STATE')=='1':",
+          "33:            import numpy as np",
+          "34:            sim=self.diagnostic_env.sim",
+          "35:            robot=sim.agents_mgr[1].articulated_agent",
+          "36:            target=sim.agents_mgr[0].articulated_agent",
+          "37:            observer_state=dict(",
+          "38:                usage='offline_diagnosis_only_not_policy_input',",
+          "39:                timing='before_current_action_after_previous_action',",
+          "40:                robot_position_world=np.asarray(robot.base_pos,dtype=float).tolist(),",
+          "41:                robot_rotation_world_from_body=np.asarray(robot.sim_obj.transformation.rotation(),dtype=float).tolist(),",
+          "42:                target_position_world=np.asarray(target.base_pos,dtype=float).tolist())",
+          "43:        result=super().act(*args,**kwargs)"
+        ]
+      },
+      "executor_sha256": "2b5c0faeff3e633588b9af39a14472055ae263291bed3840ff218a680f2fe3a1",
+      "executor_snippet": [
+        "69:        if hasattr(robot_config, \"bind_environment\"):",
+        "70:            robot_config.bind_environment(env)",
+        "152:                    recorder.observe(obs, detector, robot_agent, humanoid_agent_main,",
+        "161:                    recorder.record_action(iter_step, action, getattr(robot_config, \"last_trajectory\", None))"
+      ],
+      "head": "32fa14084e71eacb6c9527e493580f089a5b7428",
+      "status": ""
+    },
+    "reuse": [
+      {
+        "file": "wa/wm/recovery_collect.py",
+        "lines": "50-85",
+        "finding": "Actual studentrun then backward takeoversearch and repeated successfulLightNav recovery; notteacherprefixsubstitution"
+      },
+      {
+        "file": "wa/wm/recovery_replay.py",
+        "lines": "41-72",
+        "finding": "Restartseed7 andstudentactionreplay withper-step rawRGB/fullagentsjointstate checks; teacherwarmedonprefixbutprefixteacheractionsdiscarded; notarbitrarysnapshotteleport"
+      },
+      {
+        "file": "wa/wm/recovery_recorder.py",
+        "lines": "15-40",
+        "finding": "SavesrawRGB/dynamicstate/actions into replay.json; failedteacherwindows empty; successfulteacher-ownedcomplete0.7s suffixonly"
+      },
+      {
+        "file": "wa/wm/dual_teacher_selection.py",
+        "lines": "12-67",
+        "finding": "Samekey/takeover/seed/protocol/RGB/state;successfirst/bothsuccessfollowing_ratehigher/tieLightNav;selectedfallbackinadmissible"
+      }
+    ],
+    "gaps": [
+      {
+        "file": "wa/tools/recovery_dev_launch.py",
+        "lines": "20,30",
+        "finding": "Old59866 checkpoint/learned_target_guard_v3 hardcoded;recovery_collect onlymixedreadycheck,notactual61715SHA/stepcontract;full launcherold2GPU/96"
+      },
+      {
+        "file": "wa/wm/recovery_collect.py",
+        "lines": "23,34,42,57",
+        "finding": "Oldtrain-only LightNav; do notmislabeladaptationkeysastrain,requiresseparateexplicitprotocol"
+      },
+      {
+        "file": "wa/wm/recovery_replay.py",
+        "lines": "48-49",
+        "finding": "WrapperbinddoesnotforwardtoinnerOracleTeacher;OracleTeacher.act32-33requiresitsenvironment;actualexecutor69-70onlybindsouterwrapper;BoundTeacher29-32hasforwarding"
+      },
+      {
+        "file": "wa/wm/dual_teacher_collect.py",
+        "lines": "147-170",
+        "finding": "Currentdualteachersstartfromepisodebeginning,takeover_step=0;notstudentfailurestate"
+      },
+      {
+        "file": "wa/wm/dual_teacher_resume.py",
+        "lines": "9-20",
+        "finding": "Existingresume requiresold+newfull4215coverage,notfrozenfailurekey/takeoverplan"
+      },
+      {
+        "file": "wa/wm/diagnostic_agent.py",
+        "lines": "24-42",
+        "finding": "Current61715traces containfullstate/rawRGBonlyatstart;laterobserverrobot/targetpartialposeslackalljoints/rawhash;cannotdirectlyfeedasverifiedreplay.json"
+      },
+      {
+        "file": "wa/wm/dual_teacher_pair_evidence.py",
+        "lines": "20-22",
+        "finding": "Initialstep/time0audit;cachebuilder87/auditor101takeover0/full4215loader;needindependentnonzero-suffixaudit+admission,notdevelopmentflagbypass"
+      },
+      {
+        "file": "wa/wm/dual_teacher_selection.py",
+        "lines": "12-67",
+        "finding": "following_rate isper-trajectory choice,notfullreference-normalizedTR;fornonzero takeovermustdeclarewholetrajectory(commonprefix)vs suffixratherthansilentlychanging"
+      }
+    ],
+    "tests_read_not_run": [
+      "recovery_replay.py:74-97 prefix/warmup/takeover/reset/RGB/time/backwardcandidates",
+      "test_dual_teacher_selection.py success/TR/tie/nonzero fixture12/fallback/noautomatictrainingadmission",
+      "test_oracle_teacher.py environmentbinding/episode/actions",
+      "test_bound_teacher_fallback.py fallback/defaultrefusal/invalidactions",
+      "test_dual_teacher_pair_evidence.py explicitlyinitialonly/noninitialrejected"
+    ],
+    "missing_integration": "No complete61715actualprefix->nonzero takeover->samestateOracle/LightNav->success/TRteacherchoice->successfulnofallbacksuffixcache integration identified",
+    "decision": "Do notmodify/collect until61715 fullresults indicate need;thenbuildexplicitboundedprotocol andshortdevelopercheck beforeanyauthorizedformalcollection",
+    "limits": [
+      "Staticreadinessauditonly;no tests/model/collector run;no3985demonstration/data/checkpointhashes repeated",
+      "Source17smallfiles+externalexecutorhashes independentlymatched;keybinding/state/sourceexcerptsmainread",
+      "Does notprove failedstatesareactuallyteacherrecoverable"
+    ]
+  }
+}
