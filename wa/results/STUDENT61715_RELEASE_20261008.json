@@ -1,0 +1,499 @@
+{
+  "status": "TRAINING_ACCEPTED_EVAL24_RELEASE_READY_NOT_SUBMITTED",
+  "observed_terminal_utc": "2026-10-07T17:25:14.033371+00:00",
+  "job": 61715,
+  "task": 72909,
+  "scheduler_statuses": [
+    "SUCCEEDED",
+    "SUCCEEDED"
+  ],
+  "worker_complete": [
+    "COMPLETE {\"image\": {\"ADE_m\": 0.2657496522464647, \"FDE_m\": 0.4634447035569049, \"yaw_MAE_rad\": 0.12471371255165295, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}, \"point\": {\"ADE_m\": 0.25376164992746364, \"FDE_m\": 0.44215970210244576, \"yaw_MAE_rad\": 0.11409131133895167, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}, \"mixed\": {\"ADE_m\": 0.2537982685598338, \"FDE_m\": 0.4417799809860429, \"yaw_MAE_rad\": 0.11410831519026578, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}}"
+  ],
+  "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+  "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+  "step": 59716,
+  "training_audit": {
+    "path": "artifacts/stt_anchor_training_audit_61715_v1.json",
+    "sha256": "d91dbb222847a30ddb843f895d3cdc84be17a98c871fb1f0f97a5212859aaa80",
+    "status": "STT_ANCHOR_TRAINING_ARTIFACT_AUDIT_PASS_OFFLINE_ONLY",
+    "hashed_files": 24596
+  },
+  "training_source": {
+    "path": "source_stt_anchor_train_v1",
+    "commit": "dd1fec9e2cba0450be7a33387c8a2e550db4cd91",
+    "config": "wa/jobs/stt_anchor_train_a800_v1.yaml",
+    "config_sha256": "4a5b465a9533c779a7990aa754575caee34dc302fa0238ecd62d3471cb3879ef"
+  },
+  "initialization": {
+    "parent": "59866/70728",
+    "model_and_optimizer": true,
+    "parent_step": 22707,
+    "new_updates": 37009,
+    "cumulative_epochs": 2,
+    "no_epoch3": true
+  },
+  "actual_exposure": {
+    "total": 1184272,
+    "base": 726631,
+    "teacher": 457641,
+    "ranks": [
+      148034,
+      148034,
+      148034,
+      148034,
+      148034,
+      148034,
+      148034,
+      148034
+    ],
+    "groups": {
+      "hard_stt_early": 9810,
+      "hard_stt_late": 14286,
+      "new_regression_stt": 1772,
+      "successful_stt_anchor": 12514
+    },
+    "original_loss_and_LR": true
+  },
+  "metrics": {
+    "status": "OFFLINE_ONLY",
+    "kind": "jepa",
+    "steps": 59716,
+    "metrics": {
+      "image": {
+        "ADE_m": 0.2657496522464647,
+        "FDE_m": 0.4634447035569049,
+        "yaw_MAE_rad": 0.12471371255165295,
+        "windows": 73368,
+        "SR": null,
+        "collision_rate": null
+      },
+      "point": {
+        "ADE_m": 0.25376164992746364,
+        "FDE_m": 0.44215970210244576,
+        "yaw_MAE_rad": 0.11409131133895167,
+        "windows": 73368,
+        "SR": null,
+        "collision_rate": null
+      },
+      "mixed": {
+        "ADE_m": 0.2537982685598338,
+        "FDE_m": 0.4417799809860429,
+        "yaw_MAE_rad": 0.11410831519026578,
+        "windows": 73368,
+        "SR": null,
+        "collision_rate": null
+      }
+    },
+    "closed_loop": false,
+    "edge_latency_verified": false,
+    "point_source": "simulated_uwb",
+    "elapsed_s": 17992.094252185896
+  },
+  "watch_snapshots": [
+    {
+      "checked_utc": "2026-10-07T17:13:12.496252+00:00",
+      "snapshot": 0,
+      "job": 61715,
+      "task": 72909,
+      "checkpoint_opened_or_hashed": false,
+      "train_jsonl_sha256": "6f4be32c581a601e086fceb46e7f7dd7608b8314c1bfbd001abeb5c13a6918a7",
+      "actual_exposure_sha256": "0cc3d971acf9fdb0bf63743451780fed59abcb9c0bf0473666006783fb502f87",
+      "metrics_exists": false,
+      "metrics_parse_complete": false,
+      "console.log": {
+        "bytes": 799300,
+        "mtime": 1791390791.6499846,
+        "last": "{\"step\": 59700, \"total_steps\": 59716, \"phase_step\": 36993, \"epoch\": 1, \"loss\": 0.18124324083328247, \"flow\": 0.16182823479175568, \"geometry\": 0.0014688457595184445, \"world\": 0.18680590391159058, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.08879431337118149, \"lr\": [2.500011821675707e-08, 5.000023643351414e-08, 5.000023643351414e-07, 1.0000047286702829e-07, 1.0000047286702827e-06], \"grad_norm\": 0.9561619162559509, \"peak_allocated_gib\": 11.488285064697266, \"elapsed_s\": 14943.83412318863}",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      ".md-ak/workload.log": {
+        "bytes": 110481,
+        "mtime": 1791393183.4667418,
+        "last": "2026-10-08T01:13:03.466+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      "scheduler_returncode": 0,
+      "scheduler_statuses": [
+        "RUNNING",
+        "RUNNING"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-07T17:15:13.394414+00:00",
+      "snapshot": 1,
+      "job": 61715,
+      "task": 72909,
+      "checkpoint_opened_or_hashed": false,
+      "train_jsonl_sha256": "6f4be32c581a601e086fceb46e7f7dd7608b8314c1bfbd001abeb5c13a6918a7",
+      "actual_exposure_sha256": "0cc3d971acf9fdb0bf63743451780fed59abcb9c0bf0473666006783fb502f87",
+      "metrics_exists": false,
+      "metrics_parse_complete": false,
+      "console.log": {
+        "bytes": 799300,
+        "mtime": 1791390791.6499846,
+        "last": "{\"step\": 59700, \"total_steps\": 59716, \"phase_step\": 36993, \"epoch\": 1, \"loss\": 0.18124324083328247, \"flow\": 0.16182823479175568, \"geometry\": 0.0014688457595184445, \"world\": 0.18680590391159058, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.08879431337118149, \"lr\": [2.500011821675707e-08, 5.000023643351414e-08, 5.000023643351414e-07, 1.0000047286702829e-07, 1.0000047286702827e-06], \"grad_norm\": 0.9561619162559509, \"peak_allocated_gib\": 11.488285064697266, \"elapsed_s\": 14943.83412318863}",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      ".md-ak/workload.log": {
+        "bytes": 111245,
+        "mtime": 1791393303.428541,
+        "last": "2026-10-08T01:15:03.428+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      }
+    },
+    {
+      "checked_utc": "2026-10-07T17:17:13.409766+00:00",
+      "snapshot": 2,
+      "job": 61715,
+      "task": 72909,
+      "checkpoint_opened_or_hashed": false,
+      "train_jsonl_sha256": "6f4be32c581a601e086fceb46e7f7dd7608b8314c1bfbd001abeb5c13a6918a7",
+      "actual_exposure_sha256": "0cc3d971acf9fdb0bf63743451780fed59abcb9c0bf0473666006783fb502f87",
+      "metrics_exists": false,
+      "metrics_parse_complete": false,
+      "console.log": {
+        "bytes": 799300,
+        "mtime": 1791390791.6499846,
+        "last": "{\"step\": 59700, \"total_steps\": 59716, \"phase_step\": 36993, \"epoch\": 1, \"loss\": 0.18124324083328247, \"flow\": 0.16182823479175568, \"geometry\": 0.0014688457595184445, \"world\": 0.18680590391159058, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.08879431337118149, \"lr\": [2.500011821675707e-08, 5.000023643351414e-08, 5.000023643351414e-07, 1.0000047286702829e-07, 1.0000047286702827e-06], \"grad_norm\": 0.9561619162559509, \"peak_allocated_gib\": 11.488285064697266, \"elapsed_s\": 14943.83412318863}",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      ".md-ak/workload.log": {
+        "bytes": 112009,
+        "mtime": 1791393423.514609,
+        "last": "2026-10-08T01:17:03.514+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      }
+    },
+    {
+      "checked_utc": "2026-10-07T17:19:13.424306+00:00",
+      "snapshot": 3,
+      "job": 61715,
+      "task": 72909,
+      "checkpoint_opened_or_hashed": false,
+      "train_jsonl_sha256": "6f4be32c581a601e086fceb46e7f7dd7608b8314c1bfbd001abeb5c13a6918a7",
+      "actual_exposure_sha256": "0cc3d971acf9fdb0bf63743451780fed59abcb9c0bf0473666006783fb502f87",
+      "metrics_exists": false,
+      "metrics_parse_complete": false,
+      "console.log": {
+        "bytes": 799300,
+        "mtime": 1791390791.6499846,
+        "last": "{\"step\": 59700, \"total_steps\": 59716, \"phase_step\": 36993, \"epoch\": 1, \"loss\": 0.18124324083328247, \"flow\": 0.16182823479175568, \"geometry\": 0.0014688457595184445, \"world\": 0.18680590391159058, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.08879431337118149, \"lr\": [2.500011821675707e-08, 5.000023643351414e-08, 5.000023643351414e-07, 1.0000047286702829e-07, 1.0000047286702827e-06], \"grad_norm\": 0.9561619162559509, \"peak_allocated_gib\": 11.488285064697266, \"elapsed_s\": 14943.83412318863}",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      ".md-ak/workload.log": {
+        "bytes": 112773,
+        "mtime": 1791393543.4112244,
+        "last": "2026-10-08T01:19:03.411+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      }
+    },
+    {
+      "checked_utc": "2026-10-07T17:21:13.434734+00:00",
+      "snapshot": 4,
+      "job": 61715,
+      "task": 72909,
+      "checkpoint_opened_or_hashed": false,
+      "train_jsonl_sha256": "6f4be32c581a601e086fceb46e7f7dd7608b8314c1bfbd001abeb5c13a6918a7",
+      "actual_exposure_sha256": "0cc3d971acf9fdb0bf63743451780fed59abcb9c0bf0473666006783fb502f87",
+      "metrics_exists": false,
+      "metrics_parse_complete": false,
+      "console.log": {
+        "bytes": 799300,
+        "mtime": 1791390791.6499846,
+        "last": "{\"step\": 59700, \"total_steps\": 59716, \"phase_step\": 36993, \"epoch\": 1, \"loss\": 0.18124324083328247, \"flow\": 0.16182823479175568, \"geometry\": 0.0014688457595184445, \"world\": 0.18680590391159058, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.08879431337118149, \"lr\": [2.500011821675707e-08, 5.000023643351414e-08, 5.000023643351414e-07, 1.0000047286702829e-07, 1.0000047286702827e-06], \"grad_norm\": 0.9561619162559509, \"peak_allocated_gib\": 11.488285064697266, \"elapsed_s\": 14943.83412318863}",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      ".md-ak/workload.log": {
+        "bytes": 113537,
+        "mtime": 1791393663.4344916,
+        "last": "2026-10-08T01:21:03.434+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      }
+    },
+    {
+      "checked_utc": "2026-10-07T17:23:13.445742+00:00",
+      "snapshot": 5,
+      "job": 61715,
+      "task": 72909,
+      "checkpoint_opened_or_hashed": false,
+      "train_jsonl_sha256": "6f4be32c581a601e086fceb46e7f7dd7608b8314c1bfbd001abeb5c13a6918a7",
+      "actual_exposure_sha256": "0cc3d971acf9fdb0bf63743451780fed59abcb9c0bf0473666006783fb502f87",
+      "metrics_exists": false,
+      "metrics_parse_complete": false,
+      "console.log": {
+        "bytes": 799300,
+        "mtime": 1791390791.6499846,
+        "last": "{\"step\": 59700, \"total_steps\": 59716, \"phase_step\": 36993, \"epoch\": 1, \"loss\": 0.18124324083328247, \"flow\": 0.16182823479175568, \"geometry\": 0.0014688457595184445, \"world\": 0.18680590391159058, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.08879431337118149, \"lr\": [2.500011821675707e-08, 5.000023643351414e-08, 5.000023643351414e-07, 1.0000047286702829e-07, 1.0000047286702827e-06], \"grad_norm\": 0.9561619162559509, \"peak_allocated_gib\": 11.488285064697266, \"elapsed_s\": 14943.83412318863}",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      ".md-ak/workload.log": {
+        "bytes": 114301,
+        "mtime": 1791393783.5321486,
+        "last": "2026-10-08T01:23:03.531+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      "scheduler_returncode": 0,
+      "scheduler_statuses": [
+        "RUNNING",
+        "RUNNING"
+      ]
+    },
+    {
+      "checked_utc": "2026-10-07T17:25:14.033371+00:00",
+      "snapshot": 6,
+      "job": 61715,
+      "task": 72909,
+      "checkpoint_opened_or_hashed": false,
+      "train_jsonl_sha256": "6f4be32c581a601e086fceb46e7f7dd7608b8314c1bfbd001abeb5c13a6918a7",
+      "actual_exposure_sha256": "0cc3d971acf9fdb0bf63743451780fed59abcb9c0bf0473666006783fb502f87",
+      "metrics_exists": true,
+      "metrics_parse_complete": true,
+      "metrics": {
+        "status": "OFFLINE_ONLY",
+        "kind": "jepa",
+        "steps": 59716,
+        "metrics": {
+          "image": {
+            "ADE_m": 0.2657496522464647,
+            "FDE_m": 0.4634447035569049,
+            "yaw_MAE_rad": 0.12471371255165295,
+            "windows": 73368,
+            "SR": null,
+            "collision_rate": null
+          },
+          "point": {
+            "ADE_m": 0.25376164992746364,
+            "FDE_m": 0.44215970210244576,
+            "yaw_MAE_rad": 0.11409131133895167,
+            "windows": 73368,
+            "SR": null,
+            "collision_rate": null
+          },
+          "mixed": {
+            "ADE_m": 0.2537982685598338,
+            "FDE_m": 0.4417799809860429,
+            "yaw_MAE_rad": 0.11410831519026578,
+            "windows": 73368,
+            "SR": null,
+            "collision_rate": null
+          }
+        },
+        "closed_loop": false,
+        "edge_latency_verified": false,
+        "point_source": "simulated_uwb",
+        "elapsed_s": 17992.094252185896
+      },
+      "metrics_gate": "PASS_COMPLETE_OFFLINE_NOT_SR",
+      "console.log": {
+        "bytes": 802212,
+        "mtime": 1791393860.2664487,
+        "last": "COMPLETE {\"image\": {\"ADE_m\": 0.2657496522464647, \"FDE_m\": 0.4634447035569049, \"yaw_MAE_rad\": 0.12471371255165295, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}, \"point\": {\"ADE_m\": 0.25376164992746364, \"FDE_m\": 0.44215970210244576, \"yaw_MAE_rad\": 0.11409131133895167, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}, \"mixed\": {\"ADE_m\": 0.2537982685598338, \"FDE_m\": 0.4417799809860429, \"yaw_MAE_rad\": 0.11410831519026578, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}}",
+        "complete_lines": [
+          "COMPLETE {\"image\": {\"ADE_m\": 0.2657496522464647, \"FDE_m\": 0.4634447035569049, \"yaw_MAE_rad\": 0.12471371255165295, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}, \"point\": {\"ADE_m\": 0.25376164992746364, \"FDE_m\": 0.44215970210244576, \"yaw_MAE_rad\": 0.11409131133895167, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}, \"mixed\": {\"ADE_m\": 0.2537982685598338, \"FDE_m\": 0.4417799809860429, \"yaw_MAE_rad\": 0.11410831519026578, \"windows\": 73368, \"SR\": null, \"collision_rate\": null}}"
+        ],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      ".md-ak/workload.log": {
+        "bytes": 114683,
+        "mtime": 1791393843.4932144,
+        "last": "2026-10-08T01:24:03.493+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20",
+        "complete_lines": [],
+        "fatal": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        }
+      },
+      "scheduler_returncode": 0,
+      "scheduler_statuses": [
+        "SUCCEEDED",
+        "SUCCEEDED"
+      ]
+    },
+    {
+      "watch_exit": "TERMINAL_OBSERVED",
+      "snapshots": 7,
+      "metrics_gate": "PASS_COMPLETE_OFFLINE_NOT_SR",
+      "worker_complete": true
+    }
+  ],
+  "eval_source": {
+    "path": "source_student61715_eval24_v1",
+    "commit": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb",
+    "core_files_identical_to_61609": 23
+  },
+  "definition_preflight": {
+    "path": "artifacts/student61715_eval24_definition_v1/report.json",
+    "sha256": "9b40d6276dcba840cbbda99609178b539a89faf30174ce5e989447611a5684ef",
+    "status": "DEFINITION_24LANE_PASS_NOT_BENCHMARK",
+    "totals": {
+      "stt": 1405,
+      "dt": 1405,
+      "at": 1405
+    },
+    "gpu_used": false,
+    "rollout": false
+  },
+  "configs": {
+    "wa/jobs/student61715_stt_4090_v1.yaml": {
+      "sha256": "ad8447f41920820ee1a6aab7f3b071add1955b0c066f03dc6c7e4cb92da9e70c",
+      "shell_syntax": "PASS",
+      "gpu": 8,
+      "task": "stt",
+      "episodes": 1405,
+      "cmd": "set -euo pipefail\ncd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61715_eval24_v1\ntest \"$(git rev-parse HEAD)\" = 5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb\ntest -z \"$(git status --porcelain)\"\nunset WA_RESUME_PLAN WA_RESUME_PLAN_SHA WA_TARGETED_PLAN WA_TARGETED_PLAN_SHA\nexport PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1\nexport WA_EVAL_TASK=stt WA_EVAL_MODE=mixed\nexport WA_STUDENT_EVAL=evaluation_set_adaptation_v1\nexport WA_EVAL_CHECKPOINT_SHA=9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a\nexport WA_EVAL_CHECKPOINT_STEP=59716\nexport WA_DIAG_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt\nexport WA_EVAL_TEACHER_SELECTIONS=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl\nexport WA_INIT_REPAIR_PLAN=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json\nexport WA_INIT_REPAIR_PLAN_SHA=6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a\nexport WA_SEMANTIC_PLY_FIX=mp3d_semantic_ply_v1\nexport WA_DIAG_CONTROLLER=learned_yaw_guard_v1 WA_DIAG_OBSERVER_STATE=1 WA_REVIEW_VIDEO=1\n/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -c 'import os,torch; from wa.wm.loaders import sha; from wa.wm.student_eval_contract import model_contract; from wa.wm.student_eval_finalize import load_teachers; from wa.wm.semantic_scene import provenance; model_contract(os.environ); load_teachers(os.environ[\"WA_EVAL_TEACHER_SELECTIONS\"]); assert sha(os.environ[\"WA_DIAG_CHECKPOINT\"])==os.environ[\"WA_EVAL_CHECKPOINT_SHA\"]; assert provenance()[\"config_sha256\"]==\"1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6\"; names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]; print(names); assert len(names)==8 and all(\"4090\" in n for n in names)'\nOUTPUT_ROOT=\"/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_student61715_stt_4090_v1\"\nbash wa/scripts/eval_full_mixed.sh \"$OUTPUT_ROOT\"\n"
+    },
+    "wa/jobs/student61715_dt_4090_v1.yaml": {
+      "sha256": "12abc5a01138b3aef0a19df2ddc9bd435c40700b93fac9e7f3a3c09062e14f05",
+      "shell_syntax": "PASS",
+      "gpu": 8,
+      "task": "dt",
+      "episodes": 1405,
+      "cmd": "set -euo pipefail\ncd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61715_eval24_v1\ntest \"$(git rev-parse HEAD)\" = 5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb\ntest -z \"$(git status --porcelain)\"\nunset WA_RESUME_PLAN WA_RESUME_PLAN_SHA WA_TARGETED_PLAN WA_TARGETED_PLAN_SHA\nexport PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1\nexport WA_EVAL_TASK=dt WA_EVAL_MODE=mixed\nexport WA_STUDENT_EVAL=evaluation_set_adaptation_v1\nexport WA_EVAL_CHECKPOINT_SHA=9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a\nexport WA_EVAL_CHECKPOINT_STEP=59716\nexport WA_DIAG_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt\nexport WA_EVAL_TEACHER_SELECTIONS=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl\nexport WA_INIT_REPAIR_PLAN=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json\nexport WA_INIT_REPAIR_PLAN_SHA=6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a\nexport WA_SEMANTIC_PLY_FIX=mp3d_semantic_ply_v1\nexport WA_DIAG_CONTROLLER=learned_yaw_guard_v1 WA_DIAG_OBSERVER_STATE=1 WA_REVIEW_VIDEO=1\n/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -c 'import os,torch; from wa.wm.loaders import sha; from wa.wm.student_eval_contract import model_contract; from wa.wm.student_eval_finalize import load_teachers; from wa.wm.semantic_scene import provenance; model_contract(os.environ); load_teachers(os.environ[\"WA_EVAL_TEACHER_SELECTIONS\"]); assert sha(os.environ[\"WA_DIAG_CHECKPOINT\"])==os.environ[\"WA_EVAL_CHECKPOINT_SHA\"]; assert provenance()[\"config_sha256\"]==\"1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6\"; names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]; print(names); assert len(names)==8 and all(\"4090\" in n for n in names)'\nOUTPUT_ROOT=\"/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_student61715_dt_4090_v1\"\nbash wa/scripts/eval_full_mixed.sh \"$OUTPUT_ROOT\"\n"
+    },
+    "wa/jobs/student61715_at_4090_v1.yaml": {
+      "sha256": "b47a2a93f29174db99e030959e5c68e85432a9741ee6a1fe0e31b7ab6c0592d3",
+      "shell_syntax": "PASS",
+      "gpu": 8,
+      "task": "at",
+      "episodes": 1405,
+      "cmd": "set -euo pipefail\ncd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61715_eval24_v1\ntest \"$(git rev-parse HEAD)\" = 5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb\ntest -z \"$(git status --porcelain)\"\nunset WA_RESUME_PLAN WA_RESUME_PLAN_SHA WA_TARGETED_PLAN WA_TARGETED_PLAN_SHA\nexport PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1\nexport WA_EVAL_TASK=at WA_EVAL_MODE=mixed\nexport WA_STUDENT_EVAL=evaluation_set_adaptation_v1\nexport WA_EVAL_CHECKPOINT_SHA=9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a\nexport WA_EVAL_CHECKPOINT_STEP=59716\nexport WA_DIAG_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt\nexport WA_EVAL_TEACHER_SELECTIONS=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl\nexport WA_INIT_REPAIR_PLAN=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json\nexport WA_INIT_REPAIR_PLAN_SHA=6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a\nexport WA_SEMANTIC_PLY_FIX=mp3d_semantic_ply_v1\nexport WA_DIAG_CONTROLLER=learned_yaw_guard_v1 WA_DIAG_OBSERVER_STATE=1 WA_REVIEW_VIDEO=1\n/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -c 'import os,torch; from wa.wm.loaders import sha; from wa.wm.student_eval_contract import model_contract; from wa.wm.student_eval_finalize import load_teachers; from wa.wm.semantic_scene import provenance; model_contract(os.environ); load_teachers(os.environ[\"WA_EVAL_TEACHER_SELECTIONS\"]); assert sha(os.environ[\"WA_DIAG_CHECKPOINT\"])==os.environ[\"WA_EVAL_CHECKPOINT_SHA\"]; assert provenance()[\"config_sha256\"]==\"1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6\"; names=[torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]; print(names); assert len(names)==8 and all(\"4090\" in n for n in names)'\nOUTPUT_ROOT=\"/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_student61715_at_4090_v1\"\nbash wa/scripts/eval_full_mixed.sh \"$OUTPUT_ROOT\"\n"
+    }
+  },
+  "resources": {
+    "checked_utc": "2026-10-07T17:39:59.064911+00:00",
+    "a800_free": 15,
+    "bj4090_free": 72,
+    "selected_cluster": "baidu_4090",
+    "runtime_cluster": "baidu_bj_4090",
+    "h100": "Connected but independentNAS missing probe_env, evalfreeze and accepted checkpoint; not ready; no migration",
+    "shared_nas": "GPFS mt-tutz0R-pfs-haZOBP",
+    "guaranteed_allocation": false
+  },
+  "duplicate_check": {
+    "cluster": "baidu_bj_4090",
+    "my_job_count": 100,
+    "max_job": 61425,
+    "active_jobs": 0,
+    "any_job_gte61715": false
+  },
+  "anomalies": [
+    "One new devpod-4090 SSH handshake closed before read-only config preflight executed; same authorized endpoint hostname recheck succeeded; preflight then passed. No task restart or duplicate.",
+    "Initial read guessed student61377_stt_4090_v1.yaml absent; directory inventory located existing student61377_stt4090_v1.yaml; read-only failure only.",
+    "Developer interface retained xFormers unavailable warnings; no model rerun. Model output and wrapper validation succeeded.",
+    "Initial Git preflight rejected two pre-existing duplicate experiment IDs WM_DINO_ROBOT_V1 and WM_JEPA_ROBOT_V1 (two historical rows each); no commit/push occurred. Historical rows preserved; corrected validator requires their multiplicities unchanged and every new61715 eval ID unique."
+  ],
+  "acceptance": {
+    "stt_success_min": 1289,
+    "dt_success_min": 1173,
+    "at_success_min": 1203,
+    "then": "same-weight paired with/without UWB evaluation"
+  },
+  "limits": [
+    "Evaluation-set adaptation, not untouched-test generalization.",
+    "Offline ADE/FDE is not closed-loop SR; current best complete 61609 remains1279/1178/1207.",
+    "61715 proposed eval on4090 versus61609 A800; disclose crossGPU execution, no bitwise-equivalence or pure sampling causal claim.",
+    "No changes to architecture, original loss/LR, physics, controller or success thresholds.",
+    "RGB+first GT bbox+ideal current polar UWB; no text/subsequent GT bbox/future path; JEPA auxiliary only; no online MPC."
+  ],
+  "prepared_utc": "2026-10-07T17:44:00Z",
+  "developer_interface": {
+    "path": "artifacts/student61715_developer_interface_v1/validation_report.json",
+    "sha256": "25fecf2580b953d35a02435ac58562e1b81c5102ed327ab6cffa00e176c24edc",
+    "interface_sha256": "4cddc35ef946cd788575b2e86017a49a0aaee92ebcd67780450abc9e02caba48",
+    "status": "PASS",
+    "host": "devpod-4090",
+    "device": 6,
+    "elapsed_including_load_s": 218.911,
+    "synthetic_predictions": 2,
+    "second_bbox_absent": true,
+    "template_valid_both": true,
+    "shape_and_finite": true,
+    "benchmark": false,
+    "peak_gpu_memory": "not measured"
+  },
+  "full_submission_commands": [
+    "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit submit /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61715_stt_4090_v1.yaml",
+    "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit submit /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61715_dt_4090_v1.yaml",
+    "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit submit /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/jobs/student61715_at_4090_v1.yaml"
+  ]
+}

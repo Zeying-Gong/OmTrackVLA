@@ -41,7 +41,7 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - TRreference-normalized;52missingreference/taskactualfallback;macroTRseparate. CRtargetdistanceever<.5m,notgeneralobstaclecontact.
 - Gym/xFormers/SSDsemanticwarningsretained;specifiedfatalpatterns0. Earlierwrongrun/console.logmonitorclaimwithdrawn;actualtaskconsole/.md-ak/workload used. HistoricalSTTupperbound/partialwatchrecords retained.
 
-## Active bounded work — fixed-budget STT anchor training61715/72909
+## Active bounded work — accepted STT anchor61715; full24GPU evaluation next
 - Realfixed88replay completed onidledevpod4090GPU6:597.856s,1.482GiB,88windows/176predictions/1713sourcehashes PASS. No training/rollout.
 - Artifact artifacts/teacher_group_fit_61609_replay_20261007_v1.json SHA3db61f67a648258593382dd2adbfd508a2d8dbe0aeb077648b0e8b51f54d7f73;reference1463ea39 fixedidentities/order unchanged.
 - NormalhistoryADE61377->61609:hardCollision.487173->.467611,hardOther.394402->.383305,successSTT.252272->.255145,DT.290127->.310269,AT.400361->.371023. Smallselectedsample/notSR;DTfitworsebutfullSRup.
@@ -58,17 +58,17 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - PreserveDT/ATdata andold15gains;anchor5/6uniqueagequantiles pereligibleepisode fixedSHAorder,notchosenbynewfit. Insufficientvalidwindows mustfail,no label/filterrelaxation.
 - MainshortGPUdev4090GPU6 PASS16samples/4updates22708..22711;peak7.309GiB,train+val18.828s afterslowNAS/modelsetup. All4groupsconsumed;no savedcheckpoint. artifacts/stt_anchor_short_gpu_20261007_v1.
 - Runtimepreflight wa/results/STT_ANCHOR_RUNTIME_PREFLIGHT_20261007.json;66CPU+realshortGPU+v2fullsizesimulationauditPASS. CodebackedGitHubwa dd1fec9e2cba0450be7a33387c8a2e550db4cd91.
-- VALIDATING61715/72909 submitted2026-10-07T20:23:08Beijing;actual8A800/175sourcehashes/parent+plancontractPASS. At2026-10-08T01:05:42 lastloggedstep59700/new36993;actual_exposure reports37009optimizerupdates completed (global59716),1184272exposures/4groups9810,14286,1772,12514 matchsimulation;independent terminal audit stillpending.
+- ACCEPTED61715/72909:2026-10-08T01:25:14Beijing schedulerJob+TaskSUCCEEDED/workerCOMPLETE/all3modes73368. Finalstep59716,new37009updates,cumulative2epochs. Actual1184272=base726631+teacher457641;fourgroups9810/14286/1772/12514 and8ranks148034each independentlyverified.
 - source_stt_anchor_train_v1 clean175Python dd1fec9e;configwa/jobs/stt_anchor_train_a800_v1.yaml SHA4a5b465a9533c779a7990aa754575caee34dc302fa0238ecd62d3471cb3879ef. ReleaseSTT_ANCHOR_RELEASE_20261007.json/configGitHubb240ebd4.
-- Run:/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1;NOduplicateorstop. Finalcheckpoint/exposureexist butmetricsabsent01:05:42,schedulerJob+TaskRUNNING;checkpointnotopened/hashed;validationmode/batchprogressunknown.
-- Startupwa/results/STT_ANCHOR_STARTUP_61715_20261007.json;latestSTT_ANCHOR_VALIDATION_WATCH_61715_20261007T1645Z.json:20min11snapshots00:45..01:05,3schedulerRUNNING,train/exposureSHAunchanged/4fatal0;no validationcountornewSR. Prioroptimizercompletionwatch1618Z retained.
-- Frozenendflowverified:logevery25=>last59700normal;exposure+checkpointwrittenBEFOREsilent3modevalidation;metrics+COMPLETEonlyafterall73368windows/mode. AwaitSUCCEEDED+completefiniteheldoutthenfrozenaudit_stt_anchor_training.py;filepresenceorRUNNINGnotacceptance.
+- Checkpoint:/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt;SHA9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a;no overwrite/duplicate.
+- Finaltraining/evalrelease:wa/results/STUDENT61715_RELEASE_20261008.json. Priorstartup/optimizercompletion/validationwatches retained;silentvalidation endednormally,no restart.
+- Frozenaudit_stt_anchor_training PASS24596hashes/actual8rankexposure/parentANDoptimizer/LRloss/heldout;artifacts/stt_anchor_training_audit_61715_v1.json SHAd91dbb222847a30ddb843f895d3cdc84be17a98c871fb1f0f97a5212859aaa80. Auditusedtraindd1fec9e release,notlatercheckout.
 - TB stt_anchor_61715:00:45:48 local16006home/runs/tags/loss4HTTP200/latest59700/allreturnedfinite/11tags/no validation scalar. NewagentSSHclosed,remote6006/PIDnotreverified;existingmainobserverlive,no restart. Earlierfullhealth23:52 retained. ssh -o ExitOnForwardFailure=yes -N -L 16006:127.0.0.1:6006 devpod-a800 ;http://127.0.0.1:16006/#scalars
-- Historical61609lastlog->metrics elapsed3079.460s/mtime3079.461s (~51min19s),3modes73368each;checkpoint onlystat. Referenceincludeslast16updates/save/validation,NOT61715ETA orbatchprogress. Continueoriginaljob;no restartsolelyonsilence.
+- FinalofflineADE/FDE image.26574965/.46344470 point.25376165/.44215970 mixed.25379827/.44177998;73368each/SRnull. No new61715closedloopresult;last59700lognormal25stepcadence.
 - Initialization remains59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;1new/cumulative2epochs;not61609epoch3,noLR/loss/controllerchange.
 - Reserveoption ifevidenced:boundedstudent-failure-stateOracle/LightNavrecoverycollection,success-first/higherTR/tieLightNav;failedprefix/fallbacknotlabels. Notstartpointteacher successassumed recovery.
-- EvalSTT/DT/AT each8GPU,total24;00:35A80088total/49used/39free snapshotnotreservation. CLI2.0loginPASS;list --cluster baidu_bj_a800 --limit100 noduplicate61715eval;baidu_a800YAMLaliaslistingemptynotvalidcheck. Recheckbeforefullsubmit,nosmoke.
-- Evalfrozen source_student61715_eval24_v1 clean5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb;report STUDENT61715_EVAL_FREEZE_20261007.json:10dependencySHA/23unchangedevalfiles/2CPUenvimportsPASS;prior114CPU/4215inputpinsnotrepeated;finalweight/interface/24Habitatlanes/configpending,noevalsubmitted.
+- EvalSTT/DT/AT each8,total24/full4215:01:39resourceA80015free insufficient,H100 independentNASmissingneededenv/source/ckpt;baidu_bj_4090 72free/sharedGPFS verified.100myjobs/noactive/max61425,noduplicate;no reservation. 4090vs61609A800 disclosed,notbitwise-equivalence.
+- Evalfrozen source_student61715_eval24_v1 clean5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb;114CPU/10dependencySHA/23unchangedfiles/2CPUimportsPASS;actual24HabitatdefinitionlanesPASS4215 report9b40d627. FinalinterfacePASS2syntheticpredictions/secondnoBBox SHA25fecf25;3configs student61715_{stt,dt,at}_4090_v1.yaml syntaxPASS,RELEASE_READY_NOT_SUBMITTED;backupbeforeonce3jobs.
 - AfterSRgate only:explicitimage-mode sameweight UWBablation afterrealinterface/observerperturbation/Habitatcheck;notmixedzero ornoUWB-retrainingclaim.
 - Preserveallcheckpoints/results/failures;GitHubexistingwa announcebeforeeachpush. No weight/data/video upload. CURRENT<=80,PROGRESS<=150. Goal/20minmonitor remainACTIVE.
 
