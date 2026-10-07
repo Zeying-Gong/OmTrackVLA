@@ -1,0 +1,242 @@
+{
+  "schema": "wa.student61715.eval-preparation.v1",
+  "status": "CHECKPOINT_INDEPENDENT_PREPARATION_PASS_TRAINING_PENDING",
+  "previous_goal_turn": "PROGRESS: verified training startup, remote state and GitHub backup; no SR gate achieved",
+  "checked_at_utc": "2026-10-07T12:54:59.628758+00:00",
+  "training_job": 61715,
+  "training_task": 72909,
+  "scheduler": {
+    "status": "RUNNING",
+    "cluster": "baidu_bj_a800",
+    "gpus": 8,
+    "queried_this_turn": true
+  },
+  "live_training": {
+    "checked_utc": "2026-10-07T12:50:37.321161+00:00",
+    "job": 61715,
+    "task": 72909,
+    "status": "LIVE_FINITE_LR_LOSS_LOG_AUDIT_PASS_NOT_FINAL",
+    "records": 162,
+    "partial_trailing_bytes": 0,
+    "prefix2033_unchanged": true,
+    "first": {
+      "step": 22708,
+      "total_steps": 59716,
+      "phase_step": 1,
+      "epoch": 1,
+      "loss": 0.09069979190826416,
+      "flow": 0.07113401591777802,
+      "geometry": 0.0002614361001178622,
+      "world": 0.19435055553913116,
+      "loss_aggregation": "DDP_mean_over_accumulation_group",
+      "loss_rank0_last_microbatch": 0.1330556571483612,
+      "lr": [
+        2.5000001076719927e-7,
+        5.000000215343985e-7,
+        0.000005000000215343985,
+        0.000001000000043068797,
+        0.00001000000043068797
+      ],
+      "grad_norm": 0.6656566262245178,
+      "peak_allocated_gib": 8.66770315170288,
+      "elapsed_s": 2.4103260207921267
+    },
+    "last": {
+      "step": 26725,
+      "total_steps": 59716,
+      "phase_step": 4018,
+      "epoch": 1,
+      "loss": 0.10164785385131836,
+      "flow": 0.08233872801065445,
+      "geometry": 0.0005334342131391168,
+      "world": 0.19042423367500305,
+      "loss_aggregation": "DDP_mean_over_accumulation_group",
+      "loss_rank0_last_microbatch": 0.1098659485578537,
+      "lr": [
+        2.4352263618152523e-7,
+        4.870452723630505e-7,
+        0.000004870452723630504,
+        9.74090544726101e-7,
+        0.000009740905447261008
+      ],
+      "grad_norm": 0.5366263389587402,
+      "peak_allocated_gib": 8.972492218017578,
+      "elapsed_s": 1587.1779904812574
+    },
+    "logs": {
+      "console.log": {
+        "bytes": 93470,
+        "mtime": 1791377346.5279214,
+        "fatal_counts": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        },
+        "tail": [
+          "{\"step\": 26475, \"total_steps\": 59716, \"phase_step\": 3768, \"epoch\": 1, \"loss\": 0.07479430735111237, \"flow\": 0.05440859869122505, \"geometry\": 0.0001923281088238582, \"world\": 0.20289549231529236, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.06969450414180756, \"lr\": [2.4429712056026954e-07, 4.885942411205391e-07, 4.88594241120539e-06, 9.771884822410782e-07, 9.77188482241078e-06], \"grad_norm\": 0.47757062315940857, \"peak_allocated_gib\": 8.953418731689453, \"elapsed_s\": 1489.0707727260888}",
+          "{\"step\": 26500, \"total_steps\": 59716, \"phase_step\": 3793, \"epoch\": 1, \"loss\": 0.1245260089635849, \"flow\": 0.10495951771736145, \"geometry\": 0.0006455210968852043, \"world\": 0.1924373358488083, \"loss_aggregation\": \"DDP_mean_over_accumulation_group\", \"loss_rank0_last_microbatch\": 0.20723707973957062, \"lr\": [2.442218308532792e-07, 4.884436617065584e-07, 4.8844366170655836e-06, 9.768873234131168e-07, 9.768873234131167e-06], \"grad_norm\": 0.6042677164077759, \"peak_allocated_gib\": 8.955326080322266, \"elapsed_s\": 1498.7164214421064}"
+        ]
+      },
+      ".md-ak/workload.log": {
+        "bytes": 10206,
+        "mtime": 1791377433.4456291,
+        "fatal_counts": {
+          "Traceback (most recent call last)": 0,
+          "CUDA out of memory": 0,
+          "FloatingPointError": 0,
+          "Segmentation fault": 0
+        },
+        "tail": [
+          "2026-10-07T20:50:33.438+08:00 [INFO] [k8s] K8s Job ray-a800/job-61715-0 phase=Running",
+          "2026-10-07T20:50:33.445+08:00 [INFO] [k8s] Pod ray-a800/job-61715-0-s6nwk phase=Running node=172.20.0.20"
+        ]
+      }
+    },
+    "terminal_files_exist": {
+      "metrics.json": false,
+      "actual_exposure_epoch1.json": false,
+      "checkpoint.pt": false
+    },
+    "checkpoint_loaded_or_hashed": false
+  },
+  "protocol_inputs": {
+    "status": "CHECKPOINT_INDEPENDENT_EVALUATION_INPUTS_PASS",
+    "checked_utc": "2026-10-07T12:54:59.628758+00:00",
+    "git_commit": "e57fa74f78bd0ceb92ec186ae95ca3cf04c6af0b",
+    "source_hashes": {
+      "wa/scripts/eval_full_mixed.sh": "9b909878647bae92540e3207d31efce54db856db2bc59b774db9377e9722f32f",
+      "wa/wm/eval_full_mixed.py": "6d4f27759b8e14c385d2bd4aa1a502c6e0fd2cf4e0aee77753ec30cb7531b647",
+      "wa/wm/full_mixed_contract.py": "089337a5c295a9791756f18db462bf9d0154845ba1641d8bf1fd08ea65404355",
+      "wa/wm/student_eval_contract.py": "fdc7e9ad6c9aa14fd1c09ecfdc810f7b32a51f41eaeaf9381080a5e503886dfd",
+      "wa/wm/student_eval_finalize.py": "79d9764d60fbe07ec1b84d29a71adf4722b1b5df3454e28000f44b57033d13ba",
+      "wa/wm/student_eval_partition.py": "24a7769bbe8ca9e0550f14c77ee126a272f3f8b228739c7b025de3b901d7ec9e",
+      "wa/wm/student_pair_audit.py": "fed4c1a7b2fd85f9bf88076572bc92445bc87bb8ce34a45f0d9fb15652e0d376",
+      "wa/wm/semantic_scene.py": "043294941c3313528a11ad579b375b2caa60d7c902e7d773f8922576d2325b2f",
+      "wa/wm/initial_bbox_repair.py": "80efc853378e1bb1ea43b98b90eb0849ac9488849f5c35c1bcddb48e75612816",
+      "wa/wm/sim_uwb.py": "b578ce34aac6cbf2f75877caee89b9eb1d93e771e1eb6c28fb158510b4df10b8",
+      "wa/tools/merge_student_partitions.py": "ae8bbd5f213adb85e8ab5500b8a8e960fdac11f6841101bd8cf69cd60e638187",
+      "wa/tools/build_student_review.py": "a067d4af591a1c332efa209e967d27d793146dc4968cfe49d8c3b048303fdd1e",
+      "wa/tools/audit_student_goal.py": "15cda9d9665136b99cf0a771573986404706fec45a932299fc3cedd57f7c5ceb"
+    },
+    "input_hashes": {
+      "/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json": "a1f515534153ccaa720f787f01ea23b9097c174fe25020f756c7d7947eedf98f",
+      "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl": "f45f21d71b63d7f2a0898e1e762c393a95b0f3eaf8291bd1affbc827d23354d8",
+      "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json": "6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a"
+    },
+    "counts": {
+      "stt": [
+        176,
+        176,
+        176,
+        176,
+        176,
+        175,
+        175,
+        175
+      ],
+      "dt": [
+        176,
+        176,
+        176,
+        176,
+        176,
+        175,
+        175,
+        175
+      ],
+      "at": [
+        176,
+        176,
+        176,
+        176,
+        176,
+        175,
+        175,
+        175
+      ]
+    },
+    "total_unique": 4215,
+    "unchanged_from": "192b57f5e270acfffd8c7c1a4590cb1b257d92a3",
+    "runtime_diff": "A\twa/tools/audit_hard_stt_outcomes.py\nA\twa/tools/audit_stt_anchor_training.py\nA\twa/tools/build_stt_anchor_candidate.py\nA\twa/tools/replay_teacher_group_fit.py\nM\twa/wm/runtime_exposure.py\nM\twa/wm/teacher_plan_runtime.py\nA\twa/wm/teacher_plan_runtime_v2.py\nM\twa/wm/teacher_window_plan.py\nA\twa/wm/teacher_window_schedule.py\nM\twa/wm/train.py\n",
+    "checkpoint_read": false,
+    "gpu_used": false,
+    "simulator_reset": false,
+    "rollout": false
+  },
+  "cpu_tests": {
+    "status": "PASS",
+    "tests": 114,
+    "elapsed_seconds": 8.285,
+    "exit_code": 0,
+    "python": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python",
+    "modules": [
+      "wa.tests.test_full_mixed_allocation",
+      "wa.tests.test_full_mixed_contract",
+      "wa.tests.test_student_eval_contract",
+      "wa.tests.test_student_eval_finalize",
+      "wa.tests.test_student_eval_partition",
+      "wa.tests.test_student_pair_audit",
+      "wa.tests.test_merge_student_partitions",
+      "wa.tests.test_student_review",
+      "wa.tests.test_audit_student_goal",
+      "wa.tests.test_uwb_eval_mode",
+      "wa.tests.test_mixed_sensor",
+      "wa.tests.test_semantic_scene"
+    ],
+    "cuda_visible_devices": "",
+    "command": "ssh -o BatchMode=yes -o ConnectTimeout=10 devpod-a800 'cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout && CUDA_VISIBLE_DEVICES=\"\" PYTHONDONTWRITEBYTECODE=1 timeout 90 /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -m unittest wa.tests.test_full_mixed_allocation wa.tests.test_full_mixed_contract wa.tests.test_student_eval_contract wa.tests.test_student_eval_finalize wa.tests.test_student_eval_partition wa.tests.test_student_pair_audit wa.tests.test_merge_student_partitions wa.tests.test_student_review wa.tests.test_audit_student_goal wa.tests.test_uwb_eval_mode wa.tests.test_mixed_sensor wa.tests.test_semantic_scene -q && git status --short'",
+    "scope": "CPU fixtures only, including complete task ownership, new weight/mode identity, source-reference pinning and full denominators; not new-weight acceptance"
+  },
+  "planned_config_changes": {
+    "example_templates": [
+      "wa/jobs/student61609_stt_a800_v1.yaml",
+      "wa/jobs/student61609_dt_a800_v1.yaml",
+      "wa/jobs/student61609_at_a800_v1.yaml"
+    ],
+    "new_names": "Independent student61715 STT/DT/AT job names, log folders and job/task NAS output roots",
+    "frozen_source_and_commit": "New clean eval release after final model admission; not yet created",
+    "checkpoint_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+    "checkpoint_sha256": null,
+    "checkpoint_step": null,
+    "reason": "Final step59716 is planned, not checkpoint identity. Do not borrow61609 c510... with same planned step.",
+    "configuration_written": false,
+    "formal_jobs_submitted": false
+  },
+  "preserved_protocol": {
+    "episodes_per_task": 1405,
+    "tasks": [
+      "stt",
+      "dt",
+      "at"
+    ],
+    "gpus_per_task": 8,
+    "total_gpus": 24,
+    "total_episodes": 4215,
+    "mode": "mixed",
+    "noise": "zero",
+    "sampling_steps": 4,
+    "seed": 7,
+    "controller": "learned_yaw_guard_v1",
+    "student_eval_flag": "evaluation_set_adaptation_v1",
+    "semantic_fix": "mp3d_semantic_ply_v1",
+    "no_old_rows_reused": true,
+    "text_used": false,
+    "world_predictor_inference": false
+  },
+  "next_gates": [
+    "Scheduler SUCCEEDED, full heldout73368 each mode, final metrics/checkpoint/actual exposure all available.",
+    "Execute frozen source_stt_anchor_train_v1 audit_stt_anchor_training.py, explicit source dd1fec9e2cba0450be7a33387c8a2e550db4cd91 and config4a5b465a9533c779a7990aa754575caee34dc302fa0238ecd62d3471cb3879ef; do not hash/load active weights.",
+    "Bind actual final path/SHA/step and complete training audit. Evalserver does not independently validate training completion/epoch.",
+    "Freeze eval source/config, reverify dependency inventories and run actual Habitat --audit-only24 lanes; no reset/render or SR claimed from definitions.",
+    "Bounded real final-weight developer interface check in mixed/zero and validate_ready with actualSHA/step. Synthetic inputs are not benchmark/robot latency.",
+    "Refresh resources/NAS/duplicate jobs, announce complete commands/configs and submit three full8GPU tasks once; no cluster smoke.",
+    "Audit24COMPLETE/3PARTITION_COMPLETE/4215 unique and task1405, initialRGB/state, media, full denominators; merge, review and fixed-baseline goal audit.",
+    "Do not start noUWB until mixed thresholds1289/1173/1203 are met; retain evaluation-set-adaptation disclosure."
+  ],
+  "limits": [
+    "Training remains live. CPU/static progress is not improved model SR.",
+    "No new inference/rollout/checkpoint reading or additional formal job in this turn.",
+    "All old outputs/weights/frozen sources remain unchanged."
+  ]
+}

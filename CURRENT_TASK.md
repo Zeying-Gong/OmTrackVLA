@@ -58,7 +58,7 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - PreserveDT/ATdata andold15gains;anchor5/6uniqueagequantiles pereligibleepisode fixedSHAorder,notchosenbynewfit. Insufficientvalidwindows mustfail,no label/filterrelaxation.
 - MainshortGPUdev4090GPU6 PASS16samples/4updates22708..22711;peak7.309GiB,train+val18.828s afterslowNAS/modelsetup. All4groupsconsumed;no savedcheckpoint. artifacts/stt_anchor_short_gpu_20261007_v1.
 - Runtimepreflight wa/results/STT_ANCHOR_RUNTIME_PREFLIGHT_20261007.json;66CPU+realshortGPU+v2fullsizesimulationauditPASS. CodebackedGitHubwa dd1fec9e2cba0450be7a33387c8a2e550db4cd91.
-- RUNNING61715/72909 submitted20:23:08Beijing;actual8A800/175sourcehashes/parent+plancontractPASS20:26. At20:33:41 step24150/new1443of37009,firstprefixunchanged/logsgrowing;specifiedfatal0,NCCL/xFormerswarningsretained.
+- RUNNING61715/72909 submitted20:23:08Beijing;actual8A800/175sourcehashes/parent+plancontractPASS20:26. At20:50:37 step26725/new4018of37009;162finite-loss/LRrecords and20:33prefixunchanged;specifiedfatal0,NCCL/xFormerswarningsretained.
 - source_stt_anchor_train_v1 clean175Python dd1fec9e;configwa/jobs/stt_anchor_train_a800_v1.yaml SHA4a5b465a9533c779a7990aa754575caee34dc302fa0238ecd62d3471cb3879ef. ReleaseSTT_ANCHOR_RELEASE_20261007.json/configGitHubb240ebd4.
 - Run:/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1;NOduplicateorstop. finalcheckpoint/metrics/exposureabsent,intermediatefilesnotterminal;do notopen/hashactiveweights.
 - Newreportwa/results/STT_ANCHOR_STARTUP_61715_20261007.json;aftercompleteheldout+SUCCEEDED runfrozenaudit_stt_anchor_training.py withsource/configSHA,thenfull24GPU4215pair. GoalACTIVE/20minmonitorupdated.
@@ -66,6 +66,7 @@ Full older task: archive/2026-10/CURRENT_TASK_before_stt_goal_20261007.md; histo
 - Initialization remains59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;1new/cumulative2epochs;not61609epoch3,noLR/loss/controllerchange.
 - Reserveoption ifevidenced:boundedstudent-failure-stateOracle/LightNavrecoverycollection,success-first/higherTR/tieLightNav;failedprefix/fallbacknotlabels. Notstartpointteacher successassumed recovery.
 - EvalSTT/DT/AT each8GPU,total24;AGENTS resourceorder/NAS/preflight/frozenconfig,noclustersmoke/duplicatejob. Do notclaim runstartorloss asgoalprogress.
+- Evalpreparation wa/results/STUDENT61715_EVAL_PREPARATION_20261007.json:114CPUtestsPASS8.285s,13coreevalfilesunchangedfrom192b57f5,real4215manifest/teacher/repairpinsPASS;finalweight/realinterface/24Habitatlanes/newconfigstillpending,noevalsubmitted.
 - AfterSRgate only:explicitimage-mode sameweight UWBablation afterrealinterface/observerperturbation/Habitatcheck;notmixedzero ornoUWB-retrainingclaim.
 - Preserveallcheckpoints/results/failures;GitHubexistingwa announcebeforeeachpush. No weight/data/video upload. CURRENT<=80,PROGRESS<=150. Goal/20minmonitor remainACTIVE.
 
