@@ -1,0 +1,1201 @@
+{
+  "schema": "wa.student_eval_progress.v1",
+  "status": "PARTIAL_RUNNING_NOT_FINAL_RESULT",
+  "checked_utc": "2026-10-07T18:20:38.571848+00:00",
+  "checked_beijing": "2026-10-08 02:20:38",
+  "goal": {
+    "status": "ACTIVE",
+    "success_min": {
+      "stt": 1289,
+      "dt": 1173,
+      "at": 1203
+    },
+    "next_after_all_gates": "same-weight with/without UWB study"
+  },
+  "latest_complete_result": {
+    "model": 61609,
+    "success": {
+      "stt": 1279,
+      "dt": 1178,
+      "at": 1207
+    },
+    "new_61715_sr": null
+  },
+  "source_frozen_unchanged": true,
+  "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+  "snapshot": {
+    "checked_utc": "2026-10-07T18:20:38.571848+00:00",
+    "jobs": [
+      {
+        "kind": "stt",
+        "job": 61792,
+        "task_id": 72986,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+        "shards": [],
+        "scheduler": {
+          "returncode": 0,
+          "states": [
+            "SUBMITTED",
+            "SUBMITTED"
+          ]
+        },
+        "completed": 0,
+        "unique": 0,
+        "invalid": 0
+      },
+      {
+        "kind": "dt",
+        "job": 61793,
+        "task_id": 72987,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1",
+        "shards": [
+          {
+            "shard": "shard_00",
+            "logs": {
+              "worker.log": {
+                "bytes": 233267,
+                "mtime": 1791397201.2611263,
+                "sha256": "7a13d3cc0d8ebdfa1e0e7806e4c16bed6b2e24eaa1b18eb60e34976139919edb",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4705734,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.963295,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:42973"
+            },
+            "rows_mtime": 1791397198.7598867,
+            "completed": 10,
+            "keys": [
+              [
+                "dt",
+                "bzCsHPLDztK/1"
+              ],
+              [
+                "dt",
+                "uSKXQ5fFg6u/12"
+              ],
+              [
+                "dt",
+                "F7EAMsdDASd/15"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/3"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/1"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/10"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/0"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/18"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/14"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/11"
+              ]
+            ],
+            "invalid": 0,
+            "first_row": {
+              "finish": true,
+              "status": "Normal",
+              "success": 1,
+              "following_rate": 0.8548387096774194,
+              "following_step": 53,
+              "total_step": 62,
+              "collision": 0,
+              "policy_init_valid": true,
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "checkpoint_step": 59716,
+              "task": "dt",
+              "key": "bzCsHPLDztK/1",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "controller": "learned_yaw_guard_v1",
+              "initial_rgb_sha256": "0bfa25c7f8d3eb177876978b5260266498ec9248e0305fe2eaf4a584976e7f9c",
+              "semantic_protocol": "mp3d_semantic_ply_v1",
+              "semantic_ply_repaired": false
+            }
+          },
+          {
+            "shard": "shard_01",
+            "logs": {
+              "worker.log": {
+                "bytes": 256136,
+                "mtime": 1791397224.2601206,
+                "sha256": "20abe0119d322f70b17da12901fb843ee45f0f36c58bc0bac120479a77229129",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.495115,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.969489,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:45495"
+            },
+            "rows_mtime": 1791397221.5450416,
+            "completed": 11,
+            "keys": [
+              [
+                "dt",
+                "bzCsHPLDztK/8"
+              ],
+              [
+                "dt",
+                "uSKXQ5fFg6u/14"
+              ],
+              [
+                "dt",
+                "FnSn2KSrALj/1"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/4"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/2"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/11"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/1"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/1"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/2"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/12"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/6"
+              ]
+            ],
+            "invalid": 0,
+            "first_row": {
+              "finish": false,
+              "status": "Collision",
+              "success": 0,
+              "following_rate": 0.7272727272727273,
+              "following_step": 8,
+              "total_step": 11,
+              "collision": 1,
+              "policy_init_valid": true,
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "checkpoint_step": 59716,
+              "task": "dt",
+              "key": "bzCsHPLDztK/8",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "controller": "learned_yaw_guard_v1",
+              "initial_rgb_sha256": "422a033edaf485ffdf0f4534ea6ad49ff4407bdd5d833a7f4191729529f805ac",
+              "semantic_protocol": "mp3d_semantic_ply_v1",
+              "semantic_ply_repaired": false
+            }
+          },
+          {
+            "shard": "shard_02",
+            "logs": {
+              "worker.log": {
+                "bytes": 211223,
+                "mtime": 1791397232.587181,
+                "sha256": "b94f662fe66cbd1be28ccc5bf3554022684aac475ed2aade64a040e89db33a05",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.5110395,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.970005,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:33759"
+            },
+            "rows_mtime": 1791397229.9334726,
+            "completed": 9,
+            "keys": [
+              [
+                "dt",
+                "fsQtJ8t3nTf/9"
+              ],
+              [
+                "dt",
+                "L53DsRRk4Ch/7"
+              ],
+              [
+                "dt",
+                "FnSn2KSrALj/3"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/5"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/3"
+              ],
+              [
+                "dt",
+                "z9YwN9M8FpG/4"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/2"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/2"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/3"
+              ]
+            ],
+            "invalid": 0,
+            "first_row": {
+              "finish": true,
+              "status": "Normal",
+              "success": 1,
+              "following_rate": 1,
+              "following_step": 300,
+              "total_step": 300,
+              "collision": 0,
+              "policy_init_valid": true,
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "checkpoint_step": 59716,
+              "task": "dt",
+              "key": "fsQtJ8t3nTf/9",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "controller": "learned_yaw_guard_v1",
+              "initial_rgb_sha256": "3131a94d4d4264cc0ea2ad68050e280eec3eaf6e5669b73628c6b4b2facb7ff5",
+              "semantic_protocol": "mp3d_semantic_ply_v1",
+              "semantic_ply_repaired": false
+            }
+          },
+          {
+            "shard": "shard_03",
+            "logs": {
+              "worker.log": {
+                "bytes": 255681,
+                "mtime": 1791397221.8124778,
+                "sha256": "8acca02673feb33b73e1444b3761da0a00f190719c12fae73d09727c312a022f",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4702392,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.975344,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:36637"
+            },
+            "rows_mtime": 1791397219.4242356,
+            "completed": 11,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/0"
+              ],
+              [
+                "dt",
+                "rJhMRvNn4DS/4"
+              ],
+              [
+                "dt",
+                "FnSn2KSrALj/5"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/6"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/4"
+              ],
+              [
+                "dt",
+                "z9YwN9M8FpG/8"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/3"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/6"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/4"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/14"
+              ],
+              [
+                "dt",
+                "u8ug2rtNARf/4"
+              ]
+            ],
+            "invalid": 0,
+            "first_row": {
+              "finish": true,
+              "status": "Normal",
+              "success": 1,
+              "following_rate": 0.8392857142857143,
+              "following_step": 47,
+              "total_step": 56,
+              "collision": 0,
+              "policy_init_valid": true,
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "checkpoint_step": 59716,
+              "task": "dt",
+              "key": "uSKXQ5fFg6u/0",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "controller": "learned_yaw_guard_v1",
+              "initial_rgb_sha256": "6fc57ae4d3491eab05b8d4329c1f7ea019eb1ffbe24e8feb07930dfaee88f0c3",
+              "semantic_protocol": "mp3d_semantic_ply_v1",
+              "semantic_ply_repaired": false
+            }
+          },
+          {
+            "shard": "shard_04",
+            "logs": {
+              "worker.log": {
+                "bytes": 234034,
+                "mtime": 1791397152.8948498,
+                "sha256": "ec4e2dcd995b636b9d62d08a43d9153523fed97f11030878058b3669c54af331",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4704227,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.981129,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:36293"
+            },
+            "rows_mtime": 1791397149.8803265,
+            "completed": 10,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/4"
+              ],
+              [
+                "dt",
+                "rJhMRvNn4DS/5"
+              ],
+              [
+                "dt",
+                "FnSn2KSrALj/8"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/7"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/6"
+              ],
+              [
+                "dt",
+                "z9YwN9M8FpG/9"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/5"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/7"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/6"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/0"
+              ]
+            ],
+            "invalid": 0,
+            "first_row": {
+              "finish": true,
+              "status": "Normal",
+              "success": 0,
+              "following_rate": 0.9838709677419355,
+              "following_step": 61,
+              "total_step": 62,
+              "collision": 0,
+              "policy_init_valid": true,
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "checkpoint_step": 59716,
+              "task": "dt",
+              "key": "uSKXQ5fFg6u/4",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "controller": "learned_yaw_guard_v1",
+              "initial_rgb_sha256": "9ded7d67cc5c1f11f10cb87c63b77ef1b70f7481476fa58760b9ba2a6974cbed",
+              "semantic_protocol": "mp3d_semantic_ply_v1",
+              "semantic_ply_repaired": false
+            }
+          },
+          {
+            "shard": "shard_05",
+            "logs": {
+              "worker.log": {
+                "bytes": 209172,
+                "mtime": 1791397221.588686,
+                "sha256": "541d71c7248020a578201fc0f764aa11ef76df6da6348224b0916135dc51d701",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4914079,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.986517,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:42475"
+            },
+            "rows_mtime": 1791397219.0621355,
+            "completed": 9,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/5"
+              ],
+              [
+                "dt",
+                "rJhMRvNn4DS/8"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/0"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/8"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/7"
+              ],
+              [
+                "dt",
+                "hyFzGGJCSYs/0"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/7"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/8"
+              ],
+              [
+                "dt",
+                "bxsVRursffK/7"
+              ]
+            ],
+            "invalid": 0,
+            "first_row": {
+              "finish": true,
+              "status": "Normal",
+              "success": 1,
+              "following_rate": 0.9649122807017544,
+              "following_step": 55,
+              "total_step": 57,
+              "collision": 0,
+              "policy_init_valid": true,
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "checkpoint_step": 59716,
+              "task": "dt",
+              "key": "uSKXQ5fFg6u/5",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "controller": "learned_yaw_guard_v1",
+              "initial_rgb_sha256": "b67bfa83dc3a46e6deb224e18b95604aa15256445f8404a224e080dce5e9046e",
+              "semantic_protocol": "mp3d_semantic_ply_v1",
+              "semantic_ply_repaired": false
+            }
+          },
+          {
+            "shard": "shard_06",
+            "logs": {
+              "worker.log": {
+                "bytes": 187788,
+                "mtime": 1791397221.8440266,
+                "sha256": "e06a24030bebd5a61f92a9dd6d7e5652e83bde5c448187513cc44344c4a47891",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.45673,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.992227,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:44587"
+            },
+            "rows_mtime": 1791397219.3133063,
+            "completed": 8,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/6"
+              ],
+              [
+                "dt",
+                "F7EAMsdDASd/10"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/1"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/9"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/8"
+              ],
+              [
+                "dt",
+                "u1bkiGRVyu9/0"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/12"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/12"
+              ]
+            ],
+            "invalid": 0,
+            "first_row": {
+              "finish": true,
+              "status": "Normal",
+              "success": 1,
+              "following_rate": 0.9803921568627451,
+              "following_step": 50,
+              "total_step": 51,
+              "collision": 0,
+              "policy_init_valid": true,
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "checkpoint_step": 59716,
+              "task": "dt",
+              "key": "uSKXQ5fFg6u/6",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "controller": "learned_yaw_guard_v1",
+              "initial_rgb_sha256": "0878fd40308575549bc44e927b210e9f67da3243ec38aa5aa2d3d5095728ca76",
+              "semantic_protocol": "mp3d_semantic_ply_v1",
+              "semantic_ply_repaired": false
+            }
+          },
+          {
+            "shard": "shard_07",
+            "logs": {
+              "worker.log": {
+                "bytes": 258036,
+                "mtime": 1791397238.8691947,
+                "sha256": "60bbb1e4cb91c9a34897418f82c0f303ec634ef6453848526aec5fa973e59f44",
+                "tail": [
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+                  "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "server.log": {
+                "bytes": 850,
+                "mtime": 1791396713.4521658,
+                "sha256": "da18a5c4053b5b48bc5776eb69009af274c814ac888318fa11fb837b0d1c3c02",
+                "tail": [
+                  "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)",
+                  "  warnings.warn(\"xFormers is not available (Block)\")",
+                  "[INFO    ][2026-10-08 02:11:26][app.plan_common.models.AdaLN_vit][__init__                 ] 🔧 Initialized 6 AdaLN blocks (scale_factor=10)",
+                  "WA_SERVER_READY"
+                ],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              },
+              "xvfb.log": {
+                "bytes": 0,
+                "mtime": 1791396713.997715,
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "tail": [],
+                "fatal": {
+                  "Traceback (most recent call last)": 0,
+                  "CUDA out of memory": 0,
+                  "FloatingPointError": 0,
+                  "Segmentation fault": 0,
+                  "Fatal Python error": 0
+                }
+              }
+            },
+            "ready": {
+              "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "step": 59716,
+              "gpu": "NVIDIA GeForce RTX 4090",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "sampling_steps": 4,
+              "seed": "7+step",
+              "text_used": false,
+              "world_predictor_inference": false,
+              "url": "http://127.0.0.1:42191"
+            },
+            "rows_mtime": 1791397236.3319433,
+            "completed": 11,
+            "keys": [
+              [
+                "dt",
+                "uSKXQ5fFg6u/9"
+              ],
+              [
+                "dt",
+                "F7EAMsdDASd/11"
+              ],
+              [
+                "dt",
+                "tQ5s4ShP627/2"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/0"
+              ],
+              [
+                "dt",
+                "nrA1tAA17Yp/9"
+              ],
+              [
+                "dt",
+                "u1bkiGRVyu9/5"
+              ],
+              [
+                "dt",
+                "a8BtkwhxdRV/13"
+              ],
+              [
+                "dt",
+                "cYkrGrCg2kB/13"
+              ],
+              [
+                "dt",
+                "DYehNKdT76V/4"
+              ],
+              [
+                "dt",
+                "q3hn1WQ12rz/3"
+              ],
+              [
+                "dt",
+                "4ok3usBNeis/8"
+              ]
+            ],
+            "invalid": 0,
+            "first_row": {
+              "finish": true,
+              "status": "Normal",
+              "success": 1,
+              "following_rate": 1,
+              "following_step": 66,
+              "total_step": 66,
+              "collision": 0,
+              "policy_init_valid": true,
+              "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+              "checkpoint_step": 59716,
+              "task": "dt",
+              "key": "uSKXQ5fFg6u/9",
+              "mode": "mixed",
+              "noise_mode": "zero",
+              "controller": "learned_yaw_guard_v1",
+              "initial_rgb_sha256": "4235c4d730eba2895f0aa9956b1b49fa6b626932b74236fbe4c46092db571cc4",
+              "semantic_protocol": "mp3d_semantic_ply_v1",
+              "semantic_ply_repaired": false
+            }
+          }
+        ],
+        "scheduler": {
+          "returncode": 0,
+          "states": [
+            "RUNNING",
+            "RUNNING"
+          ]
+        },
+        "completed": 79,
+        "unique": 79,
+        "invalid": 0
+      },
+      {
+        "kind": "at",
+        "job": 61794,
+        "task_id": 72988,
+        "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1",
+        "shards": [],
+        "scheduler": {
+          "returncode": 0,
+          "states": [
+            "SUBMITTED",
+            "SUBMITTED"
+          ]
+        },
+        "completed": 0,
+        "unique": 0,
+        "invalid": 0
+      }
+    ],
+    "frozen_commit": "5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb",
+    "frozen_status": "",
+    "checkout_commit": "67f9ccc0d18f40c90d05058daa3013c4975daa45",
+    "checkout_status": ""
+  },
+  "previous_dt_observation": {
+    "checked_utc": "2026-10-07T18:18:18.629415+00:00",
+    "completed": 51,
+    "unique": 51,
+    "invalid": 0
+  },
+  "scheduler_boundary": "Repeated old FailedScheduling events remain in DT workload.log after actual Pod Running on172.20.32.147. Scheduler RUNNING alone does not establish evaluation progress.",
+  "resource_readonly_audit": {
+    "new_jobs": [
+      61792,
+      61793,
+      61794
+    ],
+    "previous_successful_jobs": [
+      61423,
+      61424,
+      61425
+    ],
+    "same_image_and_8gpu_config": true,
+    "explicit_cpu_memory_yaml": false,
+    "installed_submitter_default": {
+      "cpu_request": 56,
+      "memory_request_Gi": 472,
+      "cpu_limit": 112,
+      "memory_limit_Gi": 944
+    },
+    "sources": [
+      "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/lib/python3.11/site-packages/md_ai_kit/common/workload.py:20",
+      "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/lib/python3.11/site-packages/md_ai_kit/cluster/k8s_job.py:62",
+      "/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/lib/python3.11/site-packages/md_ai_kit/cluster/workload_templates/baidu/k8sjob/4090.yaml:65"
+    ],
+    "limitations": [
+      "Live Pod resource spec and node allocatable/requested not verified.",
+      "Normal read-only K8s interface import failed with ModuleNotFoundError kubernetes before any API call. No installation or alternative credentials used."
+    ]
+  },
+  "finalization_readonly_preparation": {
+    "executed": false,
+    "tools": [
+      "wa.tools.merge_student_partitions",
+      "wa.tools.audit_student_goal",
+      "wa.tools.build_student_review"
+    ],
+    "goal_baseline": "61377 fixed original goal contract; do not substitute61609",
+    "additional_comparison": "61715 versus61609 full4215 pair gains/regressions with fixed original61609 result hashes",
+    "coverage_required": [
+      "all3schedulerSUCCEEDED and24shardCOMPLETE",
+      "4215unique exactkeys and1405each",
+      "24ready actualhardware andmodelcontract",
+      "raw initialRGB anddynamicstate matchbothteachers",
+      "summary reference-normalizedTR withmacroTR separate; invalid included",
+      "4215firstJPEGhash andvideo stream positivefinite duration; notallframesdecoded"
+    ]
+  },
+  "actions_not_taken": [
+    "no stop",
+    "no resubmission",
+    "no runtime source or checkpoint mutation",
+    "no training",
+    "no partial-SR claim",
+    "no UWB evaluation before SR gates"
+  ]
+}
