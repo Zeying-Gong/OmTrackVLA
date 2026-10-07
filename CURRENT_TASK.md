@@ -14,7 +14,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Frozen source_hard_stt_train_v1 commit8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06;clean;159Pythonfiles match developer diagnostic.
 - Config wa/jobs/hard_stt_train_a800_v1.yaml SHA99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184;GitHubfda647a7.
 - Parent59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;new1epoch cumulative2;planned37009updates/end59716.
-- Actual training snapshot2026-10-07 11:50Beijing: step33000/59716, phase10293/37009, elapsed4372.820s, loss0.116034, gradnorm0.87709, peak9.451GiB. Logs grow; finalcheckpoint/metrics/exposure absent; no new closedloop score. Startup warnings retained.
+- Actual training snapshot2026-10-07 12:14Beijing: step36475/59716, phase13768/37009, elapsed5834.637s, loss0.134842, gradnorm1.16431, peak9.716GiB. Tenminute watch12343->13768(+1425);logs recent<=8.9s,finite andno checked fatal markers. Finalcheckpoint/metrics/exposure absent;no newSR.
 - Final phase order verified in frozen source: exposure write/barrier -> direct checkpoint save/barrier -> 8rank heldout(image/point/mixed) -> metrics/COMPLETE. No atomic-save sentinel; do not load active checkpoint or launch evaluation before final acceptance. Old61377 checkpoint->metrics tail51m02s is historical estimate only.
 - Live TensorBoard run hard_stt_61609 verified from scalar API. Existing server6006/exporter2619386; ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars . No new local tunnel.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
