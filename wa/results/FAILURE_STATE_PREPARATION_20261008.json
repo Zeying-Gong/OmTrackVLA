@@ -1,0 +1,577 @@
+{
+  "utc": "2026-10-07T23:18:00Z",
+  "parent_commit": "51270d98439cd970a2f6d3cd032fd5ca75a16570",
+  "plan": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_plan_61609_v1.json",
+    "sha256": "2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b",
+    "entries": 126,
+    "lanes": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      15,
+      15
+    ],
+    "protocol_sha256": "734ef66947dd0c318bdee5cb990929b313647370003ff889ff29f77391ed2e4a",
+    "training_released": false
+  },
+  "cpu": {
+    "count": 86,
+    "seconds": 0.476,
+    "status": "PASS",
+    "earlier": [
+      {
+        "count": 62,
+        "seconds": 0.363
+      },
+      {
+        "count": 66,
+        "seconds": 0.457
+      }
+    ],
+    "failed_import_attempt": {
+      "cause": "missing benchmark B in PYTHONPATH for scripts.da3.teacher_recorder",
+      "passed": 45,
+      "import_errors": 1,
+      "fixed_environment_only": true
+    },
+    "final": {
+      "count": 87,
+      "seconds": 0.487,
+      "status": "PASS"
+    }
+  },
+  "source_hashes": {
+    "wa/wm/failure_state_collect.py": "cf7f46937c4612f50199a48f09c197a46a31d11c79ce1f02782de622da5f5f81",
+    "wa/wm/failure_state_protocol.py": "fa86cf6aa5a605ac6bc6a46ce7f7d3f783de71fa7f89591dcb21c85100d3f901",
+    "wa/wm/failure_state_recorder.py": "558a105a8d39655a0095abad6bd9d36edf75e39918c4afc61850f810a57bad7f",
+    "wa/tools/build_failure_state_plan.py": "137eb7f2fa14702e22c6fa88f039859794a49459ec5e7aa4f830f73df1d8c525",
+    "wa/tools/failure_state_launch.py": "90b667009c27253342b233d124aa293d1f317e1cafe3191abed42131ed1103ed",
+    "wa/tests/test_failure_state_collect.py": "79321b930efa1d9c526570ff186b6f77797fc8d4891769df33b3d067d87d7fe2",
+    "wa/tests/test_failure_state_protocol.py": "7324582015a02be2be262e145078097705c169c3a82ca2d9dafd15e4bc8f43a9",
+    "wa/tests/test_failure_state_recorder.py": "6301c74a857cb0b4f49c0e094405d4f5f6b5cbb9bac798dadb6d0af41460963b",
+    "wa/tests/test_failure_state_launch.py": "1f575ac4933157e5fd62a91f96a2bdc486ebb654aaf19eaa0beee668fb973c2e"
+  },
+  "definition_check": {
+    "status": "PASS_DEFINITION_WITH_UNANNOTATED_HM3D_LIMIT",
+    "actor": "paired_failure_audit independent read-only actual Habitat Dataset",
+    "read_utc": [
+      "2026-10-07T22:50:32.646419+00:00",
+      "2026-10-07T22:52:05.165771+00:00"
+    ],
+    "semantic_config_crosscheck_utc": "2026-10-07T22:53:51.238733+00:00",
+    "plan_bytes": 183384,
+    "loaded_episodes": 1405,
+    "unique_keys": 1405,
+    "full_manifest_keyset_match": true,
+    "checked_entries": 126,
+    "lanes": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      15,
+      15
+    ],
+    "matched_fields": [
+      "task",
+      "key",
+      "manifest_index",
+      "resolved_scene_id",
+      "episode_id",
+      "instruction"
+    ],
+    "hm3d_episodes": 68,
+    "mp3d_episodes": 58,
+    "hm3d_scenes": 42,
+    "mp3d_scenes": 10,
+    "render_glbs_present": 52,
+    "mp3d_semantic_plys_present": 10,
+    "registered_hm3d_semantic_present": 14,
+    "registered_hm3d_semantic_missing": 0,
+    "unannotated_hm3d_scenes": 28,
+    "unannotated_selected_episodes": 44,
+    "correction": {
+      "initial_conservative_diagnostic": "FAIL_MISSING_ASSET",
+      "reason": "All HM3D semantic files were initially treated as required; subsequent actual annotated config membership showed 28 undeclared/unannotated scenes, all14 declared scenes complete. No runtime static semantic coverage claim."
+    },
+    "dataset_sha256": "8a96fe3be38ab78b0b8985e71645eef337d396be126bbd78ce1c87ffef5a0c63",
+    "stt_config_sha256": "f16d6d7ae84251b7cb4e28207f330012247b0acdbc938662b7c5068edabfd013",
+    "hm3d_config_sha256": "c16fa23b09e36d528c3f12c9799eaa9cf0d733dcd22c9f329c0508d551b640a4",
+    "mp3d_config_sha256": "1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6",
+    "selected_bbox_repair_keys": [
+      "stt:pRbA3pwrgk9/27"
+    ],
+    "no_gpu_or_rollout": true
+  },
+  "launcher_independent_tests": {
+    "cpu_count": 20,
+    "cpu_seconds": 0.032,
+    "real_plan_command_expansion_seconds": 2.184,
+    "owned_processgroup_cpu_test": "PASS exited leader retained with WNOWAIT; live owned child group removed, exit0",
+    "retained_limitation": "RESOLVED before v2: constructor stops only its own new process group if spawn journaling raises; added CPU test and full87test pass."
+  },
+  "code_audit": {
+    "agent": "paired_failure_audit",
+    "status": "ZERO_WINDOW_STOP_CONDITION_FIXED",
+    "fix": "Selected original candidate must explicitly have >0 valid teacher-owned windows after successful repeat; preserve same-k TR/tie selection and continue earlier k if zero, never switch to other same-k teacher.",
+    "init_flag_missing": "reject before record completion",
+    "proof_scope": "Actual raw RGB, world time, articulated transforms/joints atol1e-6, action ownership; no hidden RNG/contact-state equivalence assertion",
+    "student_or_repeat_labels": false,
+    "training_released": false
+  },
+  "final_source_hashes": {
+    "wa/wm/failure_state_collect.py": "7ecd5bf10ca4dfa68b372d202b67ab4b425dd6cd55cd298909d46c8e8e0932c3",
+    "wa/wm/failure_state_protocol.py": "fa86cf6aa5a605ac6bc6a46ce7f7d3f783de71fa7f89591dcb21c85100d3f901",
+    "wa/wm/failure_state_recorder.py": "558a105a8d39655a0095abad6bd9d36edf75e39918c4afc61850f810a57bad7f",
+    "wa/tools/build_failure_state_plan.py": "137eb7f2fa14702e22c6fa88f039859794a49459ec5e7aa4f830f73df1d8c525",
+    "wa/tools/failure_state_launch.py": "97e465d84802e6727abb99f29c2a7b00eab7c3830cc3eff6f6047bb034410495",
+    "wa/tests/test_failure_state_collect.py": "79321b930efa1d9c526570ff186b6f77797fc8d4891769df33b3d067d87d7fe2",
+    "wa/tests/test_failure_state_protocol.py": "7324582015a02be2be262e145078097705c169c3a82ca2d9dafd15e4bc8f43a9",
+    "wa/tests/test_failure_state_recorder.py": "6301c74a857cb0b4f49c0e094405d4f5f6b5cbb9bac798dadb6d0af41460963b",
+    "wa/tests/test_failure_state_launch.py": "2c8d159e67a63930afb6ae71464c8176755044cfb32d9795df337a5593dc6feb",
+    "wa/scripts/failure_state_collect.sh": "78793cc06107cb3a4477d6eb43c9c62cddf3e6b72e0b46de49bd80d8a3a8bf94"
+  },
+  "development_attempts": [
+    {
+      "id": "failure_state_developer_20261008_v1",
+      "status": "FAILED_BEFORE_EPISODE",
+      "actions": 0,
+      "formal_job": false,
+      "cause": "Hydra MissingConfigException other_humanoid_detector_sensor; new Runtime omitted import evt_bench before habitat.get_config",
+      "fix": "Explicit benchmark registration import before Hydra composition; no model/config/criteria changes",
+      "source_hashes": {
+        "wa/wm/failure_state_collect.py": "cf7f46937c4612f50199a48f09c197a46a31d11c79ce1f02782de622da5f5f81",
+        "wa/wm/failure_state_protocol.py": "fa86cf6aa5a605ac6bc6a46ce7f7d3f783de71fa7f89591dcb21c85100d3f901",
+        "wa/wm/failure_state_recorder.py": "558a105a8d39655a0095abad6bd9d36edf75e39918c4afc61850f810a57bad7f",
+        "wa/tools/build_failure_state_plan.py": "137eb7f2fa14702e22c6fa88f039859794a49459ec5e7aa4f830f73df1d8c525",
+        "wa/tools/failure_state_launch.py": "90b667009c27253342b233d124aa293d1f317e1cafe3191abed42131ed1103ed",
+        "wa/tests/test_failure_state_collect.py": "79321b930efa1d9c526570ff186b6f77797fc8d4891769df33b3d067d87d7fe2",
+        "wa/tests/test_failure_state_protocol.py": "7324582015a02be2be262e145078097705c169c3a82ca2d9dafd15e4bc8f43a9",
+        "wa/tests/test_failure_state_recorder.py": "6301c74a857cb0b4f49c0e094405d4f5f6b5cbb9bac798dadb6d0af41460963b",
+        "wa/tests/test_failure_state_launch.py": "1f575ac4933157e5fd62a91f96a2bdc486ebb654aaf19eaa0beee668fb973c2e"
+      },
+      "process_cleanup": {
+        "worker_exit": 1,
+        "lightnav_exit": -9,
+        "wa_exit": -15,
+        "all_created_processes_reaped": true,
+        "gpu6_after_mib": 1,
+        "port19170_and_x570_released": true
+      },
+      "hashes": {
+        "ERROR.json": "da32c138013a2f14621b2a839b42b17e62e9af1fc77f27f469e2404a48ec70a3",
+        "lane0/worker.log": "3b59266eec80429b5dfa50653de3efba7ee4996a77edf264ec40debf7324c15a",
+        "lane0/wa.log": "0b019cb7747dddf1c4164a86f531620bbce9275a225d6544a5991d1a663ef81c",
+        "lane0/teacher.log": "e5f6b9b8d8f2d902d93c86bf4c2ac73a3b40e4e239e7d5584b2ef90aeff4f761",
+        "lane0/processes.jsonl": "b3d7b03334cb45e3ba650265ab9a64048a3bdbd60573785a961519a480d8d562"
+      }
+    },
+    {
+      "id": "failure_state_developer_20261008_v2",
+      "status": "PASS_DEVELOPER_EVIDENCE_ONLY",
+      "formal_job": false,
+      "key": "stt:VLzqgDo317F/238",
+      "actions_each": 24,
+      "takeover_step": 20,
+      "teacher_actions_each": 4,
+      "replay_verified_frames_each": 21,
+      "transport_fallbacks": 0,
+      "issues": [],
+      "first_start_matches_original_61609": true,
+      "raw_rgb_and_state_prefix_exact": true,
+      "max_recorded_state_difference": 0,
+      "valid_rgb_pngs": 72,
+      "recomputed_state_hashes": 72,
+      "root_finished_utc": "2026-10-07T23:05:17.185018+00:00",
+      "process_exit": {
+        "worker": 0,
+        "lightnav": 0,
+        "wa": -15
+      },
+      "cleanup_explanation": "WA SIGTERM owned launcher cleanup after worker success, not worker failure",
+      "main_audit": {
+        "hashes": {
+          "DEVELOPMENT_CHECK.json": {
+            "bytes": 500,
+            "sha256": "feeaf927c0cb17da86addf5739575aa4bf8186585c39745de602e4ec44908d24"
+          },
+          "lane0/collection/DEVELOPMENT_CHECK.json": {
+            "bytes": 401,
+            "sha256": "bfd218de063c66637699bc29a8bba9a79ffa0a9b95d6efeee7f9d2c26bc5d068"
+          },
+          "lane0/lane_outcome.json": {
+            "bytes": 551,
+            "sha256": "fe182c07c2726d73dba0cbd25602a8152157e722055e272f8f3819adf383e42e"
+          },
+          "lane0/wa_ready.json": {
+            "bytes": 453,
+            "sha256": "456037db7107a30e26da0a11948ee00b58ccc7d4f045e994fc1486ae1c905086"
+          },
+          "lane0/processes.jsonl": {
+            "bytes": 8943,
+            "sha256": "9a901c62844a19ae516f1f0a3cd51195cca5307df7b88fe0b4691af6c63cc488"
+          },
+          "lane0/worker.log": {
+            "bytes": 6217,
+            "sha256": "38d6d796fc7ab16f889db6f8d02f28c1d1304f46c074e2fcbd92e821948e346f"
+          },
+          "lane0/teacher.log": {
+            "bytes": 15452,
+            "sha256": "366feb654eb4bd753c4ff21a4e624c86e6beff31dc582ed9b814226f137ab3b1"
+          },
+          "lane0/wa.log": {
+            "bytes": 850,
+            "sha256": "6d5ff5a81865fa95342b9915d04ef9b6b13d254a4515e62592e0d83d38e9eb4e"
+          }
+        },
+        "branch": {
+          "student": {
+            "schema": "evaluation_adaptation_failure_state_v1",
+            "takeover_step": null,
+            "initial_rgb_sha256": "10c4fd357c348f0a30eb34d384eb8cf9b46fd7c0c2ffe95ccb19f2505c45867f",
+            "replay_verified": false,
+            "transport_fallback": false,
+            "agent_validation": {
+              "agent_step_before_reset": null,
+              "replay_wrapper": false,
+              "prefix_hash_matches": false,
+              "environment_bound": false,
+              "takeover_matches": false,
+              "verified_prefix_frames": 0,
+              "required_prefix_frames": 0,
+              "replay_verified": false,
+              "verification_source": "successful ReplayThenTeacher.act calls before final reset",
+              "proof_scope": "t=0..k raw RGB plus world time and articulated transforms/joints, atol=1e-6",
+              "hidden_rng_contact_state_proven": false
+            },
+            "owned_suffix": {
+              "action_count": 0,
+              "start_observation_index": null,
+              "end_observation_index_inclusive": null,
+              "start_step": null,
+              "end_step_inclusive": null,
+              "contiguous": false,
+              "poststate_claim": "none; only next preaction frames are observed"
+            },
+            "issues": [],
+            "training_eligible": false,
+            "training_released": false,
+            "no_success_rate": true,
+            "complete": false,
+            "top_keys": [
+              "experiment",
+              "partition",
+              "schema",
+              "task",
+              "key",
+              "teacher",
+              "takeover_step",
+              "seed",
+              "protocol_sha256",
+              "prefix_sha256",
+              "initial_rgb_sha256",
+              "takeover_state_sha256",
+              "actual_takeover_state_sha256",
+              "takeover_observation_index",
+              "complete",
+              "replay_verified",
+              "transport_fallback",
+              "agent_validation",
+              "owned_suffix",
+              "issues",
+              "verification_only",
+              "training_eligible",
+              "training_released",
+              "status",
+              "reason",
+              "no_success_rate",
+              "no_terminal_result",
+              "metadata",
+              "observations",
+              "actions",
+              "replay",
+              "first_start",
+              "takeover",
+              "fallback_events"
+            ]
+          },
+          "oracle_takeover0020": {
+            "schema": "evaluation_adaptation_failure_state_v1",
+            "takeover_step": 20,
+            "initial_rgb_sha256": "10c4fd357c348f0a30eb34d384eb8cf9b46fd7c0c2ffe95ccb19f2505c45867f",
+            "replay_verified": true,
+            "transport_fallback": false,
+            "agent_validation": {
+              "agent_step_before_reset": 24,
+              "replay_wrapper": true,
+              "prefix_hash_matches": true,
+              "environment_bound": true,
+              "takeover_matches": true,
+              "verified_prefix_frames": 21,
+              "required_prefix_frames": 21,
+              "replay_verified": true,
+              "verification_source": "successful ReplayThenTeacher.act calls before final reset",
+              "proof_scope": "t=0..k raw RGB plus world time and articulated transforms/joints, atol=1e-6",
+              "hidden_rng_contact_state_proven": false
+            },
+            "owned_suffix": {
+              "action_count": 4,
+              "start_observation_index": 20,
+              "end_observation_index_inclusive": 23,
+              "start_step": 20,
+              "end_step_inclusive": 23,
+              "contiguous": true,
+              "poststate_claim": "none; only next preaction frames are observed"
+            },
+            "issues": [],
+            "training_eligible": false,
+            "training_released": false,
+            "no_success_rate": true,
+            "complete": false,
+            "top_keys": [
+              "experiment",
+              "partition",
+              "schema",
+              "task",
+              "key",
+              "teacher",
+              "takeover_step",
+              "seed",
+              "protocol_sha256",
+              "prefix_sha256",
+              "initial_rgb_sha256",
+              "takeover_state_sha256",
+              "actual_takeover_state_sha256",
+              "takeover_observation_index",
+              "complete",
+              "replay_verified",
+              "transport_fallback",
+              "agent_validation",
+              "owned_suffix",
+              "issues",
+              "verification_only",
+              "training_eligible",
+              "training_released",
+              "status",
+              "reason",
+              "no_success_rate",
+              "no_terminal_result",
+              "metadata",
+              "observations",
+              "actions",
+              "replay",
+              "first_start",
+              "takeover",
+              "fallback_events"
+            ]
+          },
+          "lightnav_takeover0020": {
+            "schema": "evaluation_adaptation_failure_state_v1",
+            "takeover_step": 20,
+            "initial_rgb_sha256": "10c4fd357c348f0a30eb34d384eb8cf9b46fd7c0c2ffe95ccb19f2505c45867f",
+            "replay_verified": true,
+            "transport_fallback": false,
+            "agent_validation": {
+              "agent_step_before_reset": 24,
+              "replay_wrapper": true,
+              "prefix_hash_matches": true,
+              "environment_bound": true,
+              "takeover_matches": true,
+              "verified_prefix_frames": 21,
+              "required_prefix_frames": 21,
+              "replay_verified": true,
+              "verification_source": "successful ReplayThenTeacher.act calls before final reset",
+              "proof_scope": "t=0..k raw RGB plus world time and articulated transforms/joints, atol=1e-6",
+              "hidden_rng_contact_state_proven": false
+            },
+            "owned_suffix": {
+              "action_count": 4,
+              "start_observation_index": 20,
+              "end_observation_index_inclusive": 23,
+              "start_step": 20,
+              "end_step_inclusive": 23,
+              "contiguous": true,
+              "poststate_claim": "none; only next preaction frames are observed"
+            },
+            "issues": [],
+            "training_eligible": false,
+            "training_released": false,
+            "no_success_rate": true,
+            "complete": false,
+            "top_keys": [
+              "experiment",
+              "partition",
+              "schema",
+              "task",
+              "key",
+              "teacher",
+              "takeover_step",
+              "seed",
+              "protocol_sha256",
+              "prefix_sha256",
+              "initial_rgb_sha256",
+              "takeover_state_sha256",
+              "actual_takeover_state_sha256",
+              "takeover_observation_index",
+              "complete",
+              "replay_verified",
+              "transport_fallback",
+              "agent_validation",
+              "owned_suffix",
+              "issues",
+              "verification_only",
+              "training_eligible",
+              "training_released",
+              "status",
+              "reason",
+              "no_success_rate",
+              "no_terminal_result",
+              "metadata",
+              "observations",
+              "actions",
+              "replay",
+              "first_start",
+              "takeover",
+              "fallback_events"
+            ]
+          }
+        },
+        "port19170_x570_free": true
+      },
+      "independent_audit_utc": [
+        "2026-10-07T23:13:35.427236+00:00",
+        "2026-10-07T23:13:36.039024+00:00"
+      ],
+      "independent_artifacts": {
+        "records_sha256": "d3276759c4a4c3cb3cac225e0ba59da0c17f9c113060bc6ca22f4698aba8ada4",
+        "student_sha256": "a081fd6fe7643ed93772e9013d93c4bb372791ac8650f7e2f14356bc86acef4f",
+        "lightnav_sha256": "a1dd5bb9fe1bd214e908310ef7fd4f7eadda088ae5253810e1979d43681d9169",
+        "oracle_sha256": "e23304e6dbffa45b55f4f99ddd217e02351f7c8cc673979d3c8716b7cc51a7ec",
+        "simulator_config_sha256": "5a28d06b572623f98fb3126743f47a58d7e6395dce8644854270cd972753f45c",
+        "prefix_sha256": "57257466d5299f8eb053d897e51eca5d84c3d56296c97bdf87e1c4b37b540bdc",
+        "takeover_state_sha256": "f8ab8e41adb27395d9fb7d69922f0b355e38dc68daa79863c7b8a850a2ad9d7b"
+      },
+      "no_success_rate": true,
+      "training_released": false,
+      "limitations": [
+        "one short developer episode, not full recovery or terminal success",
+        "no recorded post-state after action23",
+        "no hidden RNG/contact-state equivalence proof",
+        "development HEAD51270 plus untracked new source, audit hashes recorded; future formal requires independent clean freeze"
+      ],
+      "warnings_retained": [
+        "Gym",
+        "custom mesh attributes ignored",
+        "vLLM seed0 in separate teacher process",
+        "LightNav unsupported chunked-prefill disable warning",
+        "CUDA deprecations",
+        "LN shutdown destroy_process_group warning",
+        "WA xFormers unavailable"
+      ]
+    }
+  ],
+  "actual_runtime_config_checks": {
+    "first": {
+      "id": "failure_state_config_developer_20261008_v1",
+      "status": "FAILED_IMPORT_ENVIRONMENT",
+      "cause": "standalone CPU command lacked LD_LIBRARY_PATH that the existing run_xvfb.sh normally exports; libEGL.so.1 missing",
+      "simulator_created": false
+    },
+    "second": {
+      "id": "failure_state_config_developer_20261008_v2",
+      "status": "PASS",
+      "source": "actual failure_state_collect.Runtime",
+      "loaded_episodes": 1405,
+      "checked_plan_entries": 126,
+      "lanes": [
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        15,
+        15
+      ],
+      "cuda_visible_devices": "",
+      "simulator_created": false,
+      "config_or_physics_changed": false
+    }
+  },
+  "resources": {
+    "utc_approx": "2026-10-07T22:56:50Z",
+    "md_ai_kit": "2.0.0",
+    "authenticated": true,
+    "baidu_bj_a800": {
+      "total": 88,
+      "used": 65,
+      "free": 23
+    },
+    "baidu_bj_4090": {
+      "total": 144,
+      "used": 64,
+      "free": 80
+    },
+    "allocated": false,
+    "scope": "aggregate availability is not eight-card placement proof; formal submit not authorized by readiness yet",
+    "a800_entry": {
+      "host": "devpod-zeying-gong-a800-76db9f7cd-7cchd",
+      "nas": "mt-tutz0R-pfs-haZOBP",
+      "same_mount_as_developer": true,
+      "required_model_and_habitat_python_and_weight_present": true,
+      "no_cross_nas_copy": true
+    },
+    "updated_snapshot_utc": "2026-10-07T23:12:52Z",
+    "duplicate_check": "latest12 own jobs:61792/3/4 all SUCCEEDED, no failure-state collection; no formal submission yet"
+  },
+  "commands": {
+    "plan": "python -B -m wa.tools.build_failure_state_plan --manifest /data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json --student-root /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61609_full_audit_20261007_v1 --bbox-plan /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json --output /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_plan_61609_v1.json",
+    "developer_v1": "cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout && CUDA_VISIBLE_DEVICES=6 PYTHONDONTWRITEBYTECODE=1 OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -m wa.tools.failure_state_launch /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_developer_20261008_v1 --plan /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_plan_61609_v1.json --plan-sha 2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b --development-key VLzqgDo317F/238 --port-base 19170 --display-base 570",
+    "developer_v2": "cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout && CUDA_VISIBLE_DEVICES=6 PYTHONDONTWRITEBYTECODE=1 OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -m wa.tools.failure_state_launch /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_developer_20261008_v2 --plan /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_plan_61609_v1.json --plan-sha 2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b --development-key VLzqgDo317F/238 --port-base 19170 --display-base 570",
+    "actual_runtime_config_check_v2": "cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout && PYTHONDONTWRITEBYTECODE=1 /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B -c 'import json, os, subprocess\nfrom pathlib import Path\nfrom wa.tools.failure_state_launch import arguments, load_plan, make_commands\nr=Path(\"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928\")\na=arguments([str(r/\"artifacts/failure_state_config_developer_20261008_v2\"),\"--plan\",str(r/\"artifacts/failure_state_plan_61609_v1.json\"),\"--plan-sha\",\"2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b\",\"--development-key\",\"VLzqgDo317F/238\"])\nplan=load_plan(a.plan,a.plan_sha)\nspec=make_commands(a,plan,0,\"6\",Path(a.output)/\"lane0\",os.environ,[])[2]\nenv=dict(spec[\"env\"],CUDA_VISIBLE_DEVICES=\"\",LD_LIBRARY_PATH=spec[\"env\"][\"OMTRACKVLA_GLX_LIB_DIRS\"])\ncode = \"import json, os\\nfrom pathlib import Path\\nfrom wa.wm.failure_state_protocol import load_plan\\nfrom wa.wm.failure_state_collect import Runtime\\nr=Path(\\\"/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928\\\")\\np=r/\\\"artifacts/failure_state_plan_61609_v1.json\\\"\\nsha=\\\"2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b\\\"\\nplan=load_plan(p,sha)\\nready=json.loads((r/\\\"artifacts/failure_state_developer_20261008_v1/lane0/wa_ready.json\\\").read_text())\\nout=r/\\\"artifacts/failure_state_config_developer_20261008_v2\\\"\\nout.mkdir(exist_ok=False)\\nruntime=Runtime(plan,sha,ready,out)\\nfor entry in plan[\\\"entries\\\"]:runtime.check_entry(entry)\\nprint(json.dumps(dict(status=\\\"ACTUAL_COLLECTOR_RUNTIME_CONFIG_PASS\\\",episodes=len(runtime.episodes),entries=len(plan[\\\"entries\\\"]),lanes=[len(l) for l in plan[\\\"lanes\\\"]],cuda_visible_devices=os.environ[\\\"CUDA_VISIBLE_DEVICES\\\"],simulator_created=False,source=\\\"failure_state_collect.Runtime\\\",output=str(out))),flush=True)\"\nsubprocess.run([str(r.parent.parent/\"envs/habitat/bin/python\"),\"-B\",\"-c\",code],cwd=spec[\"cwd\"],env=env,check=True)\n'"
+  },
+  "status": "DEVELOPER_AND_CPU_PASS_FORMAL_NOT_SUBMITTED",
+  "formal_wrapper": {
+    "status": "CPU_STATIC_PASS_NOT_WORKER_EXECUTED",
+    "syntax": true,
+    "bad_id_and_argument_fail_closed": true,
+    "private_tmp_link_fixture_tests": true,
+    "system_links_only_missing_in_real_allocated_worker": true,
+    "no_overwrite_or_removal": true,
+    "private_xvfb_extract": "mktemp -d /tmp/wa_failure_xvfb.XXXXXX + dpkg-deb; no rm",
+    "full126_8gpu": true,
+    "timeout_seconds": 172800,
+    "scope": "A800 physicalUUID and CUDA model checks only at allocated worker startup"
+  },
+  "output_truncation": {
+    "first_dependency_attempt": "remote successful result exceeded returned tool output budget; JSON parse failed; no manifest saved or PASS claimed from truncated output; repeat compact hash output"
+  },
+  "dependencies": {
+    "status": "PASS",
+    "utc": "2026-10-07T23:15:40.129676+00:00",
+    "existing": {
+      "dual_teacher_dependencies.sha256": {
+        "sha256": "f2be4e28efa71f5404ed0204ad0d4b673b690b1a01f493bf8cfdc063637d5817",
+        "lines": 100
+      },
+      "closed_loop_dependencies.sha256": {
+        "sha256": "33a501d7ab3bbb4bcb248c625fcad8eee3f2cccab723db47c20697282899e991",
+        "lines": 6
+      },
+      "full_eval_dependencies.sha256": {
+        "sha256": "5e870e9d6fdbe36bda9df47b134bce08a6fbc278bfa5a5990b55de2a6175db08",
+        "lines": 4
+      }
+    },
+    "supplement_count": 335,
+    "total_hashed_supplement_bytes": 8584613624,
+    "manifest": "wa/wm/failure_state_dependencies.sha256",
+    "scope": "All existing110 lines verified; supplementary shared runtime, Xvfb bundle, model weights and frozenplan pins; not complete environment immutability."
+  }
+}
