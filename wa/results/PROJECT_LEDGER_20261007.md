@@ -4,7 +4,7 @@
 
 新学生61377完整评测3652/4215成功，SR86.642942%，初始化失败0。三类SR均超过同协议LightNav；STT仅净多3条。用户新目标：STT严格超过91.7%，即至少1289/1405（比当前净增13）；DT至少1173/1405、AT至少1203/1405。碰撞继续记录但不是本轮主要优化目标；不改物理与成功判据。达到后再分析UWB有无的影响。
 这是用户授权的评测集内适配，不是未见测试泛化。WA为RGB+首帧GT框+理想模拟极坐标UWB，无文本；LightNav为RGB+文本，不同输入条件。
-已核验24分片完成、4215唯一task/key、每类1405、权重身份、78个源文件哈希与指标重算。全量逐例初始状态配对及视频审计尚未收尾，不能写整体验收完成。运行中曾通过64条STT/DT起点抽检、64视频元数据/首帧哈希检查及AT八分片首条配对/媒体检查；抽检不替代全量审计。
+已核验24分片完成、4215唯一task/key、每类1405、权重身份、78个源文件哈希与指标重算。2026-10-07全4215条与双教师的初始RGB/动态状态配对审计通过；4215首帧JPEG哈希与视频流/时长元数据检查通过，未逐帧解码所有视频。上述结果真实性审计完成，但STT>91.7%的新目标尚未达到。
 
 ## 模型与训练
 
@@ -47,10 +47,15 @@ SHA256：`b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f`；st
 STT结果：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61423/task_72526/wa_student61377_stt4090_v1`
 DT结果：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61424/task_72527/wa_student61377_dt4090_v1`
 AT结果：`/data/nas_ray/project/md-ak/users/zeying.gong/job_61425/task_72528/wa_student61377_at4090_v1`
-各根含PARTITION_COMPLETE.json和combined_episodes.jsonl，逐行artifact_root保留视频出处。新综合HTML尚未发布；旧18797属于60502，不冒充新结果。不上传checkpoint/数据/视频到GitHub，仅备份代码、配置及关键结果。
+各根含PARTITION_COMPLETE.json和combined_episodes.jsonl，逐行artifact_root保留视频出处。不上传checkpoint/数据/视频到GitHub，仅备份代码、配置及关键结果。
+
+合并审计：`/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1`；summary SHA256 `30dfdbd9263ca0ba3615cb1845938de235c7e1b15b2141edb5ac584622f6bbf3`。
+新学生视频浏览：`/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_review_20261007_v1`；audit SHA256 `7d2000efd58135753c9a4b5a8fe5bd3c228593ad2427f6278fc66841a293261d`。HTML、audit.json及首条视频HEAD均返回HTTP200。
+
+在查看页面的电脑执行：`ssh -N -L 18798:127.0.0.1:18798 devpod-4090`，打开 [新学生4215条结果](http://127.0.0.1:18798/)。旧18797仍为60502结果，不替换或混用。
 
 ## 下一步与边界
 
-先完成全量起点/视频审计与新页面；随后分析STT失败而教师成功的样本，有限改进，验收STT至少1289、DT至少1173、AT至少1203。未授权由本记录自动提交新训练；不盲目epoch3。
+Goal与20分钟持续跟进已启用，验收STT至少1289、DT至少1173、AT至少1203。已查明STT有18新增成功与18退步，129失败中93条有成功教师；91条有10413有效窗口，其中90条有前2秒监督，共3270窗口。覆盖审计及有界采样组件14项CPU测试通过，采样组件尚未接入训练入口。下一步先比较难例/早期窗口拟合，再决定独立59866分支的受限额外曝光；保留原始及DT/AT数据，不盲目续训epoch3。正式任务仍须实时资源、冻结代码/配置、数据和权重hash与开发检查通过后提交。
 达到后先测同权重有/无UWB依赖，再区分无UWB重训的纯视觉能力；两者不是同一实验。当前无真实UWB噪声/丢包/多径、真实机器人、Thor/RDK时延或产品级避障验收。
 旧台账及旧评测修复记录保留。本次备份不修改运行源码、模型或已完成产物，不重新提交评测。

@@ -14,7 +14,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Checkpoint: /data/nas_ray/project/md-ak/users/zeying.gong/job_61377/task_72474/wa_dual_teacher_train_a800_v1/checkpoint.pt
 - SHA256 b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f; step59065.
 - 61423/72526 STT,61424/72527 DT,61425/72528 AT SUCCEEDED; each8RTX4090,1405new rows.
-- 24COMPLETE/4215unique/78sourcehashes verified; invalid0; full4215 initial pair audit PASS, media audit PENDING.
+- 24COMPLETE/4215unique/78sourcehashes verified; invalid0; full4215 initial pair audit PASS; all4215 firstJPEG hashes/video metadata PASS (not every-frame decode).
 - Old60502 checkpoint and3627/4215 baseline unchanged. Student3652/4215; LightNav3345/4215, different inputs.
 - Code/results backed up in GitHub wa20b94dc0; ledger wa/results/PROJECT_LEDGER_20261007.md.
 
@@ -22,8 +22,9 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Full merge/start audit session1145 exited0:4215 paired against both teachers; statusPASS.
 - Merged: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1
 - Summary SHA30dfdbd9263ca0ba3615cb1845938de235c7e1b15b2141edb5ac584622f6bbf3; pair audit SHAdc98149bdcfb6baf05d1fae167de572b476679f48384dd91ea92e57851645844.
-- Media builder active local control session20033; output planned artifacts/student61377_review_20261007_v1.
-- Media not yet completed or served. Poll existing process/output before invoking builder again. No new rollout/GPU job.
+- Media builder session20033 exited0 REVIEW_AUDITED4215: artifacts/student61377_review_20261007_v1.
+- Review audit SHA7d2000efd58135753c9a4b5a8fe5bd3c228593ad2427f6278fc66841a293261d; 127.0.0.1:18798 HTML/audit/firstvideo HEAD200 verified.
+- Access: ssh -N -L 18798:127.0.0.1:18798 devpod-4090 then http://127.0.0.1:18798/ ;old18797 unchanged.
 - STT start coverage v2 PASS:1358teacher episodes;93student-failure demonstrations,91nonzero/10413valid windows.
 - Of91nonzero failures,90have teacher windows within actual first2s;3270early windows. Only XNeHsjL6nBB/9 lacks early windows.
 - Two more hard cases BHXhpBwSMLh/11 and XNeHsjL6nBB/4 have zero valid windows; filters unchanged.
@@ -35,7 +36,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - SSH same-entry handshake intermittent; standard ControlMaster connection reuse enabled per-command only, no SSH config/credential change.
 
 ## Next bounded experiment gates
-- Finish media audit/report; next measure hard/early-window fitting against61377 and parent before selecting bounded sampling weights.
+- Full pair/media report COMPLETE. Next measure hard/early-window fitting against61377 and parent before selecting bounded sampling weights.
 - Add and test task/teacher/failure-group diagnostics and deterministic exposure accounting before choosing sampling changes.
 - Do not blindly continue epoch3, change architecture/loss/physics/success thresholds, or invent task-ID inputs.
 - Teacher demonstrations: successful branch first; if both succeed choose higher tracking rate, exact tie LightNav.

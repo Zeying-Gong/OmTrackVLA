@@ -104,7 +104,13 @@
       "student_teacher_pair_audit.json": "dc98149bdcfb6baf05d1fae167de572b476679f48384dd91ea92e57851645844"
     }
   },
-  "media": "PENDING",
+  "media": {
+    "status": "PASS",
+    "episodes": 4215,
+    "scope": "firstJPEG hashes and video metadata/duration; not every-frame decoding",
+    "audit_sha256": "7d2000efd58135753c9a4b5a8fe5bd3c228593ad2427f6278fc66841a293261d",
+    "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_review_20261007_v1"
+  },
   "limits": [
     "Cached teacher coverage is not proof of fitting or closed-loop gain.",
     "Evaluation-set adaptation; different input systems; not unseen generalization.",

@@ -2,9 +2,27 @@
   "experiment": "evaluation_set_adaptation_v1",
   "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61377/task_72474/wa_dual_teacher_train_a800_v1/checkpoint.pt",
   "checkpoint_sha256": "b5236a21f2d2695780029503c97e339c8350dc4f7337d05ec7e8692b9b9c327f",
-  "step": 59065, "completed_epochs": 2, "episodes": 4215, "success": 3652,
-  "student_success": {"stt": 1276, "dt": 1173, "at": 1203},
-  "lightnav_success": {"stt": 1273, "dt": 1128, "at": 944},
-  "next_minimum_success": {"stt": 1289, "dt": 1173, "at": 1203},
-  "audit": "24 partitions and 78 source files verified; full initial-state and media audit pending"
+  "step": 59065,
+  "completed_epochs": 2,
+  "episodes": 4215,
+  "success": 3652,
+  "student_success": {
+    "stt": 1276,
+    "dt": 1173,
+    "at": 1203
+  },
+  "lightnav_success": {
+    "stt": 1273,
+    "dt": 1128,
+    "at": 944
+  },
+  "next_minimum_success": {
+    "stt": 1289,
+    "dt": 1173,
+    "at": 1203
+  },
+  "audit": "PASS:24 partitions;4215 unique starts paired against both teachers;78 source hashes;4215 firstJPEG hashes and video metadata. Not every-frame video decoding.",
+  "merged_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_full_audit_20261007_v1",
+  "review_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61377_review_20261007_v1",
+  "review_audit_sha256": "7d2000efd58135753c9a4b5a8fe5bd3c228593ad2427f6278fc66841a293261d"
 }
