@@ -3,6 +3,7 @@ import hashlib,json
 from pathlib import Path
 from wa.wm.student_pair_audit import audit_starts
 from wa.wm.dual_teacher_metrics import summarize_teachers
+from wa.wm.full_mixed_contract import validate_mode
 
 TEACHER_SHA='f45f21d71b63d7f2a0898e1e762c393a95b0f3eaf8291bd1affbc827d23354d8'
 
@@ -12,7 +13,11 @@ def load_teachers(path):
         raise ValueError('teacher reference differs from frozen full collection')
     return [json.loads(line) for line in data.splitlines() if line]
 
-def validate_shard(rows,complete,manifest,index,tasks=('stt','dt','at')):
+def validate_shard(rows,complete,manifest,index,tasks=('stt','dt','at'),*,mode='mixed'):
+    validate_mode(mode)
+    if complete.get('mode','mixed' if mode=='mixed' else None)!=mode:
+        raise ValueError('wrong or missing shard input mode')
+    if any(r.get('mode')!=mode for r in rows):raise ValueError('wrong or missing shard row mode')
     expected={(task,e['key']) for task in tasks
               for e in manifest['tasks'][task]['episodes'] if e['shard']==index}
     keys=[(r['task'],r['key']) for r in rows]

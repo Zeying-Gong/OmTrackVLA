@@ -29,6 +29,7 @@ def audit_media(row, ffprobe):
 def main():
     p=argparse.ArgumentParser()
     for name in ('merged','manifest','teachers','ffprobe','output'):p.add_argument('--'+name,required=True)
+    p.add_argument('--mode',choices=['mixed','image'],default='mixed')
     a=p.parse_args(); merged=Path(a.merged); out=Path(a.output)
     if out.exists():raise ValueError('refusing to overwrite review')
     if digest(a.manifest)!=MANIFEST_SHA:raise ValueError('manifest changed')
@@ -38,10 +39,13 @@ def main():
     combined=[json.loads(s) for s in combined_path.read_text().splitlines() if s]
     if len(combined)!=4215 or saved.get('new_episodes')!=4215 or saved.get('reused_baseline_episodes')!=0:
         raise ValueError('complete new student evaluation required')
+    if saved.get('mode')!=a.mode:raise ValueError('review mode differs from audited summary')
     contract=dict(checkpoint_sha=combined[0]['checkpoint_sha256'],step=combined[0]['checkpoint_step'])
-    rows,source_hashes=read_partitions(saved['partition_roots'],manifest,contract)
+    if (saved.get('checkpoint_sha256'),saved.get('checkpoint_step'))!=(contract['checkpoint_sha'],contract['step']):
+        raise ValueError('review summary checkpoint differs from original rows')
+    rows,source_hashes=read_partitions(saved['partition_roots'],manifest,contract,mode=a.mode)
     if rows!=combined:raise ValueError('merged rows changed')
-    report=summarize(rows,manifest,**contract); comparison,pairs=finalize(rows,manifest,a.teachers)
+    report=summarize(rows,manifest,mode=a.mode,**contract); comparison,pairs=finalize(rows,manifest,a.teachers)
     if report['metrics_percent']!=saved['metrics_percent'] or comparison['superiority']!=saved['superiority']:
         raise ValueError('saved metrics differ from recomputation')
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
@@ -58,12 +62,13 @@ def main():
     for root,label in roots.items():(out/label).symlink_to(root,target_is_directory=True)
     (out/'summary.json').write_text(json.dumps(saved,indent=2,allow_nan=False))
     (out/'episodes.json').write_text(json.dumps(records,allow_nan=False))
-    (out/'audit.json').write_text(json.dumps(dict(status='PASS',episodes=4215,
+    (out/'audit.json').write_text(json.dumps(dict(status='PASS',episodes=4215,mode=a.mode,
         initial_pairs=pairs['episodes'],first_jpeg_hashes=4215,video_metadata=4215,
         video_scope='metadata and duration, not every frame decoded',source_hashes=source_hashes,
         merged_hashes=saved_hashes),allow_nan=False))
     table=''.join('<tr><td>'+html.escape(r['task'])+'</td><td>'+html.escape(r['key'])+'</td><td>'+str(r['success'])+'</td><td>'+str(r['collision'])+'</td><td><a href="'+html.escape(r['video'],quote=True)+'">视频</a></td></tr>' for r in records)
-    page='<!doctype html><meta charset="utf-8"><title>WA 双教师集内适配评测</title><h1>WA 新学生 · 4215条全新闭环</h1><p>评测集内训练后评测，不是未见测试集泛化。WA使用RGB+首帧GT框+理想UWB，无文本；LightNav使用RGB+文本。CR仅表示距目标人曾小于0.5m，不是通用障碍物碰撞率。JEPA仅训练辅助。</p>'
+    inputs=('RGB+首帧GT框+理想UWB' if a.mode=='mixed' else 'RGB+首帧GT框，推理时无UWB；不是无UWB重训')
+    page='<!doctype html><meta charset="utf-8"><title>WA 双教师集内适配评测</title><h1>WA 新学生 · 4215条全新闭环 · '+html.escape(a.mode)+'</h1><p>评测集内训练后评测，不是未见测试集泛化。WA使用'+html.escape(inputs)+'，无文本；LightNav使用RGB+文本。CR仅表示距目标人曾小于0.5m，不是通用障碍物碰撞率。JEPA仅训练辅助。</p>'
     page+='<p>权重SHA '+html.escape(contract['checkpoint_sha'])+' · step '+str(contract['step'])+'</p><pre>'+html.escape(json.dumps(dict(metrics=saved['metrics_percent'],comparison=comparison['superiority']),indent=2))+'</pre>'
     page+='<p><a href="summary.json">完整指标及TR定义</a> · <a href="audit.json">审计</a> · <a href="episodes.json">视频索引</a></p><table><tr><th>任务</th><th>样本</th><th>成功</th><th>HumanCollision</th><th>回放</th></tr>'+table+'</table>'
     (out/'index.html').write_text(page)

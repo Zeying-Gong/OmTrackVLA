@@ -1,11 +1,11 @@
-"""Full STT/DT/AT mixed validation; fixed shards, current frozen learned-yaw controller."""
+"""Full STT/DT/AT validation; mixed default, opt-in image, fixed learned-yaw controller."""
 import argparse,copy,json,math,random,os
 from pathlib import Path
 import numpy as np
 import torch,habitat,evt_bench,trained_agent
 from wa.wm.diagnostic_agent import DiagnosticAgent
 from wa.wm.full_mixed_contract import validate_ready
-from wa.wm.student_eval_contract import model_contract
+from wa.wm.student_eval_contract import model_contract,evaluation_mode
 from wa.wm.student_eval_partition import task_scope
 from evt_full_20260926.common import BENCH,SCENES,sha,scene,write
 
@@ -15,7 +15,7 @@ def main():
     if not 0<=a.shard<8:raise ValueError('eight shards required')
     out=Path(a.output);m=json.loads(Path(a.manifest).read_text());assert m['shards']==8 and m['seed_each_episode']==7
     plan=None
-    contract=model_contract(os.environ);repairs={}
+    contract=model_contract(os.environ);mode=evaluation_mode(os.environ);repairs={}
     if contract:
         from wa.wm.initial_bbox_repair import load_plan,VERSION as REPAIR_VERSION
         from wa.wm.initial_bbox_repair_agent import InitialBBoxRepairAgent
@@ -38,10 +38,10 @@ def main():
     total=0
     if not a.audit_only:
         assert os.environ.get('WA_DIAG_CONTROLLER')=='learned_yaw_guard_v1'
-        ready=json.loads(Path(a.ready).read_text());validate_ready(ready,**contract)
+        ready=json.loads(Path(a.ready).read_text());validate_ready(ready,mode=mode,**contract)
         if os.environ.get('WA_REVIEW_VIDEO')=='1':
             from wa.wm.review_recorder import install
-            install()
+            install(mode=mode)
     schedule=[(phase,task) for phase in ([True,False] if targeted else [None]) for task in task_scope(os.environ)]
     for phase,task in schedule:
         if targeted and phase is False and task=='stt' and not a.audit_only:priority_barrier(out)
@@ -70,7 +70,7 @@ def main():
         ready=json.loads(Path(a.ready).read_text());write(out/'model.json',ready)
         for entry in selected:
             repair=repairs.get((task,entry['key']))
-            args=(ready['url'],config.habitat.task.actions.agent_1_base_velocity,'mixed',dest/(entry['key'].replace('/','_')+'.trace.jsonl'))
+            args=(ready['url'],config.habitat.task.actions.agent_1_base_velocity,mode,dest/(entry['key'].replace('/','_')+'.trace.jsonl'))
             agent=InitialBBoxRepairAgent(*args,repair=repair) if repair is not None else DiagnosticAgent(*args)
             ep=actual[entry['key']];random.seed(7);np.random.seed(7);torch.manual_seed(7);torch.cuda.manual_seed_all(7)
             if semantic_fix:ep=prepare_episode(ep,BENCH)
@@ -88,12 +88,12 @@ def main():
                 result.update(initialization_repair=REPAIR_VERSION,
                     initialization_repair_plan_sha256=os.environ['WA_INIT_REPAIR_PLAN_SHA'])
             result.pop('instruction',None)
-            result.update(task=task,key=entry['key'],mode='mixed',noise_mode='zero',controller='learned_yaw_guard_v1',initial_rgb_sha256=sha(dest/'_live'/entry['key']/'step_0000.jpg'))
+            result.update(task=task,key=entry['key'],mode=mode,noise_mode='zero',controller='learned_yaw_guard_v1',initial_rgb_sha256=sha(dest/'_live'/entry['key']/'step_0000.jpg'))
             if semantic_fix:
                 result.update(semantic_protocol=semantic_fix,semantic_ply_repaired=is_mp3d_ply_scene(ep.scene_id))
             with (out/'episodes.jsonl').open('a') as f:f.write(json.dumps(result,allow_nan=False)+'\n')
             total+=1;write(out/'progress.json',dict(completed=total,task=task,last=entry['key']))
             print('EPISODE_RESULT',json.dumps(result),flush=True)
-    write(out/('AUDIT_PASS.json' if a.audit_only else 'COMPLETE.json'),dict(episodes=total,shard=a.shard,mode='mixed',noise_mode='zero',controller='learned_yaw_guard_v1'))
+    write(out/('AUDIT_PASS.json' if a.audit_only else 'COMPLETE.json'),dict(episodes=total,shard=a.shard,mode=mode,noise_mode='zero',controller='learned_yaw_guard_v1'))
 
 if __name__=='__main__':main()

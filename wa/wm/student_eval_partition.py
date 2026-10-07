@@ -2,6 +2,7 @@
 import hashlib,json
 from pathlib import Path
 from wa.wm.student_eval_contract import validate_student_rows
+from wa.wm.full_mixed_contract import validate_mode
 
 def task_scope(env):
     task=env.get('WA_EVAL_TASK')
@@ -10,9 +11,10 @@ def task_scope(env):
         raise ValueError('task partition requires declared student experiment and valid task')
     return (task,)
 
-def write_partition(root,rows,manifest,contract,task):
+def write_partition(root,rows,manifest,contract,task,*,mode='mixed'):
+    validate_mode(mode)
     if task not in ('stt','dt','at') or not contract:raise ValueError('invalid student partition')
-    validate_student_rows(rows,contract,(task,))
+    validate_student_rows(rows,contract,(task,),mode=mode)
     expected={e['key'] for e in manifest['tasks'][task]['episodes']}
     if len(rows)!=1405 or len(expected)!=1405 or {r['key'] for r in rows}!=expected:
         raise ValueError('incomplete task partition')
@@ -20,7 +22,7 @@ def write_partition(root,rows,manifest,contract,task):
     root=Path(root)
     path=root/'combined_episodes.jsonl';path.write_text(payload)
     digest=hashlib.sha256(path.read_bytes()).hexdigest()
-    report=dict(status='COMPLETE_STUDENT_TASK_PARTITION_NOT_GLOBAL_AUDIT',task=task,
+    report=dict(status='COMPLETE_STUDENT_TASK_PARTITION_NOT_GLOBAL_AUDIT',task=task,mode=mode,
         episodes=len(rows),checkpoint_sha256=contract['checkpoint_sha'],checkpoint_step=contract['step'],
         combined_sha256=digest,global_pair_audit_pending=True)
     (root/'PARTITION_COMPLETE.json').write_text(json.dumps(report,indent=2,allow_nan=False))

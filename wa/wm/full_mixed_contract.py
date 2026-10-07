@@ -10,13 +10,19 @@ def validate_checkpoint_identity(checkpoint_sha,step):
     if type(step) is not int or step<1:
         raise ValueError('explicit positive checkpoint step required')
 
-def validate_ready(r,*,checkpoint_sha=CHECKPOINT_SHA,step=45900):
+def validate_mode(mode):
+    if mode not in ('mixed','image'):raise ValueError('explicit mixed/image evaluation mode required')
+    return mode
+
+def validate_ready(r,*,checkpoint_sha=CHECKPOINT_SHA,step=45900,mode='mixed'):
+    validate_mode(mode)
     validate_checkpoint_identity(checkpoint_sha,step)
-    checks={'checkpoint_sha256':checkpoint_sha,'step':step,'mode':'mixed','noise_mode':'zero','sampling_steps':4,'text_used':False,'world_predictor_inference':False}
+    checks={'checkpoint_sha256':checkpoint_sha,'step':step,'mode':mode,'noise_mode':'zero','sampling_steps':4,'text_used':False,'world_predictor_inference':False}
     for key,value in checks.items():
         if key not in r or r[key]!=value: raise ValueError('wrong model contract '+key)
 
-def summarize(rows, manifest,*,checkpoint_sha=CHECKPOINT_SHA,step=45900):
+def summarize(rows, manifest,*,checkpoint_sha=CHECKPOINT_SHA,step=45900,mode='mixed'):
+    validate_mode(mode)
     validate_checkpoint_identity(checkpoint_sha,step)
     if len(rows)!=4215 or len({(r['task'],r['key']) for r in rows})!=4215:
         raise ValueError('missing or duplicate episode')
@@ -26,7 +32,7 @@ def summarize(rows, manifest,*,checkpoint_sha=CHECKPOINT_SHA,step=45900):
         expected={e['key'] for e in manifest['tasks'][task]['episodes']}
         if len(part)!=1405 or {r['key'] for r in part}!=expected: raise ValueError('wrong full dataset '+task)
         for r in part:
-            if (r.get('mode'),r.get('noise_mode'),r.get('controller'))!=('mixed','zero','learned_yaw_guard_v1'): raise ValueError('wrong episode contract')
+            if (r.get('mode'),r.get('noise_mode'),r.get('controller'))!=(mode,'zero','learned_yaw_guard_v1'): raise ValueError('wrong episode contract')
             if type(r.get('policy_init_valid')) is not bool: raise ValueError('missing init validity')
             for field in ('success','collision','following_rate','following_step','total_step'):
                 if not math.isfinite(float(r[field])): raise ValueError('nonfinite metric')
@@ -39,9 +45,11 @@ def summarize(rows, manifest,*,checkpoint_sha=CHECKPOINT_SHA,step=45900):
             finish=100*sum(bool(r['finish']) for r in part)/1405,
             invalid_init_count=sum(not r['policy_init_valid'] for r in part),
             reference_missing=sum(r['key'] not in ref for r in part))
-    return dict(status='COMPLETE_FULL_VALIDATION',mode='mixed',noise_mode='zero',controller='learned_yaw_guard_v1',
+    inputs=('ideal simulated polar UWB noise0 delay0; no text' if mode=='mixed' else
+            'RGB+first GT bbox; no UWB at inference; same model interface, not no-UWB training; no text')
+    return dict(status='COMPLETE_FULL_VALIDATION',mode=mode,noise_mode='zero',controller='learned_yaw_guard_v1',
         episodes=4215,checkpoint_sha256=checkpoint_sha,checkpoint_step=step,metrics_percent=results,
-        limits=['ideal simulated polar UWB noise0 delay0; no text','existing validation split includes development/confirmation; not untouched test',
+        limits=[inputs,'existing validation split includes development/confirmation; not untouched test',
                 'HumanCollision is target-person distance ever<0.5m not general obstacle contact','no real-UWB or edge-latency validation'])
 
 def allocated_devices(raw, count):

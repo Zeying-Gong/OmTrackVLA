@@ -10,7 +10,7 @@ class FinalizeTests(unittest.TestCase):
         for task in ('stt','dt','at'):
             for i in range(1405):
                 key='scene/'+str(i)
-                self.rows.append(dict(task=task,key=key,success=int(i<1100)))
+                self.rows.append(dict(task=task,key=key,mode='mixed',success=int(i<1100)))
                 self.teachers.append(dict(pair=dict(task=task,key=key),
                     results=dict(lightnav=dict(success=int(i<1000)))))
                 self.manifest['tasks'][task]['episodes'].append(dict(key=key,shard=i%8))

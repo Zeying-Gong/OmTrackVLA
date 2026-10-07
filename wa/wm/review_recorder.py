@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 import imageio.v2 as imageio
 from PIL import Image,ImageDraw
+from wa.wm.full_mixed_contract import validate_mode
 
 class ReviewRecorder:
     def __init__(self,directory,method):
@@ -40,13 +41,18 @@ class ReviewRecorder:
         self.log.close()
         (self.directory/'complete.json').write_text(json.dumps(dict(frames=self.frames,result=result,video_timebase='20fps frame playback; actual variable simulator timestamps in overlay/steps.jsonl',policy_inputs_unchanged=True),indent=2))
 
-def install():
+def method_label(mode='mixed'):
+    validate_mode(mode)
+    return 'WA RGB+BBox+idealUWB' if mode=='mixed' else 'WA RGB+BBox (no UWB; GT telemetry observer-only)'
+
+def install(mode='mixed'):
+    label=method_label(mode)
     import trained_agent
     original=trained_agent.evaluate_agent
     def wrapped(config,dataset,save_path,*args,**kwargs):
         ep=dataset.episodes[0];scene=Path(ep.scene_id).name.split('.')[0]
         directory=Path(save_path)/'_review'/scene/str(ep.episode_id)
         assert kwargs.get('recorder') is None
-        kwargs['recorder']=ReviewRecorder(directory,'WA RGB+BBox+idealUWB')
+        kwargs['recorder']=ReviewRecorder(directory,label)
         return original(config,dataset,save_path,*args,**kwargs)
     trained_agent.evaluate_agent=wrapped

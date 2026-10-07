@@ -1,11 +1,12 @@
-"""Full4215 mixed evaluation; multiplex eight fixed shards over the allocated GPUs."""
+"""Full4215 evaluation; mixed default or explicit image, eight fixed GPU shards."""
 import concurrent.futures,json,os,signal,subprocess,sys,time,threading
 from pathlib import Path
 from wa.wm.full_mixed_contract import validate_ready,summarize,MANIFEST_SHA,allocated_devices
 from wa.wm.loaders import sha
-from wa.wm.student_eval_contract import model_contract,validate_student_rows
+from wa.wm.student_eval_contract import model_contract,validate_student_rows,evaluation_mode
 from wa.wm.student_eval_partition import task_scope,write_partition
 contract=model_contract(os.environ)
+mode=evaluation_mode(os.environ)
 tasks=task_scope(os.environ)
 ROOT=Path('/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928')
 SOURCE=Path.cwd();WLA=ROOT.parent/'WLA-EVT-20260925';BENCH=ROOT.parent/'OmTrackVLA-da3-polar-20260924';ENV=ROOT.parent.parent/'envs'
@@ -56,14 +57,14 @@ def lane(index,slot):
     server=spawn([str(ROOT/'probe_env/bin/python'),'-u','-m','wa.wm.eval_server','--root',str(ROOT),
         '--encoder-weight','/data/nas_ray/home/zeying.gong/datasets_processed/threepanel_debug_v2/traversability_stepp_v1/_weights/dinov2_vits14_pretrain.pth',
         '--wla-source',str(ROOT/'dependencies/wla_v1'),'--wla-checkpoint','/data/nas_ray/project/md-ak/users/zeying.gong/job_58346/task_69086/wla_teacher_train/training/checkpoints/step-0043203.pt',
-        '--checkpoint',os.environ['WA_DIAG_CHECKPOINT'],'--mode','mixed','--noise-mode','zero','--ready',str(ready)],env,dest/'server.log',SOURCE)
+        '--checkpoint',os.environ['WA_DIAG_CHECKPOINT'],'--mode',mode,'--noise-mode','zero','--ready',str(ready)],env,dest/'server.log',SOURCE)
     try:
         deadline=time.monotonic()+1800
         while not ready.exists():
             if cancel.is_set() or server.poll() is not None:raise RuntimeError(f'server{index} failed')
             if time.monotonic()>deadline:raise TimeoutError('server startup')
             time.sleep(3)
-        validate_ready(json.loads(ready.read_text()),**contract)
+        validate_ready(json.loads(ready.read_text()),mode=mode,**contract)
         env['PYTHONPATH']=':'.join(map(str,[BENCH/'artifacts/official_runtime',BENCH/'torch_overlay',BENCH,BENCH/'habitat-lab',SOURCE,WLA]))
         env['OMTRACKVLA_XVFB_DISPLAY_NUM']=str(510+slot);env['OMTRACKVLA_HAB_SIM_GLX_ROOT']=str(BENCH);env['OMTRACKVLA_XVFB_LOG']=str(dest/'xvfb.log')
         worker=spawn([str(BENCH/'scripts/runtime/run_xvfb.sh'),str(ENV/'habitat/bin/python'),'-u','-m','wa.wm.eval_full_mixed','--manifest',str(MANIFEST),'--output',str(dest),'--shard',str(index),'--ready',str(ready)],env,dest/'worker.log',BENCH)
@@ -82,7 +83,7 @@ try:
         dest=OUT/f'shard_{i:02d}';assert (dest/'COMPLETE.json').exists()
         part=[json.loads(x) for x in (dest/'episodes.jsonl').read_text().splitlines()]
         if contract:
-            validate_shard(part,json.loads((dest/'COMPLETE.json').read_text()),manifest,i,tasks)
+            validate_shard(part,json.loads((dest/'COMPLETE.json').read_text()),manifest,i,tasks,mode=mode)
         if plan is not None:
             assert {(r['task'],r['key']) for r in part}=={(e['task'],e['key']) for e in plan['lanes'][i]}
             assert len(part)==len(plan['lanes'][i])
@@ -97,11 +98,11 @@ try:
         else:load_plan(os.environ['WA_RESUME_PLAN'],manifest,os.environ['WA_RESUME_PLAN_SHA'])
         rows=plan['completed_rows']+rows
     if len(tasks)==1:
-        write_partition(OUT,rows,manifest,contract,tasks[0])
+        write_partition(OUT,rows,manifest,contract,tasks[0],mode=mode)
         print('STUDENT_TASK_PARTITION_COMPLETE',tasks[0],len(rows),flush=True)
         sys.exit(0)
-    validate_student_rows(rows,contract)
-    report=summarize(rows,manifest,**contract)
+    validate_student_rows(rows,contract,mode=mode)
+    report=summarize(rows,manifest,mode=mode,**contract)
     if contract:
         comparison,pair_audit=finalize(rows,manifest,teacher_path)
         (OUT/'student_teacher_pair_audit.json').write_text(json.dumps(pair_audit,allow_nan=False))
@@ -116,7 +117,7 @@ try:
         if targeted:report['continuation'].update(scope='MP3D re-evaluation plus audited unaffected HM3D reuse',reuse_counts=plan['reuse_counts'])
         (OUT/'combined_episodes.jsonl').write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in rows))
     (OUT/'summary.json').write_text(json.dumps(report,indent=2,allow_nan=False))
-    print('FULL_MIXED_EVALUATION_COMPLETE',json.dumps(report),flush=True)
+    print('FULL_'+mode.upper()+'_EVALUATION_COMPLETE',json.dumps(report),flush=True)
 finally:
     with lock:cancel.set();snapshot=list(children)
     for child in snapshot:stop(child)

@@ -1,0 +1,95 @@
+{
+  "preparation": "explicit_full_evaluation_input_mode",
+  "date": "2026-10-07",
+  "status": "CPU_PREPARED_NOT_FORMAL_ABLATION",
+  "base_commit": "316eb6cef3a326999cd57f4735ce14f3a74bacce",
+  "formal_gate": "STT>=1289 DT>=1173 AT>=1203 on 1405 episodes/task; not yet met",
+  "changes": {
+    "default": "mixed unchanged; new mixed job configs should explicitly set WA_EVAL_MODE=mixed",
+    "image": "WA_EVAL_MODE=image requires explicit student identity protocol and learned_yaw_guard_v1",
+    "mode_propagation": [
+      "server argument",
+      "worker agent",
+      "ready validation",
+      "episode row",
+      "shard COMPLETE",
+      "partition COMPLETE",
+      "merge",
+      "summary",
+      "review HTML/audit",
+      "recorder label"
+    ],
+    "identity": "checkpoint SHA/step dict unchanged; manifest, semantic, seven-bbox repair and teacher pins preserved",
+    "reuse": "image refuses resume/targeted old-result plans; never relabel mixed rows",
+    "historical_mixed": "legacy completion markers may omit mode only with mixed expected; rows/ready must explicitly match",
+    "goal_gate": "audit_student_goal remains mixed by default and rejects image rows",
+    "review_identity": "saved summary SHA/step must agree with actual rows before any output",
+    "policy_scope": "no change to model, loss, physics, controller, training source or checkpoints"
+  },
+  "tests": {
+    "complete_related_suite": {
+      "executed": 98,
+      "passed": 98,
+      "elapsed_s": 9.507,
+      "gpu_visible": false
+    },
+    "new_mode_module": {
+      "executed": 21,
+      "passed": 21,
+      "path": "wa/tests/test_uwb_eval_mode.py",
+      "sha256": "0b5417a6211ff9b6707401b6a973e42e19323e4efc3ba8b42f40147eec302a01"
+    },
+    "scope": "Synthetic CPU contracts/partitions and mocked review publication; not real-weight inference or actual image trajectories",
+    "development_fixes": [
+      "Old finalizer fixture lacked real row.mode; fixture corrected without weakening validation",
+      "Mocked threaded media test counting fixed with a Lock; not a runtime error"
+    ]
+  },
+  "real_mixed_regression": {
+    "baseline": "student61377_full_audit_20261007_v1",
+    "rows": 4215,
+    "source_hashes_checked": 78,
+    "success": {
+      "stt": 1276,
+      "dt": 1173,
+      "at": 1203
+    },
+    "metrics_changed": false,
+    "writes": 0,
+    "checkpoint_loads": 0
+  },
+  "running_training": {
+    "job": 61609,
+    "task": 72803,
+    "step": 33000,
+    "phase_step": 10293,
+    "phase_total": 37009,
+    "observed_utc": "2026-10-07T03:50:11.072498+00:00",
+    "source_commit": "8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06",
+    "source_clean": true,
+    "final_checkpoint_exists": false,
+    "final_metrics_exists": false,
+    "actual_exposure_exists": false
+  },
+  "pending": [
+    "SR gate via final61609 training acceptance and complete24GPU mixed closed-loop result",
+    "Actual final-weight image/mixed interface and unavailable-UWB perturbation checks on developer GPU",
+    "Observer-only GT perturbation/on-off must not affect policy requests/actions",
+    "Real Habitat image-mode data/runtime preflight and independent frozen configuration",
+    "Full image4215 with exact initial-state pairing to same-checkpoint mixed, no output/history/prediction reuse",
+    "Paired SR/TR/CR/initialization-failure gains/regressions report; this preparation is not that report",
+    "Distinguish inference input removal from no-UWB retraining, including training supervision"
+  ],
+  "scientific_scope": "Authorized evaluation-set adaptation; different inputs from LightNav; no unseen-test generalization claim",
+  "sha256": {
+    "wa/wm/full_mixed_contract.py": "089337a5c295a9791756f18db462bf9d0154845ba1641d8bf1fd08ea65404355",
+    "wa/wm/student_eval_contract.py": "fdc7e9ad6c9aa14fd1c09ecfdc810f7b32a51f41eaeaf9381080a5e503886dfd",
+    "wa/wm/student_eval_partition.py": "24a7769bbe8ca9e0550f14c77ee126a272f3f8b228739c7b025de3b901d7ec9e",
+    "wa/wm/student_eval_finalize.py": "79d9764d60fbe07ec1b84d29a71adf4722b1b5df3454e28000f44b57033d13ba",
+    "wa/wm/eval_full_mixed.py": "6d4f27759b8e14c385d2bd4aa1a502c6e0fd2cf4e0aee77753ec30cb7531b647",
+    "wa/wm/eval_full_mixed_launch.py": "14fbbbe8aee87904c36a0f80dd3a428ebfd3a30d05972111ebb23e8e8fe40fd2",
+    "wa/wm/review_recorder.py": "1a079b5336bc09568fae84b2c4e04328e700536e5c5370b401ed77c2d025afaf",
+    "wa/tools/merge_student_partitions.py": "ae8bbd5f213adb85e8ab5500b8a8e960fdac11f6841101bd8cf69cd60e638187",
+    "wa/tools/build_student_review.py": "a067d4af591a1c332efa209e967d27d793146dc4968cfe49d8c3b048303fdd1e"
+  }
+}

@@ -11,7 +11,7 @@ class StudentTests(unittest.TestCase):
             WA_SEMANTIC_PLY_FIX='mp3d_semantic_ply_v1',WA_INIT_REPAIR_PLAN='/frozen/plan.json',
             WA_INIT_REPAIR_PLAN_SHA=REPAIR_SHA)
         self.contract=model_contract(self.env)
-        self.rows=[dict(task=t,key=k,checkpoint_sha256='a'*64,checkpoint_step=59065,
+        self.rows=[dict(task=t,key=k,mode='mixed',checkpoint_sha256='a'*64,checkpoint_step=59065,
             semantic_protocol='mp3d_semantic_ply_v1',initialization_repair=VERSION,
             initialization_repair_plan_sha256=REPAIR_SHA) for t,k in sorted(KEYS)]
 

@@ -14,7 +14,7 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Frozen source_hard_stt_train_v1 commit8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06;clean;159Pythonfiles match developer diagnostic.
 - Config wa/jobs/hard_stt_train_a800_v1.yaml SHA99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184;GitHubfda647a7.
 - Parent59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;new1epoch cumulative2;planned37009updates/end59716.
-- Actual training snapshot: step30725/59716, phase8018/37009, elapsed3411.209s, loss0.078337, gradnorm0.48788, peak9.278GiB. Read-only 11minute window observed5893->7468 newupdates, then8018; no new closedloop score. Startup warnings retained.
+- Actual training snapshot2026-10-07 11:50Beijing: step33000/59716, phase10293/37009, elapsed4372.820s, loss0.116034, gradnorm0.87709, peak9.451GiB. Logs grow; finalcheckpoint/metrics/exposure absent; no new closedloop score. Startup warnings retained.
 - Final phase order verified in frozen source: exposure write/barrier -> direct checkpoint save/barrier -> 8rank heldout(image/point/mixed) -> metrics/COMPLETE. No atomic-save sentinel; do not load active checkpoint or launch evaluation before final acceptance. Old61377 checkpoint->metrics tail51m02s is historical estimate only.
 - Live TensorBoard run hard_stt_61609 verified from scalar API. Existing server6006/exporter2619386; ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars . No new local tunnel.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
@@ -59,5 +59,6 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Formal training8GPU; evaluation STT/DT/AT each8GPU,total24; verify realtime resources and AGENTS preflight.
 - Freeze source/config/hash; short developer checks then complete scheduled jobs, no cluster smoke/duplicate job.
 - Input remains RGB+initialGTBBox+idealpolarUWB,no text/laterGTboxes; JEPA training auxiliary only, no onlineMPC.
-- UWB interface audit saved wa/results/UWB_INTERFACE_AUDIT_20261007.json: image RPC omits measurements/token masked;4existing CPU tests+15source hashes PASS. Loaded-checkpoint end-to-end ablation and full-image runner not yet verified/implemented; defer formal UWB experiment until SR gate.
+- UWB interface audit remains historical. Explicit WA_EVAL_MODE=image now connected server/agent/ready/rows/markers/merge/review, mixed default unchanged.98CPUtestsPASS;real61377 mixed4215/78hashes metrics unchanged. Evidence wa/results/UWB_EVAL_MODE_PREPARATION_20261007.json; no actualimage trajectory/loaded-weight ablation.
+- New fullmixed configs must explicitly set WA_EVAL_MODE=mixed. Formal UWB only after SR gate; final-weight image interface/observer perturbation/realHabitat checks and full paired4215 still pending. Never replace this with mixed zero-coordinates or no-UWB-training claims.
 - Preserve originals and failed experiments. Update state/experiment records and GitHub; verified service links need SSH forwarding.
