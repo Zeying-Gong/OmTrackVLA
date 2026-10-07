@@ -1,0 +1,74 @@
+{
+  "status": "READY_NOT_SUBMITTED",
+  "utc": "2026-10-07T23:23:00Z",
+  "source": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v1",
+    "commit": "d44a06c6c4d9b14c9c8662468f2b043fb1fb5267",
+    "clean": true,
+    "backed_github_wa": true
+  },
+  "config": {
+    "path": "wa/jobs/failure_state_collect_a800_v1.yaml",
+    "sha256": "165c7fed0cfcf3def2237201432b633df19204f6112905c3ca71843166b557aa",
+    "cluster": "baidu_a800",
+    "scheduler_resource_name": "baidu_bj_a800",
+    "gpus": 8,
+    "timeout": 172800,
+    "image": "x5-builder:cuda12.8-isaac5.0.0-v2.test1"
+  },
+  "plan": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_plan_61609_v1.json",
+    "sha256": "2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b",
+    "entries": 126,
+    "lanes": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16,
+      15,
+      15
+    ],
+    "protocol_sha256": "734ef66947dd0c318bdee5cb990929b313647370003ff889ff29f77391ed2e4a",
+    "training_released": false
+  },
+  "initial_student": {
+    "job": 61609,
+    "task": 72803,
+    "step": 59716,
+    "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+    "sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "mode": "mixed",
+    "noise": "zero",
+    "seed": "7+step"
+  },
+  "preflight": {
+    "cpu": 87,
+    "real_nonzero_developer": "PASS, student+Oracle+LN 24 each /k20/21identicalprefixframes/4teacheractions each/fallback0; not SR or training release",
+    "actual_definitions": 126,
+    "frozen_24_process_command_expansion": "PASS",
+    "dependency_old_lines": 110,
+    "dependency_supplement_lines": 335,
+    "dependency_supplement_sha256": "b90037c7dfbab219afae2e12914c164779db50c53b3269e094db6044513535b9"
+  },
+  "route": {
+    "development": "devpod-4090",
+    "nas": "mt-tutz0R-pfs-haZOBP GPFS /data/nas_ray",
+    "target": "baidu_a800",
+    "no_cross_nas": true,
+    "prior_a800_same_nas_verified": true,
+    "a800_ssh": "two kex connection closes before commands; no task failure",
+    "existing_developer_cli": "same authorized devpod-4090 md_ai_kit2.0.0 authenticated and A800 list reachable; not new host or credential route"
+  },
+  "output_template": "/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_failure_state_collect_a800_v1",
+  "command": "cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v1 && bash wa/scripts/failure_state_collect.sh \"$OUTPUT_ROOT\"",
+  "acceptance": "8actualA800UUID/CUDA/ready,8lanes126unique complete, original start and same-k replay proofs, teacher success higher following_rate tieLN plus independent successful verification, positive teacher-only valid windows; collection candidate not training release/SR",
+  "boundaries": [
+    "no new training or architecture/loss/LR/controller/physics/threshold change",
+    "explicit evaluation adaptation",
+    "no old result backfill or failed WA prefix labels",
+    "no formal worker startup evidence yet",
+    "8A800 follows default resource preference, not 4090 compute migration"
+  ]
+}
