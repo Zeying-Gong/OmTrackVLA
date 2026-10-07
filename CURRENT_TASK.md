@@ -14,7 +14,8 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Frozen source_hard_stt_train_v1 commit8d8efe3aa8a7ce9714913b6f65e5e3c8196eae06;clean;159Pythonfiles match developer diagnostic.
 - Config wa/jobs/hard_stt_train_a800_v1.yaml SHA99f8fc7491b4f7c4c347c73b0ba4f1bf363ff292c76de0d4b29fd9850df19184;GitHubfda647a7.
 - Parent59866 model+optimizer SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;new1epoch cumulative2;planned37009updates/end59716.
-- Actual training snapshot:step22950/59716,phase243/37009,elapsed138.624s,loss.11054,gradnorm.64235,peak8.6845GiB. Startupwarnings retained.
+- Actual training snapshot: step25100/59716, phase2393/37009, elapsed1051.026s, loss0.14129, gradnorm0.86114, peak8.849GiB. Recent logs growing; startup warnings retained.
+- Live TensorBoard run hard_stt_61609 verified from scalar API. Existing server6006/exporter2619386; ssh -N -L 16006:127.0.0.1:6006 devpod-a800 then http://127.0.0.1:16006/#scalars . No new local tunnel.
 - Explicit evaluation-set adaptation authorized. Never describe this as untouched-test generalization.
 
 ## Frozen baseline and evidence
@@ -47,6 +48,9 @@ Full previous CURRENT_TASK: archive/2026-10/CURRENT_TASK_before_stt_goal_2026100
 - Full pair/media and88window teacher-fit COMPLETE;hardCollisionADE.55880->.48717;successfulSTT.27892->.25227;label-fit notSR.
 - RealRTX4090 diagnostic4updates22708..22711 consumed16samples10base6teacher3hard;peak7.309GiB;no checkpoint.
 - Evidence:wa/results/HARD_STT_CANDIDATE_20261007.json. Monitor61609 steps/checkpoint andfinal actual_exposure_epoch1.json/npz;do notduplicate.
+- Final tools: wa.tools.audit_hard_stt_training checks completed metadata/exact actual exposure/source+YAML pins; live run correctly INCOMPLETE without checkpoint load. Scheduler terminal status checked separately.
+- wa.tools.audit_student_goal checks full4215 new rows and paired61377 baseline, fixed1289/1173/1203 thresholds and gains/regressions. 25 new audit tests PASS (plus6 existing runtime tests); not a new model result.
+- Goal-auditor real61377 self-check:81sourcehashes PASS,4215rows,NOT_MET with13/0/0shortfall whileLightNav superiority=True. Read-only/no new result artifact;61609 closedloop still pending.
 - FullSTT/DT/AT24GPU closedloop required before claiming gain;actualperwindow exposure recorded and validated after epoch.
 - Do not blindly continue epoch3, change architecture/loss/physics/success thresholds, or invent task-ID inputs.
 - Teacher demonstrations: successful branch first; if both succeed choose higher tracking rate, exact tie LightNav.
