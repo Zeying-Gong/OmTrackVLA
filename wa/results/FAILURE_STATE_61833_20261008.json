@@ -1,0 +1,696 @@
+{
+  "schema": "wa_failure_state_failure_audit_v1",
+  "audited_at": "2026-10-08T07:33:33+08:00",
+  "job": 61833,
+  "task": 73055,
+  "scheduler_status": "FAILED",
+  "scheduler_updated": "2026-10-08T07:29:10+08:00",
+  "submit_time": "2026-10-08T07:23:11+08:00",
+  "cluster": "baidu_bj_a800",
+  "actual_gpus": {
+    "count": 8,
+    "model": "NVIDIA A800-SXM4-80GB",
+    "unique_uuids": 8
+  },
+  "ready": {
+    "wa": 8,
+    "lightnav": 8
+  },
+  "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61833/task_73055/wa_failure_state_collect_a800_v1",
+  "source_commit": "d44a06c6c4d9b14c9c8662468f2b043fb1fb5267",
+  "config_sha256": "165c7fed0cfcf3def2237201432b633df19204f6112905c3ca71843166b557aa",
+  "plan_sha256": "2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b",
+  "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+  "completed": 1,
+  "expected": 126,
+  "training_released": false,
+  "score_backfill_allowed": false,
+  "diagnosis": {
+    "lane": 1,
+    "key": "rJhMRvNn4DS/8",
+    "student_executed_actions": 40,
+    "student_outcome": "Lost",
+    "candidates": [
+      35,
+      25,
+      10,
+      0
+    ],
+    "takeover_step": 35,
+    "phase": "teacher_prefix_before_takeover",
+    "rc": 500,
+    "sequence": 32,
+    "server_message": "Missing rvq act levels [0] in '<apos_1249><opos_0>chu<act_l1_77><|im_end|>'",
+    "client_exception": "RuntimeError: TEACHER_TRANSPORT_FALLBACK",
+    "observed_preaction_frames": 33,
+    "executed_actions": 32,
+    "required_prefix_frames": 36,
+    "fallback_detected": true,
+    "fallback_executed": false,
+    "complete_replay_proven": false,
+    "oracle_same_k_run": false,
+    "cause_scope": "teacher output decoding failure; no evidence of replay mismatch, GPU OOM or SSH causing this worker error"
+  },
+  "wrapper": {
+    "launcher_exit": 1,
+    "dependency_exit": 0,
+    "finished_utc": "2026-10-07T23:29:09Z"
+  },
+  "owned_processes_exited": 24,
+  "preserved_candidate": {
+    "key": "stt:bzCsHPLDztK/8",
+    "takeover_step": 6,
+    "teacher": "oracle",
+    "student_success": false,
+    "lightnav_success": false,
+    "oracle_success": true,
+    "repeat_success": true,
+    "candidate_windows": 26,
+    "repeat_candidate_windows": 0,
+    "following_step": 38,
+    "total_step": 47,
+    "read_only_audit": {
+      "files": 180,
+      "bytes": 33664365,
+      "pngs": 116,
+      "prefix_frames": 7,
+      "real_time_interpolation_max_delta": 0,
+      "teacher_owned_windows": 26
+    },
+    "records_sha256": "985f5762cf8ca27a3c3399f53a798c35fdbf41d7d52301abe1c99d327d0998d2",
+    "search_sha256": "58cda730d9c02e4602fd695c3b18e12e564a1dd01866ab959b7b2d37c57fb971",
+    "oracle_windows_sha256": "c6c84a37567387a6b8d59d8bc578a185d695a69e8afd1f4ec94df205e731fa89",
+    "inventory_canonical_sha256": "5d54cd4b63fa19ae4c4ecc8a804e83b6e54b60196ce90f177e4cae9bb6730a15",
+    "pending": [
+      "persist complete source inventory",
+      "SE2/yaw/history/student input audit",
+      "cache admission"
+    ],
+    "reuse_limit": "only if valid teacher path semantics unchanged; old v1 provenance must remain explicit"
+  },
+  "next": {
+    "status": "PREPARING_NOT_SUBMITTED",
+    "protocol": "explicit v2 teacher runtime-invalid union; no fake result/TR/takeover evidence",
+    "scope": "125 missing original keys after frozen reuse audit",
+    "gate": "controlled teacher output/transport errors only; original start, REPLAY, hash, unknown failures remain fatal; developer checks before new formal job"
+  },
+  "warnings": [
+    "Gym",
+    "HM3D SSD semantics descriptor",
+    "mesh attributes",
+    "xFormers",
+    "LightNav chunked prefill/deprecation",
+    "Xvfb mkdir ERROR",
+    "LightNav NCCL shutdown"
+  ],
+  "raw_error_audit": {
+    "utc": "2026-10-07T23:29:59.875634+00:00",
+    "root_error": {
+      "error_type": "RuntimeError",
+      "message": "collector failed; preserve original logs and partial outputs",
+      "training_released": false,
+      "no_success_rate": true
+    },
+    "lanes": [
+      {
+        "lane": 0,
+        "error": {
+          "error_type": "RuntimeError",
+          "message": "another lane failed or launcher was interrupted",
+          "training_released": false,
+          "no_success_rate": true
+        },
+        "complete_count": 1,
+        "exits": [
+          {
+            "utc": "2026-10-07T23:27:37.280506+00:00",
+            "role": "worker",
+            "event": "exit",
+            "pid": 2586,
+            "returncode": -15
+          },
+          {
+            "utc": "2026-10-07T23:27:38.059130+00:00",
+            "role": "lightnav",
+            "event": "exit",
+            "pid": 341,
+            "returncode": 0
+          },
+          {
+            "utc": "2026-10-07T23:27:38.461444+00:00",
+            "role": "wa",
+            "event": "exit",
+            "pid": 334,
+            "returncode": -15
+          }
+        ]
+      },
+      {
+        "lane": 1,
+        "error": {
+          "error_type": "RuntimeError",
+          "message": "collector failed; preserve original logs and partial outputs",
+          "training_released": false,
+          "no_success_rate": true
+        },
+        "complete_count": 0,
+        "exits": [
+          {
+            "utc": "2026-10-07T23:27:35.942188+00:00",
+            "role": "worker",
+            "event": "worker_return",
+            "pid": 2585,
+            "returncode": 1
+          },
+          {
+            "utc": "2026-10-07T23:27:36.068004+00:00",
+            "role": "worker",
+            "event": "exit",
+            "pid": 2585,
+            "returncode": 1
+          },
+          {
+            "utc": "2026-10-07T23:27:36.738986+00:00",
+            "role": "lightnav",
+            "event": "exit",
+            "pid": 344,
+            "returncode": 0
+          },
+          {
+            "utc": "2026-10-07T23:27:36.944159+00:00",
+            "role": "wa",
+            "event": "exit",
+            "pid": 336,
+            "returncode": -15
+          }
+        ]
+      },
+      {
+        "lane": 2,
+        "error": {
+          "error_type": "RuntimeError",
+          "message": "another lane failed or launcher was interrupted",
+          "training_released": false,
+          "no_success_rate": true
+        },
+        "complete_count": 0,
+        "exits": [
+          {
+            "utc": "2026-10-07T23:27:37.066826+00:00",
+            "role": "worker",
+            "event": "exit",
+            "pid": 2588,
+            "returncode": -15
+          },
+          {
+            "utc": "2026-10-07T23:27:37.747379+00:00",
+            "role": "lightnav",
+            "event": "exit",
+            "pid": 343,
+            "returncode": 0
+          },
+          {
+            "utc": "2026-10-07T23:27:38.012829+00:00",
+            "role": "wa",
+            "event": "exit",
+            "pid": 335,
+            "returncode": -15
+          }
+        ]
+      },
+      {
+        "lane": 3,
+        "error": {
+          "error_type": "RuntimeError",
+          "message": "another lane failed or launcher was interrupted",
+          "training_released": false,
+          "no_success_rate": true
+        },
+        "complete_count": 0,
+        "exits": [
+          {
+            "utc": "2026-10-07T23:27:37.293620+00:00",
+            "role": "worker",
+            "event": "exit",
+            "pid": 2592,
+            "returncode": -15
+          },
+          {
+            "utc": "2026-10-07T23:27:38.431473+00:00",
+            "role": "lightnav",
+            "event": "exit",
+            "pid": 345,
+            "returncode": 0
+          },
+          {
+            "utc": "2026-10-07T23:27:38.633547+00:00",
+            "role": "wa",
+            "event": "exit",
+            "pid": 337,
+            "returncode": -15
+          }
+        ]
+      },
+      {
+        "lane": 4,
+        "error": {
+          "error_type": "RuntimeError",
+          "message": "another lane failed or launcher was interrupted",
+          "training_released": false,
+          "no_success_rate": true
+        },
+        "complete_count": 0,
+        "exits": [
+          {
+            "utc": "2026-10-07T23:27:37.093123+00:00",
+            "role": "worker",
+            "event": "exit",
+            "pid": 2589,
+            "returncode": -15
+          },
+          {
+            "utc": "2026-10-07T23:27:37.930281+00:00",
+            "role": "lightnav",
+            "event": "exit",
+            "pid": 347,
+            "returncode": 0
+          },
+          {
+            "utc": "2026-10-07T23:27:38.345687+00:00",
+            "role": "wa",
+            "event": "exit",
+            "pid": 338,
+            "returncode": -15
+          }
+        ]
+      },
+      {
+        "lane": 5,
+        "error": {
+          "error_type": "RuntimeError",
+          "message": "another lane failed or launcher was interrupted",
+          "training_released": false,
+          "no_success_rate": true
+        },
+        "complete_count": 0,
+        "exits": [
+          {
+            "utc": "2026-10-07T23:27:37.292764+00:00",
+            "role": "worker",
+            "event": "exit",
+            "pid": 2591,
+            "returncode": -15
+          },
+          {
+            "utc": "2026-10-07T23:27:38.122500+00:00",
+            "role": "lightnav",
+            "event": "exit",
+            "pid": 349,
+            "returncode": 0
+          },
+          {
+            "utc": "2026-10-07T23:27:38.525200+00:00",
+            "role": "wa",
+            "event": "exit",
+            "pid": 342,
+            "returncode": -15
+          }
+        ]
+      },
+      {
+        "lane": 6,
+        "error": {
+          "error_type": "RuntimeError",
+          "message": "another lane failed or launcher was interrupted",
+          "training_released": false,
+          "no_success_rate": true
+        },
+        "complete_count": 0,
+        "exits": [
+          {
+            "utc": "2026-10-07T23:27:37.192718+00:00",
+            "role": "worker",
+            "event": "exit",
+            "pid": 2590,
+            "returncode": -15
+          },
+          {
+            "utc": "2026-10-07T23:27:38.231574+00:00",
+            "role": "lightnav",
+            "event": "exit",
+            "pid": 348,
+            "returncode": 0
+          },
+          {
+            "utc": "2026-10-07T23:27:38.634352+00:00",
+            "role": "wa",
+            "event": "exit",
+            "pid": 339,
+            "returncode": -15
+          }
+        ]
+      },
+      {
+        "lane": 7,
+        "error": {
+          "error_type": "RuntimeError",
+          "message": "another lane failed or launcher was interrupted",
+          "training_released": false,
+          "no_success_rate": true
+        },
+        "complete_count": 0,
+        "exits": [
+          {
+            "utc": "2026-10-07T23:27:37.168284+00:00",
+            "role": "worker",
+            "event": "exit",
+            "pid": 2587,
+            "returncode": -15
+          },
+          {
+            "utc": "2026-10-07T23:27:37.848325+00:00",
+            "role": "lightnav",
+            "event": "exit",
+            "pid": 346,
+            "returncode": 0
+          },
+          {
+            "utc": "2026-10-07T23:27:38.351663+00:00",
+            "role": "wa",
+            "event": "exit",
+            "pid": 340,
+            "returncode": -15
+          }
+        ]
+      }
+    ],
+    "hashes": {
+      "ERROR.json": {
+        "bytes": 169,
+        "sha256": "da32c138013a2f14621b2a839b42b17e62e9af1fc77f27f469e2404a48ec70a3"
+      },
+      "lane0/ERROR.json": {
+        "bytes": 156,
+        "sha256": "444413be12a8d23f0704708e4c28570ae952a1fa5997b30bbebfc70beb96799b"
+      },
+      "lane0/worker.log": {
+        "bytes": 8297,
+        "sha256": "1dcef0a98dacd5ac71881994ccb1903d59b418c37768db7ee09fc272341843ea"
+      },
+      "lane0/teacher.log": {
+        "bytes": 14036,
+        "sha256": "ff08f59849311258e6fa6329273d5c2c001e20dc0e592765234f0ce0580aaedd"
+      },
+      "lane0/processes.jsonl": {
+        "bytes": 9220,
+        "sha256": "1796ce4aab6d304c7557f8f6d56d225c7bbba554b2ab63d07f40dc6125982761"
+      },
+      "lane0/collection/records.jsonl": {
+        "bytes": 29160,
+        "sha256": "985f5762cf8ca27a3c3399f53a798c35fdbf41d7d52301abe1c99d327d0998d2"
+      },
+      "lane1/ERROR.json": {
+        "bytes": 169,
+        "sha256": "da32c138013a2f14621b2a839b42b17e62e9af1fc77f27f469e2404a48ec70a3"
+      },
+      "lane1/worker.log": {
+        "bytes": 5943,
+        "sha256": "a133f91b69c6c80cd1038e71f16aa7aee8f2fc9a4a12e13608da4d0826f90fa4"
+      },
+      "lane1/teacher.log": {
+        "bytes": 16960,
+        "sha256": "2257e9562def204cf703456c19fbd0f0043234d3988b81a2f7dbfa82d50464a7"
+      },
+      "lane1/processes.jsonl": {
+        "bytes": 9336,
+        "sha256": "642e9f404c28cbe4c115b8a462331fbc0f9571f1f736e431aeb712659cdd6a7b"
+      },
+      "lane2/ERROR.json": {
+        "bytes": 156,
+        "sha256": "444413be12a8d23f0704708e4c28570ae952a1fa5997b30bbebfc70beb96799b"
+      },
+      "lane2/worker.log": {
+        "bytes": 3115,
+        "sha256": "7205b910f5ee390b302aeb45bf3a9f17971fb2e065690da9fcda3e00d93e0378"
+      },
+      "lane2/teacher.log": {
+        "bytes": 21027,
+        "sha256": "ecd59df2fbbd1070a6739a5af4c95db8b509dfca8369e9c6e869d1a13918ba1f"
+      },
+      "lane2/processes.jsonl": {
+        "bytes": 9220,
+        "sha256": "633a702da49010abd81b3b7aa7a5546887b759afcfc837231bdbafa5e09d4678"
+      },
+      "lane3/ERROR.json": {
+        "bytes": 156,
+        "sha256": "444413be12a8d23f0704708e4c28570ae952a1fa5997b30bbebfc70beb96799b"
+      },
+      "lane3/worker.log": {
+        "bytes": 3665,
+        "sha256": "5877dca2cfb99e225b1436c0849ba39ee1262f51902389dca920435c7c8a49ed"
+      },
+      "lane3/teacher.log": {
+        "bytes": 16050,
+        "sha256": "d1c1087ddf0be0f1d19cfe0ef31382a1f2eec8674ae280253ce8767990214620"
+      },
+      "lane3/processes.jsonl": {
+        "bytes": 9220,
+        "sha256": "ff832b4144a6e2e6decc24d4004a829ffc20052a6f4fe2c311d62d7109610faf"
+      },
+      "lane4/ERROR.json": {
+        "bytes": 156,
+        "sha256": "444413be12a8d23f0704708e4c28570ae952a1fa5997b30bbebfc70beb96799b"
+      },
+      "lane4/worker.log": {
+        "bytes": 4240,
+        "sha256": "f63eefa2ae3fca9fdb36b3403304f28f40e5734a03af3772f1d16c0fdee9afc8"
+      },
+      "lane4/teacher.log": {
+        "bytes": 18151,
+        "sha256": "4753bf011579bc6c2c230c2249478e72c4348622bd64e0a8b434fbcac93c9ed6"
+      },
+      "lane4/processes.jsonl": {
+        "bytes": 9220,
+        "sha256": "4737c012300180d34b428ab742363008499f75995a1a1c8003bb58309a05d019"
+      },
+      "lane5/ERROR.json": {
+        "bytes": 156,
+        "sha256": "444413be12a8d23f0704708e4c28570ae952a1fa5997b30bbebfc70beb96799b"
+      },
+      "lane5/worker.log": {
+        "bytes": 4242,
+        "sha256": "d59945618237429b3cc1848ec519ac8aab0126c50baaddae45b3c5fb9f66e5c6"
+      },
+      "lane5/teacher.log": {
+        "bytes": 14470,
+        "sha256": "45a65ec4a1aebb86504bab70eb30b2310f80751403aa1c6982fc3d375b294cfc"
+      },
+      "lane5/processes.jsonl": {
+        "bytes": 9220,
+        "sha256": "80fad2a62442cb93f68c7c3ab7daf04f1428ade786980dbc26d7390e1c352c82"
+      },
+      "lane6/ERROR.json": {
+        "bytes": 156,
+        "sha256": "444413be12a8d23f0704708e4c28570ae952a1fa5997b30bbebfc70beb96799b"
+      },
+      "lane6/worker.log": {
+        "bytes": 3136,
+        "sha256": "9d9c3331d09ddc821d6f98b28a3f4e6861e096cc94a43a35ce388f85a9309e56"
+      },
+      "lane6/teacher.log": {
+        "bytes": 19855,
+        "sha256": "3e1c53adee6cabf7feb63a09d03bf37d6ca679e741aae45b6b92bd6d71e1d9c9"
+      },
+      "lane6/processes.jsonl": {
+        "bytes": 9220,
+        "sha256": "1ecfdc03d9f231547149abc8c5e43e5691d58a6113d76caeadee2a19e241aeee"
+      },
+      "lane7/ERROR.json": {
+        "bytes": 156,
+        "sha256": "444413be12a8d23f0704708e4c28570ae952a1fa5997b30bbebfc70beb96799b"
+      },
+      "lane7/worker.log": {
+        "bytes": 3135,
+        "sha256": "a8d69d58bd5cdbcb789b1c68575dedc2c56967f036ca51c9c23892093ac3ca4b"
+      },
+      "lane7/teacher.log": {
+        "bytes": 16307,
+        "sha256": "1173d96def93fb8e7c83e0f1695ab6c4b8c2738432b79fcecfd1cb7ab366ab82"
+      },
+      "lane7/processes.jsonl": {
+        "bytes": 9220,
+        "sha256": "a0794a2bda5a966c4d8d3d011c242b8b005157f67f1e5a303b6b34f4a910ecc6"
+      }
+    },
+    "records": [
+      {
+        "key": "bzCsHPLDztK/8",
+        "status": null,
+        "attempts": [
+          {
+            "takeover_step": 6,
+            "branches": {
+              "lightnav": {
+                "experiment": "evaluation_adaptation_failure_state_v1",
+                "teacher": "lightnav",
+                "complete": true,
+                "replay_verified": true,
+                "transport_fallback": false,
+                "task": "stt",
+                "key": "bzCsHPLDztK/8",
+                "takeover_step": 6,
+                "seed": 7,
+                "protocol_sha256": "734ef66947dd0c318bdee5cb990929b313647370003ff889ff29f77391ed2e4a",
+                "prefix_sha256": "473d520022f49c18ca7b9de45cf3d5aad4b2b214db5aac567fdd406b957cbdec",
+                "initial_rgb_sha256": "2244b9a08cbf92bbe0e9d9faac85a941e61be6ea58317e30da60ab62b41d6b23",
+                "takeover_state_sha256": "bda8897510afa771e3d8c6c3ac6c5f2faf14c47a9837e621b7c4517abeae32bd",
+                "actual_takeover_state_sha256": "bda8897510afa771e3d8c6c3ac6c5f2faf14c47a9837e621b7c4517abeae32bd",
+                "candidate_windows": 0,
+                "result": {
+                  "finish": false,
+                  "status": "Collision",
+                  "success": 0,
+                  "following_rate": 0.7272727272727273,
+                  "following_step": 8,
+                  "total_step": 11,
+                  "collision": 1,
+                  "policy_init_valid": true,
+                  "instruction": "Pursue the person in a blue top and sandals."
+                },
+                "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61833/task_73055/wa_failure_state_collect_a800_v1/lane0/collection/stt/bzCsHPLDztK/8/lightnav_0006",
+                "verification_only": false
+              },
+              "oracle": {
+                "experiment": "evaluation_adaptation_failure_state_v1",
+                "teacher": "oracle",
+                "complete": true,
+                "replay_verified": true,
+                "transport_fallback": false,
+                "task": "stt",
+                "key": "bzCsHPLDztK/8",
+                "takeover_step": 6,
+                "seed": 7,
+                "protocol_sha256": "734ef66947dd0c318bdee5cb990929b313647370003ff889ff29f77391ed2e4a",
+                "prefix_sha256": "473d520022f49c18ca7b9de45cf3d5aad4b2b214db5aac567fdd406b957cbdec",
+                "initial_rgb_sha256": "2244b9a08cbf92bbe0e9d9faac85a941e61be6ea58317e30da60ab62b41d6b23",
+                "takeover_state_sha256": "bda8897510afa771e3d8c6c3ac6c5f2faf14c47a9837e621b7c4517abeae32bd",
+                "actual_takeover_state_sha256": "bda8897510afa771e3d8c6c3ac6c5f2faf14c47a9837e621b7c4517abeae32bd",
+                "candidate_windows": 26,
+                "result": {
+                  "finish": true,
+                  "status": "Normal",
+                  "success": 1,
+                  "following_rate": 0.8085106382978723,
+                  "following_step": 38,
+                  "total_step": 47,
+                  "collision": 0,
+                  "policy_init_valid": true,
+                  "instruction": "Pursue the person in a blue top and sandals."
+                },
+                "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61833/task_73055/wa_failure_state_collect_a800_v1/lane0/collection/stt/bzCsHPLDztK/8/oracle_0006",
+                "verification_only": false
+              }
+            },
+            "selection": {
+              "experiment": "evaluation_adaptation_failure_state_v1",
+              "pair": {
+                "task": "stt",
+                "key": "bzCsHPLDztK/8",
+                "takeover_step": 6,
+                "seed": 7,
+                "protocol_sha256": "734ef66947dd0c318bdee5cb990929b313647370003ff889ff29f77391ed2e4a",
+                "initial_rgb_sha256": "2244b9a08cbf92bbe0e9d9faac85a941e61be6ea58317e30da60ab62b41d6b23",
+                "takeover_state_sha256": "bda8897510afa771e3d8c6c3ac6c5f2faf14c47a9837e621b7c4517abeae32bd",
+                "prefix_sha256": "473d520022f49c18ca7b9de45cf3d5aad4b2b214db5aac567fdd406b957cbdec"
+              },
+              "selected_teacher": "oracle",
+              "reason": "only_eligible_teacher",
+              "eligible": {
+                "lightnav": false,
+                "oracle": true
+              },
+              "ineligible_reasons": {
+                "lightnav": [
+                  "success",
+                  "collision_free"
+                ],
+                "oracle": []
+              },
+              "results": {
+                "lightnav": {
+                  "finish": false,
+                  "status": "Collision",
+                  "success": 0,
+                  "following_rate": 0.7272727272727273,
+                  "following_step": 8,
+                  "total_step": 11,
+                  "collision": 1,
+                  "policy_init_valid": true,
+                  "instruction": "Pursue the person in a blue top and sandals."
+                },
+                "oracle": {
+                  "finish": true,
+                  "status": "Normal",
+                  "success": 1,
+                  "following_rate": 0.8085106382978723,
+                  "following_step": 38,
+                  "total_step": 47,
+                  "collision": 0,
+                  "policy_init_valid": true,
+                  "instruction": "Pursue the person in a blue top and sandals."
+                }
+              },
+              "demonstration_candidate": true,
+              "verification_required": true,
+              "training_released": false,
+              "pending": "additional same-k winner replay and teacher-owned suffix admission"
+            },
+            "repeat": {
+              "experiment": "evaluation_adaptation_failure_state_v1",
+              "teacher": "oracle",
+              "complete": true,
+              "replay_verified": true,
+              "transport_fallback": false,
+              "task": "stt",
+              "key": "bzCsHPLDztK/8",
+              "takeover_step": 6,
+              "seed": 7,
+              "protocol_sha256": "734ef66947dd0c318bdee5cb990929b313647370003ff889ff29f77391ed2e4a",
+              "prefix_sha256": "473d520022f49c18ca7b9de45cf3d5aad4b2b214db5aac567fdd406b957cbdec",
+              "initial_rgb_sha256": "2244b9a08cbf92bbe0e9d9faac85a941e61be6ea58317e30da60ab62b41d6b23",
+              "takeover_state_sha256": "bda8897510afa771e3d8c6c3ac6c5f2faf14c47a9837e621b7c4517abeae32bd",
+              "actual_takeover_state_sha256": "bda8897510afa771e3d8c6c3ac6c5f2faf14c47a9837e621b7c4517abeae32bd",
+              "candidate_windows": 0,
+              "result": {
+                "finish": true,
+                "status": "Normal",
+                "success": 1,
+                "following_rate": 0.8085106382978723,
+                "following_step": 38,
+                "total_step": 47,
+                "collision": 0,
+                "policy_init_valid": true,
+                "instruction": "Pursue the person in a blue top and sandals."
+              },
+              "artifact_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61833/task_73055/wa_failure_state_collect_a800_v1/lane0/collection/stt/bzCsHPLDztK/8/oracle_0006_repeat",
+              "verification_only": true
+            },
+            "repeat_valid": true,
+            "selected_candidate_windows": 26
+          }
+        ],
+        "selection": null,
+        "training_released": false
+      }
+    ],
+    "root_complete_exists": false
+  },
+  "best_result_unchanged": {
+    "stt": 1279,
+    "dt": 1178,
+    "at": 1207,
+    "stt_target": 1289,
+    "stt_gap": 10,
+    "goal_status": "ACTIVE_NOT_MET"
+  }
+}
