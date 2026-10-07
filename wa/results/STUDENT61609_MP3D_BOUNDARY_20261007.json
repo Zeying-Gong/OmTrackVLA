@@ -1,0 +1,872 @@
+{
+  "schema": "wa.student-mp3d-boundary-bounded.v1",
+  "status": "BOUNDED_8_MP3D_START_PAIR_AUDIT_PASS",
+  "original_audit": {
+    "snapshot_utc": "2026-10-07T09:08:36.253432+00:00",
+    "completed_utc": "2026-10-07T09:08:37.481342+00:00",
+    "status": "PASS",
+    "episodes": 8,
+    "teacher_persisted_files_verified": 48,
+    "audit_payload_sha256": "492319ba674d22d33118251e5b40a528b05c07eb8e4b596b822c8e1ca70f0074",
+    "comparison": "raw sensor SHA with shape/dtype/all channels; dynamic state atol1e-6",
+    "scope": "initial pairing only; not student performance or generalization"
+  },
+  "source": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1",
+    "commit": "192b57f5e270acfffd8c7c1a4590cb1b257d92a3",
+    "clean_at_original_audit": true
+  },
+  "selection": "First completed MP3D record per task/lane, bounded at24, excluding all24 keys from prior bounded first-row audit. No success-based selection or replacement; fixed original snapshot retained.",
+  "previous24_exclusion": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout/wa/results/STUDENT61609_STARTPAIR_BOUNDED24_20261007.json",
+    "sha256": "34d3f00d2271d1988e744657ee6ff2f7586c888528da96013dcfaa164391b785",
+    "selected_overlap": 0
+  },
+  "checkpoint": {
+    "sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "step": 59716,
+    "mode": "mixed"
+  },
+  "completed_counts_at_original_snapshot": {
+    "stt": 747,
+    "dt": 631,
+    "at": 648
+  },
+  "mp3d_completed_counts_at_original_snapshot": {
+    "stt": 63,
+    "dt": 0,
+    "at": 0
+  },
+  "rows": [
+    {
+      "task": "stt",
+      "lane": 0,
+      "key": "oLBMNvg9in8/55",
+      "manifest_index": 688,
+      "scene_id": "mp3d/oLBMNvg9in8/oLBMNvg9in8.glb",
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/episodes.jsonl",
+      "row_number": 87,
+      "original_record_sha256": "acc82e880ec6830541b81595a625cb7af8e2ca4e28d5fb776f55a4d3940bf0b0",
+      "original_raw_sensor_sha256": "c9dc0d114ff89ef469c26aa9de0ae83f33c5c26d4e41dc8641de0fe10b62061a",
+      "original_dynamic_state_sha256": "2d548b631a46e9d07036f42bf19d41bb2fc7a5cf211d62bd33d6ab053f857e04",
+      "original_teacher_evidence_mapping_sha256": "cc8cd80fa906aa0cf4d2c6bc928446b8568e2f22b57867c72f8d9fac731f3983",
+      "semantic_ply_repaired": true,
+      "initialization_repair": null,
+      "status": "Normal",
+      "success": 1,
+      "teacher_artifact_roots": {
+        "lightnav": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane1/collection/stt/oLBMNvg9in8/55/lightnav",
+        "oracle": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane1/collection/stt/oLBMNvg9in8/55/oracle"
+      },
+      "teacher_artifact_hashes": {
+        "lightnav": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane1/collection/stt/oLBMNvg9in8/55/lightnav/pair_start.json": "b00cdb9b910ef271fb9df8443bb1000b7646c793871d239e6b54ac0c6f4589d6",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane1/collection/stt/oLBMNvg9in8/55/lightnav/observations.json": "d59f42892cb6e3834928a5d302d59e092ae53f07e6ce5aa4283211c5e7ca3398",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane1/collection/stt/oLBMNvg9in8/55/lightnav/rgb_0000.png": "870c392c3f413b813554a72219c26a1e36521dd6099eeaa01228737fae8e965e"
+        },
+        "oracle": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane1/collection/stt/oLBMNvg9in8/55/oracle/pair_start.json": "b00cdb9b910ef271fb9df8443bb1000b7646c793871d239e6b54ac0c6f4589d6",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane1/collection/stt/oLBMNvg9in8/55/oracle/observations.json": "2beebdaebd7c71805a289e75e318ccabc5f94268b2e27b5c43690a191e7d8840",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane1/collection/stt/oLBMNvg9in8/55/oracle/rgb_0000.png": "870c392c3f413b813554a72219c26a1e36521dd6099eeaa01228737fae8e965e"
+        }
+      },
+      "targeted_supplement_checks": {
+        "record_sha256": true,
+        "fixed_key": true,
+        "raw_sensor_sha256": true,
+        "dynamic_state_sha256": true,
+        "teacher_evidence_mapping_sha256": true
+      }
+    },
+    {
+      "task": "stt",
+      "lane": 1,
+      "key": "Vt2qJdWjCF2/3",
+      "manifest_index": 689,
+      "scene_id": "mp3d/Vt2qJdWjCF2/Vt2qJdWjCF2.glb",
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/episodes.jsonl",
+      "row_number": 87,
+      "original_record_sha256": "7ff8be6b7c999d109994ac3e43ee132e453fee94bda43e16d8a5aa848ee25e52",
+      "original_raw_sensor_sha256": "d6cffacab30b034139efc6e8965be7453a233b30afe4dc82a3b14e609e673354",
+      "original_dynamic_state_sha256": "7fca068f6a455265cd7e83dcaac94951e56da6611b520c56fea6e2d9ad1648d0",
+      "original_teacher_evidence_mapping_sha256": "40386200194ee63c592951aee9b12e42c78c505d95d3e1c2f67e97e0d046075c",
+      "semantic_ply_repaired": true,
+      "initialization_repair": null,
+      "status": "Normal",
+      "success": 1,
+      "teacher_artifact_roots": {
+        "lightnav": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane2/collection/stt/Vt2qJdWjCF2/3/lightnav",
+        "oracle": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane2/collection/stt/Vt2qJdWjCF2/3/oracle"
+      },
+      "teacher_artifact_hashes": {
+        "lightnav": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane2/collection/stt/Vt2qJdWjCF2/3/lightnav/pair_start.json": "7f54e77023f793651a754eaac69c74cbe0f254a3e091757aa2604fafcb809be8",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane2/collection/stt/Vt2qJdWjCF2/3/lightnav/observations.json": "c67888eab4ed7dc8db7e5f9239a6c10bf91e474c25b5918d4b473d1f60db8561",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane2/collection/stt/Vt2qJdWjCF2/3/lightnav/rgb_0000.png": "6925003a0ad9a6475ab0f6e7ac3576f26b15010cd12bd563ad77ae7540f23987"
+        },
+        "oracle": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane2/collection/stt/Vt2qJdWjCF2/3/oracle/pair_start.json": "7f54e77023f793651a754eaac69c74cbe0f254a3e091757aa2604fafcb809be8",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane2/collection/stt/Vt2qJdWjCF2/3/oracle/observations.json": "c30c10c3a16650677ace7d37da1970bd1e8b7e60be2ea18ebc157b1a7a0dbadd",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane2/collection/stt/Vt2qJdWjCF2/3/oracle/rgb_0000.png": "6925003a0ad9a6475ab0f6e7ac3576f26b15010cd12bd563ad77ae7540f23987"
+        }
+      },
+      "targeted_supplement_checks": {
+        "record_sha256": true,
+        "fixed_key": true,
+        "raw_sensor_sha256": true,
+        "dynamic_state_sha256": true,
+        "teacher_evidence_mapping_sha256": true
+      }
+    },
+    {
+      "task": "stt",
+      "lane": 2,
+      "key": "E9uDoFAP3SH/323",
+      "manifest_index": 690,
+      "scene_id": "mp3d/E9uDoFAP3SH/E9uDoFAP3SH.glb",
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/episodes.jsonl",
+      "row_number": 87,
+      "original_record_sha256": "2eb4e2c61c5cd87c81d93f97e482f24f9957130c8975b19643abdad902d04b03",
+      "original_raw_sensor_sha256": "2d4346e840c567eaf4189c5887c010b027dd54f2b8f901cdc3662229d5c01a60",
+      "original_dynamic_state_sha256": "57ca90087bd7499eb5f6d49ceddb6b02d1c82162742fc18e7c82a3ffde020d6b",
+      "original_teacher_evidence_mapping_sha256": "972afbe1e657399cc9eab093a60e8574e4320e4ff02f7e30a81bc6e0d459a9ee",
+      "semantic_ply_repaired": true,
+      "initialization_repair": null,
+      "status": "Normal",
+      "success": 1,
+      "teacher_artifact_roots": {
+        "lightnav": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane3/collection/stt/E9uDoFAP3SH/323/lightnav",
+        "oracle": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane3/collection/stt/E9uDoFAP3SH/323/oracle"
+      },
+      "teacher_artifact_hashes": {
+        "lightnav": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane3/collection/stt/E9uDoFAP3SH/323/lightnav/pair_start.json": "e127ee3ee9800573e9f9f52975fa40323116df40cbafa633fb0e965e9e6c8e30",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane3/collection/stt/E9uDoFAP3SH/323/lightnav/observations.json": "5d72a3da23dafacf473e325ccc7c2d931373519fdabd032c1545f6e5a3e64085",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane3/collection/stt/E9uDoFAP3SH/323/lightnav/rgb_0000.png": "0be361536cacf7ac73ef42fddc440f7b6ffeac69147b8f10c7e6777d701d658e"
+        },
+        "oracle": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane3/collection/stt/E9uDoFAP3SH/323/oracle/pair_start.json": "e127ee3ee9800573e9f9f52975fa40323116df40cbafa633fb0e965e9e6c8e30",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane3/collection/stt/E9uDoFAP3SH/323/oracle/observations.json": "282c2dd7bbb5b612c22ba819edd5f489ed0fbb685316e97af01affe7645cc6a3",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane3/collection/stt/E9uDoFAP3SH/323/oracle/rgb_0000.png": "0be361536cacf7ac73ef42fddc440f7b6ffeac69147b8f10c7e6777d701d658e"
+        }
+      },
+      "targeted_supplement_checks": {
+        "record_sha256": true,
+        "fixed_key": true,
+        "raw_sensor_sha256": true,
+        "dynamic_state_sha256": true,
+        "teacher_evidence_mapping_sha256": true
+      }
+    },
+    {
+      "task": "stt",
+      "lane": 3,
+      "key": "Vt2qJdWjCF2/4",
+      "manifest_index": 691,
+      "scene_id": "mp3d/Vt2qJdWjCF2/Vt2qJdWjCF2.glb",
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/episodes.jsonl",
+      "row_number": 87,
+      "original_record_sha256": "15eb29ac42adc2266e99e8ff2cfc283e482d5d5164897d0bca1dd9412a482307",
+      "original_raw_sensor_sha256": "deabe6c6da87054dda6805a34332d5f12708ada495551c34fa68c9d7e7fd3e3b",
+      "original_dynamic_state_sha256": "c3bd9a3b4e549df6d88892b9dcb7aa1ce5c16f3d3adf41049fa4e130b3d591d4",
+      "original_teacher_evidence_mapping_sha256": "331aca86c914f99d8c54a10abfe9cfe896975670cf0be75646d6d9f30051803a",
+      "semantic_ply_repaired": true,
+      "initialization_repair": null,
+      "status": "Normal",
+      "success": 1,
+      "teacher_artifact_roots": {
+        "lightnav": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane4/collection/stt/Vt2qJdWjCF2/4/lightnav",
+        "oracle": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane4/collection/stt/Vt2qJdWjCF2/4/oracle"
+      },
+      "teacher_artifact_hashes": {
+        "lightnav": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane4/collection/stt/Vt2qJdWjCF2/4/lightnav/pair_start.json": "2e794def969c11f30a6fc1306a47d0f74638a627b84eb2fe0f0c718283c246c2",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane4/collection/stt/Vt2qJdWjCF2/4/lightnav/observations.json": "9589f24c0e0b7896618591933da47549ac9990f08a596539678dd916cc7b88d0",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane4/collection/stt/Vt2qJdWjCF2/4/lightnav/rgb_0000.png": "5f4371295c1fdc476510ff8cba5650d37f2deda016c9abd81722e3c93b654c3b"
+        },
+        "oracle": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane4/collection/stt/Vt2qJdWjCF2/4/oracle/pair_start.json": "2e794def969c11f30a6fc1306a47d0f74638a627b84eb2fe0f0c718283c246c2",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane4/collection/stt/Vt2qJdWjCF2/4/oracle/observations.json": "391fe5032cff45b27f8e642ea50012e77fca8d05906e0bc3a37da06c81117d7d",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane4/collection/stt/Vt2qJdWjCF2/4/oracle/rgb_0000.png": "5f4371295c1fdc476510ff8cba5650d37f2deda016c9abd81722e3c93b654c3b"
+        }
+      },
+      "targeted_supplement_checks": {
+        "record_sha256": true,
+        "fixed_key": true,
+        "raw_sensor_sha256": true,
+        "dynamic_state_sha256": true,
+        "teacher_evidence_mapping_sha256": true
+      }
+    },
+    {
+      "task": "stt",
+      "lane": 4,
+      "key": "YFuZgdQ5vWj/1",
+      "manifest_index": 684,
+      "scene_id": "mp3d/YFuZgdQ5vWj/YFuZgdQ5vWj.glb",
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_04/episodes.jsonl",
+      "row_number": 86,
+      "original_record_sha256": "bc22abc4f9549f2ee9c75acf8fb9bddddf96527d79b53ad9bfb16c912c760413",
+      "original_raw_sensor_sha256": "aa13edc8955efa4ba4cc50d81ed5f9a566ab6ceadf454105c3a078de85317763",
+      "original_dynamic_state_sha256": "9a613f033c6e7ff50b632706ec76a41164d8c53d7bdb4814e90deb8d28edcc4f",
+      "original_teacher_evidence_mapping_sha256": "4dd49618592afbf8da80d4aa1693ca8592fdace912d25558c0edb319f267c208",
+      "semantic_ply_repaired": true,
+      "initialization_repair": null,
+      "status": "Normal",
+      "success": 1,
+      "teacher_artifact_roots": {
+        "lightnav": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane5/collection/stt/YFuZgdQ5vWj/1/lightnav",
+        "oracle": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane5/collection/stt/YFuZgdQ5vWj/1/oracle"
+      },
+      "teacher_artifact_hashes": {
+        "lightnav": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane5/collection/stt/YFuZgdQ5vWj/1/lightnav/pair_start.json": "d2e84d2bcaf2d463c641d22fe3c1d3b6f6083930c06444bed20215506c1028a9",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane5/collection/stt/YFuZgdQ5vWj/1/lightnav/observations.json": "30d71fd5cfe4c5ffd85e95020556f11b594765c77cc774841d361b5d5aa9ab30",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane5/collection/stt/YFuZgdQ5vWj/1/lightnav/rgb_0000.png": "17ec99f2300808931b52e00b1117b38811ba454ff449253d593cb386db53c6a4"
+        },
+        "oracle": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane5/collection/stt/YFuZgdQ5vWj/1/oracle/pair_start.json": "d2e84d2bcaf2d463c641d22fe3c1d3b6f6083930c06444bed20215506c1028a9",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane5/collection/stt/YFuZgdQ5vWj/1/oracle/observations.json": "5b277f3c51e20b350cf2c392469ee3768a86fe193d0ee27c9b1712dc0f5c2f96",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane5/collection/stt/YFuZgdQ5vWj/1/oracle/rgb_0000.png": "17ec99f2300808931b52e00b1117b38811ba454ff449253d593cb386db53c6a4"
+        }
+      },
+      "targeted_supplement_checks": {
+        "record_sha256": true,
+        "fixed_key": true,
+        "raw_sensor_sha256": true,
+        "dynamic_state_sha256": true,
+        "teacher_evidence_mapping_sha256": true
+      }
+    },
+    {
+      "task": "stt",
+      "lane": 5,
+      "key": "VLzqgDo317F/186",
+      "manifest_index": 685,
+      "scene_id": "mp3d/VLzqgDo317F/VLzqgDo317F.glb",
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_05/episodes.jsonl",
+      "row_number": 86,
+      "original_record_sha256": "b9bb7614c59b2fe9511f6d0b425a5a7cbe7988a5bfd598a1cd1303a3dbbe2305",
+      "original_raw_sensor_sha256": "a5e89b63baf59ab2163ef149775407fac6906994fbd88930047e735033c530dc",
+      "original_dynamic_state_sha256": "4b62c43a6bec8a675046224c7d22955412f8347be00b888a375644dfe7723b81",
+      "original_teacher_evidence_mapping_sha256": "b4eb2fc51d6c2eeecd42f25ddfa4e96dd6d7622915a2101b7eed0d7b77d2194f",
+      "semantic_ply_repaired": true,
+      "initialization_repair": null,
+      "status": "Normal",
+      "success": 0,
+      "teacher_artifact_roots": {
+        "lightnav": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane6/collection/stt/VLzqgDo317F/186/lightnav",
+        "oracle": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane6/collection/stt/VLzqgDo317F/186/oracle"
+      },
+      "teacher_artifact_hashes": {
+        "lightnav": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane6/collection/stt/VLzqgDo317F/186/lightnav/pair_start.json": "4739332f00417c44de2b620e022ea45aa28049763d104de5fc05be53e50110df",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane6/collection/stt/VLzqgDo317F/186/lightnav/observations.json": "ca81fcf9fd959ec4aa861d48f30f2d334499f5ee273cd5fd0ac94d1c8a8d787c",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane6/collection/stt/VLzqgDo317F/186/lightnav/rgb_0000.png": "a6576f934384cbf47bdc1c96ae1448287f05829fa6da0e778588dca39b2da299"
+        },
+        "oracle": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane6/collection/stt/VLzqgDo317F/186/oracle/pair_start.json": "4739332f00417c44de2b620e022ea45aa28049763d104de5fc05be53e50110df",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane6/collection/stt/VLzqgDo317F/186/oracle/observations.json": "684a48a7531890254c2a3aeb1dca3fb42fd48f3d0cff8fa170baae8b10f43e38",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane6/collection/stt/VLzqgDo317F/186/oracle/rgb_0000.png": "a6576f934384cbf47bdc1c96ae1448287f05829fa6da0e778588dca39b2da299"
+        }
+      },
+      "targeted_supplement_checks": {
+        "record_sha256": true,
+        "fixed_key": true,
+        "raw_sensor_sha256": true,
+        "dynamic_state_sha256": true,
+        "teacher_evidence_mapping_sha256": true
+      }
+    },
+    {
+      "task": "stt",
+      "lane": 6,
+      "key": "E9uDoFAP3SH/16",
+      "manifest_index": 686,
+      "scene_id": "mp3d/E9uDoFAP3SH/E9uDoFAP3SH.glb",
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_06/episodes.jsonl",
+      "row_number": 86,
+      "original_record_sha256": "69a367e7d0d3012f10ad67e871bb162b9efb4cbce6e029ad89cc8f6fd8c6c3f9",
+      "original_raw_sensor_sha256": "524816c20d81a98bca948e5207d762e2cffd20e82ee5990b9e32caa76b7e9fa5",
+      "original_dynamic_state_sha256": "f10b55b1b41fe94db5144d7532c8e02af500883a1a86014300be21cbbd9a0eab",
+      "original_teacher_evidence_mapping_sha256": "6d4365831337cd9f6c54f8f387263023053d1515d9d0a93635420400ec269efc",
+      "semantic_ply_repaired": true,
+      "initialization_repair": null,
+      "status": "Normal",
+      "success": 1,
+      "teacher_artifact_roots": {
+        "lightnav": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane7/collection/stt/E9uDoFAP3SH/16/lightnav",
+        "oracle": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane7/collection/stt/E9uDoFAP3SH/16/oracle"
+      },
+      "teacher_artifact_hashes": {
+        "lightnav": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane7/collection/stt/E9uDoFAP3SH/16/lightnav/pair_start.json": "55b1d7e4ac02710677306044c6145c053f25145a8ca8c6a66697034efb6cc455",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane7/collection/stt/E9uDoFAP3SH/16/lightnav/observations.json": "0040c813f8821beb5ba5d184c590e8c15bff846eafda737d043a74a0f877c494",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane7/collection/stt/E9uDoFAP3SH/16/lightnav/rgb_0000.png": "d2e72378622c6990c763b48aedb3c342dd4e80de31a599c93727efac4d6a1604"
+        },
+        "oracle": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane7/collection/stt/E9uDoFAP3SH/16/oracle/pair_start.json": "55b1d7e4ac02710677306044c6145c053f25145a8ca8c6a66697034efb6cc455",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane7/collection/stt/E9uDoFAP3SH/16/oracle/observations.json": "a05ea4b3faa7b3557dc4e53f25fe2a282b5336c698cb8e1e028b2a2212d38371",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane7/collection/stt/E9uDoFAP3SH/16/oracle/rgb_0000.png": "d2e72378622c6990c763b48aedb3c342dd4e80de31a599c93727efac4d6a1604"
+        }
+      },
+      "targeted_supplement_checks": {
+        "record_sha256": true,
+        "fixed_key": true,
+        "raw_sensor_sha256": true,
+        "dynamic_state_sha256": true,
+        "teacher_evidence_mapping_sha256": true
+      }
+    },
+    {
+      "task": "stt",
+      "lane": 7,
+      "key": "2n8kARJN3HM/93",
+      "manifest_index": 687,
+      "scene_id": "mp3d/2n8kARJN3HM/2n8kARJN3HM.glb",
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/episodes.jsonl",
+      "row_number": 86,
+      "original_record_sha256": "a9709b16e9d04e3414dc10610bd975e0d05758ead56cb1be5271fc7c40339c88",
+      "original_raw_sensor_sha256": "0a3b581591af873dbfbeec0ab9b16237b3c640b3be9d64bc18f474486ece9e27",
+      "original_dynamic_state_sha256": "c1769a96692898401d8fb8ca071e3f38fa7acd2a2c3844200dc9c014f3f92509",
+      "original_teacher_evidence_mapping_sha256": "44b832ccf9a72f5dc49f414769878fc6521e59b6052c4e4e962fb63d8528380c",
+      "semantic_ply_repaired": true,
+      "initialization_repair": null,
+      "status": "Normal",
+      "success": 1,
+      "teacher_artifact_roots": {
+        "lightnav": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane0/collection/stt/2n8kARJN3HM/93/lightnav",
+        "oracle": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane0/collection/stt/2n8kARJN3HM/93/oracle"
+      },
+      "teacher_artifact_hashes": {
+        "lightnav": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane0/collection/stt/2n8kARJN3HM/93/lightnav/pair_start.json": "27acf107370c3f02dac513aae182e0f0aac7a3babcf6316cdd23be1d6be33899",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane0/collection/stt/2n8kARJN3HM/93/lightnav/observations.json": "7eab2f109913ad29b40454dec584feeab05da70892f941f614594bf1eeccbfae",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane0/collection/stt/2n8kARJN3HM/93/lightnav/rgb_0000.png": "5a826460da0e52ae03c8a6edfc1758fb02fe28bb1798e360233bf09708affec5"
+        },
+        "oracle": {
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane0/collection/stt/2n8kARJN3HM/93/oracle/pair_start.json": "27acf107370c3f02dac513aae182e0f0aac7a3babcf6316cdd23be1d6be33899",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane0/collection/stt/2n8kARJN3HM/93/oracle/observations.json": "8ba601d111d5287b48c7a375a706d512dde37e3f497916d7a226e6d3e3b04422",
+          "/data/nas_ray/project/md-ak/users/zeying.gong/job_61269/task_72346/wa_dual_teacher_resume_v1/lane0/collection/stt/2n8kARJN3HM/93/oracle/rgb_0000.png": "5a826460da0e52ae03c8a6edfc1758fb02fe28bb1798e360233bf09708affec5"
+        }
+      },
+      "targeted_supplement_checks": {
+        "record_sha256": true,
+        "fixed_key": true,
+        "raw_sensor_sha256": true,
+        "dynamic_state_sha256": true,
+        "teacher_evidence_mapping_sha256": true
+      }
+    }
+  ],
+  "hashes": {
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json": "a1f515534153ccaa720f787f01ea23b9097c174fe25020f756c7d7947eedf98f",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl": "f45f21d71b63d7f2a0898e1e762c393a95b0f3eaf8291bd1affbc827d23354d8",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json": "6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1/wa/config/mp3d_semantic_ply_v1.scene_dataset_config.json": "1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1/wa/wm/student_pair_audit.py": "fed4c1a7b2fd85f9bf88076572bc92445bc87bb8ce34a45f0d9fb15652e0d376",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1/wa/wm/dual_teacher_pair_evidence.py": "29276ca5bda0462ef34cbcb2cd99860370f76f3ef44d376daa00bc63e3089ad3",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1/wa/wm/recovery_replay.py": "d5d3c3d8093a2b58c3c7b9db14286d7f2ba4f38c6dc998109e7614047f77600e",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1/wa/wm/student_eval_contract.py": "fdc7e9ad6c9aa14fd1c09ecfdc810f7b32a51f41eaeaf9381080a5e503886dfd",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1/wa/wm/initial_bbox_repair.py": "80efc853378e1bb1ea43b98b90eb0849ac9488849f5c35c1bcddb48e75612816",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1/wa/wm/semantic_scene.py": "043294941c3313528a11ad579b375b2caa60d7c902e7d773f8922576d2325b2f",
+    "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61609_eval24_v1/wa/wm/eval_full_mixed.py": "6d4f27759b8e14c385d2bd4aa1a502c6e0fd2cf4e0aee77753ec30cb7531b647"
+  },
+  "lanes": [
+    {
+      "task": "stt",
+      "lane": 0,
+      "completed": 93,
+      "mp3d_completed": 7,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "SELECTED"
+    },
+    {
+      "task": "stt",
+      "lane": 1,
+      "completed": 99,
+      "mp3d_completed": 13,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "SELECTED"
+    },
+    {
+      "task": "stt",
+      "lane": 2,
+      "completed": 93,
+      "mp3d_completed": 7,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "SELECTED"
+    },
+    {
+      "task": "stt",
+      "lane": 3,
+      "completed": 91,
+      "mp3d_completed": 5,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "SELECTED"
+    },
+    {
+      "task": "stt",
+      "lane": 4,
+      "completed": 88,
+      "mp3d_completed": 3,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_04/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "SELECTED"
+    },
+    {
+      "task": "stt",
+      "lane": 5,
+      "completed": 96,
+      "mp3d_completed": 11,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_05/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "SELECTED"
+    },
+    {
+      "task": "stt",
+      "lane": 6,
+      "completed": 90,
+      "mp3d_completed": 5,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_06/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "SELECTED"
+    },
+    {
+      "task": "stt",
+      "lane": 7,
+      "completed": 97,
+      "mp3d_completed": 12,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "SELECTED"
+    },
+    {
+      "task": "dt",
+      "lane": 0,
+      "completed": 81,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_00/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "dt",
+      "lane": 1,
+      "completed": 86,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_01/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "dt",
+      "lane": 2,
+      "completed": 79,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_02/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "dt",
+      "lane": 3,
+      "completed": 71,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_03/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "dt",
+      "lane": 4,
+      "completed": 73,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_04/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "dt",
+      "lane": 5,
+      "completed": 83,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_05/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "dt",
+      "lane": 6,
+      "completed": 81,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_06/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "dt",
+      "lane": 7,
+      "completed": 77,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_07/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "at",
+      "lane": 0,
+      "completed": 86,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_00/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "at",
+      "lane": 1,
+      "completed": 86,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_01/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "at",
+      "lane": 2,
+      "completed": 81,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_02/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "at",
+      "lane": 3,
+      "completed": 75,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_03/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "at",
+      "lane": 4,
+      "completed": 75,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_04/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "at",
+      "lane": 5,
+      "completed": 85,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_05/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "at",
+      "lane": 6,
+      "completed": 80,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_06/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    },
+    {
+      "task": "at",
+      "lane": 7,
+      "completed": 80,
+      "mp3d_completed": 0,
+      "row_path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_07/episodes.jsonl",
+      "partial_tail_excluded": false,
+      "selection_status": "PENDING_NO_COMPLETED_MP3D"
+    }
+  ],
+  "asset_type_evidence": [
+    {
+      "manifest_scene_id": "mp3d/oLBMNvg9in8/oLBMNvg9in8.glb",
+      "render_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/oLBMNvg9in8/oLBMNvg9in8.glb",
+      "render_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/oLBMNvg9in8/oLBMNvg9in8.glb",
+      "render_bytes": 86352436,
+      "semantic_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/oLBMNvg9in8/oLBMNvg9in8_semantic.ply",
+      "semantic_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/oLBMNvg9in8/oLBMNvg9in8_semantic.ply",
+      "semantic_bytes": 217760300,
+      "both_files_exist_at_original_audit": true,
+      "semantic_header_prefix": "ply\nformat binary_little_endian 1.0\nelement vertex 4488919\nproperty float x\nproperty float y\nproperty float z\nproperty uchar red\nproperty uchar green\nproperty u"
+    },
+    {
+      "manifest_scene_id": "mp3d/Vt2qJdWjCF2/Vt2qJdWjCF2.glb",
+      "render_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/Vt2qJdWjCF2/Vt2qJdWjCF2.glb",
+      "render_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/Vt2qJdWjCF2/Vt2qJdWjCF2.glb",
+      "render_bytes": 44999240,
+      "semantic_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/Vt2qJdWjCF2/Vt2qJdWjCF2_semantic.ply",
+      "semantic_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/Vt2qJdWjCF2/Vt2qJdWjCF2_semantic.ply",
+      "semantic_bytes": 158222096,
+      "both_files_exist_at_original_audit": true,
+      "semantic_header_prefix": "ply\nformat binary_little_endian 1.0\nelement vertex 3261802\nproperty float x\nproperty float y\nproperty float z\nproperty uchar red\nproperty uchar green\nproperty u"
+    },
+    {
+      "manifest_scene_id": "mp3d/E9uDoFAP3SH/E9uDoFAP3SH.glb",
+      "render_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/E9uDoFAP3SH/E9uDoFAP3SH.glb",
+      "render_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/E9uDoFAP3SH/E9uDoFAP3SH.glb",
+      "render_bytes": 201430968,
+      "semantic_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/E9uDoFAP3SH/E9uDoFAP3SH_semantic.ply",
+      "semantic_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/E9uDoFAP3SH/E9uDoFAP3SH_semantic.ply",
+      "semantic_bytes": 313887202,
+      "both_files_exist_at_original_audit": true,
+      "semantic_header_prefix": "ply\nformat binary_little_endian 1.0\nelement vertex 6517320\nproperty float x\nproperty float y\nproperty float z\nproperty uchar red\nproperty uchar green\nproperty u"
+    },
+    {
+      "manifest_scene_id": "mp3d/YFuZgdQ5vWj/YFuZgdQ5vWj.glb",
+      "render_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/YFuZgdQ5vWj/YFuZgdQ5vWj.glb",
+      "render_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/YFuZgdQ5vWj/YFuZgdQ5vWj.glb",
+      "render_bytes": 35824268,
+      "semantic_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/YFuZgdQ5vWj/YFuZgdQ5vWj_semantic.ply",
+      "semantic_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/YFuZgdQ5vWj/YFuZgdQ5vWj_semantic.ply",
+      "semantic_bytes": 133713578,
+      "both_files_exist_at_original_audit": true,
+      "semantic_header_prefix": "ply\nformat binary_little_endian 1.0\nelement vertex 2761080\nproperty float x\nproperty float y\nproperty float z\nproperty uchar red\nproperty uchar green\nproperty u"
+    },
+    {
+      "manifest_scene_id": "mp3d/VLzqgDo317F/VLzqgDo317F.glb",
+      "render_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/VLzqgDo317F/VLzqgDo317F.glb",
+      "render_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/VLzqgDo317F/VLzqgDo317F.glb",
+      "render_bytes": 141654096,
+      "semantic_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/VLzqgDo317F/VLzqgDo317F_semantic.ply",
+      "semantic_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/VLzqgDo317F/VLzqgDo317F_semantic.ply",
+      "semantic_bytes": 141917774,
+      "both_files_exist_at_original_audit": true,
+      "semantic_header_prefix": "ply\nformat binary_little_endian 1.0\nelement vertex 2988134\nproperty float x\nproperty float y\nproperty float z\nproperty uchar red\nproperty uchar green\nproperty u"
+    },
+    {
+      "manifest_scene_id": "mp3d/2n8kARJN3HM/2n8kARJN3HM.glb",
+      "render_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/2n8kARJN3HM/2n8kARJN3HM.glb",
+      "render_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/2n8kARJN3HM/2n8kARJN3HM.glb",
+      "render_bytes": 92044512,
+      "semantic_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/OmTrackVLA-da3-polar-20260924/data/scene_datasets/mp3d/2n8kARJN3HM/2n8kARJN3HM_semantic.ply",
+      "semantic_resolved_at_original_audit": "/data/nas_ray/home/zeying.gong/datasets/scene_datasets/mp3d/2n8kARJN3HM/2n8kARJN3HM_semantic.ply",
+      "semantic_bytes": 223242391,
+      "both_files_exist_at_original_audit": true,
+      "semantic_header_prefix": "ply\nformat binary_little_endian 1.0\nelement vertex 4627359\nproperty float x\nproperty float y\nproperty float z\nproperty uchar red\nproperty uchar green\nproperty u"
+    }
+  ],
+  "semantic_protocol": {
+    "original_snapshot_status": "PASS",
+    "protocol": "mp3d_semantic_ply_v1",
+    "config_sha256": "1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6",
+    "files_checked": 24,
+    "files": [
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_00/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_01/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_02/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_03/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_04/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_05/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_06/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61653/task_72847/wa_student61609_stt_a800_v1/shard_07/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_00/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_01/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_02/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_03/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_04/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_05/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_06/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61654/task_72848/wa_student61609_dt_a800_v1/shard_07/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_00/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_01/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_02/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_03/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_04/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_05/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_06/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61655/task_72849/wa_student61609_at_a800_v1/shard_07/semantic_protocol.json",
+        "sha256": "71de2d4fd3bedf88e8d824c28afc65b3475e2217cd43bdaa386ea08dda46c7f9"
+      }
+    ],
+    "all_completed_row_contract_checked": 2026,
+    "contract": "Each row.semantic_protocol equals mp3d_semantic_ply_v1 and semantic_ply_repaired equals frozen is_mp3d_ply_scene(manifest.scene_id); all24 protocol JSON equals frozen provenance.",
+    "runtime_orientation_reinspection": false
+  },
+  "initialization_repair": {
+    "version": "initial_rgb_mesh_bbox_v1",
+    "plan_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json",
+    "plan_sha256": "6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a",
+    "static_load_plan_status": "PASS",
+    "static_checks": "Executed frozen load_plan: seven-key scope and lanes, baseline SHA and original invalid-key scope, seven probe SHAs/checks, original0/fixedpositive target pixels, exact repair bbox and original RGB hash, finite positive bbox. No new simulation.",
+    "expected_keys": [
+      [
+        "at",
+        "pRbA3pwrgk9/27"
+      ],
+      [
+        "at",
+        "pRbA3pwrgk9/38"
+      ],
+      [
+        "at",
+        "pRbA3pwrgk9/71"
+      ],
+      [
+        "dt",
+        "pRbA3pwrgk9/27"
+      ],
+      [
+        "dt",
+        "pRbA3pwrgk9/38"
+      ],
+      [
+        "stt",
+        "pRbA3pwrgk9/27"
+      ],
+      [
+        "stt",
+        "pRbA3pwrgk9/38"
+      ]
+    ],
+    "completed_at_original_snapshot": [
+      [
+        "stt",
+        "pRbA3pwrgk9/38"
+      ]
+    ],
+    "pending_at_original_snapshot": [
+      [
+        "at",
+        "pRbA3pwrgk9/27"
+      ],
+      [
+        "at",
+        "pRbA3pwrgk9/38"
+      ],
+      [
+        "at",
+        "pRbA3pwrgk9/71"
+      ],
+      [
+        "dt",
+        "pRbA3pwrgk9/27"
+      ],
+      [
+        "dt",
+        "pRbA3pwrgk9/38"
+      ],
+      [
+        "stt",
+        "pRbA3pwrgk9/27"
+      ]
+    ],
+    "all_completed_row_contract": "PASS:2026 rows, correct version/planSHA for completed repair key and no repair marker or planSHA outside the seven-key scope.",
+    "full_seven_runtime_coverage": "PENDING",
+    "sampled_pair_audit_repaired_keys": [],
+    "scope_note": "The completed STT repair row was checked for runtime contract tags only, not added to the eight selected paired-start audits."
+  },
+  "asset_identification_rule": "Frozen manifest.scene_id classified by is_mp3d_ply_scene: mp3d path component, .glb suffix and parent name==stem. Worker simulator_config.yaml scenes_dir=data/scene_datasets and worker cwd=OmTrackVLA-da3-polar-20260924. Corresponding GLB and semantic PLY is_file, resolved persistent NAS paths, sizes and PLY header verified. Not classified by guessed scene ID.",
+  "hash_supplement": {
+    "started_utc": "2026-10-07T09:13:33.501024+00:00",
+    "scope": "Targeted hash supplement only: same eight already selected rows and their48 teacher evidence files. No lane reselection, new audit_starts call, simulation or whole-dataset audit.",
+    "mismatches": [],
+    "reconstructed_payload_sha256": "492319ba674d22d33118251e5b40a528b05c07eb8e4b596b822c8e1ca70f0074",
+    "matches_original_payload_sha256": true,
+    "teacher_files_hashed": 48,
+    "completed_utc": "2026-10-07T09:13:33.597271+00:00",
+    "status": "PASS_SAME_FIXED_SUBSET"
+  },
+  "hash_encoding": {
+    "record": "SHA256 of exact selected JSONL record bytes including newline; never hash the growing JSONL as immutable evidence.",
+    "dynamic_state": "SHA256 of json.dumps(state,sort_keys=True).encode().",
+    "teacher_evidence_mapping_and_payload": "SHA256 of json.dumps(mapping_or_payload,sort_keys=True).encode().",
+    "teacher_files": "SHA256 of exact file bytes; original audit verified48files, individual hashes supplemented later with equivalence check."
+  },
+  "limits": [
+    "Eight STT MP3D initial pairs only; not4215 full acceptance or all63 available MP3D pairs.",
+    "All16 DT/AT lanes had no completed MP3D at original snapshot; remain pending here regardless of later job progress.",
+    "Six repair runtime cases pending; static seven-plan validity is not seven-case runtime/pairing completion.",
+    "Selected normal-status failure VLzqgDo317F/186 retained; no success-conditioned sampling.",
+    "Read-only original check used no GPU/model/simulator. Raw sensor/state comparison uses already persisted evidence, not rerendering.",
+    "Real asset existence/type/header does not establish full asset hash integrity or prove every future MP3D renderer execution.",
+    "Semantic contract checks are provenance and row markers plus fixed source inspection; no independent simulation orientation reinspection.",
+    "No video/per-frame/HTML audit in this check; prior bounded24 media audit is separate.",
+    "This study is explicitly evaluation-set adaptation, not untouched-test generalization; paired initial evidence does not establish new SR or superiority.",
+    "All GT dynamic state and hashes remain observer-only verification, never policy inputs.",
+    "Original audit snapshot and result preserved; later48-file supplement is timestamped separately and must match original rows/mapping/payload.",
+    "No job submission, re-evaluation, wait-for-completion, model/checkpoint/controller/physics/threshold changes, or cross-NAS transfer occurred."
+  ]
+}
