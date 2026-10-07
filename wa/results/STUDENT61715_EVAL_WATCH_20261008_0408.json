@@ -1,0 +1,2593 @@
+{
+  "schema_version": 1,
+  "status": "VERIFIED_LIVE_WAIT_WITH_PARTIAL_PAIRED_DIAGNOSTIC",
+  "checked_utc": "2026-10-07T20:07:51.715655+00:00",
+  "previous_turn": "PROGRESS: threejobsadvanced;separatefinalauditfreezecreated+verified;GitHub902b31bf",
+  "startup": {
+    "utc": "2026-10-07T19:58:44.051661+00:00",
+    "hostname": "devpod-zeying-gong-4090-7f59ffb47c-rpkjh",
+    "nas": "TARGET        SOURCE               FSTYPE OPTIONS\n/data/nas_ray mt-tutz0R-pfs-haZOBP gpfs   rw,relatime\n",
+    "git_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/checkout",
+    "commit": "902b31bf9f6c963b8d2a83129d57d084255d99f4",
+    "status": ""
+  },
+  "observer": {
+    "script": "import json,datetime,time,subprocess,re,hashlib\nfrom pathlib import Path\nJ=Path(\"/data/nas_ray/project/md-ak/users/zeying.gong\")\ncli=\"/data/nas_ray/home/zeying.gong/algorithm/envs/md_ai_kit_submit/bin/md_ai_kit\"\noffsets=json.loads(\"{\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_00/worker.log\\\":820310,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_00/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_00/xvfb.log\\\":206,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_01/worker.log\\\":938828,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_01/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_01/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_02/worker.log\\\":843464,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_02/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_02/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_03/worker.log\\\":841903,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_03/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_03/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_04/worker.log\\\":727230,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_04/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_04/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_05/worker.log\\\":892494,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_05/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_05/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_06/worker.log\\\":819789,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_06/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_06/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_07/worker.log\\\":940930,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_07/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_07/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_00/worker.log\\\":2726524,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_00/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_00/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_01/worker.log\\\":2699280,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_01/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_01/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_02/worker.log\\\":2575321,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_02/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_02/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_03/worker.log\\\":2499115,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_03/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_03/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_04/worker.log\\\":2560635,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_04/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_04/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_05/worker.log\\\":2631484,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_05/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_05/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_06/worker.log\\\":2584475,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_06/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_06/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_07/worker.log\\\":2558891,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_07/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_07/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_00/worker.log\\\":735569,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_00/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_00/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_01/worker.log\\\":779662,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_01/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_01/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_02/worker.log\\\":827094,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_02/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_02/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_03/worker.log\\\":732141,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_03/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_03/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_04/worker.log\\\":664397,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_04/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_04/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_05/worker.log\\\":848865,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_05/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_05/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_06/worker.log\\\":757540,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_06/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_06/xvfb.log\\\":0,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_07/worker.log\\\":848370,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_07/server.log\\\":850,\\\"/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_07/xvfb.log\\\":0}\")\npatterns=(\"Traceback (most recent call last)\",\"CUDA out of memory\",\"FloatingPointError\",\"Segmentation fault\",\"Fatal Python error\")\nfor i in range(7):\n out={\"utc\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"snapshot\":i,\"jobs\":[]}\n for kind,job,task in ((\"stt\",61792,72986),(\"dt\",61793,72987),(\"at\",61794,72988)):\n  root=J/f\"job_{job}\"/f\"task_{task}\"/f\"wa_student61715_{kind}_4090_v1\"\n  d={\"kind\":kind,\"job\":job,\"task\":task,\"output\":str(root),\"shards\":[]}\n  q=subprocess.run([cli,\"detail\",\"--job\",str(job)],capture_output=True,text=True,timeout=30)\n  d[\"scheduler\"]={\"exit\":q.returncode,\"states\":re.findall(r\"Status\\s*:\\s*(\\w+)\",q.stdout)}\n  allkeys=[]\n  for n in range(8):\n   p=root/f\"shard_{n:02d}\";rows=[];z={\"shard\":p.name,\"logs\":{}}\n   f=p/\"episodes.jsonl\"\n   if f.exists():\n    data=f.read_bytes();ls=data.splitlines()\n    for k,l in enumerate(ls):\n     try:rows.append(json.loads(l))\n     except json.JSONDecodeError:\n      if k==len(ls)-1 and not data.endswith(b\"\\n\"):z[\"partial_last_line\"]=True\n      else:raise\n    z.update(rows_bytes=len(data),rows_sha256=hashlib.sha256(data).hexdigest(),rows_mtime=f.stat().st_mtime)\n   keys=[(r[\"task\"],r[\"key\"]) for r in rows];allkeys.extend(keys)\n   z.update(completed=len(rows),unique=len(set(keys)),invalid=sum(r.get(\"policy_init_valid\") is False for r in rows),complete_file=(p/\"COMPLETE.json\").exists())\n   f=p/\"server_ready.json\"\n   if f.exists():\n    v=json.loads(f.read_text());z[\"ready\"]=v\n    z[\"ready_contract_valid\"]=(v.get(\"checkpoint_sha256\")==\"9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a\" and v.get(\"step\")==59716 and v.get(\"mode\")==\"mixed\" and v.get(\"noise_mode\")==\"zero\" and v.get(\"sampling_steps\")==4 and v.get(\"seed\")==\"7+step\" and v.get(\"gpu\")==\"NVIDIA GeForce RTX 4090\" and v.get(\"text_used\") is False and v.get(\"world_predictor_inference\") is False)\n   for name in (\"worker.log\",\"server.log\",\"xvfb.log\"):\n    f=p/name\n    if not f.exists():z[\"logs\"][name]={\"exists\":False};continue\n    size=f.stat().st_size;prev=offsets.get(str(f),0)\n    # Include preceding overlap so a signature straddling read boundaries is not missed.\n    start=max(0,prev-256) if size>=prev else 0\n    with f.open(\"rb\") as h:h.seek(start);b=h.read()\n    text=b.decode(errors=\"replace\")\n    z[\"logs\"][name]={\"bytes\":size,\"previous_bytes\":prev,\"grew_bytes\":size-prev,\"read_from\":start,\"read_bytes\":len(b),\"truncated_since_previous\":size<prev,\"mtime\":f.stat().st_mtime,\"fatal\":{s:text.count(s) for s in patterns},\"tail_excerpt\":[s[-400:] for s in text.splitlines()[-2:]]}\n    offsets[str(f)]=start+len(b)\n   d[\"shards\"].append(z)\n  d.update(completed=len(allkeys),unique=len(set(allkeys)),invalid=sum(z[\"invalid\"] for z in d[\"shards\"]),ready=sum(\"ready\" in z for z in d[\"shards\"]),complete_files=sum(z[\"complete_file\"] for z in d[\"shards\"]),partition_exists=(root/\"PARTITION_COMPLETE.json\").exists())\n  out[\"jobs\"].append(d)\n print(json.dumps(out),flush=True)\n if any(j[\"scheduler\"][\"exit\"]!=0 or any(s in (\"FAILED\",\"STOPPED\",\"SUCCEEDED\") for s in j[\"scheduler\"][\"states\"]) or j[\"completed\"]!=j[\"unique\"] or any(z.get(\"ready_contract_valid\") is False or any(any(l.get(\"fatal\",{}).values()) for l in z[\"logs\"].values()) for z in j[\"shards\"]) for j in out[\"jobs\"]):\n  print(json.dumps({\"watch_exit\":\"TERMINAL_OR_ANOMALY_INSPECT_SAME_JOBS\"}),flush=True);break\n if i<6:time.sleep(60)\nelse:print(json.dumps({\"watch_exit\":\"BOUNDED_LIVE_OBSERVATION_COMPLETE\",\"snapshots\":7}),flush=True)\n",
+    "snapshots": [
+      {
+        "utc": "2026-10-07T20:01:22.593312+00:00",
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task": 72986,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 599,
+            "unique": 599,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              74,
+              81,
+              75,
+              71,
+              68,
+              76,
+              74,
+              80
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task": 72987,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 1039,
+            "unique": 1039,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              133,
+              135,
+              130,
+              125,
+              130,
+              132,
+              128,
+              126
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task": 72988,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 520,
+            "unique": 520,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              68,
+              71,
+              68,
+              62,
+              56,
+              66,
+              65,
+              64
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T20:02:27.759284+00:00",
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task": 72986,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 613,
+            "unique": 613,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              75,
+              82,
+              77,
+              73,
+              71,
+              78,
+              76,
+              81
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task": 72987,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 1047,
+            "unique": 1047,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              135,
+              135,
+              131,
+              127,
+              131,
+              132,
+              129,
+              127
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task": 72988,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 531,
+            "unique": 531,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              69,
+              73,
+              70,
+              64,
+              57,
+              67,
+              65,
+              66
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T20:03:32.366610+00:00",
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task": 72986,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 628,
+            "unique": 628,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              78,
+              83,
+              79,
+              75,
+              72,
+              80,
+              78,
+              83
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task": 72987,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 1053,
+            "unique": 1053,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              135,
+              136,
+              132,
+              128,
+              132,
+              133,
+              129,
+              128
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task": 72988,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 542,
+            "unique": 542,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              71,
+              73,
+              71,
+              64,
+              60,
+              68,
+              67,
+              68
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T20:04:36.728109+00:00",
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task": 72986,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 642,
+            "unique": 642,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              80,
+              86,
+              80,
+              77,
+              74,
+              81,
+              80,
+              84
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task": 72987,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 1062,
+            "unique": 1062,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              136,
+              137,
+              133,
+              129,
+              134,
+              134,
+              130,
+              129
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task": 72988,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 562,
+            "unique": 562,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              74,
+              75,
+              74,
+              66,
+              62,
+              70,
+              70,
+              71
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T20:05:42.028880+00:00",
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task": 72986,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 655,
+            "unique": 655,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              81,
+              87,
+              82,
+              79,
+              76,
+              84,
+              81,
+              85
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task": 72987,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 1071,
+            "unique": 1071,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              137,
+              138,
+              134,
+              130,
+              136,
+              135,
+              131,
+              130
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task": 72988,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 573,
+            "unique": 573,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              75,
+              77,
+              76,
+              67,
+              64,
+              72,
+              71,
+              71
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T20:06:46.828372+00:00",
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task": 72986,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 669,
+            "unique": 669,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              83,
+              89,
+              83,
+              81,
+              78,
+              86,
+              83,
+              86
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task": 72987,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 1080,
+            "unique": 1080,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              139,
+              140,
+              135,
+              132,
+              137,
+              135,
+              131,
+              131
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task": 72988,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 584,
+            "unique": 584,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              78,
+              80,
+              76,
+              68,
+              65,
+              72,
+              72,
+              73
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          }
+        ]
+      },
+      {
+        "utc": "2026-10-07T20:07:51.715655+00:00",
+        "jobs": [
+          {
+            "kind": "stt",
+            "job": 61792,
+            "task": 72986,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 682,
+            "unique": 682,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              85,
+              90,
+              85,
+              83,
+              80,
+              87,
+              84,
+              88
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "dt",
+            "job": 61793,
+            "task": 72987,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 1085,
+            "unique": 1085,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              139,
+              140,
+              135,
+              132,
+              138,
+              136,
+              133,
+              132
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          },
+          {
+            "kind": "at",
+            "job": 61794,
+            "task": 72988,
+            "scheduler": {
+              "exit": 0,
+              "states": [
+                "RUNNING",
+                "RUNNING"
+              ]
+            },
+            "completed": 599,
+            "unique": 599,
+            "invalid": 0,
+            "ready": 8,
+            "shard_counts": [
+              80,
+              82,
+              78,
+              70,
+              67,
+              74,
+              73,
+              75
+            ],
+            "complete_files": 0,
+            "partition_exists": false
+          }
+        ]
+      }
+    ],
+    "end": {
+      "watch_exit": "BOUNDED_LIVE_OBSERVATION_COMPLETE",
+      "snapshots": 7
+    },
+    "process_exit": 0,
+    "read_only": true
+  },
+  "latest_total": 2366,
+  "expected_total": 4215,
+  "latest_counts": {
+    "stt": 682,
+    "dt": 1085,
+    "at": 599
+  },
+  "full_sr": null,
+  "last_row_source_snapshots": [
+    {
+      "kind": "stt",
+      "job": 61792,
+      "task": 72986,
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+      "shards": [
+        {
+          "shard": "shard_00",
+          "completed": 85,
+          "unique": 85,
+          "invalid": 0,
+          "rows_bytes": 1822137,
+          "rows_sha256": "3b6d07cd938750d68bc12724164122c67e7a5f0bcf997aaf4bbec0fe965089e0",
+          "rows_mtime": 1791403657.6027884,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_01",
+          "completed": 90,
+          "unique": 90,
+          "invalid": 0,
+          "rows_bytes": 1929307,
+          "rows_sha256": "5347b9e3355da53fdcc947f082a0e5aecf9a19986ea779d73e0a59e1c950d6a0",
+          "rows_mtime": 1791403642.295057,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_02",
+          "completed": 85,
+          "unique": 85,
+          "invalid": 0,
+          "rows_bytes": 1822334,
+          "rows_sha256": "610de28c80186cb2797dfdbc248b7356d825918cbfeaed50bf9b20812ae16ca1",
+          "rows_mtime": 1791403649.064718,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_03",
+          "completed": 83,
+          "unique": 83,
+          "invalid": 0,
+          "rows_bytes": 1779387,
+          "rows_sha256": "22d9e9cdf4ad6bdd50c34defaafabc1fb79d07d402cd0f431df45fd341d25678",
+          "rows_mtime": 1791403658.1415668,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_04",
+          "completed": 80,
+          "unique": 80,
+          "invalid": 0,
+          "rows_bytes": 1715024,
+          "rows_sha256": "8c2c3da9721961375d769354c7433073885b231ef739311bf05a32070345620d",
+          "rows_mtime": 1791403629.6541715,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_05",
+          "completed": 87,
+          "unique": 87,
+          "invalid": 0,
+          "rows_bytes": 1864997,
+          "rows_sha256": "febff2a8cb20f69189b7d20ed2a72b7eb2cbdd4c0a568917fe275393fd7beaf5",
+          "rows_mtime": 1791403637.9552162,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_06",
+          "completed": 84,
+          "unique": 84,
+          "invalid": 0,
+          "rows_bytes": 1800621,
+          "rows_sha256": "8d9b8edd494b717b0804bf99f3a37b00880d04886c29842a37ecb079e99e8c84",
+          "rows_mtime": 1791403645.2166326,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_07",
+          "completed": 88,
+          "unique": 88,
+          "invalid": 0,
+          "rows_bytes": 1886559,
+          "rows_sha256": "4ff318cd70964e95c07476c6fdca80ed469333367b1d2bf22b39a3adef750b90",
+          "rows_mtime": 1791403665.8953335,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        }
+      ]
+    },
+    {
+      "kind": "dt",
+      "job": 61793,
+      "task": 72987,
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1",
+      "shards": [
+        {
+          "shard": "shard_00",
+          "completed": 139,
+          "unique": 139,
+          "invalid": 0,
+          "rows_bytes": 2992850,
+          "rows_sha256": "74c78279b8437935562e56d1748720729d52d8279a454dbeb39660c49d70c7bd",
+          "rows_mtime": 1791403587.9677427,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_01",
+          "completed": 140,
+          "unique": 140,
+          "invalid": 0,
+          "rows_bytes": 3014709,
+          "rows_sha256": "e57e6aed0794869496e8568e4bf843fbeca45d092a78da4425a00e8b3851b957",
+          "rows_mtime": 1791403602.0720243,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_02",
+          "completed": 135,
+          "unique": 135,
+          "invalid": 0,
+          "rows_bytes": 2906104,
+          "rows_sha256": "45d5ea9378804cf5c39fc953bd54a95391d5ae7248324bc9f94f03aa359cd629",
+          "rows_mtime": 1791403591.3264072,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_03",
+          "completed": 132,
+          "unique": 132,
+          "invalid": 0,
+          "rows_bytes": 2841577,
+          "rows_sha256": "dd489aa2aec684ad15eaa0e1053eebaee6463abc142ad84a3bfcf32835ec9107",
+          "rows_mtime": 1791403605.9413054,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_04",
+          "completed": 138,
+          "unique": 138,
+          "invalid": 0,
+          "rows_bytes": 2971846,
+          "rows_sha256": "568487f7a3a1ab362e957032e5617e74a8ba41303d183f137efc545713b95fc3",
+          "rows_mtime": 1791403672.1900723,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_05",
+          "completed": 136,
+          "unique": 136,
+          "invalid": 0,
+          "rows_bytes": 2928348,
+          "rows_sha256": "6f8990c648c00a1fde9207fbb9f2476783b9326b95b0ebcb00a18dfadb52df8e",
+          "rows_mtime": 1791403644.9403763,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_06",
+          "completed": 133,
+          "unique": 133,
+          "invalid": 0,
+          "rows_bytes": 2863690,
+          "rows_sha256": "9b32e155ffbb79e9241e775429a77e718f79f99c6ad4b7875f0fbd200dfa9098",
+          "rows_mtime": 1791403650.8764906,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_07",
+          "completed": 132,
+          "unique": 132,
+          "invalid": 0,
+          "rows_bytes": 2842399,
+          "rows_sha256": "8874a646a5ac65238ca6441e572f4437e2ac343e797d2413b0082ef7a835b778",
+          "rows_mtime": 1791403629.694399,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        }
+      ]
+    },
+    {
+      "kind": "at",
+      "job": 61794,
+      "task": 72988,
+      "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1",
+      "shards": [
+        {
+          "shard": "shard_00",
+          "completed": 80,
+          "unique": 80,
+          "invalid": 0,
+          "rows_bytes": 1719423,
+          "rows_sha256": "359f79d4b983216dfd9b210e1ad058ab27e6966e1c2bb318145b28579aa2a696",
+          "rows_mtime": 1791403674.0160074,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_01",
+          "completed": 82,
+          "unique": 82,
+          "invalid": 0,
+          "rows_bytes": 1762503,
+          "rows_sha256": "f5058329a4c9aba939ba8d1b953a79ba0519e60d0633d68706fb012adb7dc70e",
+          "rows_mtime": 1791403671.9274623,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_02",
+          "completed": 78,
+          "unique": 78,
+          "invalid": 0,
+          "rows_bytes": 1676215,
+          "rows_sha256": "9537b8a62dccc8d1909acc21ed26db3b6b35609ebb2020499187d57b8e1a9002",
+          "rows_mtime": 1791403670.3646853,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_03",
+          "completed": 70,
+          "unique": 70,
+          "invalid": 0,
+          "rows_bytes": 1504014,
+          "rows_sha256": "06938db493eaf34907b9bcb388d14498b8a488325a561198fed73b0abaf288ed",
+          "rows_mtime": 1791403658.8337207,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_04",
+          "completed": 67,
+          "unique": 67,
+          "invalid": 0,
+          "rows_bytes": 1440188,
+          "rows_sha256": "cfeb1a12ce8c79afd222cd36c4263313656117102cbbadaa91a0604aa2a7b9df",
+          "rows_mtime": 1791403667.1512516,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_05",
+          "completed": 74,
+          "unique": 74,
+          "invalid": 0,
+          "rows_bytes": 1590639,
+          "rows_sha256": "fa9390e2c00ccc8d3cbfad8a66c5800deb7a56eeff15876e15c5e4db170a3580",
+          "rows_mtime": 1791403657.533189,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_06",
+          "completed": 73,
+          "unique": 73,
+          "invalid": 0,
+          "rows_bytes": 1569112,
+          "rows_sha256": "3a649ba1db953185294826bd0b06c48b12c10f47a287d78311ca2b67e4148b0a",
+          "rows_mtime": 1791403655.0684543,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        },
+        {
+          "shard": "shard_07",
+          "completed": 75,
+          "unique": 75,
+          "invalid": 0,
+          "rows_bytes": 1612326,
+          "rows_sha256": "4974dbcb56ba51eab0cacd71d1f3b48528b1bc93eb2f965289f93ad71cc69153",
+          "rows_mtime": 1791403673.504317,
+          "partial_last_line": false,
+          "complete_file": false,
+          "ready_contract_valid": true
+        }
+      ]
+    }
+  ],
+  "model_ready_contracts": {
+    "stt/shard_00": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:42013"
+    },
+    "stt/shard_01": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:45791"
+    },
+    "stt/shard_02": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:45385"
+    },
+    "stt/shard_03": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:43793"
+    },
+    "stt/shard_04": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:38303"
+    },
+    "stt/shard_05": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:39465"
+    },
+    "stt/shard_06": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:39961"
+    },
+    "stt/shard_07": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:39437"
+    },
+    "dt/shard_00": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:42973"
+    },
+    "dt/shard_01": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:45495"
+    },
+    "dt/shard_02": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:33759"
+    },
+    "dt/shard_03": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:36637"
+    },
+    "dt/shard_04": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:36293"
+    },
+    "dt/shard_05": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:42475"
+    },
+    "dt/shard_06": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:44587"
+    },
+    "dt/shard_07": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:42191"
+    },
+    "at/shard_00": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:42531"
+    },
+    "at/shard_01": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:45947"
+    },
+    "at/shard_02": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:42425"
+    },
+    "at/shard_03": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:37721"
+    },
+    "at/shard_04": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:43197"
+    },
+    "at/shard_05": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:46511"
+    },
+    "at/shard_06": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:39363"
+    },
+    "at/shard_07": {
+      "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt",
+      "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+      "step": 59716,
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "mode": "mixed",
+      "noise_mode": "zero",
+      "sampling_steps": 4,
+      "seed": "7+step",
+      "text_used": false,
+      "world_predictor_inference": false,
+      "url": "http://127.0.0.1:39151"
+    }
+  },
+  "model_contract_checks": {
+    "unique_services": 24,
+    "consecutive_snapshots": 7,
+    "all_passed": true
+  },
+  "log_incremental_coverage": {
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_00/worker.log": {
+      "initial_previous_bytes": 820310,
+      "read_start": 820054,
+      "max_read_end": 2009306,
+      "last_reported_size": 2009306,
+      "total_read_bytes": 1190788,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_00/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_00/xvfb.log": {
+      "initial_previous_bytes": 206,
+      "read_start": 0,
+      "max_read_end": 206,
+      "last_reported_size": 206,
+      "total_read_bytes": 1442,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_01/worker.log": {
+      "initial_previous_bytes": 938828,
+      "read_start": 938572,
+      "max_read_end": 2127596,
+      "last_reported_size": 2127596,
+      "total_read_bytes": 1190560,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_01/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_01/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_02/worker.log": {
+      "initial_previous_bytes": 843464,
+      "read_start": 843208,
+      "max_read_end": 2005837,
+      "last_reported_size": 2005837,
+      "total_read_bytes": 1164165,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_02/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_02/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_03/worker.log": {
+      "initial_previous_bytes": 841903,
+      "read_start": 841647,
+      "max_read_end": 1956422,
+      "last_reported_size": 1956422,
+      "total_read_bytes": 1116311,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_03/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_03/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_04/worker.log": {
+      "initial_previous_bytes": 727230,
+      "read_start": 726974,
+      "max_read_end": 1893284,
+      "last_reported_size": 1893284,
+      "total_read_bytes": 1167846,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_04/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_04/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_05/worker.log": {
+      "initial_previous_bytes": 892494,
+      "read_start": 892238,
+      "max_read_end": 2059350,
+      "last_reported_size": 2059350,
+      "total_read_bytes": 1168648,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_05/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_05/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_06/worker.log": {
+      "initial_previous_bytes": 819789,
+      "read_start": 819533,
+      "max_read_end": 1987502,
+      "last_reported_size": 1987502,
+      "total_read_bytes": 1169505,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_06/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_06/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_07/worker.log": {
+      "initial_previous_bytes": 940930,
+      "read_start": 940674,
+      "max_read_end": 2080923,
+      "last_reported_size": 2080923,
+      "total_read_bytes": 1141785,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_07/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1/shard_07/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_00/worker.log": {
+      "initial_previous_bytes": 2726524,
+      "read_start": 2726268,
+      "max_read_end": 3296302,
+      "last_reported_size": 3296302,
+      "total_read_bytes": 571570,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_00/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_00/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_01/worker.log": {
+      "initial_previous_bytes": 2699280,
+      "read_start": 2699024,
+      "max_read_end": 3318016,
+      "last_reported_size": 3318016,
+      "total_read_bytes": 620528,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_01/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_01/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_02/worker.log": {
+      "initial_previous_bytes": 2575321,
+      "read_start": 2575065,
+      "max_read_end": 3193325,
+      "last_reported_size": 3193325,
+      "total_read_bytes": 619796,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_02/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_02/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_03/worker.log": {
+      "initial_previous_bytes": 2499115,
+      "read_start": 2498859,
+      "max_read_end": 3119110,
+      "last_reported_size": 3119110,
+      "total_read_bytes": 621787,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_03/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_03/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_04/worker.log": {
+      "initial_previous_bytes": 2560635,
+      "read_start": 2560379,
+      "max_read_end": 3274028,
+      "last_reported_size": 3274028,
+      "total_read_bytes": 715185,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_04/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_04/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_05/worker.log": {
+      "initial_previous_bytes": 2631484,
+      "read_start": 2631228,
+      "max_read_end": 3226835,
+      "last_reported_size": 3226835,
+      "total_read_bytes": 597143,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_05/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_05/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_06/worker.log": {
+      "initial_previous_bytes": 2584475,
+      "read_start": 2584219,
+      "max_read_end": 3153735,
+      "last_reported_size": 3153735,
+      "total_read_bytes": 571052,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_06/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_06/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_07/worker.log": {
+      "initial_previous_bytes": 2558891,
+      "read_start": 2558635,
+      "max_read_end": 3126411,
+      "last_reported_size": 3126411,
+      "total_read_bytes": 569312,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_07/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61793/task_72987/wa_student61715_dt_4090_v1/shard_07/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_00/worker.log": {
+      "initial_previous_bytes": 735569,
+      "read_start": 735313,
+      "max_read_end": 1836460,
+      "last_reported_size": 1836460,
+      "total_read_bytes": 1102683,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_00/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_00/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_01/worker.log": {
+      "initial_previous_bytes": 779662,
+      "read_start": 779406,
+      "max_read_end": 1882623,
+      "last_reported_size": 1882623,
+      "total_read_bytes": 1104753,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_01/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_01/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_02/worker.log": {
+      "initial_previous_bytes": 827094,
+      "read_start": 826838,
+      "max_read_end": 1789855,
+      "last_reported_size": 1789855,
+      "total_read_bytes": 964553,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_02/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_02/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_03/worker.log": {
+      "initial_previous_bytes": 732141,
+      "read_start": 731885,
+      "max_read_end": 1603098,
+      "last_reported_size": 1603098,
+      "total_read_bytes": 872749,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_03/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_03/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_04/worker.log": {
+      "initial_previous_bytes": 664397,
+      "read_start": 664141,
+      "max_read_end": 1536616,
+      "last_reported_size": 1536616,
+      "total_read_bytes": 874011,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_04/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_04/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_05/worker.log": {
+      "initial_previous_bytes": 848865,
+      "read_start": 848609,
+      "max_read_end": 1697423,
+      "last_reported_size": 1697423,
+      "total_read_bytes": 850350,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_05/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_05/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_06/worker.log": {
+      "initial_previous_bytes": 757540,
+      "read_start": 757284,
+      "max_read_end": 1675395,
+      "last_reported_size": 1675395,
+      "total_read_bytes": 919647,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_06/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_06/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_07/worker.log": {
+      "initial_previous_bytes": 848370,
+      "read_start": 848114,
+      "max_read_end": 1718009,
+      "last_reported_size": 1718009,
+      "total_read_bytes": 871431,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_07/server.log": {
+      "initial_previous_bytes": 850,
+      "read_start": 594,
+      "max_read_end": 850,
+      "last_reported_size": 850,
+      "total_read_bytes": 1792,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    },
+    "/data/nas_ray/project/md-ak/users/zeying.gong/job_61794/task_72988/wa_student61715_at_4090_v1/shard_07/xvfb.log": {
+      "initial_previous_bytes": 0,
+      "read_start": 0,
+      "max_read_end": 0,
+      "last_reported_size": 0,
+      "total_read_bytes": 0,
+      "scans": 7,
+      "fatal_counts": {
+        "Traceback (most recent call last)": 0,
+        "CUDA out of memory": 0,
+        "FloatingPointError": 0,
+        "Segmentation fault": 0,
+        "Fatal Python error": 0
+      },
+      "truncated": false
+    }
+  },
+  "log_scope": "72files scanned incrementallyfrom03:40baselineoffsets with256byteoverlap;7snapshots no5specifiedfatalpatterns ortruncation;warningsretained,notuniversalnoerrorclaim. Continuousrange counters areobservational;no immutablecopyofworkerlogs.",
+  "partial_stt_comparison": {
+    "status": "READONLY_PARTIAL_DIAGNOSTIC_NOT_FULL_SR",
+    "agent": "stt_recipe_audit",
+    "snapshot_start_utc": "2026-10-07T20:00:29.593Z",
+    "snapshot_end_utc": "2026-10-07T20:00:32.266Z",
+    "source_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61792/task_72986/wa_student61715_stt_4090_v1",
+    "source_files": [
+      {
+        "path": "shard_00/episodes.jsonl",
+        "completed": 72,
+        "bytes": 1543483,
+        "sha256": "94807b45039b2c8ad91a062bacb7c8d4bf1e2c5a3591118d756bf724b686c0b3"
+      },
+      {
+        "path": "shard_01/episodes.jsonl",
+        "completed": 80,
+        "bytes": 1714943,
+        "sha256": "c7c8a786d34ae2b1df5161bb240f007d42118e16c9d855d126f031743d488cf7"
+      },
+      {
+        "path": "shard_02/episodes.jsonl",
+        "completed": 73,
+        "bytes": 1565067,
+        "sha256": "faac27fa1694477234b66f96187cf7a57ea05830735687a46e45d32a4e233a1f"
+      },
+      {
+        "path": "shard_03/episodes.jsonl",
+        "completed": 69,
+        "bytes": 1479262,
+        "sha256": "4493526eff663e64ce95a0bbdcdd72326081bd4e16b701a9cf4bf0eabadd8767"
+      },
+      {
+        "path": "shard_04/episodes.jsonl",
+        "completed": 67,
+        "bytes": 1436328,
+        "sha256": "41481053684f38acf8f2c0a20741e00fb663584388edf6abb5b8502cdbd39716"
+      },
+      {
+        "path": "shard_05/episodes.jsonl",
+        "completed": 74,
+        "bytes": 1586325,
+        "sha256": "5c6d0c31a0bd707c91151b03f0c44f5f65f82608154c649ea565b7c7eb8b8eb5"
+      },
+      {
+        "path": "shard_06/episodes.jsonl",
+        "completed": 72,
+        "bytes": 1543415,
+        "sha256": "f49585414d8d308c2e724d5895386012cdc57a659b1aa94773af5543751f4786"
+      },
+      {
+        "path": "shard_07/episodes.jsonl",
+        "completed": 78,
+        "bytes": 1672159,
+        "sha256": "21d81b2469c8050efbe5e664ced251a37f5e88faa3b981736e5a51f9d6bb591f"
+      }
+    ],
+    "completed": 585,
+    "unique": 585,
+    "partial_lines": 0,
+    "unknown_keys": 0,
+    "success": 527,
+    "failure": 58,
+    "initialization_failure": 0,
+    "paired_cells": {
+      "both_success": 524,
+      "new_only": 3,
+      "old_only": 3,
+      "both_failure": 55,
+      "net_success": 0
+    },
+    "gains": [
+      "3t8DB4Uzvkt/8",
+      "W7k2QWzBrFY/11",
+      "qyAac8rV8Zk/8"
+    ],
+    "regressions": [
+      "W7k2QWzBrFY/9",
+      "mv2HUxq3B53/28",
+      "p53SfW6mjZe/21"
+    ],
+    "baseline": {
+      "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61609_full_audit_20261007_v1",
+      "file": "combined_episodes.jsonl",
+      "bytes": 91129210,
+      "sha256": "0ab45e1b35bb0b8809fcc77fcaabca59b35bab0839507d716c371ce2d5a6f358",
+      "hash_verified": true
+    },
+    "ready_contracts_checked": 8,
+    "checkpoint_sha256": "9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a",
+    "checkpoint_step": 59716,
+    "mode": "mixed",
+    "text_used": false,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "mathematical_upper_bound": {
+      "total": 1405,
+      "observed_failures": 58,
+      "max_final_success": 1347,
+      "target": 1289,
+      "remaining": 820,
+      "required_remaining_success": 762,
+      "interpretation": "Target notyet mathematicallyexcluded;upperboundnotforecast"
+    },
+    "limitations": [
+      "Orderedpartialsubset biased;notfull4215 or fullSTTresult",
+      "61609A800versus61715RTX4090;no sampling-causalclaim",
+      "No allrawRGB/fullstatepairauditorvideoauditperformedhere",
+      "Live source bytes/hash captured once;process retained only in-memory data,notnewimmutabletrajectorycopy",
+      "No newtraining/collection/job/runtimechange"
+    ]
+  },
+  "finalization": {
+    "ready_freeze": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student61715_result_audit_v1",
+    "commit": "32fa14084e71eacb6c9527e493580f089a5b7428",
+    "previous_readiness_evidence": "wa/results/STUDENT61715_EVAL_WATCH_20261008_0350.json",
+    "previous_evidence_sha256": "e9b5f649160cf53d542d94f815aad88dba2580b3b9cb809845691cd419303141",
+    "not_executed_yet": true,
+    "requires": "All3JobTaskSUCCEEDED+24COMPLETE+3PARTITION_COMPLETE+1405each beforeexternalmerge/fullteacherstartpair/61377goal/61609comparison/media",
+    "note": "Single-taskroots do notproduceglobalsummary/teacherpair;partialrecordsnotfinalcompletion"
+  },
+  "goal": {
+    "status": "ACTIVE",
+    "denominator_each": 1405,
+    "min_success": {
+      "stt": 1289,
+      "dt": 1173,
+      "at": 1203
+    },
+    "latest_complete_model": 61609,
+    "latest_complete_success": {
+      "stt": 1279,
+      "dt": 1178,
+      "at": 1207
+    },
+    "after_gate": "same-weight with/withoutUWB pairedstudy;no-UWBretrainingseparate"
+  },
+  "actions": [
+    "No newjobs/stops/restarts/migration/collector/training/modelchanges",
+    "Same61792/61793/61794 observedliveat7schedulerchecks each",
+    "No tests/checkpointlargehash/reruncompletedexperiments",
+    "PersistboundedwatchandpartialcomparisonthenGitHubwa backupannounced"
+  ],
+  "limitations": [
+    "Evaluation-setadaptationnotuntouchedtestgeneralization",
+    "61715RTX4090vs61609A800;no puresamplingcausalclaim",
+    "Partialorderedkeysbiased;mathematicalupperboundnotprediction",
+    "No independent physicalGPUUUIDlist;8requested/scheduledeach and24ready4090services",
+    "Allfailuresremainfull1405denominator;notpartialSRasfullSR"
+  ],
+  "next": "Continueexistingjobs;whenallfull auditanddecide gate;UWB/furthertrainingnotlauncheduntilcompleteSRdecision"
+}
