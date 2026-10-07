@@ -402,3 +402,12 @@ A4 BEST_FULL stillA2. TEST_SCENE_ADAPTATION_NOT_HELDOUT,not heldout generalizati
 - Earlier4GPU approval-waiting notes are historical superseded records; no approval pending now. A2 best62.514828%; measuredA2/B/A3 highestB63.677343%.
 
 2026-10-07 09:44 China runtime follow-up:61597/72791+61598/72792 bothRUNNING,16uniqueA800 UUIDs with0overlap,lane0–15,differentPods,bidirectionalpeer PASS. Eachworker6557new+6498old+protocol hashes allPASS. Actualcgroup120CPUquota/960GiBmemorylimit each,startupoom0. Offline1024actualupdates completed,1732chunks cachehash/prewarm with0evictions,128/512/1024checkpoints saved. First252fullhorizon panel offline_panel_000128 running; no A4 frozen SR yet. RUNTIME_ALLOCATION_AUDIT and OFFLINE_STAGE_AUDIT in activepackage. Initial progress0 is stale; finalofflineCOMPLETE andupdates.jsonl authoritative.
+
+## 2026-10-07 09:54 China — isolated16-lane validator repair and continuation
+- Initial61597/72791 +61598/72792 naturallyFAILED09:44; artifact/worker validate_assignment retained8lane guard, first252panel rejected16lane before any episode. Offline1024updates/4checkpoints preserved/hashPASS; no stop action.
+- Newa4_hybrid_16gpu_lanefix_20261007 changes shared validator capacity8to16; namespace isolated; strictcompletedoffline reuse checks config/learnerconfig/core semanticidentity/checkpoint hashes; reuses1024updates with0repeat offline updates.
+- IndependentCPUdevelopment:5actualproduction16lane assignments pass actualworker/artifact validator,13badassignments+5GTrequests rejected,3candidate checkpoints CPUreload output bitwise equal; unsafe reuse rejected. Full20GPUfixture protocol evidence remains previousattempt02; no new model semantic change.
+- Authorized16A800 continuation submitted61599/72793(node0),61600/72794(node1), bothRUNNING09:52:48,8GPU each72h. Source6610 SHAbee40d997a860b5d276d6e91da42b4be36bb1234be3062fc80ee31ecad0ca080, parent6557 frozen unchanged.
+- Master job61599/task72793/wla_a4_hybrid_16gpu_lanefix/run, peerjob61600/task72794; coord experiments/wla_a4_hybrid16_campaign_20261007_r02/control. Startup hashes/actualruntime/firstepisode being verified; noA4frozenSR.
+
+2026-10-07 09:58 China lane-fix runtime: new61599/61600 actual16uniqueGPU UUID/peer/cgroup PASS; each6610new+6498parent+210protocol hashesPASS. OFFLINE_REUSE_AUDIT PASS, old1024updates reused and no newofflineupdates. All16policy servers ready and16workers entered realHabitat task initialization; no lane validator exception. First252panel active, no fullSR yet.
