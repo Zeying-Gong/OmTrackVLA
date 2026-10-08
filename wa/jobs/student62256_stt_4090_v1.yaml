@@ -1,0 +1,157 @@
+# Full1405 candidate62256: offline audit and real4090 developer interface passed; fresh admission and worker verification required.
+# Same evaluation protocol as student61715; new candidate62256 identity and prerequisite evidence only.
+# One full 1405-episode task on eight GPUs; no prior student rows, retries, or reduced denominator.
+# The three task configs must differ only in task/log/name/output fields. No cluster smoke.
+config_version: 1
+cluster: baidu_4090
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 8
+log_folder: wa_student62256_stt_4090_v1
+tasks:
+  - name: wa_student62256_stt1405_v1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 8
+    timeout: 86400
+    cmd: |
+      set -euo pipefail
+      case "${MD_AK_JOB_ID:-}" in ''|*[!0-9]*) echo 'formal integer MD_AK_JOB_ID required' >&2; exit 2;; esac
+      case "${MD_AK_TASK_ID:-}" in ''|*[!0-9]*) echo 'formal integer MD_AK_TASK_ID required' >&2; exit 2;; esac
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_student62256_eval24_v1
+      test "$(git rev-parse HEAD)" = 5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb
+      test -z "$(git status --porcelain)"
+      unset WA_RESUME_PLAN WA_RESUME_PLAN_SHA WA_TARGETED_PLAN WA_TARGETED_PLAN_SHA
+      export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+      export WA_EVAL_TASK=stt WA_EVAL_MODE=mixed
+      export WA_STUDENT_EVAL=evaluation_set_adaptation_v1
+      export WA_EVAL_CHECKPOINT_SHA=40915b366ee5a2ef5967e2ce49a94d2b0f45f149955dd5cccf85ac3d6ab178fc
+      export WA_EVAL_CHECKPOINT_STEP=61252
+      export WA_DIAG_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_62256/task_73511/wa_failure_state_train_a800_v1/checkpoint.pt
+      export WA_EVAL_TEACHER_SELECTIONS=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl
+      export WA_INIT_REPAIR_PLAN=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/initial_bbox_repair_v2/plan.json
+      export WA_INIT_REPAIR_PLAN_SHA=6535f7b9a53e399ba7f2323c2d7f72d223146ee77f090223eb260f5885f6269a
+      export WA_SEMANTIC_PLY_FIX=mp3d_semantic_ply_v1
+      export WA_DIAG_CONTROLLER=learned_yaw_guard_v1 WA_DIAG_OBSERVER_STATE=1 WA_REVIEW_VIDEO=1
+      export OUTPUT_ROOT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_student62256_stt_4090_v1"
+      test ! -e "$OUTPUT_ROOT"
+      test ! -L "$OUTPUT_ROOT"
+      # CPU-only evidence preflight. No checkpoint deserialization, model execution or output creation.
+      /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B - <<'PY'
+      import json, math, os
+      from collections import Counter
+      from pathlib import Path
+      from wa.wm.loaders import sha
+      from wa.wm.student_eval_contract import model_contract
+      from wa.wm.student_eval_finalize import load_teachers
+      from wa.wm.semantic_scene import provenance
+      root = Path('/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928')
+      checkpoint = Path(os.environ['WA_DIAG_CHECKPOINT'])
+      checkpoint_sha = '40915b366ee5a2ef5967e2ce49a94d2b0f45f149955dd5cccf85ac3d6ab178fc'
+      audit_path = root/'artifacts/failure_state_training_audit_62256_v2.json'
+      audit_sha = '1698dc68cdcc93c8aaca67c3de93bfd33557ae8f820db90455aa6b09825e3735'
+      fit_path = root/'artifacts/failure_state_group_fit_posttrain_62256_v1.json'
+      fit_sha = 'bf35d861cf975dfa775cff9b7f23c75e326509c21823ba188d611838ead5d7dc'
+      selection_path = root/'artifacts/failure_state_group_fit_selection_20261008_v1.json'
+      selection_sha = '7e7db844c09f67d7b0e3b5de7376c0573c18fccc485dfa235b879ed4dab111a9'
+      baseline_path = root/'artifacts/failure_state_group_fit_pretrain_20261008_v1.json'
+      baseline_sha = '6ecff4bda1c19d153e7e4be0742914d2b761698759a9157c17ec2920a6725cd9'
+      pins = {str(checkpoint): checkpoint_sha, str(audit_path): audit_sha,
+              str(fit_path): fit_sha, str(selection_path): selection_sha,
+              str(baseline_path): baseline_sha}
+      for name, expected in pins.items():
+          p = Path(name)
+          assert p.is_file() and not p.is_symlink() and p.resolve() == p, name
+          assert sha(p) == expected, name
+      def exact(doc, values):
+          for key, value in values.items():
+              assert type(doc.get(key)) is type(value) and doc[key] == value, key
+      def read(path):
+          return json.loads(path.read_text())
+      audit, fit, selection, baseline = map(read, (audit_path, fit_path, selection_path, baseline_path))
+      exact(audit, dict(schema='failure_state_training_audit_v1',
+          status='TRAINING_ARTIFACT_AUDIT_PASS_OFFLINE_ONLY', closed_loop=False,
+          run=str(checkpoint.parent), checkpoint=str(checkpoint), checkpoint_sha256=checkpoint_sha,
+          completed_epochs=2, final_step=61252,
+          source_commit='199385cd9c826c8f21308ad99b6a8375396d9c90',
+          config_sha256='08553eb73e8d2db4ae2fd37ab1c322bc7fbf77ac4a3ba3a7c59ae2508a2f2e69',
+          parent_checkpoint='/data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt',
+          parent_sha256='ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d',
+          plan_admission_sha256='230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902',
+          plan_sha256='11cb7150e33c8b66cbd3353a7f95b903c8b8b282ebe84faee4aa91e4b0beeaee',
+          hardware_profile='a800'))
+      assert audit['source_hashes'][str(checkpoint)] == checkpoint_sha
+      exact(audit['optimizer_continuation'], dict(parent_step=22707, final_step=61252, updates=38545))
+      exact(audit['exposure']['calculated'], dict(actual_total=1233424, actual_base=726631,
+          actual_teacher=457641, actual_recovery=49152, unconsumed_positions=0,
+          repeated_positions=0, metadata_entered_policy=False, world_size=8,
+          old_per_window_counts_exact=True, closed_loop_success_not_established=True))
+      assert set(audit['metrics']) == {'image', 'point', 'mixed'}
+      for row in audit['metrics'].values():
+          exact(row, dict(windows=73368, SR=None, collision_rate=None))
+          assert all(type(row[k]) in (int, float) and math.isfinite(row[k]) and row[k] >= 0
+                     for k in ('ADE_m', 'FDE_m', 'yaw_MAE_rad'))
+      exact(audit['fixed_group_fit'], dict(selection_sha256=selection_sha,
+          fit_sha256=baseline_sha, windows=152, predictions=608, closed_loop=False))
+      exact(selection, dict(schema='failure_state_group_fit_selection_v1',
+          status='FIXED152_INPUTS_ADMITTED_NO_MODEL_RESULT', closed_loop=False, training_released=False))
+      for doc in (fit, baseline):
+          exact(doc, dict(schema='failure_state_group_fit_v1',
+              status='FIXED152_TEACHER_STATE_LABEL_FIT_ONLY_NOT_SR',
+              selection=str(selection_path), selection_sha256=selection_sha,
+              closed_loop=False, training_released=False))
+          assert doc['selected'] == selection['selected'] and len(doc['selected']) == 152
+          assert doc['source_hashes'][str(selection_path)] == selection_sha
+      assert Counter(row['group'] for row in selection['selected']) == {
+          'hard_stt_collision':24, 'hard_stt_other':16, 'successful_stt_control':16,
+          'dt_teacher_control':16, 'at_teacher_control':16, 'recovery_early':32, 'recovery_late':32}
+      for name, expected in ((str(audit_path), audit_sha),
+                             (str(checkpoint), checkpoint_sha), (str(baseline_path), baseline_sha)):
+          assert fit['source_hashes'][name] == expected, name
+      assert set(fit['models']) == {'candidate'}
+      candidate = fit['models']['candidate']
+      exact(candidate, dict(path=str(checkpoint), sha256=checkpoint_sha, step=61252))
+      rows = candidate['records']
+      assert len(rows) == 304
+      assert all(type(row['selection_index']) is int and type(row['repeat_history']) is bool for row in rows)
+      assert {(row['selection_index'],row['repeat_history']) for row in rows} == {
+          (i, repeat) for i in range(152) for repeat in (False, True)}
+      assert set(baseline['models']) == {'parent59866', 'best61609'}
+      exact(baseline['models']['parent59866'], dict(
+          sha256='ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d', step=22707))
+      exact(baseline['models']['best61609'], dict(
+          sha256='c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52', step=59716))
+      assert set(fit['comparisons']) == {'candidate_minus_parent59866','candidate_minus_best61609'}
+      assert os.environ['WA_EVAL_TASK'] in ('stt','dt','at') and os.environ['WA_EVAL_MODE'] == 'mixed'
+      assert model_contract(os.environ) == dict(checkpoint_sha=checkpoint_sha, step=61252)
+      load_teachers(os.environ['WA_EVAL_TEACHER_SELECTIONS'])
+      assert provenance()['config_sha256'] == '1dc43d5488cdcfc0b66d998a63fa87da588a37f115d6970099032caece9776d6'
+      assert sha(os.environ['WA_INIT_REPAIR_PLAN']) == os.environ['WA_INIT_REPAIR_PLAN_SHA']
+      output = Path(os.environ['OUTPUT_ROOT'])
+      assert output.is_absolute() and not output.exists() and not output.is_symlink()
+      print(json.dumps(dict(status='CANDIDATE62256_EVAL_CPU_PREFLIGHT_PASS_NOT_SR',
+          task=os.environ['WA_EVAL_TASK'], expected_episodes=1405, checkpoint=str(checkpoint),
+          checkpoint_sha256=checkpoint_sha, checkpoint_step=61252, input_sha256=pins,
+          closed_loop_result_established=False)), flush=True)
+      PY
+      # Worker allocation only; this block is not run during CPU-only configuration checks.
+      /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python -B - <<'PY'
+      import csv, json, subprocess
+      import torch
+      assert torch.__version__ == '2.8.0+cu128'
+      assert torch.cuda.is_available() and torch.cuda.device_count() == 8
+      visible = [dict(index=i, name=torch.cuda.get_device_name(i),
+                      capability=list(torch.cuda.get_device_capability(i))) for i in range(8)]
+      assert all(row['name'] == 'NVIDIA GeForce RTX 4090' and row['capability'] == [8,9] for row in visible)
+      physical = [list(map(str.strip,row)) for row in csv.reader(subprocess.check_output(
+          ['nvidia-smi','--query-gpu=uuid,name,memory.total,driver_version',
+           '--format=csv,noheader,nounits'],text=True).splitlines())]
+      assert len(physical) == 8 and len({row[0] for row in physical}) == 8
+      assert all(len(row) == 4 and row[0].startswith('GPU-') and
+          row[1] == 'NVIDIA GeForce RTX 4090' and int(row[2]) >= 24000 and row[3]
+          for row in physical)
+      print(json.dumps(dict(stage='EIGHT_REAL_RTX4090_ALLOCATION_VERIFIED',
+          cuda=visible, uuid_model_memory_driver=physical)),flush=True)
+      PY
+      test ! -e "$OUTPUT_ROOT"
+      test ! -L "$OUTPUT_ROOT"
+      bash wa/scripts/eval_full_mixed.sh "$OUTPUT_ROOT"

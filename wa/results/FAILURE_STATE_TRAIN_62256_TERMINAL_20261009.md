@@ -103,3 +103,33 @@ Next is complete mixed/zero STT, DT and AT, each1405 with8GPU, using fresh outpu
 At06:31 Beijing the scheduler inventory reported A8007free, H1000free and bj409072free. The known H100 development NAS lacked this project, model environment and62256 checkpoint. Main-thread devpod4090 identity/GPFS read succeeded; two later independent SSH sessions hit kex-close/reset and stopped without repeated attempts. Those errors are retained and require a successful known-entry check before relying on that endpoint for a new developer run or formal submission. No new evaluation Job was submitted during this report's initial recording.
 
 The prior80-line CURRENT and120-line PROGRESS were copied and byte-compared before editing to `archive/2026-10/{CURRENT_TASK,PROGRESS}_before_62256_terminal_20261009_0620.md`. All prior failed experiments, old checkpoints and complete scores remain preserved.
+
+## Full three-task evaluation preparation
+
+Three complete1405-episode configs now use the independent clean worktree `R/source_student62256_eval24_v1`, commit `5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb`. They preserve the successful61715 mixed/zero protocol, eight fixed shards, semantic repair, seven BBox repairs, teacher initial-state pairing, controller, video and denominator. Only candidate identity/prerequisite evidence and task names/output roots differ. No previous student rows are reused.
+
+| Configuration | SHA256 |
+| --- | --- |
+| `wa/jobs/student62256_stt_4090_v1.yaml` | `0b4010b0d8781e7f8d349e6313acfe76536bb67b41edf8c7a22f5e30d711957f` |
+| `wa/jobs/student62256_dt_4090_v1.yaml` | `8b1a211d2450bb8962388fb97335244a901c6a422d270ee47bf5569ca6129a03` |
+| `wa/jobs/student62256_at_4090_v1.yaml` | `f17202a9c4c0190550854ff866454e426932fef6bad66515fcb2d397bf9bf5a9` |
+
+Each config requests one8GPU K8s shell task on `baidu_4090`, image `x5-builder:cuda12.8-isaac5.0.0-v2.test1`, timeout86400. Full commands are stored in the YAML. Outputs are fresh `J/job_<job>/task_<task>/wa_student62256_{stt,dt,at}_4090_v1`; no output was precreated. Worker checks require eight real distinct RTX4090 UUIDs/cc8.9 and the fixed evidence before launching. Worker checks are not yet executed.
+
+The actual CPU preflight passed against the terminal checkpoint, audit, candidate/baseline fit, selection, teacher index, semantic config and BBox plan. All three YAML/bash/Python ASTs and task contracts passed; their identical CPU program was executed once, not falsely counted as three independent runs. The first checker failed because its comparison normalized a `hard_stt` group label; correcting only the checker resolved it before actual execution. Independent static review found no must-fix. Final config changes after these checks only replace the draft comment; command bodies are unchanged.
+
+At06:50:23 Beijing an authorized bounded developer process ran the exact frozen `wa.wm.eval_server --developer-check --mode mixed --noise-mode zero` with the62256 checkpoint on realRTX4090 GPU6, UUID `GPU-63ea1d9b-4c44-1c78-e545-dc93f6e962d4`. Admission showed24090MiB free and0% utilization, not ownership of the whole device. It ended06:54:09, exit0, elapsed225.276574723s. The5GiB PyTorch allocator cap excludes CUDA context/external allocations;900-second timeout was not reached. The complete argv and source identity are in the log's first line.
+
+| Artifact under `R/artifacts/student62256_eval4090_developer_20261009_v1` | Bytes | SHA256 |
+| --- | ---: | --- |
+| `.json` | 2327 | `e552cb63a1796d4525f37f99f7b3286e58d8640fd92cabadf371125c6a7d4842` |
+| `.ready.json` | 3334 | `ef4b60572284eb37235714be3a92545df972834c030e173ec99d5631d8709963` |
+| `.log` | 2267 | `9b0dffbd37931dcb449e3854fb01b5b3d1c183f4c3f2b2fe1d02261cd1c655ae` |
+
+Independent readback verified report/ready/log binding, checkpoint40915/step61252, mixed/zero/sampling4/seed7+step, two finite xy7x2/yaw7/geometry3 predictions and step0to1. Frame times were `[0,0,0,0]` then `[0,0,0,0.05]`. Peak allocated/reserved were1571047424/1595932672bytes;3xFormers warnings remain, checked fatal patterns0. This is synthetic directSession inference, not HTTP RPC, Habitat/Xvfb, real trajectories, negative later-BBox testing,8GPU worker/NCCL or newSR. The later `initial_bbox=None` positive path ran; rejecting a nonempty later box is only the unchanged source contract in this check.
+
+At06:54:20-23, independent A800 read-only validation of the sameGPFS used the real Habitat interpreter and formal PYTHONPATH: each task has1405unique definitions, matching manifest instructions,101existing scene paths and shard counts176/176/176/176/176/175/175/175. Probe Python3.11.15/torch2.8.0+cu128 and Habitat Python3.9.19/torch2.5.0+cu124-overlay/Habitat+Habitat-Sim0.3.1 imported successfully. All10existing dependency pins passed. Xvfb installer/runner both0755,34debs13682356bytes;36file hashes/sizes matched the existing handoff manifest. Installer SHA `abec088b9ac251757fab98a659534aedb68f2861c5353bcb42b0ff2ec2b44ead`, runner `9db22b3b69f9d0b63dd9ba6bef3146225d37fd310702566ce9f6e5deb8eb0353`. No installer, GPU or trajectory ran in this static check; Gym's deprecation warning is retained. This does not establish a new worker's GLX/EGL behavior.
+
+At06:49 the normal A800 submission chain was authenticated as the owner with md_ai_kit2.0.0. Resources were A8007free/H1000free/bj409072free, not reserved allocations. Own RUNNING62262/61847/61846 and SUBMITTED62404 were individually identified as other work; no student62256duplicate existed. A separate new4090SSH session again hit kex-close and was not retried; the already-running main developer session completed normally. The healthy original A800 submission/NAS path is unchanged, not a workaround to execute through the failed4090SSH connection.
+
+GitHub `wa` terminal-report commit `56df1c03e444b3ab8aa07b4348cdf87cd4350eb1` was verified after the first push returned remote `fatal error in commit_refs`; one normal same-commit retry succeeded. The current preparation must be backed up before full submissions. CURRENT80/PROGRESS127 were copied and byte-compared to `archive/2026-10/*_before_62256_eval_preflight_20261009_0653.md`. No new modelSR or promotion is claimed.
