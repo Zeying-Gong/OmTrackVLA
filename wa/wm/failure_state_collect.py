@@ -18,6 +18,9 @@ from wa.wm.failure_state_protocol import (
     PROTOCOL_SHA as V1_PROTOCOL_SHA,
 )
 from wa.wm.failure_state_teacher_error import TeacherOutputInvalid
+from wa.wm.failure_state_boundary_policy import (
+    LEGACY_POLICY, CONTINUATION_POLICY, validate_boundary_policy,
+)
 
 RGB_KEY = "agent_1_articulated_agent_jaw_rgb"
 PAIR_FIELDS = ("experiment", "task", "key", "takeover_step", "seed",
@@ -152,9 +155,12 @@ def runtime_contract(plan, *, experiment=EXPERIMENT, protocol_sha=None):
 
 class Runtime:
     def __init__(self, plan, plan_sha, ready, output, *,
-                 experiment=EXPERIMENT, protocol_sha=None, continuation_sha=None):
+                 experiment=EXPERIMENT, protocol_sha=None, continuation_sha=None,
+                 teacher_boundary_policy=LEGACY_POLICY):
         self.experiment, self.protocol_sha = runtime_contract(
             plan, experiment=experiment, protocol_sha=protocol_sha)
+        self.teacher_boundary_policy = validate_boundary_policy(
+            teacher_boundary_policy, experiment=self.experiment)
         self.continuation_sha = continuation_sha
         if self.experiment != EXPERIMENT:
             from wa.wm.failure_state_protocol import _sha
@@ -231,6 +237,10 @@ class Runtime:
 
     def run(self, entry, base, name, teacher_url, *, teacher_name=None,
             prefix=None, takeover_step=None, verification_only=False, development_actions=None):
+        # Missing attributes on legacy CPU fixtures retain the historical policy.
+        boundary_policy = validate_boundary_policy(
+            getattr(self, "teacher_boundary_policy", LEGACY_POLICY),
+            experiment=self.experiment)
         import random
         import numpy as np
         import torch
@@ -262,7 +272,9 @@ class Runtime:
             boundary = BoundTeacher(teacher, allow_released_fallback=False)
             if self.experiment != EXPERIMENT:
                 from wa.wm.failure_state_teacher_adapter import FailureStateTeacherBoundary
-                boundary = FailureStateTeacherBoundary(boundary, teacher_name=teacher_name)
+                boundary = FailureStateTeacherBoundary(
+                    boundary, teacher_name=teacher_name,
+                    allow_missing_final_level=boundary_policy == CONTINUATION_POLICY)
             agent = ReplayThenTeacher(boundary, prefix, takeover_step, RGB_KEY)
             environment = lambda: agent.environment
         meta = dict(experiment=self.experiment, partition="evaluation_adaptation", task="stt",
@@ -279,6 +291,8 @@ class Runtime:
             meta.update(base_plan_sha256=self.plan_sha,
                         base_protocol_sha256=self.plan["protocol_sha256"],
                         continuation_sha256=self.continuation_sha)
+        if boundary_policy == CONTINUATION_POLICY:
+            meta["teacher_boundary_policy"] = boundary_policy
         if prefix is not None:
             meta["prefix_sha256"] = canonical_sha(prefix)
         rec = FailureStateRecorder(branch_root, meta, environment, takeover_step=takeover_step,
