@@ -1,5 +1,5 @@
 # WA-Mobile progress
-Updated: 2026-10-08 after explicit group-fit permission. Current phase RUNNING_CPU_SELECTION;no new formalJob/checkpoint/SR.
+Updated: 2026-10-08 18:25 Beijing. Fixed152 selection PASS;pretrain fit started/source validation pending;no new formalJob/checkpoint/SR.
 Full predecessor: archive/2026-10/PROGRESS_before_group_fit_permission_20261008_1656.md (139lines,including historic failures,waits and corrections). Older archive pointers remain there.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Exact active input/output/checkpoint pins are also in CURRENT_TASK.md.
 
@@ -8,10 +8,11 @@ Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260
 - User explicitly said “许可呀，赶紧搞”, resolving the two-file group-fit write permission. Existing Goal tool still returns BLOCKED/no resume API;work continues on the new request,not a fabricated GoalACTIVE orcompletion. Heartbeatwa prompt updated via tool ACTIVE20min with latest work status.
 - Applied C/wa/tools/failure_state_group_fit.py SHAd4bf544e837149b16a31973f546e5d86a7b3050c61649aef919f36127166e404 and C/wa/tests/test_failure_state_group_fit.py SHA37d865e0683b6478c1908f35c7d66d52204b77841688ca461413ccd8aa00c2c7.
 - Initial30CPUtests=28PASS+2fixture-index failures;two fixture indices corrected,rerun30PASS1.164s. Preserve the failure/correction;not evidence of model accuracy.
-- CPU selection PID3966836/session43283 still active ondevpod-4090 at18:15Beijing (~10min/4.855GB NAS reads);no accepted final selection orfit result. Reference R/artifacts/teacher_group_fit_61377_20261007_v1.json;output R/artifacts/failure_state_group_fit_selection_20261008_v1.json.
+- CPU selection session43283 exit0/977.593s;R/artifacts/failure_state_group_fit_selection_20261008_v1.json SHA7e7db844c09f67d7b0e3b5de7376c0573c18fccc485dfa235b879ed4dab111a9/786143B.152=88old verbatim+64unique allSTT recovery,0intersection526dup;early32/late32 each32episodes,total40;LN17/Oracle47 new,ageearly.440-.488s/late1.016-2s;2865sourcepins. Independent compact JSON audit PASS,not refit orSR.
+- Pretrain source-validation started18:23:50Beijing session52695/PID3969666 on4090GPU7:startup0%util/7690MiBfree,UUIDGPU-3c8e0886-91d1-d6dc-0f7b-1ef3f757f4fd,PyTorch allocator cap5368709120B/2400s timeout. OwnNAS.log prefixfailure_state_group_fit_pretrain_20261008_v1;final.json not accepted yet;no predicted-window progress orGPUfitPASS claimed. Full command/scope in C/wa/results/FAILURE_STATE_GROUP_FIT_20261008.md;no duplicate start.
 - CLI select pins immutablev2cache admissionc6909577…,loader audit a330f7d3…,dedup599d60ea…;fullSHA and paths in CURRENT. Do not reselect by outcome orreplace original references.
 - Next:check selection terminal status/content/hash,then bounded fixed-group model-fit and target-runtime evidence. CPU selection/fit tooling is not formal8ranktraining admission,closed-loopSR orpermission to change recipe.
-- GitHubwa5380b32e867d88bb42441e684de0a896ba8c4e53 is the verified prior backup. Newfitfiles pending stage;main added EXPERIMENTS entry WA_FAILURE_STATE_GROUP_FIT_TOOL_V1;two raw JSON reports remain NAS-only/untracked. No commit/push performed by this state-compression subtask.
+- GitHubwa6bc034b28003e5e0471caa74ed16cac5c01b8883 pushed afterannouncement andls-remote verified:fitcode/tests/CPUCSV plus54/70line state compression andexact79/139line archives. No data/weight/video upload;two raw JSONs remain NAS-only. Selection/startup increment follows separately.
 
 ## Retained scientific result and fixed next experiment
 
@@ -56,7 +57,7 @@ Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260
 - Real A800 GPU3 developer check R/artifacts/failure_state_train_developer_20261008_v1 session78149 exit0/DIAGNOSTIC_PASS:59866MODEL+OPTIMIZER,4updates22708..22711,finite loss/grad,peak7.3089757GiB;3heldoutmodes2windows;ownedprocesses exited.
 - Actual16positions once=base7+oldteacher6+recovery3(unique7/5/3,early1late2),NPZ236e39ebd3626bdb0cb625671b15e614688361fb15aae5a0720379f772793d13. Runtime4.272s excludes NAS/modelsetup;3xFormerswarnings retained. No formalcheckpoint/SR or8rankGPU validation.
 - Priorresources:A8005free insufficient8;H100knownSSH works but independentAliNAS lacks checkout/probe_env/base/oldteacher/newcache;no migration. bj4090snapshot104free,then16:20snapshot95free/static8RTX409024GiB/cc8.9/torch2.8cu128/sharedGPFS/dependencies+8pinsPASS. Historical,not reservation orworker allocation.
-- Developer4090 snapshot18:15:GPU7 free7490MiB/util0,GPU6 util100%/free9854MiB;no idle4update training-safety margin. A short5GiB-cappedGPU7fit is proposed only;not run. Current76clusterfree does not imply developerfree.
+- Developer4090 snapshot18:15:GPU7 free7490MiB/util0,GPU6 util100%/free9854MiB;no idle4update training-safety margin. Short5GiB-cappedGPU7fit has now started sourcechecks;cap excludes external/CUDAcontext allocation,not an exclusivity claim. Policy prediction does not testJEPA loss/backward/NCCL. Current76clusterfree does not imply developerfree.
 - User permits needed24bj4090. Check fresh A800→H100readiness→4090,ownedprocess safety and actualtarget8cards before submission;no speculativehost orstop/duplicate otherWLA.
 - C/wa/jobs/failure_state_train_4090_v1.yaml SHAb01bc53bb51cd0ccc7d539701aed44714285c0fa1940e829a43a416ab7749ff2 NOT_SUBMIT_READY;syntax/11flags/16paths/staticDDP passed. New4090recipe runtime/kernel/NCCL/fixedfit gates pending.
 - Intendedformaloutput J/job_<JobID>/task_<TaskID>/wa_failure_state_train_4090_v1;noassignedID. Required workerpostcheck actual8distinctRTX4090,exact1233424exposure,final61252/cumulative2/parent59866,1543logs,3x73368finiteheldout and source/artifactSHA. Postcheck not yet run;checkpointpresence alone not completion.
