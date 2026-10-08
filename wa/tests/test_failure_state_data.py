@@ -24,6 +24,54 @@ def save(path,value):
     Path(path).write_text(json.dumps(value,sort_keys=True,allow_nan=False))
 
 
+
+def make_start_documents(obs,acts,meta,windows,result,colors):
+    """Synthetic values with the actual recorder's JSON names/field structure."""
+    n=len(obs);k=meta["takeover_step"];replay=[]
+    box=[0.,0.,0.,0.] if meta["initial_bbox_status"]=="VERIFIED_FROZEN_FIRST_RGB_REPAIR" else [
+        float(meta["initial_bbox_rgb_xyxy"][0]),float(meta["initial_bbox_rgb_xyxy"][1]),
+        float(meta["initial_bbox_rgb_xyxy"][2]-1),float(meta["initial_bbox_rgb_xyxy"][3]-1)]
+    meta["initial_bbox_sensor_xyxy_original"]=box
+    meta["initial_bbox_sensor_xyxy"]=copy.deepcopy(box)
+    for i,(o,a,color) in enumerate(zip(obs,acts,colors)):
+        o["simulator_world_time_s"]=o["timestamp_s"]
+        robot=np.eye(4);robot[:3,:3]=o["robot_rotation_world_from_body"];robot[:3,3]=o["robot_position_world"]
+        human=np.eye(4);human[:3,3]=o["target_position_world_label_only"]
+        state=dict(timestamp=o["timestamp_s"],agents=[
+            dict(transform=human.tolist(),joints=[0.]),dict(transform=robot.tolist(),joints=[0.])])
+        pixels=np.empty(meta["rgb_shape"],dtype=np.uint8);pixels[:]=color
+        replay.append(dict(step=i,observation_index=i,timestamp_s=o["timestamp_s"],
+            simulator_world_time_s=o["timestamp_s"],rgb_sha256=hashlib.sha256(pixels.tobytes()).hexdigest(),
+            dynamic_state=state,dynamic_state_sha256=mod.canonical_digest(state),
+            action=a["normalized_action"],normalized_action=a["normalized_action"],owner=a["owner"],
+            action_timing="before_env_step",post_state_recorded=False))
+    first={name:copy.deepcopy(replay[0][name]) for name in mod.START_EVIDENCE_FIELDS}
+    first.update(initial_rgb_sha256=first["rgb_sha256"],initial_bbox_sensor_xyxy_original=copy.deepcopy(box))
+    takeover={name:copy.deepcopy(replay[k][name]) for name in mod.START_EVIDENCE_FIELDS}
+    takeover.update(initial_rgb_sha256=first["rgb_sha256"],initial_bbox_sensor_xyxy_original=copy.deepcopy(box),
+        expected_rgb_sha256=replay[k]["rgb_sha256"],expected_dynamic_state_sha256=replay[k]["dynamic_state_sha256"])
+    prefix=copy.deepcopy(replay)
+    for r in prefix:r["owner"]="student"
+    meta["prefix_sha256"]=mod.canonical_digest(prefix)
+    result["total_step"]=n
+    links=dict(prefix_sha256=meta["prefix_sha256"],initial_rgb_sha256=first["rgb_sha256"],
+        takeover_state_sha256=takeover["expected_dynamic_state_sha256"],
+        actual_takeover_state_sha256=takeover["dynamic_state_sha256"])
+    proof=dict(agent_step_before_reset=n,replay_wrapper=True,prefix_hash_matches=True,
+        environment_bound=True,takeover_matches=True,verified_prefix_frames=k+1,required_prefix_frames=k+1,
+        replay_verified=True,verification_source="successful ReplayThenTeacher.act calls before final reset",
+        proof_scope="t=0..k raw RGB plus world time and articulated transforms/joints, atol=1e-6",
+        hidden_rng_contact_state_proven=False)
+    owned=dict(action_count=n-k,start_observation_index=k,end_observation_index_inclusive=n-1,
+        start_step=k,end_step_inclusive=n-1,contiguous=True,
+        poststate_claim="none; only next preaction frames are observed")
+    raw_windows=[{name:copy.deepcopy(w[name]) for name in
+                  ("current_index","future_bracket_indices","future_times_s","trajectory_xy_m")}
+                 for w in windows]
+    for w in raw_windows:w["interpolation"]="linear_world_position_at_actual_simulator_time"
+    return dict(replay=replay,first_start=first,pair_start=copy.deepcopy(first),
+                takeover=takeover,fallback_events=[],raw_windows=raw_windows),links,proof,owned
+
 def full_fixture(root):
     """96 original winners, exact7396/6864/532, including6 zero-valid episodes."""
     out=root/"cache";out.mkdir();(out/"index").mkdir()
@@ -70,17 +118,23 @@ def full_fixture(root):
                   timebase_version="v3_actual_world_time_interpolated",scene_id="scene.glb")
         if pair==(61844,73066):meta["teacher_boundary_policy"]=mod.CONTINUATION_POLICY
         result=dict(success=1.,collision=0.,policy_init_valid=True)
+        start_docs,links,proof,owned=make_start_documents(obs,acts,meta,wins,result,
+            [((3*i)%255,ep,i%255) for i in range(n)])
         branchdoc=dict(**ident,artifact_root=str(branch),complete=True,replay_verified=True,transport_fallback=False,result=result)
         adm=dict(**ident,complete=True,replay_verified=True,transport_fallback=False,result=result,
                  training_eligible=False,training_released=False)
         complete=dict(complete=True,status="FAILURE_STATE_RAW_COLLECTION_COMPLETE",frames=n,
                       candidate_windows=count,training_eligible=False,training_released=False)
+        branchdoc.update(links)
+        adm.update(links,agent_validation=proof,owned_suffix=owned,issues=[],takeover_observation_index=k)
         docs={"metadata.json":meta,"observations.json":obs,"actions.json":acts,"windows.json":wins,
               "result.json":result,"branch.json":branchdoc,"admission.json":adm,"complete.json":complete,
-              "replay.json":[],"first_start_pair.json":{},"takeover_pair.json":{}}
+              **{name+".json":value for name,value in start_docs.items()}}
         for name,value in docs.items():save(branch/name,value)
         for i in range(n):
             Image.new("RGB",(8,8),((3*i)%255,ep,i%255)).save(branch/f"rgb_{i:04d}.png")
+        panoptic=np.zeros((8,8),dtype=np.int32);panoptic[1:7,1:7]=1
+        np.save(branch/"initial_panoptic.npy",panoptic)
         hashes={p.name:sha(p) for p in branch.iterdir()}
         sources.update({str(branch/name):h for name,h in hashes.items()})
         demo=dict(task="stt",key=f"scene/{ep}",teacher="oracle",takeover_step=k,branch=str(branch),
@@ -333,6 +387,48 @@ class FailureDataTests(unittest.TestCase):
         data=self.load()
         for index in (True,np.bool_(True),.5):
             with self.assertRaises(ValueError):data[index]
+
+
+    def test_real_first_start_pair_and_takeover_producer_files(self):
+        data=self.load();root=Path(data.episodes[18]["root"])
+        self.assertTrue({"first_start.json","pair_start.json","takeover.json",
+                         "fallback_events.json","raw_windows.json"}<=set(data._admissions[str(root)]["hashes"]))
+        self.assertNotIn("first_start_pair.json",data._admissions[str(root)]["hashes"])
+
+    def test_rebound_pair_start_mismatch_rejected(self):
+        root=Path(self.f["entries"][18]["root"]);p=root/"pair_start.json"
+        d=json.loads(p.read_text());d["initial_rgb_sha256"]="0"*64
+        self.edit(p,d);self.rebind(p)
+        with self.assertRaisesRegex(ValueError,"pair_start"):self.load()
+
+    def test_rebound_takeover_cannot_replace_initial_bbox(self):
+        root=Path(self.f["entries"][18]["root"]);p=root/"takeover.json"
+        d=json.loads(p.read_text());d["initial_bbox_sensor_xyxy_original"]=[2,2,5,5]
+        self.edit(p,d);self.rebind(p)
+        with self.assertRaisesRegex(ValueError,"episode-zero bbox"):self.load()
+
+    def test_rebound_takeover_step_bool_rejected(self):
+        root=Path(self.f["entries"][18]["root"]);p=root/"takeover.json"
+        d=json.loads(p.read_text());d["step"]=True
+        self.edit(p,d);self.rebind(p)
+        with self.assertRaises(ValueError):self.load()
+
+    def test_rebound_missing_prefix_proof_rejected(self):
+        root=Path(self.f["entries"][18]["root"]);p=root/"admission.json"
+        d=json.loads(p.read_text());d["agent_validation"]["verified_prefix_frames"]=6
+        self.edit(p,d);self.rebind(p)
+        with self.assertRaisesRegex(ValueError,"verified_prefix_frames"):self.load()
+
+    def test_rebound_normal_fallback_cannot_teach(self):
+        root=Path(self.f["entries"][18]["root"]);p=root/"fallback_events.json"
+        self.edit(p,[dict(step=6,error="typed")]);self.rebind(p)
+        with self.assertRaisesRegex(ValueError,"fallback/error"):self.load()
+
+    def test_rebound_dynamic_state_digest_rejected(self):
+        root=Path(self.f["entries"][18]["root"]);p=root/"replay.json"
+        d=json.loads(p.read_text());d[6]["dynamic_state_sha256"]="0"*64
+        self.edit(p,d);self.rebind(p)
+        with self.assertRaisesRegex(ValueError,"dynamic state digest"):self.load()
 
 
 if __name__=="__main__":unittest.main()

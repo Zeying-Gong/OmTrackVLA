@@ -1,5 +1,5 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 14:56 Beijing. Existing Goal ACTIVE after user resume; heartbeat wa ACTIVE every20minutes.
+Updated: 2026-10-08 15:52 Beijing. Existing Goal ACTIVE after user resume; heartbeat wa ACTIVE every20minutes.
 Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261008.md.
 
 ## Acceptance and retained best
@@ -21,7 +21,7 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 - All24 owned role spawn/exit PIDs, wrapper launcher0/dependency0, frozen source clean,8ready c510/step59716 and checkpoint SHA verified by new terminal gate.
 - One recorded typed LN error VLzqgDo317F/123 k34 MissingRVQ[0,1];60obs59actions;null terminal/0windows/no fallback executed. Do not interpret typed errors as successful demonstrations or claim all logs warning-free.
 
-## Collection admitted; exact dedup passed; cache conversion needs schema correction
+## Collection, v2 cache, real loader and bounded sampling passed
 - Old61833 FAILED1 +61836 FAILED35 are retained. Old36 full raw audit PASS225branches/14985PNG/14984actions/18836files.
 - Old raw:artifacts/failure_state_completed_search_audit_61836_v1.json SHAcbdc709aa4f8df67fb5edf2e06faeb2476f77de365ec9954c8e5b323ed957299.
 - Old numeric:wa/results/FAILURE_STATE_36_NUMERIC_20261008.json SHA2965e8bd086169eb3c180dd92db72254c2d420d445d10f7586fc6e4be850340b;2039candidate ->1891valid/148excluded;21nonzeroepisodes.
@@ -35,16 +35,20 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 - Real126 collection admission PASS/exit0/readback:artifacts/failure_state_collection_release_126_v1.json SHA73fe7d6b7cdcdfa144a5bcf540cbac33b0d2c0971b25d6aeca35e928d8af0fbd;23,419,823B/94807sourcefiles;96winners/30none;7396candidate6864valid532excluded90nonempty;training_released=false.
 - Full6864same-task/key dedup PASS:526exactduplicates (182start+344mid),6338new-within-scope;wa/results/FAILURE_STATE_DEDUP_20261008.json SHA599d60ea2d40ff4f9ae69f87df03e3a5a192b749ce030504bf19177999262859;10,634,245B. No cross-key or within-new dedup claim;do not delete cache rows.
 - Cache v1 conversion FAILED before arrays/admission:artifacts/failure_state_se2_cache_20261008_v1/failed_conversion.json preserved. Converter/fixture wrongly required first_start_pair.json/takeover_pair.json;all96real branches instead pin first_start.json/pair_start.json/takeover.json. Not missing source evidence.
-- New converter_v2 and real-format loader correction in development;keep v1converterSHA5bdc9fd3 unchanged because completed dedup pins it. No usable cache/real-loader admission/newtraining/newstudentSR.
+- New v2 converter9151f24a/loader4df105ec retain v1converter5bdc9fd3 and failedv1. Realv2 conversion exit0/readbackPASS:artifacts/failure_state_se2_cache_20261008_v2;admission SHAc690957761133f98e8925bf0f491373c9b0ca30d74f427834d9d4a155093bc69;complete b96b90bca2a88413b4f618a6e5c280b8e262a3e2713fc9f63524402f4d77e6f9.
+- Real loader CPU audit exit0/PASS:wa/results/FAILURE_STATE_CACHE_LOADER_20261008.json SHAa330f7d39ecd89f7f1f67e33f0a2d6cdb67bf62f7dd57758ea270ec6a0644755;all6864 metadata and2127actualgetitem/10tensors;2039policy/231JEPA/308proprio prefixcrossings;90actualcondition-routing checks;15034consumedsourcefiles hashed. No model/GPU inference ortrainingrelease.
+- Real three-source candidate PASS:artifacts/failure_state_sampling_candidate_20261008_v1;admission SHA230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902;canonical plan11cb7150e33c8b66cbd3353a7f95b903c8b8b282ebe84faee4aa91e4b0beeaee. Independent readback and source SHA unchanged.
+- Eight-rank CPU DistributedSampler+DataLoader:1233424positions exactlyonce/0drop;726631base+457641oldteacher exact per-window +49152recovery. Eachrank154178positions/77089batches;expected38545updates endingstep61252,not actualtraining.
+- Recovery6338unique/87episodes;526oldduplicates have0extraexposure;window1..16/episode48..759<=1024;early<=1s23598/late25554;LN15932/Oracle33220. Same old counts not same ordering/RNG/optimizer trajectory;training_released=false.
 
 ## Next gates and authorized experiment scope
-- Correct required evidence names against actual producer/all96smallJSON, test, then convert in a NEW v2 cache directory. Do not overwrite failedv1, repeat collection, or redo completed126 raw/release/dedup.
-- After actualcache SHA, independently check loader tensors and dedup rawrow<->dataset index/full6864 mapping. Candidate adds49152 bounded recovery exposures after keeping old1184272 executed plan positions (drop1151263 explicitly);actual87episodes6338new have59792capacity atwindow16/episode1024. Not yet a formal plan/runtime8rank admission.
+- Completed data gates must not be rerun by default;do not overwrite failedv1 or immutablev2/candidate, repeat collection, or redo126 raw/release/dedup/loader audit.
+- Opt-in train.py integration implemented, independent review no must-fix;main117CPU regressions PASS. Actual short developer-GPU model+optimizer/gradient/exposure check and frozen-source/formal submission gates still pending;no newGPUjob/train/closedloop/SR.
 - Release rederives exact有效window sets for all96winners;old36 compact report remains unchanged. Exclude failed/repeat/typed-error labels;zero-valid episodes get0exposure.
 - Converter preserves episode0 template and original indices/all frames;teacher-owned interpolated0.1..0.7s SE2;policy sparse4 causal history;JEPA continuous4/action/proprio-1/actualt+1.
 - Preserve old now>=4/dt/displacement/yaw/badtransition masks and compare exact original-runtime mask. UWB current observation only.
 - After source/image/array/index/admission hashes and actual loader checks:independent59866 MODEL+OPTIMIZER step22707 branch,8GPU,at most1new/cumulative2epochs.
-- Never continue61609/61715 epoch3;no loss/LR/controller/physics/architecture/criterion changes orRL. Record unique windows, group fitting, new/old exposure and actual8rank consumption.
+- Never continue61609/61715 epoch3;no loss/LR/controller/physics/architecture/criterion changes orRL. Fixed group-fitting tool's two new files await specific user approval after auto-review denial;not applied. Record unique windows, group fit and actual8rank consumption.
 - Full evaluations STT/DT/AT each8GPU/1405,24total;user permits needed24bj4090. Check A800/H100/4090 priority and actual target NAS/environment/worker first.
 - Only after all3SR gates:explicitimage-mode sameweight noUWB paired study with real interface/observer checks. Not mixedzero or noUWB-retraining claim.
 
@@ -63,6 +67,7 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 ## Network, repository and reporting
 - This turn devpod-4090 restored;hostname devpod-zeying-gong-4090-7f59ffb47c-rpkjh;GPFS mt-tutz0R-pfs-haZOBP;no crossNAS copy.
 - Prior No-route and kex failures preserved;earlier BLOCKED Goal explicitly resumed by user and now ACTIVE. No automatic BLOCKED-to-ACTIVE claim.
-- GitHubwa4f78edce5d9930285ef704f5b1d3ea6e19a715d2 verified (loader/dedup/parallelrelease/raw90summary). Firstcommit lackedidentity and didnotexecute;retry used existing Codex identity percommand,notglobal. Latestrelease/dedup/cachefailure and newcode remain tosync.
+- GitHubwa7b24cb5370a9e47335b3092e67025f81bf8adad8 verified;latestv2cache/loader/runtime/opt-intraining code and evidence syncpending. Firstcommit identity failure preserved;existingCodex identity per-command only.
+- Latest developer precheck: A800 SSH15:49:56 failedkex/exit255 beforecommands;no retry. Dev4090allGPUoccupiedsnapshot;no otherprocess stopped. GPU shortcheck remains BLOCKED,not prooftrainingunavailableforever.
 - Never apply old local startup31/RUNNING patch;61844 is terminal. No resubmit/restart/stop/migration of61844.
 - ExistingGitHub wa only;announce beforepush;no weights/data/videos. CURRENT<=80,PROGRESS<=150;archive before expanding beyond limits.

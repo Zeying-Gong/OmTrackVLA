@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader,DistributedSampler,Subset
 from wa.data import audit,sha
 from wa.wm.robot_data import RobotWorldData,CONTRACT
 from wa.wm.training import JointRobotModel,optimizer_groups
+from wa.wm.failure_state_train_args import add_arguments as failure_arguments,validate_training_recipe as failure_recipe,source_pins_from_args
 
 def arguments():
     p=argparse.ArgumentParser(description=__doc__)
@@ -30,6 +31,7 @@ def arguments():
     p.add_argument('--teacher-plan-report-sha256')
     p.add_argument('--dual-teacher-repeats',type=int)
     p.add_argument('--evaluation-set-adaptation',action='store_true')
+    failure_arguments(p)
     return p.parse_args()
 
 def moved(batch,device):return {k:v.to(device,non_blocking=True) for k,v in batch.items()}
@@ -53,6 +55,7 @@ def evaluate(model,data,batch_size,device,rank,world):
 
 def main():
     a=arguments()
+    failure_enabled=failure_recipe(a)
     if min(a.batch_size,a.accumulation,a.epochs)<1 or not math.isfinite(a.world_weight) or a.world_weight<=0:raise ValueError('invalid training configuration')
     if not math.isfinite(a.history_repeat_probability) or not 0<=a.history_repeat_probability<=1:raise ValueError('invalid history repeat probability')
     if a.diagnostic and os.environ.get('MD_AK_JOB_ID'):raise ValueError('developer diagnostic forbidden in formal cluster job')
@@ -69,6 +72,7 @@ def main():
         raise ValueError('hard-STT candidate fixes base/teacher once, one independent continuation, seed42/batch2/accum2')
     rank=int(os.environ.get('RANK',0));world=int(os.environ.get('WORLD_SIZE',1));local=int(os.environ.get('LOCAL_RANK',0))
     if not a.diagnostic and world!=8:raise ValueError('full recipe requires8 ranks')
+    failure_recipe(a,world=world)
     torch.cuda.set_device(local);device=torch.device('cuda',local)
     if a.lane=='external-h100' and (world!=8 or not all('H100' in torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count()))):raise ValueError('external lane requires8H100')
     # Ray TorchTrainer initializes NCCL before invoking this entry point.
@@ -93,6 +97,7 @@ def main():
     recovery_exposure=None
     if bool(a.recovery_cache)!=bool(a.recovery_index):raise ValueError('recovery cache/index pair required')
     planned_mix=plan_records=plan_windows=None
+    failure_mix=None
     runtime_exposure=None
     if a.recovery_cache:
         if not a.resume:raise ValueError('recovery stage requires explicit parent checkpoint')
@@ -133,7 +138,7 @@ def main():
                 validate_training_recipe(plan_report,a,world=world)
             mixed=planned_mix
             train=ExposureTaggedData(mixed)
-            if a.diagnostic:
+            if a.diagnostic and not failure_enabled:
                 train=Subset(train,diagnostic_positions(mixed,plan_records,plan_windows,limit*2))
         else:
             mixed=RecoveryMix(train,teachers,a.dual_teacher_repeats)
@@ -151,6 +156,31 @@ def main():
                 teacher_candidate_kind=plan_report['candidate_kind'],
                 selection_source_hashes=plan_report['selection_source_hashes'])
         if rank==0:(output/'dual_teacher_exposure.json').write_text(json.dumps(teacher_exposure,indent=2))
+    if failure_enabled:
+        from wa.wm.failure_state_train_gate import verify_loader_audit
+        from wa.wm.failure_state_data import FailureStateData
+        from wa.wm.failure_state_sampling_runtime import load_candidate as load_failure_candidate,diagnostic_positions as failure_diagnostic_positions,RuntimeExposure as FailureRuntimeExposure
+        # Independently checked real tensors and routing, then actual loader admission.
+        # The three-source runtime independently rebuilds all 6864 row identities and
+        # retains exact best61609 consumed counts; no metadata enters the policy.
+        loader_gate=verify_loader_audit(a.failure_state_loader_audit,
+            a.failure_state_loader_audit_sha256,a.failure_state_cache,a.failure_state_admission_sha256)
+        failure_data=FailureStateData(a.failure_state_cache,expected_admission_sha256=a.failure_state_admission_sha256)
+        failure_mix,failure_provenance,failure_simulation=load_failure_candidate(
+            a.failure_state_plan,a.failure_state_plan_admission_sha256,planned_mix,failure_data,
+            old_plan_root=a.teacher_window_plan,old_run_root=a.failure_state_old_run,
+            dedup_path=a.failure_state_dedup_report,source_pins=source_pins_from_args(a))
+        train=ExposureTaggedData(failure_mix)
+        if a.diagnostic:
+            train=Subset(train,failure_diagnostic_positions(failure_mix,plan_records,plan_windows,limit*2))
+        if rank==0:
+            failure_info=dict(experiment='evaluation_adaptation_failure_state_mix_v1',
+                plan_sha256=failure_mix.plan_sha256,provenance=failure_provenance,
+                simulation=failure_simulation,loader_audit_sha256=loader_gate['report_sha256'],
+                total_planned_positions=len(failure_mix),loader_positions=len(train),
+                diagnostic=a.diagnostic,initialization='59866 model AND optimizer; one new epoch, cumulative two',
+                interpretation='Same old per-window exposure, not same ordering, RNG or optimizer trajectory; not unseen-test generalization.')
+            with (output/'failure_state_exposure.json').open('x') as f:json.dump(failure_info,f,indent=2)
     sampler=DistributedSampler(train,num_replicas=world,rank=rank,shuffle=True,seed=a.seed,drop_last=True)
     loader=DataLoader(train,batch_size=a.batch_size,sampler=sampler,drop_last=True,num_workers=a.workers,pin_memory=True)
     model=JointRobotModel(a.root,a.encoder_weight,a.wla_source,a.wla_checkpoint,a.kind).to(device)
@@ -182,7 +212,9 @@ def main():
     for epoch in range(a.epochs):
         sampler.set_epoch(epoch+a.completed_epochs);wrapped.train();optimizer.zero_grad(set_to_none=True)
         group_log=torch.zeros(4,device=device)
-        if planned_mix is not None:
+        if failure_mix is not None:
+            runtime_exposure=FailureRuntimeExposure(failure_mix)
+        elif planned_mix is not None:
             runtime_exposure=RuntimeExposure(planned_mix,episode_index=plan_windows['episode_index'],
                 episodes=plan_records,hard=plan_windows['hard'],early=plan_windows['early'])
         for i,batch in enumerate(loader):
@@ -237,10 +269,15 @@ def main():
                 if a.diagnostic:exposure['status']='DIAGNOSTIC_PARTIAL_EXPOSURE_ONLY'
                 exposure['optimizer_steps_completed']=step-resume_step
                 exposure['diagnostic']=a.diagnostic
-                base_counts,teacher_counts=runtime_exposure.source_counts(state)
+                if failure_mix is not None:
+                    base_counts,teacher_counts,recovery_counts=runtime_exposure.source_counts(state)
+                    count_arrays=dict(base_counts=base_counts.numpy(),teacher_counts=teacher_counts.numpy(),
+                        recovery_counts=recovery_counts.numpy())
+                else:
+                    base_counts,teacher_counts=runtime_exposure.source_counts(state)
+                    count_arrays=dict(base_counts=base_counts.numpy(),teacher_counts=teacher_counts.numpy())
                 np.savez_compressed(output/f'actual_exposure_epoch{epoch+a.completed_epochs}.npz',
-                    position_counts=state['position_counts'].numpy(),
-                    base_counts=base_counts.numpy(),teacher_counts=teacher_counts.numpy())
+                    position_counts=state['position_counts'].numpy(),**count_arrays)
                 with (output/f'actual_exposure_epoch{epoch+a.completed_epochs}.json').open('x') as f:
                     json.dump(exposure,f,indent=2)
             if world>1:dist.barrier()

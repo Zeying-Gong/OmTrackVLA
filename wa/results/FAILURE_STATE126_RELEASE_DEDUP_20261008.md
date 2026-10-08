@@ -49,3 +49,37 @@ The pure sampling candidate preserves all 1,184,272 old executed positions (the 
 Required next: v2 real-cache conversion; independent hash-pinned loader audit including true timestamps, causal history, teacher-owned future labels and unchanged heldout; exact raw-row-to-loader-row/dedup binding; real eight-rank exposure verification; training integration and short developer checks. No new training or student SR has been produced. Retained best remains STT 1279/1405, DT 1178/1405, AT 1207/1405. Any next training branches independently from 59866 model **and optimizer**, for at most one new epoch/cumulative two, not a third epoch from 61609.
 
 Original failures, successful collection artifacts, frozen source and checkpoint are preserved. Large raw audit inventories, images, checkpoints and videos remain on NAS; this compact report is the GitHub evidence index.
+
+## Verified update — 2026-10-08 15:55 Beijing
+
+The “next gate” above describes the earlier 14:56 snapshot. The following gates have now completed, without new training or a new model score.
+
+- **Real v2 cache:** conversion exited 0 and readback passed. NAS root `/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_se2_cache_20261008_v2`; admission SHA `c690957761133f98e8925bf0f491373c9b0ca30d74f427834d9d4a155093bc69`; complete SHA `b96b90bca2a88413b4f618a6e5c280b8e262a3e2713fc9f63524402f4d77e6f9`. Preserves 7,396 candidate rows, 6,864 valid/532 excluded, 96 original winner episodes/90 nonempty, and six original heldout links. The failed v1 remains intact.
+- **Actual loader:** independent CPU audit exited 0. It checked all 6,864 row identities and actually loaded 2,127 windows, covering every student-prefix crossing: policy history 2,039, JEPA command history 231, proprio history 308. Ten tensors matched independent derivation (pose tolerance 2e-6); 90 actual condition-routing checks used a CPU encoder stand-in, not policy/encoder weights. It hashed 15,034 consumed source files. Full report `checkout/wa/results/FAILURE_STATE_CACHE_LOADER_20261008.json` on the same NAS project root has SHA `a330f7d39ecd89f7f1f67e33f0a2d6cdb67bf62f7dd57758ea270ec6a0644755` (2,495,178 bytes). Total 411.98 s, including 90.38 s initialization; not model inference, SR, or training release.
+- **Real three-source plan:** candidate construction and true eight-rank CPU `DistributedSampler` + `DataLoader` simulation exited 0, followed by independent on-disk and source-hash readback. Root `artifacts/failure_state_sampling_candidate_20261008_v1`; admission SHA `230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902`; canonical plan SHA `11cb7150e33c8b66cbd3353a7f95b903c8b8b282ebe84faee4aa91e4b0beeaee`.
+
+| Source | Actual simulated exposures | Unique/exposure constraints |
+| --- | ---: | --- |
+| Original base | 726,631 | Exact old per-window counts |
+| Previously selected teacher | 457,641 | Exact best61609 executed counts; old omitted position stays omitted |
+| Failure-state recovery | 49,152 | 6,338 unique; all 526 exact old duplicates get zero extra exposure |
+| Total | 1,233,424 | Every plan position exactly once; zero sampler/batch drops |
+
+Recovery exposure is bounded at 1–16 per window and 48–759 per nonempty episode (cap 1,024), across 87 episodes. Takeover-relative early (≤1 s) exposures are 23,598 and later 25,554; LightNav contributes 15,932 and Oracle 33,220. Six zero-valid episodes and three all-duplicate episodes receive zero extra exposure. This does not claim cross-key or within-new global deduplication.
+
+Each of eight ranks consumes 154,178 positions/77,089 microbatches at batch 2. With accumulation 2 and the existing last-partial-group behavior, the planned one-epoch continuation is 38,545 optimizer updates, from parent step 22,707 to expected step **61,252**. These are expected counts, **not completed updates**. Retaining old counts does not retain their ordering, random augmentations, rank assignment or optimizer trajectory.
+
+The candidate’s four immutable files are:
+
+| File | SHA256 |
+| --- | --- |
+| admission.json | `230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902` |
+| plan.json | `a3853e51532d71c36536ca1262e48c130fde0cbe6c4283bd8347d39fb1761cac` |
+| positions.npz | `fef0aa8c8d7976c88cfeaca6e09777c5f08bdf5108e597c09ebac8a539f81d6f` |
+| exposure.json | `aa49cff80c7b388ab3ab628737214c05d0b6038c0a8b0522f4fa96de5de4afb5` |
+
+Four external source pins bind old plan file `c5533396f8a454bf8dd7281ff73d2b2d2737598b7a2f7e08b97260897e296d0c`, old actual exposure NPZ `65bde6ac0f43835e09df12df413e935ba7f9538612c5c7738eb51631e7f8ba62`, recovery admission `c6909577…` and dedup report `599d60ea…` (full hashes above).
+
+The opt-in training integration preserves old default behavior, exact parent model **and optimizer** resume, original loss, original heldout and input restrictions. Main 117 CPU regression tests passed in 2.485 s; two independent interface reviews found no must-fix defects. The developer GPU check, frozen-source submission gates, actual eight-rank training consumption, fixed group fit and closed-loop results are still pending. Cache and plan files continue to state `training_released=false`.
+
+At 15:49:56 Beijing, one read-only A800 SSH probe failed with `kex_exchange_identification: Connection closed by remote host` (exit 255); no remote command executed and no retry or alternative-host bypass was attempted. The accessible 4090 developer GPU snapshot showed all cards occupied; no other process was stopped or borrowed. Two proposed new group-fit diagnostic files await specific user approval after automatic permission review denied their creation. No new GPU job, training checkpoint, or SR was produced in this update.

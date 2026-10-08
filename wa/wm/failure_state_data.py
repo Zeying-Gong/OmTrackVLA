@@ -31,7 +31,8 @@ HELDOUT = {f"heldout_{suffix}" for suffix in SUFFIXES} | {
 SOURCE_JOBS = {(61833,73055):(V1,P1), (61836,73058):(V2,P2), (61844,73066):(V2,P2)}
 RAW_FILES = {"metadata.json", "observations.json", "actions.json", "windows.json",
              "result.json", "branch.json", "admission.json", "complete.json",
-             "replay.json", "first_start_pair.json", "takeover_pair.json"}
+             "replay.json", "first_start.json", "pair_start.json", "takeover.json",
+             "fallback_events.json", "raw_windows.json"}
 
 
 def require(ok, message):
@@ -77,6 +78,114 @@ def success(result):
         require(type(v) in (bool,int,float) and v in (0,1), "binary result required")
     require(bool(result["success"]) and not result["collision"] and result["policy_init_valid"],
             "only successful collision-free initialized original branches")
+
+START_EVIDENCE_FIELDS = ("step", "observation_index", "timestamp_s",
+                        "simulator_world_time_s", "rgb_sha256",
+                        "dynamic_state", "dynamic_state_sha256")
+
+
+def canonical_digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, allow_nan=False,
+                                    separators=(",", ":")).encode()).hexdigest()
+
+
+def validate_start_evidence(doc, meta, observations, actions, entry, artifact_names):
+    """Recheck actual producer start/pair/takeover evidence after SHA admission.
+
+    The separately pinned collection release already compares to original61609,
+    the student prefix and repeat. This checks internal first0/k evidence and
+    executed-action proof; it does not recreate hidden simulator/RNG state or
+    confuse the recorded raw-sensor digest with the encoded PNG file digest.
+    """
+    require(not {"first_start_pair.json", "takeover_pair.json", "teacher_error.json"}
+            & set(artifact_names), "non-producer/teacher-error evidence in original winner")
+    if meta.get("initial_bbox_status") == "VERIFIED_CONFIG_AND_SEMANTIC":
+        require("initial_panoptic.npy" in artifact_names, "missing pinned initial semantic evidence")
+    first, pair, takeover, replay = (doc(name+".json") for name in
+                                      ("first_start", "pair_start", "takeover", "replay"))
+    admission, branch, result = (doc(name+".json") for name in ("admission", "branch", "result"))
+    same(doc("fallback_events.json"), [], "normal winner has fallback/error events")
+    require(isinstance(doc("raw_windows.json"), list), "raw windows evidence required")
+    same(admission.get("issues"), [], "winner recorder issues")
+    require(isinstance(first, dict) and isinstance(pair, dict) and isinstance(takeover, dict),
+            "real first/pair/takeover observations required")
+    same(pair, first, "pair_start must equal episode-zero first_start")
+    same(sorted(first), sorted(set(START_EVIDENCE_FIELDS) |
+                              {"initial_rgb_sha256", "initial_bbox_sensor_xyxy_original"}),
+         "first_start producer fields")
+    same(sorted(takeover), sorted(set(START_EVIDENCE_FIELDS) |
+         {"initial_rgb_sha256", "initial_bbox_sensor_xyxy_original",
+          "expected_rgb_sha256", "expected_dynamic_state_sha256"}), "takeover producer fields")
+    n = len(observations); k = entry.get("takeover_step")
+    require(type(k) is int and 0 <= k < n and isinstance(replay, list)
+            and len(replay) == len(actions) == n, "complete replay/action/observation counts")
+    require(type(result.get("total_step")) is int and result["total_step"] == n,
+            "terminal action count differs")
+    prefix_sha = digest(meta.get("prefix_sha256"))
+    original_box = meta.get("initial_bbox_sensor_xyxy_original")
+    box = np.asarray(original_box)
+    require(box.shape == (4,) and box.dtype.kind in "iuf" and np.isfinite(box).all(),
+            "original episode-zero sensor bbox")
+    same(meta.get("initial_bbox_sensor_xyxy"), original_box, "original sensor bbox replaced")
+    for i, (r, observation, action) in enumerate(zip(replay, observations, actions)):
+        require(isinstance(r, dict) and type(r.get("step")) is int and r["step"] == i
+                and type(r.get("observation_index")) is int and r["observation_index"] == i,
+                "consecutive replay observation indices")
+        for field in ("timestamp_s", "simulator_world_time_s"):
+            value = r.get(field)
+            require(type(value) in (int,float) and np.isfinite(value), "finite replay time")
+            same(value, observation.get(field), "replay/raw observation time")
+        state = r.get("dynamic_state")
+        require(isinstance(state,dict) and isinstance(state.get("agents"),list)
+                and bool(state["agents"]), "dynamic state structure")
+        same(state.get("timestamp"), r["simulator_world_time_s"], "dynamic world time")
+        same(digest(r.get("dynamic_state_sha256")), canonical_digest(state), "dynamic state digest")
+        digest(r.get("rgb_sha256"))
+        same(r.get("action"), action.get("normalized_action"), "recorded replay action differs")
+        same(r.get("normalized_action"), action.get("normalized_action"), "replay normalized action differs")
+        same(r.get("owner"), action.get("owner"), "replay action owner")
+        same(r.get("owner"), "student" if i<k else "teacher", "replay takeover ownership")
+        require(r.get("action_timing") == "before_env_step" and r.get("post_state_recorded") is False
+                and "post_state" not in r, "fabricated replay poststate/timing")
+    for evidence, index in ((first,0),(takeover,k)):
+        for field in START_EVIDENCE_FIELDS:
+            same(evidence.get(field), replay[index].get(field), "start/takeover replay "+field)
+        same(evidence.get("initial_bbox_sensor_xyxy_original"), original_box,
+             "start/takeover changed episode-zero bbox")
+        same(evidence.get("initial_rgb_sha256"), replay[0]["rgb_sha256"],
+             "start/takeover changed episode-zero raw RGB")
+    same(takeover.get("expected_rgb_sha256"), takeover["rgb_sha256"],
+         "takeover expected raw RGB differs")
+    expected_takeover = digest(takeover.get("expected_dynamic_state_sha256"))
+    actual_takeover = takeover["dynamic_state_sha256"]
+    # Expected/actual state SHA need not equal when replay tolerance is <=1e-6;
+    # the pinned full branch audit proves that comparison against student state.
+    links = dict(prefix_sha256=prefix_sha,initial_rgb_sha256=first["rgb_sha256"],
+                 takeover_state_sha256=expected_takeover,
+                 actual_takeover_state_sha256=actual_takeover)
+    for record in (admission,branch):
+        for field,value in links.items():
+            same(record.get(field),value,"start pair identity "+field)
+    same(admission.get("takeover_observation_index"),k,"admission takeover observation")
+    proof = admission.get("agent_validation")
+    require(isinstance(proof,dict),"recorded replay wrapper proof required")
+    for field in ("replay_wrapper","prefix_hash_matches","environment_bound",
+                  "takeover_matches","replay_verified"):
+        require(proof.get(field) is True,"missing replay proof "+field)
+    for field,value in (("agent_step_before_reset",n),("verified_prefix_frames",k+1),
+                        ("required_prefix_frames",k+1)):
+        require(type(proof.get(field)) is int and proof[field] == value,"replay proof "+field)
+    require(proof.get("hidden_rng_contact_state_proven") is False,"unsupported hidden-state proof")
+    same(proof.get("verification_source"),
+         "successful ReplayThenTeacher.act calls before final reset","proof source")
+    same(proof.get("proof_scope"),
+         "t=0..k raw RGB plus world time and articulated transforms/joints, atol=1e-6","proof scope")
+    same(admission.get("owned_suffix"),dict(action_count=n-k,start_observation_index=k,
+         end_observation_index_inclusive=n-1,start_step=k,end_step_inclusive=n-1,
+         contiguous=True,poststate_claim="none; only next preaction frames are observed"),
+         "real teacher suffix ownership")
+    return dict(frames=n,takeover_step=k,verified_prefix_frames=k+1,
+                initial_rgb_sha256=first["rgb_sha256"],actual_takeover_state_sha256=actual_takeover)
 
 
 class Reader:
@@ -288,6 +397,7 @@ class FailureStateData(RobotWorldData):
                     and raw_complete.get("training_eligible") is False
                     and raw_complete.get("training_released") is False,"raw completion")
             require(isinstance(obs,list) and len(obs)>1 and raw_complete.get("frames")==len(obs),"observation count")
+            validate_start_evidence(doc,meta,obs,acts,d,hashes)
             frames=[o["frame"] for o in obs]
             same(frames,[f"rgb_{i:04d}.png" for i in range(len(obs))],"full episode-zero frame sequence")
             same(images[str(root)],{f:hashes[f] for f in frames},"exact image inventory")
