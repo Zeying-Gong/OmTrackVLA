@@ -71,4 +71,25 @@ ModelScope适合单独的私有资产仓库，使用显式 `visibility="private"
 
 资产按 allowlist 分包、生成包内文件和压缩包各自SHA，上传后按固定revision下载校验，再交给协作者。不包含home配置、SSH、token、训练缓存或无关任务。DINO/JEPA上游按固定提交获取并保留许可证；JEPA快照含CC-BY-NC4.0及第三方许可，不能将整套依赖统一改称Apache。HM3D/MP3D及人物资源先核验接收方已有资产和许可，仅补获准交接的缺项，不公开整库场景。
 
-当前交付状态：源码和说明可获取；权重原文件与证据范围已找到；直接加载函数的完整状态和有限Session等价检查通过。[独立RPC及启动器](BEST61609_STANDALONE.md)已实现，A800真实RPC和32CPU测试通过；全量新入口/H100、环境可移植验证及私有资产上传仍未完成。
+## 已生成的 NAS 私有交接包
+
+2026-10-08 23:56:38北京时间，两个包在原NAS生成并通过逐文件和归档读回校验，状态为 `PASS_NAS_BUNDLE_NOT_UPLOADED`。目录为项目根下 `artifacts/best61609_private_bundle_20261008_v1`；打包耗时63.968秒，不占GPU，不修改原权重、科学JSON或PNG。此处记录归档文件SHA，不能拿归档SHA替代内部checkpoint的c510 SHA。
+
+| 文件 | 字节 | SHA256 |
+| --- | ---: | --- |
+| best61609_weights.tar | 4358287360 | 23a9445518908411fca039f9b7330edadc2fa3e259a8896a6573d95927fa7331 |
+| best61609_evidence.tar | 2374461440 | 4e8c8aa803a51b58e2d291e8cef15dcc05c3c79f50b64dbb1a48c58a3cee9faf |
+| manifest.json | 12533791 | c9e193bd335b10af74866df7a5652e58aa5c4a135fccdc401f94a84e1e2c7894 |
+| complete.json | 1152 | 9dae3b87c38eae88b8051eca1c008fc3ea7dbc8d3ce2e4eb65d6630ed6a4d62d |
+
+权重包只含原WA61609文件，内部4,358,277,705字节，SHA `c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52`。证据包含25,305文件、原内容2,330,389,716字节。归档成员使用相对 `data/nas_ray/...` 名称；JSON中的原绝对引用未改写。**没有包含DINO、WLA/JEPA初始化权重、外部架构源码、双环境、场景、视频或训练缓存**。DINO仍单独需要；接收方已报告其官方哈希通过。
+
+打包工具为 `wa/tools/pack_best61609_assets.py`（SHA `de437ffe79315583ec02269604df135b1d0d514080dc9954dd138759c3432876`）；固定清单工具为 `wa/tools/best61609_asset_manifest.py`（SHA `6027b97b0d6961f4a14ca26e07ea98f34cb1ef7cb0d793737a4a61fec6ef67b4`）。34项CPU测试通过16.904秒，包含符号链、非普通文件、重复/额外成员、SHA变更、PAX长路径、填充隐藏数据、尾部截断和完成标记原子发布。首轮29项有一项错误消息正则不匹配，拒绝行为正确；修正fixture/断言并增加5项负例后通过，未放宽产品校验。
+
+真实命令在checkout执行：`PYTHONNOUSERSITE=1 PYTHONPATH=. R/probe_env/bin/python -u -m wa.tools.pack_best61609_assets --output R/artifacts/best61609_private_bundle_20261008_v1`，将R替换为本文原项目绝对路径。既有输出不允许覆盖，也不要为查看结果重新执行打包。日志为该目录路径加 `.log`，SHA `627dadfb09ef8bf28b1915712faaac1206b39e73edbbb54f35d2afa0acdc9f78`。
+
+2026-10-09 00:00:23北京时间，独立审计使用标准库tarfile而非生产校验函数，22.578秒内读完两包并逐一验证25,306成员与完整归档SHA，全部匹配；重复、链接、额外成员、危险路径和稀疏文件均为0，归档与清单读取期间未变。没有解压或重读原NAS媒体。
+
+当前交付状态：GitHub已有源码和说明；以上两个包仅在NAS，**尚未上传ModelScope**。本轮可控制的ModelScope页面显示未登录，已请求用户安全登录；未使用或保存聊天中提供的token。完成安全认证、私有仓库核验和上传后，还须按固定revision下载验SHA，才能发放已验证下载入口。不得把“本地包完成”写成“协作者已能下载”。
+
+[独立RPC及启动器](BEST61609_STANDALONE.md)已通过A800有限等价检查。H100完整运行、外部架构源码与双环境的可移植交接、场景一致性检查仍未完成；这两个包不是完整环境镜像，也不构成新的闭环SR结果。
