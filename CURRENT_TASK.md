@@ -1,6 +1,6 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 19:15 Beijing. Fixed152 selection and parent/best policy-fit diagnostic PASS;target4090 four-update training compatibility remains blocked by safe developer GPU capacity. Not formal training admission.
-Existing Goal tool status remains BLOCKED (no resume API); work continues under the user's new request. Heartbeat wa remains ACTIVE every20minutes; not complete or user-paused.
+Updated: 2026-10-08 20:10 Beijing. Independent terminal auditor completed:34new/151related CPU tests PASS plus real-file plan/cache/fit binding checks. Fixed152 fit complete. Target4090 four-update gate awaits safe developer capacity;no formalJob/checkpoint/newSR.
+Existing Goal was externally resumed: get_goal returned ACTIVE at19:29/19:33/19:58. Prior BLOCKED is historical. Heartbeat wa remains ACTIVE every20minutes;not complete or user-paused.
 Full predecessor: archive/2026-10/CURRENT_TASK_before_group_fit_permission_20261008_1656.md.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Resolve R/C/J prefixes literally below.
 
@@ -12,6 +12,9 @@ Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260
 - Preserve JEPA/MetaQuery/ActionExpert,original loss/LR/controller/physics/criteria. RGB+episode0 GTBBox template+current ideal polarUWB;no text,laterGTBBox,futureGTpaths orRL;JEPA auxiliary during training.
 
 ## Current operation and next gates
+
+- New C/wa/tools/audit_failure_state_training.py SHA862aa8a71693773c00006846297b3d00daa40f5feecda8aeb076228a159873f8;testSHA389ecf5476b4a10af2ed0c01522cfe862b54d0526618f8901798db962835c10a;34new/151related CPU PASS3.421s. Real26flag/1233424plan and47pin cache/fit binding PASS;noactual training audit. Full scope/review corrections in C/wa/results/FAILURE_STATE_TRAIN_AUDITOR_20261008.md.
+- Resources19:51:59:A8003free/88,bj409080free/144,not allocation. Dev19:52:04→19:52:55:GPU7free7690MiB/util0;GPU6free16252MiB/util93→88;others881–2892MiBfree. None meets>=10240MiBfree/util<=5;no busyGPU borrowed/stopped.
 
 - User explicitly approved the two group-fit files. C/wa/tools/failure_state_group_fit.py SHA d4bf544e837149b16a31973f546e5d86a7b3050c61649aef919f36127166e404;C/wa/tests/test_failure_state_group_fit.py SHA 37d865e0683b6478c1908f35c7d66d52204b77841688ca461413ccd8aa00c2c7.
 - Initial CPU30tests had28PASS/2fixture-index failures;two indices corrected before rerun30PASS1.164s. Not a GPU/model-fit result.
@@ -54,4 +57,4 @@ Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260
 - Mixedzero sampling4 seed7+step;TR reference-normalized/macroTR separate;CR target-human distance ever<0.5m,not obstacle contact.
 - Prior review18799/18800(devpod-4090),TB6006(devpod-a800),not revalidated now. Historical forwards:ssh -N -L 18799:127.0.0.1:18799 -L 18800:127.0.0.1:18800 devpod-4090;ssh -N -L 16006:127.0.0.1:6006 devpod-a800.
 - Devpod-4090 hostname devpod-zeying-gong-4090-7f59ffb47c-rpkjh,GPFS mt-tutz0R-pfs-haZOBP;priorNo-route/kex failures preserved,no crossNAScopy. Current endpoint works;new permission resolved,not an ongoing approval blocker.
-- GitHubwa7d5a44adb94672b97546154d7b26c084c8f1764d is the verified pre-terminal backup;only two oldNAS JSONs untracked atthisread. Terminal docs pending backup;report C/wa/results/FAILURE_STATE_GROUP_FIT_20261008.md retains startup/fullcommand and terminal table. No task-ownedSUBMITTED/SUBMITTING;61846/61847 belong to otherwork. No newformalJob/checkpoint/SR;CURRENT<=80,PROGRESS<=150.
+- GitHubwa parent6d9214a5ad7f0cd5242fa633f33506e1fcf9a3de verified;this batch adds independent auditor/tests/report andstatusCSV only. Existing two NAS-only JSONs excluded from Git. No newformalJob/checkpoint/SR;noassignedtrainingIDs. Full fit command/table retained in C/wa/results/FAILURE_STATE_GROUP_FIT_20261008.md.
