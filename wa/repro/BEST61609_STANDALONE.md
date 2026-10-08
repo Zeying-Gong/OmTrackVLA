@@ -15,6 +15,30 @@
 
 旧4.12GB WLA构造权重与约212MB JEPA初始化文件不用随新入口传输。WA checkpoint已经含训练后的JEPA、MetaQuery、ActionExpert和融合/几何/机器人接口参数；仅JEPA预训练和DINO不能还原这些WA训练结果。原WA文件未裁剪或改变SHA，包含的optimizer在推理时不用。DINO encoder不在WA文件内，仍需另提供。
 
+## 架构源码获取与核验
+
+DINO与JEPA必须保留真实Git checkout：入口会核对精确HEAD和tracked-clean，只有无`.git`的源码压缩包不能通过。官方仓库已核对为以下两个地址；仅在自己的持久工作区、确认目标目录不存在时执行，已有目录则核验身份，不覆盖：
+
+```bash
+set -euo pipefail
+: "${WA_PROJECT:?set the authorized persistent project directory}"
+mkdir -p "$WA_PROJECT/upstream_audit"
+test ! -e "$WA_PROJECT/upstream_audit/dinov2"
+test ! -e "$WA_PROJECT/upstream_audit/jepa-wms"
+git clone --no-checkout https://github.com/facebookresearch/dinov2.git "$WA_PROJECT/upstream_audit/dinov2"
+git -C "$WA_PROJECT/upstream_audit/dinov2" checkout --detach 7764ea0f912e53c92e82eb78a2a1631e92725fc8
+git clone --no-checkout https://github.com/facebookresearch/jepa-wms.git "$WA_PROJECT/upstream_audit/jepa-wms"
+git -C "$WA_PROJECT/upstream_audit/jepa-wms" checkout --detach 13cf1d9c7e476f53c17714d2e0f1dc239a883ce0
+test -z "$(git -C "$WA_PROJECT/upstream_audit/dinov2" status --porcelain --untracked-files=no)"
+test -z "$(git -C "$WA_PROJECT/upstream_audit/jepa-wms" status --porcelain --untracked-files=no)"
+```
+
+保留上游许可证与第三方许可：DINO主许可证Apache-2.0，JEPA为CC-BY-NC-4.0。不要直接全量安装两个上游的requirements/pyproject来覆盖现有环境：其版本声明与实测PyTorch2.8+cu128环境不同，源码固定不等于环境已兼容。入口的tracked-clean检查也不扫描untracked内容，接收方应使用干净的新checkout，不能通过伪造Git元数据绕过。
+
+WLA结构快照本来没有Git；新增[私有WLA源码包](BEST61609_ASSET_HANDOFF.md#私有-wla-结构源码包)含全部288个已pin Python文件及原61609环境来源记录，不含旧WLA权重。它们必须恢复到`WA_PROJECT/dependencies/wla_v1/src/md_wla`。除归档校验外，还应将整个`src/md_wla/**/*.py`文件集合及逐文件SHA与包内原`environment.json`的`wla.source_files`完全比较；不能只检查少数入口文件。新loader记录源码身份及加载期间稳定性，但不会替代这项与61609训练来源的外部比较。
+
+目前私有包仅在原NAS，未上传。WLA快照没有许可证文件，不得从WA仓库公开性推定其可公开再分发。上述源码就绪仍不等于Habitat双环境、场景或H100实机已通过。
+
 ## 固定代码与开发接口
 
 在自己的持久工作区新建独立工作树；已存在时核对身份，不能覆盖。下面仍采用原进程内路径布局：

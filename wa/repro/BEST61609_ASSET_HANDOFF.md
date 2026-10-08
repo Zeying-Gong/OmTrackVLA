@@ -93,3 +93,23 @@ ModelScope适合单独的私有资产仓库，使用显式 `visibility="private"
 当前交付状态：GitHub已有源码和说明；以上两个包仅在NAS，**尚未上传ModelScope**。本轮可控制的ModelScope页面显示未登录，已请求用户安全登录；未使用或保存聊天中提供的token。完成安全认证、私有仓库核验和上传后，还须按固定revision下载验SHA，才能发放已验证下载入口。不得把“本地包完成”写成“协作者已能下载”。
 
 [独立RPC及启动器](BEST61609_STANDALONE.md)已通过A800有限等价检查。H100完整运行、外部架构源码与双环境的可移植交接、场景一致性检查仍未完成；这两个包不是完整环境镜像，也不构成新的闭环SR结果。
+
+## 私有 WLA 结构源码包
+
+2026-10-09 00:30:49北京时间已在项目NAS生成`artifacts/best61609_wla_source_bundle_20261009_v1`，状态`PASS_PRIVATE_WLA_SOURCE_BUNDLE_NOT_UPLOADED`。归档只含288个原WLA Python文件（5,528,170字节）及一份原61609环境来源JSON（50,234字节），共289成员；后者是元数据，不是Python运行环境。源码集合及逐文件SHA与61609记录完全相同，原始字节不变。此包不包含旧WLA权重、DINO/JEPA源码、场景、二进制环境、缓存或Git目录。
+
+| 文件 | 字节 | SHA256 |
+| --- | ---: | --- |
+| best61609_wla_source.tar | 6103040 | 9685c93d33403c1c7eca3ecb9c7216cc9de2062078b7c1b2da790a2fabc67f14 |
+| manifest.json | 134345 | 4efb7499025ad082239bc25f66c847bbdd56064ca5e20f6323edc18014a8b6ab |
+| complete.json | 1184 | a328feef0d525e00df11a2c1730d76a6099cf39803f9d28c8126b25506a46182 |
+
+来源锚点为原`job_61609/task_72803/wa_hard_stt_train_a800_v1/environment.json`，SHA `a76ba7506cac9a9a39db839fe554e7d0382c45ca76285fa58130f4bcba2546ad`。打包器`wa/tools/pack_best61609_wla_source.py` SHA `f186cea96b642e1ddd8f913f687397a2d7a5e984c1bdb7cdd0dc76993b8a127e`，复用前述已固定的安全归档函数；AST检查通过，实际运行exit0，打包验证0.216秒，不占GPU。只有新源码包生成，没有重打两个大权重/证据包或重跑评测。
+
+00:32:34独立标准库tarfile审计通过，289成员名单、全部内容SHA、归档SHA及读取期间稳定性均匹配；重复、额外、链接、危险路径和稀疏成员均为0。有一个合法空`src/md_wla/cli/__init__.py`，其空内容SHA与原记录一致。没有调用生产验证器、解压或重读大资产。
+
+接收方先在独立暂存目录核验tar及manifest，确认289个成员都是预期普通文件；不得直接向系统根或已有项目盲目解包。归档成员为相对`data/nas_ray/...`路径、文件权限0600，内容均为源码或JSON，不含可执行脚本。按已授权的隔离路径布局恢复后，外部比较完整288文件SHA清单。原快照未包含LICENSE，不将其公开上传GitHub，不把私有交接解释为开源授权。
+
+DINO/JEPA应从官方仓库取得完整真实checkout并固定提交，见[源码获取步骤](BEST61609_STANDALONE.md#架构源码获取与核验)。直接删除`.git`、只挑若干模型文件或不加检查地全量pip安装上游依赖，均不能代替当前评测的源码和环境准入。
+
+本次仅完成源码包，尚未上传ModelScope；Habitat/EVT外部评测源码、双环境、场景及H100完整运行仍待交接核验。既有`best61609_private_bundle_20261008_v1`保持不变。
