@@ -1,5 +1,5 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 16:23 Beijing. Existing Goal ACTIVE after user resume; heartbeat wa ACTIVE every20minutes.
+Updated: 2026-10-08 16:56 Beijing. Existing Goal BLOCKED pending exact two-file group-fit permission; heartbeat wa remains ACTIVE every20minutes. Not complete or user-pause.
 Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261008.md.
 
 ## Acceptance and retained best
@@ -47,7 +47,9 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 - Real developer diagnostic artifacts/failure_state_train_developer_20261008_v1 exit0/DIAGNOSTIC_PASS:1A800 GPU3;59866 required MODEL+OPTIMIZER resume;4updates22708..22711,finite loss/gradients,peak7.3089757GiB. No formal job/checkpoint/SR;not an8rank training admission.
 - Actual16positions=base7+oldteacher6+newrecovery3;unique7/5/3,early1/late2;NPZ236e39ebd3626bdb0cb625671b15e614688361fb15aae5a0720379f772793d13. Three originalheldout modes2windows each;runtime4.272s excludes NAS/model setup. Ownedprocesses exited;3xFormers warnings retained.
 - Resource/readiness snapshot:A80088total83used5free;bj4090 144total40used104free. H100 SSH succeeds but independentAliNAS lacks checkout/env/base/old/newcaches;not ready/no migration. User reiterates24bj4090 authorization;not an allocation or new job. Formal8GPU target compatibility and fixedfit gates pending.
-- Later16:20Beijing bj4090 snapshot95free;staticPASS8RTX4090 24GiB/cc8.9/torch2.8cu128 same-major support/sharedGPFS/frozen199385cd/DINO-JEPA commits/WLA288hashes/8cache-planpins. No newrecipe CUDAkernel/NCCL/worker placement test orformalallocation;full8GPU config and fixedfit stillpending.
+- Later16:20Beijing bj4090 snapshot95free;staticPASS8RTX4090 24GiB/cc8.9/torch2.8cu128 same-major support/sharedGPFS/frozen199385cd/DINO-JEPA commits/WLA288hashes/8cache-planpins. No newrecipe CUDAkernel/NCCL/worker placement test orformalallocation;fixedfit stillpending.
+- 2026-10-08 16:56: eight-GPU draft wa/jobs/failure_state_train_4090_v1.yaml SHA b01bc53bb51cd0ccc7d539701aed44714285c0fa1940e829a43a416ab7749ff2 prepared NOT_SUBMIT_READY. Real NAS readback YAML/bash/twoPythonAST/11flags and16regular input paths PASS;no training command executed.
+- Independent static8rank review PASS:38544updates effective32+last16=38545new/end61252 planned;source199385cd unchanged. Worker preflight and postcheck require actual8RTX4090/exactexposure/3x73368 finiteheldout/1543logs/finalcheckpoint. These assertions have not run on a worker;no newJob/checkpoint/SR.
 - Release rederives exact有效window sets for all96winners;old36 compact report remains unchanged. Exclude failed/repeat/typed-error labels;zero-valid episodes get0exposure.
 - Converter preserves episode0 template and original indices/all frames;teacher-owned interpolated0.1..0.7s SE2;policy sparse4 causal history;JEPA continuous4/action/proprio-1/actualt+1.
 - Preserve old now>=4/dt/displacement/yaw/badtransition masks and compare exact original-runtime mask. UWB current observation only.
@@ -70,8 +72,8 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 
 ## Network, repository and reporting
 - This turn devpod-4090 restored;hostname devpod-zeying-gong-4090-7f59ffb47c-rpkjh;GPFS mt-tutz0R-pfs-haZOBP;no crossNAS copy.
-- Prior No-route and kex failures preserved;earlier BLOCKED Goal explicitly resumed by user and now ACTIVE. No automatic BLOCKED-to-ACTIVE claim.
-- GitHubwa199385cd9c826c8f21308ad99b6a8375396d9c90 verified:latestv2cache/loader/runtime/opt-intraining code backed up;this developer evidence increment syncpending. Two raw auditJSONs intentionally NAS-only/untracked. ExistingCodex identity per-command only.
+- Prior No-route/kex failures preserved;network now works. Group-fit exact permission remained unresolved across15:52/16:23/currentgoalturns;safe config preparation finished. update_goal returned BLOCKED16:56,not complete/userpause;never automatically reactivate or create a replacement Goal.
+- GitHubwa58d990ab94607343c7a954f8bf4c221b505ddf99 verified before this increment;new draft and status backup accompanies this commit. Two raw auditJSONs intentionally NAS-only/untracked. ExistingCodex identity per-command only.
 - A800 reconnected16:03Beijing;prior15:49kex preserved. GPU3 showed0%util/~78GiBfree twice before bounded shared-capacity4update check;not exclusive ownership. No other process stopped;shortcheck finished,not BLOCKED. Fixedfit two-new-file permission remains pending,not bypassed.
 - Never apply old local startup31/RUNNING patch;61844 is terminal. No resubmit/restart/stop/migration of61844.
 - ExistingGitHub wa only;announce beforepush;no weights/data/videos. CURRENT<=80,PROGRESS<=150;archive before expanding beyond limits.

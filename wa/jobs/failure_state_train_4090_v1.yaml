@@ -1,0 +1,238 @@
+# NOT_SUBMIT_READY: do not submit until fixed-group-fit and this recipe's
+# RTX4090 developer runtime gates are completed and independently reviewed.
+# This is preparation only; no fit result or 4090 training PASS is claimed.
+# A800 4-update diagnostic: failure_state_train_developer_20261008_v1.
+# Training: one NEW epoch from parent59866 MODEL AND OPTIMIZER, cumulative two.
+# Full budget: 1,233,424 positions / 8 ranks; planned 38,545 updates to 61,252.
+# Counts are a plan, not completed training; offline heldout metrics are not SR.
+# Effective batch is nominally 32: 38,544 full updates, then 1 final 16-example update.
+config_version: 1
+cluster: baidu_4090
+image: x5-builder:cuda12.8-isaac5.0.0-v2.test1
+num_gpus: 8
+log_folder: wa_failure_state_train_4090_v1
+tasks:
+  - name: wa_failure_state_independent_epoch2_v1
+    type: shell
+    workload_backend: k8s
+    num_gpus: 8
+    timeout: 86400
+    cmd: |
+      set -euo pipefail
+      case "${MD_AK_JOB_ID:-}" in ''|*[!0-9]*) echo 'formal integer MD_AK_JOB_ID required' >&2; exit 2;; esac
+      case "${MD_AK_TASK_ID:-}" in ''|*[!0-9]*) echo 'formal integer MD_AK_TASK_ID required' >&2; exit 2;; esac
+      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_train_v1
+      test "$(git rev-parse HEAD)" = 199385cd9c826c8f21308ad99b6a8375396d9c90
+      test -z "$(git status --porcelain)"
+      export WA_ROOT=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928
+      export WA_WLA_SOURCE="$WA_ROOT/dependencies/wla_v1"
+      export WA_WLA_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_58346/task_69086/wla_teacher_train/training/checkpoints/step-0043203.pt
+      export WA_ENCODER_WEIGHTS=/data/nas_ray/home/zeying.gong/datasets_processed/threepanel_debug_v2/traversability_stepp_v1/_weights/dinov2_vits14_pretrain.pth
+      export WA_PARENT_CHECKPOINT=/data/nas_ray/project/md-ak/users/zeying.gong/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt
+      export WA_CACHE=/data/nas_ray/home/zeying.gong/datasets/wla_evt_se2_cache_20260925_v2
+      export WA_INDEX_ROOT="$WA_ROOT/artifacts/robot_transition_audit_v2"
+      export WA_PYTHON="$WA_ROOT/probe_env/bin/python" WA_WORLD_KIND=jepa WA_GPUS=8
+      export OMP_NUM_THREADS=2 NCCL_DEBUG=WARN PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+      export WA_OUTPUT="/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_failure_state_train_4090_v1"
+      test ! -e "$WA_OUTPUT"
+      test ! -L "$WA_OUTPUT"
+      test -x "$WA_PYTHON"
+      "$WA_PYTHON" -B - <<'PY'
+      import csv, json, os, subprocess
+      from pathlib import Path
+      import torch
+      from wa.wm.loaders import HASHES, sha, verify_source
+      root = Path(os.environ['WA_ROOT'])
+      assert torch.__version__ == '2.8.0+cu128'
+      assert torch.cuda.is_available() and torch.cuda.device_count() == 8
+      visible = [dict(index=i, name=torch.cuda.get_device_name(i),
+                      capability=list(torch.cuda.get_device_capability(i)))
+                 for i in range(8)]
+      assert all('RTX 4090' in g['name'] and g['capability'] == [8, 9] for g in visible)
+      inventory = [list(map(str.strip, row)) for row in csv.reader(subprocess.check_output(
+          ['nvidia-smi', '--query-gpu=uuid,name,memory.total,driver_version',
+           '--format=csv,noheader,nounits'], text=True).splitlines())]
+      assert len(inventory) == 8 and len({row[0] for row in inventory}) == 8
+      assert all(len(row) == 4 and row[0].startswith('GPU-') and 'RTX 4090' in row[1]
+                 and int(row[2]) >= 24000 for row in inventory)
+      print(json.dumps(dict(stage='GPU_ALLOCATION_VERIFIED', count=8,
+                            cuda=visible, uuid_model_memory_driver=inventory)), flush=True)
+      verify_source(root/'upstream_audit/dinov2', 'dinov2')
+      verify_source(root/'upstream_audit/jepa-wms', 'jepa-wms')
+      evidence = root/'artifacts/failure_state_train_developer_20261008_v1/environment.json'
+      expected = {
+          str(evidence): '74f43531afb2a690e1162c361b54c4653472fceb894e6bc47044cedb7487ea81',
+          os.environ['WA_PARENT_CHECKPOINT']: 'ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d',
+          os.environ['WA_WLA_CHECKPOINT']: '0b8f036fd282474d8c9efe9e34e1f4dc56b9282c44295bcda1f16edcf48460e1',
+          os.environ['WA_ENCODER_WEIGHTS']: HASHES['encoder'],
+          str(root/'models/jepa_wms/mz_jepa-wm.pth.tar'): HASHES['jepa'],
+          str(Path(os.environ['WA_CACHE'])/'complete.json'): 'eb5a52d3478bab1391d12a990dcdc57ce2c77cef787109d29f7f286be797f901',
+          str(Path(os.environ['WA_INDEX_ROOT'])/'audit.json'): '3138364dea80543fc83be476e1af8191a4eca3711a9b353591311fc8daf5c2d3',
+          str(root/'artifacts/dual_teacher_se2_cache_20261006_v1/complete.json'): '79e5a7dc43b61a23bb64d5676c4c1cac17b459a5e390b308377012e582ba1a8d',
+          str(root/'artifacts/hard_stt_candidate_61377_20261007_v1/report.json'): '663c66b16f1784e1a5a9962501fc4b66c32c32792dc0483be95fad2c16680c66',
+          str(root/'artifacts/hard_stt_candidate_61377_20261007_v1/plan.json'): 'c5533396f8a454bf8dd7281ff73d2b2d2737598b7a2f7e08b97260897e296d0c',
+          '/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/actual_exposure_epoch1.npz': '65bde6ac0f43835e09df12df413e935ba7f9538612c5c7738eb51631e7f8ba62',
+          str(root/'artifacts/failure_state_se2_cache_20261008_v2/admission.json'): 'c690957761133f98e8925bf0f491373c9b0ca30d74f427834d9d4a155093bc69',
+          str(root/'artifacts/failure_state_se2_cache_20261008_v2/complete.json'): 'b96b90bca2a88413b4f618a6e5c280b8e262a3e2713fc9f63524402f4d77e6f9',
+          str(root/'artifacts/failure_state_sampling_candidate_20261008_v1/admission.json'): '230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902',
+          str(root/'checkout/wa/results/FAILURE_STATE_DEDUP_20261008.json'): '599d60ea2d40ff4f9ae69f87df03e3a5a192b749ce030504bf19177999262859',
+          str(root/'checkout/wa/results/FAILURE_STATE_CACHE_LOADER_20261008.json'): 'a330f7d39ecd89f7f1f67e33f0a2d6cdb67bf62f7dd57758ea270ec6a0644755',
+      }
+      for value, digest in expected.items():
+          path = Path(value)
+          assert path.is_file() and not path.is_symlink() and path.resolve() == path
+          assert sha(path) == digest, value
+          print(json.dumps(dict(stage='INPUT_SHA256_VERIFIED', path=value, sha256=digest)), flush=True)
+      baseline = json.loads(evidence.read_text())
+      assert baseline['wla']['checkpoint_sha256'] == expected[os.environ['WA_WLA_CHECKPOINT']]
+      source = Path(os.environ['WA_WLA_SOURCE'])
+      actual = {str(p.relative_to(source)): sha(p) for p in (source/'src/md_wla').rglob('*.py')}
+      assert actual == baseline['wla']['source_files']
+      print(json.dumps(dict(stage='WLA_SOURCE_VERIFIED', files=len(actual))), flush=True)
+      output = Path(os.environ['WA_OUTPUT'])
+      assert not output.exists() and not output.is_symlink()
+      launch_path = Path(str(output)+'.launch.json')
+      launch_path.parent.mkdir(parents=True, exist_ok=True)  # Bound Job/Task parent only, never WA_OUTPUT.
+      with launch_path.open('x') as f:
+          json.dump(dict(status='WORKER_PREFLIGHT_PASSED_NOT_TRAINING_COMPLETE',
+              source_commit='199385cd9c826c8f21308ad99b6a8375396d9c90',
+              cuda=visible, uuid_model_memory_driver=inventory, input_sha256=expected,
+              wla_source_files=len(actual), output=str(output), torch=torch.__version__),
+              f, indent=2)
+      PY
+      test ! -e "$WA_OUTPUT"
+      test ! -L "$WA_OUTPUT"
+      bash wa/scripts/train_world.sh \
+        --epochs 1 --batch-size 2 --accumulation 2 --workers 2 --seed 42 \
+        --world-weight 0.1 --history-repeat-probability 0.25 --completed-epochs 1 \
+        --resume "$WA_PARENT_CHECKPOINT" \
+        --resume-sha256 ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d \
+        --dual-teacher-cache "$WA_ROOT/artifacts/dual_teacher_se2_cache_20261006_v1" \
+        --dual-teacher-repeats 1 --evaluation-set-adaptation \
+        --teacher-window-plan "$WA_ROOT/artifacts/hard_stt_candidate_61377_20261007_v1" \
+        --teacher-plan-report-sha256 663c66b16f1784e1a5a9962501fc4b66c32c32792dc0483be95fad2c16680c66 \
+        --failure-state-cache "$WA_ROOT/artifacts/failure_state_se2_cache_20261008_v2" \
+        --failure-state-admission-sha256 c690957761133f98e8925bf0f491373c9b0ca30d74f427834d9d4a155093bc69 \
+        --failure-state-plan "$WA_ROOT/artifacts/failure_state_sampling_candidate_20261008_v1" \
+        --failure-state-plan-admission-sha256 230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902 \
+        --failure-state-dedup-report "$WA_ROOT/checkout/wa/results/FAILURE_STATE_DEDUP_20261008.json" \
+        --failure-state-dedup-sha256 599d60ea2d40ff4f9ae69f87df03e3a5a192b749ce030504bf19177999262859 \
+        --failure-state-old-run /data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1 \
+        --failure-state-old-plan-sha256 c5533396f8a454bf8dd7281ff73d2b2d2737598b7a2f7e08b97260897e296d0c \
+        --failure-state-old-exposure-sha256 65bde6ac0f43835e09df12df413e935ba7f9538612c5c7738eb51631e7f8ba62 \
+        --failure-state-loader-audit "$WA_ROOT/checkout/wa/results/FAILURE_STATE_CACHE_LOADER_20261008.json" \
+        --failure-state-loader-audit-sha256 a330f7d39ecd89f7f1f67e33f0a2d6cdb67bf62f7dd57758ea270ec6a0644755
+      # Final checkpoint exists before heldout validation. Only torchrun exit 0 reaches here.
+      CUDA_VISIBLE_DEVICES='' "$WA_PYTHON" -B - <<'POST'
+      import json, math, os, subprocess
+      from pathlib import Path
+      import torch
+      from wa.wm.loaders import sha
+      from wa.wm.robot_data import CONTRACT
+      root = Path(os.environ['WA_ROOT'])
+      out = Path(os.environ['WA_OUTPUT'])
+      commit = '199385cd9c826c8f21308ad99b6a8375396d9c90'
+      plan_sha = '11cb7150e33c8b66cbd3353a7f95b903c8b8b282ebe84faee4aa91e4b0beeaee'
+      parent_sha = 'ab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d'
+      def read(name):
+          path = out/name
+          assert path.is_file() and not path.is_symlink() and path.resolve() == path, name
+          return json.loads(path.read_text())
+      def fixed(obj, values):
+          for key, value in values.items():
+              assert type(obj.get(key)) is type(value) and obj[key] == value, key
+      def finite(value):
+          assert type(value) in (int, float) and math.isfinite(value) and value >= 0
+      assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == commit
+      assert not subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip()
+      metrics, actual, config = read('metrics.json'), read('actual_exposure_epoch1.json'), read('config.json')
+      fixed(metrics, dict(status='OFFLINE_ONLY', kind='jepa', steps=61252, closed_loop=False,
+                          edge_latency_verified=False, point_source='simulated_uwb'))
+      finite(metrics['elapsed_s'])
+      assert set(metrics['metrics']) == {'image', 'point', 'mixed'}
+      for name, row in metrics['metrics'].items():
+          fixed(row, dict(windows=73368, SR=None, collision_rate=None))
+          for key in ('ADE_m', 'FDE_m', 'yaw_MAE_rad'): finite(row[key])
+      fixed(actual, dict(status='ACTUAL_THREE_SOURCE_EXPOSURE_MATCHES_PLAN',
+          plan_sha256=plan_sha, pre_ddp_total=1233424, actual_total=1233424,
+          actual_base=726631, actual_teacher=457641, actual_recovery=49152,
+          unconsumed_positions=0, repeated_positions=0, optimizer_steps_completed=38545,
+          diagnostic=False, world_size=8, batch_size=2, seed=42, epoch=1, dropped=0,
+          old_per_window_counts_exact=True, metadata_entered_policy=False))
+      expected_config = dict(root=str(root), output=str(out), contract=CONTRACT,
+          kind='jepa', world_size=8, effective_batch=32, train_rows=1233424, heldout_rows=73368,
+          batch_size=2, accumulation=2, workers=2, seed=42, epochs=1, completed_epochs=1,
+          world_weight=0.1, history_repeat_probability=0.25, diagnostic=False, lane='managed',
+          evaluation_set_adaptation=True, dual_teacher_repeats=1,
+          resume=os.environ['WA_PARENT_CHECKPOINT'], resume_sha256=parent_sha,
+          encoder_weight=os.environ['WA_ENCODER_WEIGHTS'], wla_source=os.environ['WA_WLA_SOURCE'],
+          wla_checkpoint=os.environ['WA_WLA_CHECKPOINT'], cache=os.environ['WA_CACHE'],
+          index_root=os.environ['WA_INDEX_ROOT'], recovery_cache=None, recovery_index=None,
+          data_root=None, source_prefix=None,
+          cache_sha256='eb5a52d3478bab1391d12a990dcdc57ce2c77cef787109d29f7f286be797f901',
+          index_audit_sha256='3138364dea80543fc83be476e1af8191a4eca3711a9b353591311fc8daf5c2d3',
+          dual_teacher_cache=str(root/'artifacts/dual_teacher_se2_cache_20261006_v1'),
+          teacher_window_plan=str(root/'artifacts/hard_stt_candidate_61377_20261007_v1'),
+          teacher_plan_report_sha256='663c66b16f1784e1a5a9962501fc4b66c32c32792dc0483be95fad2c16680c66',
+          failure_state_cache=str(root/'artifacts/failure_state_se2_cache_20261008_v2'),
+          failure_state_admission_sha256='c690957761133f98e8925bf0f491373c9b0ca30d74f427834d9d4a155093bc69',
+          failure_state_plan=str(root/'artifacts/failure_state_sampling_candidate_20261008_v1'),
+          failure_state_plan_admission_sha256='230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902',
+          failure_state_dedup_report=str(root/'checkout/wa/results/FAILURE_STATE_DEDUP_20261008.json'),
+          failure_state_dedup_sha256='599d60ea2d40ff4f9ae69f87df03e3a5a192b749ce030504bf19177999262859',
+          failure_state_old_run='/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1',
+          failure_state_old_plan_sha256='c5533396f8a454bf8dd7281ff73d2b2d2737598b7a2f7e08b97260897e296d0c',
+          failure_state_old_exposure_sha256='65bde6ac0f43835e09df12df413e935ba7f9538612c5c7738eb51631e7f8ba62',
+          failure_state_loader_audit=str(root/'checkout/wa/results/FAILURE_STATE_CACHE_LOADER_20261008.json'),
+          failure_state_loader_audit_sha256='a330f7d39ecd89f7f1f67e33f0a2d6cdb67bf62f7dd57758ea270ec6a0644755',
+          precision='fp32 training / bf16 frozen encoder')
+      fixed(config, expected_config)
+      log_path = out/'train.jsonl'
+      assert log_path.is_file() and not log_path.is_symlink() and log_path.resolve() == log_path
+      log_text = log_path.read_text()
+      assert log_text and log_text.endswith('\n')
+      logs = [json.loads(line) for line in log_text.splitlines()]
+      expected_steps = [step for step in range(22708, 61253) if step == 22708 or step % 25 == 0]
+      assert [row.get('step') for row in logs] == expected_steps
+      for row, step in zip(logs, expected_steps):
+          fixed(row, dict(step=step, total_steps=61252, phase_step=step-22707, epoch=1,
+                         loss_aggregation='DDP_mean_over_accumulation_group'))
+          for key in ('loss', 'flow', 'geometry', 'world', 'grad_norm', 'peak_allocated_gib', 'elapsed_s'):
+              value = row[key]
+              assert type(value) in (int, float) and math.isfinite(value), (step, key)
+          assert isinstance(row['lr'], list) and len(row['lr']) == len(config['base_lrs'])
+          for value in row['lr']: finite(value)
+      assert isinstance(config['base_lrs'], list) and config['base_lrs']
+      for value in config['base_lrs']: finite(value)
+      env = read('environment.json')
+      fixed(env, dict(commit=commit, dirty='', torch='2.8.0+cu128'))
+      assert len(env['gpu_names']) == 8 and all('RTX 4090' in value for value in env['gpu_names'])
+      failure = read('failure_state_exposure.json')
+      fixed(failure, dict(experiment='evaluation_adaptation_failure_state_mix_v1',
+          plan_sha256=plan_sha, total_planned_positions=1233424, loader_positions=1233424,
+          diagnostic=False,
+          loader_audit_sha256=expected_config['failure_state_loader_audit_sha256'],
+          initialization='59866 model AND optimizer; one new epoch, cumulative two'))
+      final = out/'checkpoint.pt'
+      assert final.is_file() and not final.is_symlink() and final.resolve() == final
+      checkpoint = torch.load(final, map_location='cpu', weights_only=True, mmap=True)
+      assert CONTRACT == 'evt_normalized_command3_actual_dt_v1'
+      fixed(checkpoint, dict(step=61252, completed_epochs=2, kind='jepa', contract=CONTRACT,
+                            parent_checkpoint=os.environ['WA_PARENT_CHECKPOINT'], parent_sha256=parent_sha))
+      assert isinstance(checkpoint['model'], dict) and checkpoint['model']
+      optimizer = checkpoint['optimizer']
+      assert isinstance(optimizer, dict) and optimizer['state'] and optimizer['param_groups']
+      del checkpoint
+      artifacts = ('train.jsonl', 'metrics.json', 'actual_exposure_epoch1.json', 'actual_exposure_epoch1.npz',
+          'config.json', 'environment.json', 'failure_state_exposure.json', 'checkpoint.pt')
+      hashes = {name:sha(out/name) for name in artifacts}
+      launch = Path(str(out)+'.launch.json')
+      assert launch.is_file() and not launch.is_symlink()
+      report = dict(status='TRAINING_WORKER_POSTCHECK_PASS_OFFLINE_ONLY',
+          source_commit=commit, final_step=61252, new_optimizer_updates=38545,
+          completed_epochs=2, plan_sha256=plan_sha, launch_sha256=sha(launch), artifacts_sha256=hashes,
+          closed_loop=False, SR=None, scope='Worker postcheck; independent terminal audit still required',
+          nominal_effective_batch=32, full_updates=38544, final_update_examples=16)
+      with (out/'worker_postcheck.json').open('x') as f: json.dump(report, f, indent=2)
+      print('WORKER_POSTCHECK_PASS', json.dumps(report), flush=True)
+      POST

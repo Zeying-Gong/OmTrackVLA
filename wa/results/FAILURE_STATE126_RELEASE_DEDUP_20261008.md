@@ -86,6 +86,18 @@ At 15:49:56 Beijing, one read-only A800 SSH probe failed with `kex_exchange_iden
 
 ## 2026-10-08 16:23 Beijing — real developer integration check
 
+### 16:56 addendum: eight-GPU 4090 configuration prepared, not submitted
+
+`wa/jobs/failure_state_train_4090_v1.yaml` SHA256 `b01bc53bb51cd0ccc7d539701aed44714285c0fa1940e829a43a416ab7749ff2` is a **NOT_SUBMIT_READY** draft. Its fixed source is still `199385cd9c826c8f21308ad99b6a8375396d9c90`; batch2, accumulation2, one independent epoch from59866 MODEL AND OPTIMIZER, original loss/LR/physics/criteria remain unchanged. Main NAS readback passed YAML, decoded `bash -n`, both embedded Python ASTs, all11 actual failure-state arguments and16 real regular input paths. These are static checks, not worker execution.
+
+Independent static DDP review found no must-fix issue:1,233,424 planned positions give38,544 full effective-batch32 updates and one final effective-batch16 update, for38,545 new updates and expected finalstep61,252. CPU exposure and prior four-update A800 integration evidence remain valid within their existing scopes; no new training checkpoint or SR exists.
+
+The worker command requires eight actual independent RTX4090 UUIDs and pinned inputs, writes a launch manifest only beside a new Job/Task output, then runs the complete epoch. After torchrun exit0 it requires exact actual exposure, all three original heldout modes73368 each with finite metrics,1543 exact scheduled training-log rows, matching configuration/environment and final CPU checkpoint provenance, and writes artifact hashes. Final checkpoint is saved before heldout validation, so its existence alone is insufficient. This worker postcheck has not run; independent terminal audit is still required after a future job.
+
+All developer4090 GPUs were occupied at the latest local-device snapshot; no other process was touched. The fixed group-fitting two new files remain unapplied after automatic review denied creation and requested exact permission. The same blocker persisted across the15:52,16:23 and current goal turns; once safe configuration preparation finished, `update_goal` returned **BLOCKED** at16:56 Beijing. This is not completion or user-pause. Existing heartbeat stays ACTIVE; the24-card authorization is retained but does not bypass that boundary. No new experiment ran, so EXPERIMENTS.csv was unchanged. This configuration/status increment was announced for backup to existing GitHub `wa`; weights/data/videos remain on NAS.
+
+### Earlier16:23 diagnostic evidence (completed; do not rerun)
+
 The known A800 entry subsequently reconnected. A new detached, clean source freeze at `source_failure_state_train_v1`, commit `199385cd9c826c8f21308ad99b6a8375396d9c90`, ran the developer-only `--diagnostic` path using the real encoder, model, optimizer and three data sources. Session 78149 exited 0; the three owned wrapper/Python PIDs have exited. Output is `artifacts/failure_state_train_developer_20261008_v1`, with the sibling `.log`; no checkpoint was saved.
 
 The required resume gate verified parent59866 checkpoint SHA and executed model and optimizer loading, starting at step 22707; optimizer tensors were not separately fingerprinted. Actual updates were **22708–22711**, all finite, with gradient norms 2.177742 / 1.558850 / 1.742074 / 3.823936 and peak allocated memory **7.308976 GiB**. The reported 4.271580 seconds is training/validation runtime only, excluding NAS/data/model setup. Each original heldout mode (image/point/mixed) consumed two windows; this is not a full heldout evaluation or a closed-loop score. Three xFormers-unavailable warnings remain; no checked fatal literal was found.
