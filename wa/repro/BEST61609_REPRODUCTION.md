@@ -2,7 +2,7 @@
 
 本指南复现已完成的 **61609 权重评测**，不训练新权重，也不运行当前 failure-state 新训练。Git 中已有实现、配置和结果；权重、场景资产、私有依赖与证据链需要单独交接，**不是只 clone 即可运行的自包含发布包**。
 
-资产交接与初始化依赖的区别见 [BEST61609_ASSET_HANDOFF.md](BEST61609_ASSET_HANDOFF.md)。下文 WLA/JEPA 初始化文件是 **原冻结入口的启动依赖**，不表示 WA 在线推理还需另一套 WLA 模型。新独立加载函数已通过[完整状态与有限Session输出等价检查](../results/STANDALONE61609_EQUIVALENCE_20261008.md)，只读WA成品和DINO权重；RPC及全量接线仍须完成，不能直接删除文件后运行下文192b旧命令。
+资产交接与初始化依赖的区别见 [BEST61609_ASSET_HANDOFF.md](BEST61609_ASSET_HANDOFF.md)。下文 WLA/JEPA 初始化文件是 **原冻结入口的启动依赖**，不表示 WA 在线推理还需另一套 WLA 模型。新[独立评测入口](BEST61609_STANDALONE.md)只读WA成品和DINO权重，已通过A800状态/有限输出等价及真实RPC检查；完整闭环和H100仍未验证。不能直接删除文件后运行下文192b旧命令。
 
 ## 目标版本与参考结果
 

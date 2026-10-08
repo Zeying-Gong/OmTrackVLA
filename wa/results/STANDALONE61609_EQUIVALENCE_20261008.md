@@ -58,4 +58,4 @@ CUDA_VISIBLE_DEVICES=3 PYTHONPATH=. timeout 900 "$R/probe_env/bin/python" -u -m 
 
 新加载函数所需权重是WA成品和DINO；WLA模块实现、JEPA与DINO结构源码仍需固定版本。已有61609 checkpoint内含完整训练后JEPA参数，不需另外下载JEPA预训练文件来替代它。只有JEPA和DINO权重不能还原WA学得的融合、动作专家和目标头。
 
-独立RPC入口和全量启动接线需另行验证；不要删除旧依赖后直接运行192b旧命令。H100实机接口、双环境/场景和证据迁移、私有资产上传仍未完成。本检查不改变原SR、不证明训练反向/NCCL或新的模型效果。
+后续[独立RPC和启动器](../repro/BEST61609_STANDALONE.md)已实现并通过32CPU及A800真实RPC检查；完整闭环尚未运行。不要删除旧依赖后直接运行192b旧命令。H100实机接口、双环境/场景和证据迁移、私有资产上传仍未完成。本检查不改变原SR、不证明训练反向/NCCL或新的模型效果。
