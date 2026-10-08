@@ -1,0 +1,181 @@
+{
+  "job": 61836,
+  "task": 73058,
+  "status": "FAILED",
+  "scheduler_updated_beijing": "2026-10-08 08:53:44",
+  "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2",
+  "snapshot_utc": "2026-10-08T00:52:14.432207Z",
+  "completed": 35,
+  "lanes": [
+    3,
+    3,
+    8,
+    3,
+    4,
+    7,
+    3,
+    4
+  ],
+  "outcomes": {
+    "repeated_teacher_recovery_candidate": 23,
+    "no_valid_teacher_recovery": 12
+  },
+  "root_error_sha256": "da32c138013a2f14621b2a839b42b17e62e9af1fc77f27f469e2404a48ec70a3",
+  "wrapper_end": "FAILURE_STATE_V2_WRAPPER_END launcher_exit=1 dependency_exit=0 utc=2026-10-08T00:53:43Z",
+  "records": [
+    {
+      "lane": 0,
+      "sha": "f60fc310c0eec0fb69676b420b652b174afeba5dc05ebc30f4479d3d5cf27810",
+      "keys": [
+        "a8BtkwhxdRV/0",
+        "ziup5kvtCCR/10",
+        "h1zeeAwLh9Z/6"
+      ]
+    },
+    {
+      "lane": 1,
+      "sha": "a031200eb93aad6cfdc9fd8f4519de575ee06d1830d2ccb0ca5861a4271bd902",
+      "keys": [
+        "rJhMRvNn4DS/8",
+        "a8BtkwhxdRV/3",
+        "ziup5kvtCCR/13"
+      ]
+    },
+    {
+      "lane": 2,
+      "sha": "16509c52bd8bd4af5c76a8db688093c76c0deef071bf3df827c686479585a8fb",
+      "keys": [
+        "FnSn2KSrALj/1",
+        "a8BtkwhxdRV/13",
+        "BHXhpBwSMLh/7",
+        "LNg5mXe1BDj/5",
+        "BAbdmeyTvMZ/9",
+        "VBzV5z6i1WS/3",
+        "dHwjuKfkRUR/29",
+        "LT9Jq6dN3Ea/36"
+      ]
+    },
+    {
+      "lane": 3,
+      "sha": "ec361e318abcaf550a12a6c6639cb8cce8179305544be0fabd4fe78025be203f",
+      "keys": [
+        "tQ5s4ShP627/7",
+        "DYehNKdT76V/4",
+        "BHXhpBwSMLh/11"
+      ]
+    },
+    {
+      "lane": 4,
+      "sha": "5a8afbff8ae2ea752b87d4ea4e6d8480da3e9bd75d576cca2ba840a72cc658b1",
+      "keys": [
+        "nrA1tAA17Yp/4",
+        "u8ug2rtNARf/4",
+        "XNeHsjL6nBB/1",
+        "q5QZSEeHe5g/10"
+      ]
+    },
+    {
+      "lane": 5,
+      "sha": "c5494b917e4c7592638a8906834d974aff5fa8eb02ea4091ced61f7932a64c9d",
+      "keys": [
+        "nrA1tAA17Yp/10",
+        "kJJyRFXVpx2/9",
+        "XNeHsjL6nBB/4",
+        "W7k2QWzBrFY/11",
+        "wcojb4TFT35/0",
+        "6D36GQHuP8H/18",
+        "dVW2D7TDctW/30"
+      ]
+    },
+    {
+      "lane": 6,
+      "sha": "bee8c62a6ddecf97e8b6ffe8edfce2d5dbe5b2763757ad949e81a08888130ca5",
+      "keys": [
+        "nrA1tAA17Yp/11",
+        "qyAac8rV8Zk/3",
+        "XNeHsjL6nBB/9"
+      ]
+    },
+    {
+      "lane": 7,
+      "sha": "e705bca231769247bd7d01f42e4c2db0910ab4603647f59b163fbe74b978f519",
+      "keys": [
+        "hyFzGGJCSYs/0",
+        "qyAac8rV8Zk/8",
+        "SByzJLxpRGn/2",
+        "XMHNu9rRQ1y/4"
+      ]
+    }
+  ],
+  "cleanup": {
+    "role_exit_files": 24,
+    "cleanup_errors": false,
+    "complete_markers": 0,
+    "worker_lane4": 1,
+    "worker_other": -15,
+    "lightnav": 0,
+    "wa": -15
+  },
+  "error": {
+    "lane": 4,
+    "key": "p53SfW6mjZe/25",
+    "takeover_step": 62,
+    "server_seq": 66,
+    "client_printed_seq": 67,
+    "rc": 500,
+    "reason": "got 2 act levels, expected 3 from '<apos_1273><opos_0><act_l0_167><act_l1_69><opos_26><|im_end|>'",
+    "png_count": 67,
+    "partial_json_counts_verified": true,
+    "inmemory_counters_verified": false,
+    "fallback_envstep_executed": false,
+    "same_k_oracle": false,
+    "observations": 67,
+    "actions": 66,
+    "student_prefix_actions": 62,
+    "teacher_actions": 4,
+    "action_step66": null,
+    "prefix_rgb_digest_and_recorded_state_frames": 63,
+    "seq_semantics": "client sends seq then increments after receive; 66 response /67 printed",
+    "missing_rvq_level": 2,
+    "partial_replay_sha256": "88830b88bb4d368a95f7ed8bfd64a77c965d2e48559b4824fce25c9085afa8f2",
+    "partial_actions_sha256": "84c2a4813ce1748d9e363c540b6d4738a2d20cec8821a628da7ded8b74d59de1"
+  },
+  "schema": "wa_failure_state_terminal_evidence_v1",
+  "checked_utc": "2026-10-08T01:12:11Z",
+  "fresh_verification": {
+    "at_utc": "2026-10-08T01:10:26.917609Z",
+    "records_hashes_unchanged": true,
+    "all_35_search_equal_records": true,
+    "all_24_exit_pids_match_spawn": true
+  },
+  "semantic_reconstruction": {
+    "at_utc": "2026-10-08T01:12:11Z",
+    "old_v1_records": 1,
+    "new_v2_records": 35,
+    "old_and_new_records_unique": 36,
+    "persisted_search_and_branch_exact": true,
+    "original_v1_v2_search_outputs_and_call_sequence_match": true,
+    "outcomes": {
+      "repeated_teacher_recovery_candidate": 24,
+      "no_valid_teacher_recovery": 12
+    },
+    "scope": "independent recorded search semantics; media/raw starts/full branch and numeric admission remain pending"
+  },
+  "retained_baseline": {
+    "job": 61609,
+    "stt": 1279,
+    "dt": 1178,
+    "at": 1207,
+    "stt_shortfall": 10
+  },
+  "training_released": false,
+  "new_model_sr": false,
+  "new_job_submitted": false,
+  "next": "audit complete old1+new35 with exact source pins, freeze new continuation preserving protocol provenance, narrow reviewed missing-last-RVQ classification, developer checks, submit only remaining90 after full preflight",
+  "limitations": [
+    "no complete126 collection/release",
+    "no claim alpha channel can be reconstructed from RGB PNG",
+    "no separate request_seq/fallback counter memory recording",
+    "old source/checkpoints/logs retained; failed task not restarted"
+  ]
+}
