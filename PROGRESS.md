@@ -1,9 +1,11 @@
 # WA-Mobile progress
-Updated: 2026-10-08 20:10 Beijing. Existing Goal ACTIVE verified19:58. Independent terminal auditor34new/151relatedCPUtests PASS and real-file binding PASS;no actual terminal training audit. Target4090 developer training gate capacity-limited,no newJob/checkpoint/SR.
+Updated: 2026-10-08 20:18 Beijing. Existing GoalACTIVE verified20:17;second resumed-goal turn sees same safe-developer-capacity blocker. Prior151CPU/auditor work remains complete,not rerun. No actual terminal training audit ornewJob/checkpoint/SR.
 Full predecessor: archive/2026-10/PROGRESS_before_group_fit_permission_20261008_1656.md (139lines,including historic failures,waits and corrections). Older archive pointers remain there.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Exact active input/output/checkpoint pins are also in CURRENT_TASK.md.
 
 ## Latest authorized work — not training admission
+
+- Readonly20:15:46/20:16:10 checks:devpod4090 sameGPFS/repo,bea541a8 trackedclean/only2NAS-onlyJSON;A8003free/H1002free/bj409080free. DevGPU6free16252MiB/util70→86 busy,GPU7free7690MiB/util0 insufficient headroom,others<=2892MiBfree. No safeGPU/no job submitted. Existing4update CLI/config reconfirmed only;noGPU orcompleted-gate rerun. Same external-capacity blocker on second resumedturn;state refresh is not experiment success orlive-process wait. CSV unchanged because no new experiment.
 
 - Final read-only resource snapshot19:51:59:A8003free/88,bj409080free/144. Dev19:52:04→19:52:55:GPU7free7690MiB/util0;GPU6free16252MiB/util93→88;0–5free881–2892MiB. No safe>=10240MiBfree/util<=5 device;no allocation/stops/borrowed busycard. H100 separateNAS notready;no migration.
 - New parser/plan real-file integrationPASS(session11321):actual26flags andfrozen1233424positions/8pins,1.955407729s. Actual cache+fit binderPASS(session48333):6864rows/73368heldout/152selection608predictions/47pins,2.642060791s. Syntheticlaunch envelope only,no realjob,checkpointload/PNG/GPU0.

@@ -1,5 +1,5 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 20:10 Beijing. Independent terminal auditor completed:34new/151related CPU tests PASS plus real-file plan/cache/fit binding checks. Fixed152 fit complete. Target4090 four-update gate awaits safe developer capacity;no formalJob/checkpoint/newSR.
+Updated: 2026-10-08 20:18 Beijing. Target4090 gate still awaits safe developer GPU capacity after20:15/20:16 checks;second consecutive resumed-goal turn with this blocker. Prior auditor work was progress;this resource recheck is not a live-process wait. No formalJob/checkpoint/newSR.
 Existing Goal was externally resumed: get_goal returned ACTIVE at19:29/19:33/19:58. Prior BLOCKED is historical. Heartbeat wa remains ACTIVE every20minutes;not complete or user-paused.
 Full predecessor: archive/2026-10/CURRENT_TASK_before_group_fit_permission_20261008_1656.md.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Resolve R/C/J prefixes literally below.
@@ -15,6 +15,7 @@ Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260
 
 - New C/wa/tools/audit_failure_state_training.py SHA862aa8a71693773c00006846297b3d00daa40f5feecda8aeb076228a159873f8;testSHA389ecf5476b4a10af2ed0c01522cfe862b54d0526618f8901798db962835c10a;34new/151related CPU PASS3.421s. Real26flag/1233424plan and47pin cache/fit binding PASS;noactual training audit. Full scope/review corrections in C/wa/results/FAILURE_STATE_TRAIN_AUDITOR_20261008.md.
 - Resources19:51:59:A8003free/88,bj409080free/144,not allocation. Dev19:52:04→19:52:55:GPU7free7690MiB/util0;GPU6free16252MiB/util93→88;others881–2892MiBfree. None meets>=10240MiBfree/util<=5;no busyGPU borrowed/stopped.
+- Fresh20:15:46/20:16:10:clusterA8003free/H1002free/bj409080free;devGPU6free16252MiB/util70→86,GPU7free7690MiB/util0,others<=2892MiBfree. Same blocker,not permission/network;noGPU start orrepeat test. Existing GoalACTIVE;do not claim newSR/progress merely from refreshed state.
 
 - User explicitly approved the two group-fit files. C/wa/tools/failure_state_group_fit.py SHA d4bf544e837149b16a31973f546e5d86a7b3050c61649aef919f36127166e404;C/wa/tests/test_failure_state_group_fit.py SHA 37d865e0683b6478c1908f35c7d66d52204b77841688ca461413ccd8aa00c2c7.
 - Initial CPU30tests had28PASS/2fixture-index failures;two indices corrected before rerun30PASS1.164s. Not a GPU/model-fit result.
