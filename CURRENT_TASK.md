@@ -1,79 +1,54 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 16:56 Beijing. Existing Goal BLOCKED pending exact two-file group-fit permission; heartbeat wa remains ACTIVE every20minutes. Not complete or user-pause.
-Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261008.md.
+Updated: 2026-10-08 after explicit group-fit permission. Phase RUNNING_CPU_SELECTION, not formal training admission.
+Existing Goal tool status remains BLOCKED (no resume API); work continues under the user's new request. Heartbeat wa remains ACTIVE every20minutes; not complete or user-paused.
+Full predecessor: archive/2026-10/CURRENT_TASK_before_group_fit_permission_20261008_1656.md.
+Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Resolve R/C/J prefixes literally below.
 
 ## Acceptance and retained best
-- Same1405/task: STT>=1289 (>91.7%), DT>=1173, AT>=1203; then same-weight with/without UWB.
-- Best61609: STT1279 (91.032028%), DT1178 (83.843416%), AT1207 (85.907473%);3664/4215;invalid0. STT gap10; goal NOT_MET.
-- 61715:1277/1166/1207;3650/4215;invalid0;not promoted. All complete results and failures preserved.
-- Explicit evaluation-set adaptation; not unseen-test generalization. WA and LightNav have different inputs.
-- RGB + episode0 GTBBox template + current ideal polarUWB; no text, later GTBBox or future target path. JEPA training auxiliary only.
 
-## Current failure-state collection — finished, do not resubmit
-- Job61844/Task73066 SUCCEEDED at2026-10-08 11:24:43 Beijing;8actualA800-SXM4-80GB.
-- Output:/data/nas_ray/project/md-ak/users/zeying.gong/job_61844/task_73066/wa_failure_state_collect_a800_v3
-- Root COLLECTION_PROCESSES_COMPLETE_NOT_TRAINING_RELEASE;8COMPLETE;90unique records;lanes12/13/8/13/12/9/12/11.
-- 90keys exactly match frozen remaining lanes, disjoint from old36;126total coverage. New72 candidates +18no_valid;combined96candidates +30no_valid. These are collection outcomes, not model SR.
-- Source:/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v3;commit726544449a5e7ad10c7d246b2bf302d783210c7e unchanged.
-- Config wa/jobs/failure_state_collect_a800_v3.yaml SHA667ab19aa192802eb8029326730ec46a089a4094b17d12ff9d8d7f6e01ab4218.
-- Baseplan artifacts/failure_state_plan_61609_v1.json SHA2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b.
-- Frozen36+90 overlay artifacts/failure_state_continuation_61836_v1.json SHAe5fe2986517c171fd93f507ebe0f6d9937c420d3c37efd3fe7ff391899444641;never overwrite.
-- All24 owned role spawn/exit PIDs, wrapper launcher0/dependency0, frozen source clean,8ready c510/step59716 and checkpoint SHA verified by new terminal gate.
-- One recorded typed LN error VLzqgDo317F/123 k34 MissingRVQ[0,1];60obs59actions;null terminal/0windows/no fallback executed. Do not interpret typed errors as successful demonstrations or claim all logs warning-free.
+- Same1405/task: STT>=1289 (>91.7%), DT>=1173, AT>=1203; then same-weight image/noUWB paired study. Best61609=1279/1178/1207 (3664/4215),invalid0;STT gap10,NOT_MET.
+- 61715=1277/1166/1207 (3650/4215),invalid0,not promoted. Full results/failures retained;do not repeat completed4215 evaluations.
+- LightNav=1273/1128/944;Oracle=1281/1210/1226. Different-input systems;explicit evaluation-set adaptation,not unseen-test/product generalization.
+- Preserve JEPA/MetaQuery/ActionExpert,original loss/LR/controller/physics/criteria. RGB+episode0 GTBBox template+current ideal polarUWB;no text,laterGTBBox,futureGTpaths orRL;JEPA auxiliary during training.
 
-## Collection, v2 cache, real loader and bounded sampling passed
-- Old61833 FAILED1 +61836 FAILED35 are retained. Old36 full raw audit PASS225branches/14985PNG/14984actions/18836files.
-- Old raw:artifacts/failure_state_completed_search_audit_61836_v1.json SHAcbdc709aa4f8df67fb5edf2e06faeb2476f77de365ec9954c8e5b323ed957299.
-- Old numeric:wa/results/FAILURE_STATE_36_NUMERIC_20261008.json SHA2965e8bd086169eb3c180dd92db72254c2d420d445d10f7586fc6e4be850340b;2039candidate ->1891valid/148excluded;21nonzeroepisodes.
-- New90 numeric:wa/results/FAILURE_STATE_90_NUMERIC_20261008.json SHA4d0bf78345b46b8fb36e969662f7600c48f35370eb151823829ea0c9fb42a776;5357candidate ->4973valid/384excluded;69nonzeroepisodes.
-- New72winner episodes:LN20 with1531valid;Oracle52 with3442valid;3zero-valid Oracle episodes.376transition-filter exclusions +8current<4.
-- Combined numerical arithmetic:7396candidate ->6864valid/532excluded across90nonzeroepisodes. Repeat windows0;student future-action labels0;past student context allowed.
-- New90 all5357 individual-window rederivations PASS;old-runtime effective-mask differences0;endpoint differences0;SE2/yawdelta0;17CPUtests PASS. Numeric status is NOT training admission.
-- New90 full raw audit and readback PASS_NONRELEASE:637branches/64946PNG-observations/64945actions/75855files rehashed;52Oracle20LightNav,70mid2start;24ownedprocess exits matched;5fatal literals0 in checked24logs, warnings retained.
-- Raw artifacts/failure_state_completed_search_audit_61844_v1.json SHA7759d30c623c3f6a3b989c4ba0efa3554344daa17e84df662d52650efb334aa1;provenance SHA2a27d5198f35feb95a670b3cbcd8be629eb03e634d17ddf82939318572c97dd7. Missing-final-l2 category not observed in this90.
-- Main184relatedCPUtestsPASS (including53parallel-release/37parallel-converter/19independent-loader-auditor);these did not detect the real filename mismatch below. Serial ownCPU gate stopped for4thread acceleration;noGPU affected.
-- Real126 collection admission PASS/exit0/readback:artifacts/failure_state_collection_release_126_v1.json SHA73fe7d6b7cdcdfa144a5bcf540cbac33b0d2c0971b25d6aeca35e928d8af0fbd;23,419,823B/94807sourcefiles;96winners/30none;7396candidate6864valid532excluded90nonempty;training_released=false.
-- Full6864same-task/key dedup PASS:526exactduplicates (182start+344mid),6338new-within-scope;wa/results/FAILURE_STATE_DEDUP_20261008.json SHA599d60ea2d40ff4f9ae69f87df03e3a5a192b749ce030504bf19177999262859;10,634,245B. No cross-key or within-new dedup claim;do not delete cache rows.
-- Cache v1 conversion FAILED before arrays/admission:artifacts/failure_state_se2_cache_20261008_v1/failed_conversion.json preserved. Converter/fixture wrongly required first_start_pair.json/takeover_pair.json;all96real branches instead pin first_start.json/pair_start.json/takeover.json. Not missing source evidence.
-- New v2 converter9151f24a/loader4df105ec retain v1converter5bdc9fd3 and failedv1. Realv2 conversion exit0/readbackPASS:artifacts/failure_state_se2_cache_20261008_v2;admission SHAc690957761133f98e8925bf0f491373c9b0ca30d74f427834d9d4a155093bc69;complete b96b90bca2a88413b4f618a6e5c280b8e262a3e2713fc9f63524402f4d77e6f9.
-- Real loader CPU audit exit0/PASS:wa/results/FAILURE_STATE_CACHE_LOADER_20261008.json SHAa330f7d39ecd89f7f1f67e33f0a2d6cdb67bf62f7dd57758ea270ec6a0644755;all6864 metadata and2127actualgetitem/10tensors;2039policy/231JEPA/308proprio prefixcrossings;90actualcondition-routing checks;15034consumedsourcefiles hashed. No model/GPU inference ortrainingrelease.
-- Real three-source candidate PASS:artifacts/failure_state_sampling_candidate_20261008_v1;admission SHA230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902;canonical plan11cb7150e33c8b66cbd3353a7f95b903c8b8b282ebe84faee4aa91e4b0beeaee. Independent readback and source SHA unchanged.
-- Eight-rank CPU DistributedSampler+DataLoader:1233424positions exactlyonce/0drop;726631base+457641oldteacher exact per-window +49152recovery. Eachrank154178positions/77089batches;expected38545updates endingstep61252,not actualtraining.
-- Recovery6338unique/87episodes;526oldduplicates have0extraexposure;window1..16/episode48..759<=1024;early<=1s23598/late25554;LN15932/Oracle33220. Same old counts not same ordering/RNG/optimizer trajectory;training_released=false.
+## Current operation and next gates
 
-## Next gates and authorized experiment scope
-- Completed data gates must not be rerun by default;do not overwrite failedv1 or immutablev2/candidate, repeat collection, or redo126 raw/release/dedup/loader audit.
-- Opt-in train.py integration reviewed/main117CPU regressions PASS. Frozen source_failure_state_train_v1 commit199385cd9c826c8f21308ad99b6a8375396d9c90 clean;241recordedWA source hashes unchanged.
-- Real developer diagnostic artifacts/failure_state_train_developer_20261008_v1 exit0/DIAGNOSTIC_PASS:1A800 GPU3;59866 required MODEL+OPTIMIZER resume;4updates22708..22711,finite loss/gradients,peak7.3089757GiB. No formal job/checkpoint/SR;not an8rank training admission.
-- Actual16positions=base7+oldteacher6+newrecovery3;unique7/5/3,early1/late2;NPZ236e39ebd3626bdb0cb625671b15e614688361fb15aae5a0720379f772793d13. Three originalheldout modes2windows each;runtime4.272s excludes NAS/model setup. Ownedprocesses exited;3xFormers warnings retained.
-- Resource/readiness snapshot:A80088total83used5free;bj4090 144total40used104free. H100 SSH succeeds but independentAliNAS lacks checkout/env/base/old/newcaches;not ready/no migration. User reiterates24bj4090 authorization;not an allocation or new job. Formal8GPU target compatibility and fixedfit gates pending.
-- Later16:20Beijing bj4090 snapshot95free;staticPASS8RTX4090 24GiB/cc8.9/torch2.8cu128 same-major support/sharedGPFS/frozen199385cd/DINO-JEPA commits/WLA288hashes/8cache-planpins. No newrecipe CUDAkernel/NCCL/worker placement test orformalallocation;fixedfit stillpending.
-- 2026-10-08 16:56: eight-GPU draft wa/jobs/failure_state_train_4090_v1.yaml SHA b01bc53bb51cd0ccc7d539701aed44714285c0fa1940e829a43a416ab7749ff2 prepared NOT_SUBMIT_READY. Real NAS readback YAML/bash/twoPythonAST/11flags and16regular input paths PASS;no training command executed.
-- Independent static8rank review PASS:38544updates effective32+last16=38545new/end61252 planned;source199385cd unchanged. Worker preflight and postcheck require actual8RTX4090/exactexposure/3x73368 finiteheldout/1543logs/finalcheckpoint. These assertions have not run on a worker;no newJob/checkpoint/SR.
-- Release rederives exact有效window sets for all96winners;old36 compact report remains unchanged. Exclude failed/repeat/typed-error labels;zero-valid episodes get0exposure.
-- Converter preserves episode0 template and original indices/all frames;teacher-owned interpolated0.1..0.7s SE2;policy sparse4 causal history;JEPA continuous4/action/proprio-1/actualt+1.
-- Preserve old now>=4/dt/displacement/yaw/badtransition masks and compare exact original-runtime mask. UWB current observation only.
-- After source/image/array/index/admission hashes and actual loader checks:independent59866 MODEL+OPTIMIZER step22707 branch,8GPU,at most1new/cumulative2epochs.
-- Never continue61609/61715 epoch3;no loss/LR/controller/physics/architecture/criterion changes orRL. Fixed group-fitting tool's two new files await specific user approval after auto-review denial;not applied. Record unique windows, group fit and actual8rank consumption.
-- Full evaluations STT/DT/AT each8GPU/1405,24total;user permits needed24bj4090. Check A800/H100/4090 priority and actual target NAS/environment/worker first.
-- Only after all3SR gates:explicitimage-mode sameweight noUWB paired study with real interface/observer checks. Not mixedzero or noUWB-retraining claim.
+- User explicitly approved the two group-fit files. C/wa/tools/failure_state_group_fit.py SHA d4bf544e837149b16a31973f546e5d86a7b3050c61649aef919f36127166e404;C/wa/tests/test_failure_state_group_fit.py SHA 37d865e0683b6478c1908f35c7d66d52204b77841688ca461413ccd8aa00c2c7.
+- Initial CPU30tests had28PASS/2fixture-index failures;two indices corrected before rerun30PASS1.164s. Not a GPU/model-fit result.
+- CPU select PID3966836/session43283 ondevpod-4090 still active at18:15Beijing (~10min/4.855GB NAS reads);output R/artifacts/failure_state_group_fit_selection_20261008_v1.json. No final selection orgroup-fit artifact accepted yet;no newGPU orformalJob/checkpoint/SR.
+- Selection uses R/artifacts/teacher_group_fit_61377_20261007_v1.json plus the immutable v2cache/loader/dedup below;do not reselect based on fitting results.
+- Next: finish and audit fixed selection;bounded group-fit diagnostic under current authorization;review evidence plus target-runtime gate before one complete8GPU training task. No automatic hyperparameter sweep orblind epoch extension.
+- Formal recipe remains independent59866 MODEL+OPTIMIZER step22707,+1new/cumulative2epochs;never61609/61715 epoch3. Then full STT/DT/AT each8GPU/1405,24total if needed,followed by all3SR gates before UWB study.
+- Resources17:54-56Beijing:A80088total85used3free;H100 SSH works but separateAliNAS lacks checkout/env/base/old/newcaches;bj4090 144total68used76free. Snapshots not allocations;recheck priority A800→H100-ready→4090;user permits24bj4090,no migration performed.
+- Developer4090 at18:15:GPU7 free7490MiB/util0;GPU6 util100%/free9854MiB. No idle device met the4update training safety margin;clusterfree76 is not developerfree. A short GPU7 fit with5GiB cap is only planned,not run.
+- Frozen training source R/source_failure_state_train_v1 commit199385cd9c826c8f21308ad99b6a8375396d9c90;241WA hashes unchanged. New fit tooling is outside this freeze;never edit frozen runtime.
+- Eight-GPU draft C/wa/jobs/failure_state_train_4090_v1.yaml SHA b01bc53bb51cd0ccc7d539701aed44714285c0fa1940e829a43a416ab7749ff2 remains NOT_SUBMIT_READY. Intended output J/job_<JobID>/task_<TaskID>/wa_failure_state_train_4090_v1;IDs not assigned.
+- Draft syntax/11flags/16paths/staticDDP passed;actual4090 recipe/kernel/NCCL/worker placement and fixedfit gates pending. Worker checks must prove8distinctRTX4090 plus exact exposure/3x73368 finiteheldout/1543logs/finalcheckpoint;not executed claims.
+- Prior A800 developer check R/artifacts/failure_state_train_developer_20261008_v1 exited0:4updates22708..22711,finite loss/gradients,peak7.3089757GiB;16positions=7base+6oldteacher+3new,3modes2heldout each. Not formal8rank training orSR;do not rerun without a new reason.
 
-## Checkpoints, completed comparisons and services
-- Best61609 checkpoint:/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt
-- SHA c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52;step59716;mixedzero sampling4 seed7+step.
-- Parent59866 SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;step22707.
-- 61609 trained37009new updates with1184272actualexposures=726631base+457641teacher;8ranks148034each;independent1new/cumulative2epochs. Complete report STUDENT61609_FINAL_20261007.json.
-- 61715 checkpoint:/data/nas_ray/project/md-ak/users/zeying.gong/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt;SHA9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a.
-- 61715 full4215/24COMPLETE/audits preserved in STUDENT61715_FINAL_20261008.json;no promotion or duplicate evaluation.
-- LightNav1273/1128/944;Oracle1281/1210/1226;different-input systems. Product/generalization claims not established.
-- Prior review18799(best61609)/18800(61715) ondevpod-4090;TB6006 ondevpod-a800. Not revalidated in current audit turn;not new collection pages.
-- Prior forwards:ssh -N -L 18799:127.0.0.1:18799 -L 18800:127.0.0.1:18800 devpod-4090 ;ssh -N -L 16006:127.0.0.1:6006 devpod-a800.
-- TR reference-normalized;macroTR separate;CR means target-human distance ever<0.5m,not obstacle contact.
+## Immutable data and exposure anchors — completed gates, do not redo
 
-## Network, repository and reporting
-- This turn devpod-4090 restored;hostname devpod-zeying-gong-4090-7f59ffb47c-rpkjh;GPFS mt-tutz0R-pfs-haZOBP;no crossNAS copy.
-- Prior No-route/kex failures preserved;network now works. Group-fit exact permission remained unresolved across15:52/16:23/currentgoalturns;safe config preparation finished. update_goal returned BLOCKED16:56,not complete/userpause;never automatically reactivate or create a replacement Goal.
-- GitHubwa58d990ab94607343c7a954f8bf4c221b505ddf99 verified before this increment;new draft and status backup accompanies this commit. Two raw auditJSONs intentionally NAS-only/untracked. ExistingCodex identity per-command only.
-- A800 reconnected16:03Beijing;prior15:49kex preserved. GPU3 showed0%util/~78GiBfree twice before bounded shared-capacity4update check;not exclusive ownership. No other process stopped;shortcheck finished,not BLOCKED. Fixedfit two-new-file permission remains pending,not bypassed.
-- Never apply old local startup31/RUNNING patch;61844 is terminal. No resubmit/restart/stop/migration of61844.
-- ExistingGitHub wa only;announce beforepush;no weights/data/videos. CURRENT<=80,PROGRESS<=150;archive before expanding beyond limits.
+- Collection61844/73066 SUCCEEDED2026-10-08 11:24:43 Beijing,8A800;output J/job_61844/task_73066/wa_failure_state_collect_a800_v3.90new+36frozen=126keys,96originalwinners/30none,not studentSR;old61833/61836 failures/partials preserved.
+- Collection source R/source_failure_state_collect_v3 commit726544449a5e7ad10c7d246b2bf302d783210c7e;overlay R/artifacts/failure_state_continuation_61836_v1.json SHA e5fe2986517c171fd93f507ebe0f6d9937c420d3c37efd3fe7ff391899444641.
+- R/artifacts/failure_state_collection_release_126_v1.json SHA73fe7d6b7cdcdfa144a5bcf540cbac33b0d2c0971b25d6aeca35e928d8af0fbd;94807sourcefiles,7396candidate→6864valid/532excluded,96episodes/90nonempty;training_released=false.
+- C/wa/results/FAILURE_STATE_DEDUP_20261008.json SHA599d60ea2d40ff4f9ae69f87df03e3a5a192b749ce030504bf19177999262859;526same-key exactduplicates (182start+344mid),6338new-within-scope;not cross-key/within-new dedup. Keep all6864valid cache rows;duplicate extra exposure0.
+- Cache R/artifacts/failure_state_se2_cache_20261008_v2 admissionSHA c690957761133f98e8925bf0f491373c9b0ca30d74f427834d9d4a155093bc69;completeSHA b96b90bca2a88413b4f618a6e5c280b8e262a3e2713fc9f63524402f4d77e6f9. Failedv1/failed_conversion.json retained;no overwrite.
+- C/wa/results/FAILURE_STATE_CACHE_LOADER_20261008.json SHAa330f7d39ecd89f7f1f67e33f0a2d6cdb67bf62f7dd57758ea270ec6a0644755;all6864metadata,2127real10tensoritems/2039policy+231JEPA+308proprio crossings,90routing checks,15034sourcehashes;6heldoutlinks unchanged.
+- Candidate R/artifacts/failure_state_sampling_candidate_20261008_v1:admissionSHA230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902;canonicalplan11cb7150e33c8b66cbd3353a7f95b903c8b8b282ebe84faee4aa91e4b0beeaee;training_released=false.
+- Real8rank CPU sampler+loader passed1233424positions exactlyonce/0drop:726631base+457641oldteacher per-window exact+49152recovery.6338windows/87episodes;window1..16,episode48..759;early<=1s23598/late25554,LN15932/Oracle33220. Same counts,not identical ordering/RNG/optimizer trajectory.
+- Planned38545new updates (38544effective32+final16),end61252;not actualtraining. Preserve old executed1184272positions,exclude1151263 exactly. Old plan R/artifacts/hard_stt_candidate_61377_20261007_v1/plan.json SHAc5533396f8a454bf8dd7281ff73d2b2d2737598b7a2f7e08b97260897e296d0c.
+- Old actual J/job_61609/task_72803/wa_hard_stt_train_a800_v1/actual_exposure_epoch1.npz SHA65bde6ac0f43835e09df12df413e935ba7f9538612c5c7738eb51631e7f8ba62;trusted R/artifacts/hard_stt_training_audit_61609_v1.json SHA59d5b468eec4283db1a1d87ad7b9a9d1bc2123739cffc38cebfc9a1e14dcc727.
+- Base /data/nas_ray/home/zeying.gong/datasets/wla_evt_se2_cache_20260925_v2 completeSHAeb5a52d3478bab1391d12a990dcdc57ce2c77cef787109d29f7f286be797f901;index R/artifacts/robot_transition_audit_v2/audit.json SHA3138364dea80543fc83be476e1af8191a4eca3711a9b353591311fc8daf5c2d3.
+- Oldteacher R/artifacts/dual_teacher_se2_cache_20261006_v1 completeSHA79e5a7dc43b61a23bb64d5676c4c1cac17b459a5e390b308377012e582ba1a8d;436816valid. No old dataset,heldout,loss,architecture orsampler reinterpretation.
+- Keep episode0 template/allframes/originalindices;studentprefix only causal history,never action labels;teacher-owned0.1..0.7s SE2/JEPA futures,original now>=4/dt/displacement/yaw/badtransition masks. Failed/repeat/typed-error windows never demonstrations.
+- Do not repeat collection/full126raw/release/dedup/loader gates by default,overwrite immutable cache/plan/checkpoints,or apply old local startup31/RUNNING patch. Full proof paths and past corrections remain in PROGRESS/archive.
+
+## Checkpoints, reporting and services
+
+- Parent J/job_59866/task_70728/wa_history_repeat_v1/checkpoint.pt SHAab39144b0490937ce43c4ab28e2d90cdb0c560f700d3364a29ce1dc9a08b999d;step22707.
+- Best J/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt SHAc510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52;step59716. Full report C/wa/results/STUDENT61609_FINAL_20261007.json.
+- Rejected61715 J/job_61715/task_72909/wa_stt_anchor_train_a800_v1/checkpoint.pt SHA9631778c81992a349f8315b773f763217a5f387b5206b1bfb97b323839030a6a;report C/wa/results/STUDENT61715_FINAL_20261008.json;not promoted.
+- Mixedzero sampling4 seed7+step;TR reference-normalized/macroTR separate;CR target-human distance ever<0.5m,not obstacle contact.
+- Prior review18799/18800(devpod-4090),TB6006(devpod-a800),not revalidated now. Historical forwards:ssh -N -L 18799:127.0.0.1:18799 -L 18800:127.0.0.1:18800 devpod-4090;ssh -N -L 16006:127.0.0.1:6006 devpod-a800.
+- Devpod-4090 hostname devpod-zeying-gong-4090-7f59ffb47c-rpkjh,GPFS mt-tutz0R-pfs-haZOBP;priorNo-route/kex failures preserved,no crossNAScopy. Current endpoint works;new permission resolved,not an ongoing approval blocker.
+- GitHubwa5380b32e867d88bb42441e684de0a896ba8c4e53 is prior verified backup;new fitfiles/state pending explicit stage/push. Two raw JSON reports intentionally NAS-only/untracked;no weights/data/videos. Archive before growth;CURRENT<=80,PROGRESS<=150.
