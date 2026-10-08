@@ -65,6 +65,9 @@ class DedupTests(unittest.TestCase):
         self.assertEqual(set(r["windows"][0]["consumed_image_components"]),set(mod.IMAGES))
         self.assertFalse(r["sampling_changed"]);self.assertFalse(r["training_released"])
         self.assertNotIn("admission.json",r)
+        helper=str(Path(builder.__file__).resolve())
+        self.assertEqual(r["code_sha256"][helper],builder.file_sha(helper))
+        self.assertEqual(r["source_files"][helper],builder.file_sha(helper))
 
     def test_teacher_identity_not_a_filter(self):
         e=self.release["teacher_demonstrations"][0];e["teacher"]="lightnav"

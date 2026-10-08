@@ -155,7 +155,8 @@ def audit(release_path,release_sha,old_cache,old_index_audit_sha,*,progress=True
     code_paths=[Path(__file__).resolve(),Path(__import__("wa.data",fromlist=["x"]).__file__).resolve(),
         Path(__import__("wa.wm.robot_data",fromlist=["x"]).__file__).resolve(),
         Path(__import__("wa.wm.failure_state_numeric",fromlist=["x"]).__file__).resolve(),
-        Path(__import__("wa.wm.failure_state_labels",fromlist=["x"]).__file__).resolve()]
+        Path(__import__("wa.wm.failure_state_labels",fromlist=["x"]).__file__).resolve(),
+        Path(__import__("wa.tools.build_failure_state_cache",fromlist=["x"]).__file__).resolve()]
     code={str(p):pins.read(p) for p in code_paths}
     offset=0
     for eid,e in enumerate(entries):

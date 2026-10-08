@@ -1,5 +1,5 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 14:32 Beijing. Existing Goal ACTIVE after user resume; heartbeat wa ACTIVE every20minutes.
+Updated: 2026-10-08 14:56 Beijing. Existing Goal ACTIVE after user resume; heartbeat wa ACTIVE every20minutes.
 Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261008.md.
 
 ## Acceptance and retained best
@@ -21,7 +21,7 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 - All24 owned role spawn/exit PIDs, wrapper launcher0/dependency0, frozen source clean,8ready c510/step59716 and checkpoint SHA verified by new terminal gate.
 - One recorded typed LN error VLzqgDo317F/123 k34 MissingRVQ[0,1];60obs59actions;null terminal/0windows/no fallback executed. Do not interpret typed errors as successful demonstrations or claim all logs warning-free.
 
-## Completed raw and numerical evidence; full126 admission pending
+## Collection admitted; exact dedup passed; cache conversion needs schema correction
 - Old61833 FAILED1 +61836 FAILED35 are retained. Old36 full raw audit PASS225branches/14985PNG/14984actions/18836files.
 - Old raw:artifacts/failure_state_completed_search_audit_61836_v1.json SHAcbdc709aa4f8df67fb5edf2e06faeb2476f77de365ec9954c8e5b323ed957299.
 - Old numeric:wa/results/FAILURE_STATE_36_NUMERIC_20261008.json SHA2965e8bd086169eb3c180dd92db72254c2d420d445d10f7586fc6e4be850340b;2039candidate ->1891valid/148excluded;21nonzeroepisodes.
@@ -31,11 +31,15 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 - New90 all5357 individual-window rederivations PASS;old-runtime effective-mask differences0;endpoint differences0;SE2/yawdelta0;17CPUtests PASS. Numeric status is NOT training admission.
 - New90 full raw audit and readback PASS_NONRELEASE:637branches/64946PNG-observations/64945actions/75855files rehashed;52Oracle20LightNav,70mid2start;24ownedprocess exits matched;5fatal literals0 in checked24logs, warnings retained.
 - Raw artifacts/failure_state_completed_search_audit_61844_v1.json SHA7759d30c623c3f6a3b989c4ba0efa3554344daa17e84df662d52650efb334aa1;provenance SHA2a27d5198f35feb95a670b3cbcd8be629eb03e634d17ddf82939318572c97dd7. Missing-final-l2 category not observed in this90.
-- Main independently reran135CPUtests across raw/numeric/release/converter/loader/dedup. Real126 serial gate stopped only its own CPU PID3894656 to accelerate same hashes to4threads;no output/release existed, noGPU touched. Parallel-gate53tests then PASS0.742s;sole4CPU runtime PID3904735/session91363 active,37of126checked at14:40 snapshot;notrelease.
-- No126 release/cache/real-loader admission/newtraining/newstudentSR yet. At least182/6864valid windows exactly duplicate old demonstration inputs/labels;remaining6682 not yet fully deduplicated. Do not call6864 unique additions.
+- Main184relatedCPUtestsPASS (including53parallel-release/37parallel-converter/19independent-loader-auditor);these did not detect the real filename mismatch below. Serial ownCPU gate stopped for4thread acceleration;noGPU affected.
+- Real126 collection admission PASS/exit0/readback:artifacts/failure_state_collection_release_126_v1.json SHA73fe7d6b7cdcdfa144a5bcf540cbac33b0d2c0971b25d6aeca35e928d8af0fbd;23,419,823B/94807sourcefiles;96winners/30none;7396candidate6864valid532excluded90nonempty;training_released=false.
+- Full6864same-task/key dedup PASS:526exactduplicates (182start+344mid),6338new-within-scope;wa/results/FAILURE_STATE_DEDUP_20261008.json SHA599d60ea2d40ff4f9ae69f87df03e3a5a192b749ce030504bf19177999262859;10,634,245B. No cross-key or within-new dedup claim;do not delete cache rows.
+- Cache v1 conversion FAILED before arrays/admission:artifacts/failure_state_se2_cache_20261008_v1/failed_conversion.json preserved. Converter/fixture wrongly required first_start_pair.json/takeover_pair.json;all96real branches instead pin first_start.json/pair_start.json/takeover.json. Not missing source evidence.
+- New converter_v2 and real-format loader correction in development;keep v1converterSHA5bdc9fd3 unchanged because completed dedup pins it. No usable cache/real-loader admission/newtraining/newstudentSR.
 
 ## Next gates and authorized experiment scope
-- Execute full126 independent release using finished90+frozen36 proofs and exact ownership/selected-original/repeat checks;do not redo allPNG decode. After true release SHA, run cache conversion and full6864 same-key old-data equivalence audit.
+- Correct required evidence names against actual producer/all96smallJSON, test, then convert in a NEW v2 cache directory. Do not overwrite failedv1, repeat collection, or redo completed126 raw/release/dedup.
+- After actualcache SHA, independently check loader tensors and dedup rawrow<->dataset index/full6864 mapping. Candidate adds49152 bounded recovery exposures after keeping old1184272 executed plan positions (drop1151263 explicitly);actual87episodes6338new have59792capacity atwindow16/episode1024. Not yet a formal plan/runtime8rank admission.
 - Release rederives exact有效window sets for all96winners;old36 compact report remains unchanged. Exclude failed/repeat/typed-error labels;zero-valid episodes get0exposure.
 - Converter preserves episode0 template and original indices/all frames;teacher-owned interpolated0.1..0.7s SE2;policy sparse4 causal history;JEPA continuous4/action/proprio-1/actualt+1.
 - Preserve old now>=4/dt/displacement/yaw/badtransition masks and compare exact original-runtime mask. UWB current observation only.
@@ -59,6 +63,6 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 ## Network, repository and reporting
 - This turn devpod-4090 restored;hostname devpod-zeying-gong-4090-7f59ffb47c-rpkjh;GPFS mt-tutz0R-pfs-haZOBP;no crossNAS copy.
 - Prior No-route and kex failures preserved;earlier BLOCKED Goal explicitly resumed by user and now ACTIVE. No automatic BLOCKED-to-ACTIVE claim.
-- GitHubwa backup0d9fe65b7007617493c35da0d52038a54325bf80 verified;newloader/dedup/real-loader tool and parallel-gate changes remain this turn's work. Raw90 final NAS report is not uploaded as data.
+- GitHubwa4f78edce5d9930285ef704f5b1d3ea6e19a715d2 verified (loader/dedup/parallelrelease/raw90summary). Firstcommit lackedidentity and didnotexecute;retry used existing Codex identity percommand,notglobal. Latestrelease/dedup/cachefailure and newcode remain tosync.
 - Never apply old local startup31/RUNNING patch;61844 is terminal. No resubmit/restart/stop/migration of61844.
 - ExistingGitHub wa only;announce beforepush;no weights/data/videos. CURRENT<=80,PROGRESS<=150;archive before expanding beyond limits.

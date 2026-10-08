@@ -6,6 +6,8 @@ but only effective-mask rows appear in train_valid.npy. A separate admission
 auditor and loader with an explicit admission SHA are still required.
 """
 import argparse
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 import re
@@ -70,7 +72,10 @@ def path_dir(path):
 
 
 class Pins:
-    def __init__(self):
+    def __init__(self, hash_workers=1):
+        require(type(hash_workers) is int and hash_workers in (1, 4),
+                "hash_workers must be exactly 1 or 4")
+        self.hash_workers = hash_workers
         self.files, self.states = {}, {}
 
     def read(self, path, expected=None, *, retain=False):
@@ -100,17 +105,93 @@ class Pins:
     def doc(self, path, expected=None):
         return strict_json(self.read(path, expected, retain=True))
 
+    def _progress(self, stage, completed, total):
+        if completed in (0, total) or completed % 250 == 0:
+            print(json.dumps(dict(stage=stage, completed=completed, total=total,
+                                  hash_workers=self.hash_workers,
+                                  status="CHECKING_NOT_RELEASED")), flush=True)
+
+    def _ordered(self, function, entries, consume):
+        """At most four isolated calls in flight; only caller merges results."""
+        if self.hash_workers == 1:
+            for entry in entries:
+                consume(function(entry))
+            return
+        iterator = iter(entries)
+        with ThreadPoolExecutor(max_workers=self.hash_workers,
+                                thread_name_prefix="failure-cache-hash") as pool:
+            pending = deque()
+            for unused in range(self.hash_workers):
+                try:
+                    entry = next(iterator)
+                except StopIteration:
+                    break
+                pending.append(pool.submit(function, entry))
+            try:
+                while pending:
+                    # Input order, not completion order, fixes conflict checks
+                    # and which exception is exposed when several reads fail.
+                    consume(pending.popleft().result())
+                    try:
+                        entry = next(iterator)
+                    except StopIteration:
+                        continue
+                    pending.append(pool.submit(function, entry))
+            finally:
+                for future in pending:
+                    future.cancel()
+                # The executor context joins already-running owned workers.
+
+    @staticmethod
+    def _isolated_read(entry):
+        path, expected = entry
+        local = Pins()  # No shared files/states mutation in worker threads.
+        local.read(path, expected)  # Exactly the original read path and gates.
+        key = str(Path(path))
+        return key, local.files[key], local.states[key]
+
+    def _merge_read(self, result):
+        key, digest, state = result
+        require(key not in self.files or self.files[key] == digest, "conflicting source SHA")
+        require(key not in self.states or self.states[key] == state, "source changed during conversion")
+        self.files[key], self.states[key] = digest, state
+
     def inventory(self, files):
         require(isinstance(files, dict) and bool(files), "nonempty SHA inventory required")
-        for p, h in files.items():
-            self.read(p, h)
+        entries = list(files.items())
+        self._progress("CACHE_SOURCE_INVENTORY", 0, len(entries))
+        if self.hash_workers == 1:
+            # Preserve the historical direct-read path with default arguments.
+            for completed, (path, expected) in enumerate(entries, 1):
+                self.read(path, expected)
+                self._progress("CACHE_SOURCE_INVENTORY", completed, len(entries))
+        else:
+            completed = 0
+            def consume(result):
+                nonlocal completed
+                self._merge_read(result)
+                completed += 1
+                self._progress("CACHE_SOURCE_INVENTORY", completed, len(entries))
+            self._ordered(self._isolated_read, entries, consume)
+
+    @staticmethod
+    def _finish_one(entry):
+        name, state = entry
+        p = path_file(name)
+        s = p.stat()
+        require(state == (s.st_size, s.st_mtime_ns, s.st_ino),
+                "source changed before finalization")
+        return name
 
     def finish(self):
-        for name, state in self.states.items():
-            p = path_file(name)
-            s = p.stat()
-            require(state == (s.st_size, s.st_mtime_ns, s.st_ino),
-                    "source changed before finalization")
+        entries = list(self.states.items())
+        self._progress("CACHE_SOURCE_FINAL_STAT", 0, len(entries))
+        completed = 0
+        def consume(unused):
+            nonlocal completed
+            completed += 1
+            self._progress("CACHE_SOURCE_FINAL_STAT", completed, len(entries))
+        self._ordered(self._finish_one, entries, consume)
 
 
 def flag(v, name):
@@ -168,6 +249,7 @@ def branch_data(entry, release, pins):
     root = path_dir(entry["branch"])
     hashes = entry.get("hashes")
     require(isinstance(hashes, dict) and REQUIRED <= set(hashes), "incomplete original evidence")
+    artifact_reads = {}
     for name, digest in hashes.items():
         rel = Path(name)
         require(type(name) is str and not rel.is_absolute() and rel.parts
@@ -175,7 +257,8 @@ def branch_data(entry, release, pins):
         p = path_file(root/rel)
         require(p.is_relative_to(root), "artifact escape")
         same(release["source_files"].get(str(p)), digest, "artifact missing from release inventory")
-        pins.read(p, digest)
+        artifact_reads[str(p)] = digest
+    pins.inventory(artifact_reads)
     actual = set()
     for p in root.rglob("*"):
         require(not p.is_symlink() and p.resolve() == p, "symlink inside branch")
@@ -225,13 +308,16 @@ def branch_data(entry, release, pins):
             "frame count mismatch")
     frames = [o["frame"] for o in obs]
     require(len(frames) == len(set(frames)), "duplicate observation frames")
-    inventory = {}
+    inventory, frame_reads = {}, {}
     for frame in frames:
         require(type(frame) is str and Path(frame).name == frame and frame.endswith(".png"),
                 "unsafe frame path")
         p = path_file(root/frame)
         require(frame in hashes, "observation image not audited")
-        inventory[frame] = pins.read(p, hashes[frame])
+        frame_reads[str(p)] = hashes[frame]
+    # Intentionally read every PNG again: this is not a hash cache shortcut.
+    pins.inventory(frame_reads)
+    inventory.update({frame: pins.files[str(root/frame)] for frame in frames})
     target = np.asarray([o.get("target_position_world_label_only") for o in obs])
     require(target.shape == (len(obs), 3) and target.dtype.kind in "iuf"
             and np.isfinite(target).all(), "current simulated UWB source missing/nonfinite")
@@ -297,13 +383,13 @@ def write_json(path, doc):
 
 
 def convert(release, release_sha, base_cache, base_complete_sha,
-            base_index, base_index_audit_sha, output):
+            base_index, base_index_audit_sha, output, *, hash_workers=1):
     """Build a candidate cache in a fresh NAS directory. No training admission."""
     out = Path(output)
     require(out.is_absolute() and out.is_relative_to(NAS) and out.name not in ("", ".", "..")
             and not out.exists() and not out.is_symlink(), "fresh NAS output required")
     path_dir(out.parent)
-    pins = Pins()
+    pins = Pins(hash_workers=hash_workers)
     m = prepare_release(release, release_sha, pins)
     heldout, original_audit = prepare_base(base_cache, base_complete_sha,
                                           base_index, base_index_audit_sha, pins)
@@ -422,9 +508,11 @@ def main():
     for name in ("release", "release-sha", "base-cache", "base-complete-sha",
                  "base-index", "base-index-audit-sha", "output"):
         p.add_argument("--"+name, required=True)
+    p.add_argument("--hash-workers", type=int, choices=(1, 4), default=1)
     a = p.parse_args()
     print(json.dumps(convert(a.release, a.release_sha, a.base_cache, a.base_complete_sha,
-                             a.base_index, a.base_index_audit_sha, a.output), indent=2))
+                             a.base_index, a.base_index_audit_sha, a.output,
+                             hash_workers=a.hash_workers), indent=2))
 
 
 if __name__ == "__main__":

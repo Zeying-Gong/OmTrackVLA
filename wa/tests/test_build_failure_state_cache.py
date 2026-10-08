@@ -1,5 +1,12 @@
 """CPU-only synthetic cache conversion; never reads or converts real data."""
 import copy
+from collections import Counter
+from contextlib import redirect_stdout
+import io
+import os
+import sys
+import threading
+import time
 import hashlib
 import json
 import tempfile
@@ -104,11 +111,12 @@ class CacheTests(unittest.TestCase):
         patch.object(mod,"NAS",self.f["root"]).start()
         patch.object(mod,"EXPECTED",self.f["expected"]).start()
 
-    def convert(self):
+    def convert(self, hash_workers=1):
         f=self.f
-        return mod.convert(f["release"],mod.file_sha(f["release"]),f["base"],
-            mod.file_sha(f["base"]/"complete.json"),f["index"],
-            mod.file_sha(f["index"]/"audit.json"),f["out"])
+        with redirect_stdout(io.StringIO()):
+            return mod.convert(f["release"],mod.file_sha(f["release"]),f["base"],
+                mod.file_sha(f["base"]/"complete.json"),f["index"],
+                mod.file_sha(f["index"]/"audit.json"),f["out"],hash_workers=hash_workers)
 
     def edit_release(self,mutate):
         p=self.f["release"];d=json.loads(p.read_text());mutate(d);save(p,d)
@@ -243,6 +251,201 @@ class CacheTests(unittest.TestCase):
         self.f["out"].mkdir();sentinel=self.f["out"]/"untouched";sentinel.write_text("user")
         with self.assertRaises(ValueError):self.convert()
         self.assertEqual(sentinel.read_text(),"user")
+
+
+    def test_one_four_byte_equivalence_and_all_duplicate_reads_preserved(self):
+        read=mod.Pins.read;calls={1:Counter(),4:Counter()};lock=threading.Lock()
+        outputs=[]
+        for workers in (1,4):
+            self.f["out"]=self.f["root"]/("out-"+str(workers))
+            def recording(pin,path,expected=None,*,retain=False):
+                with lock:calls[workers][str(path)]+=1
+                return read(pin,path,expected,retain=retain)
+            with patch.object(mod.Pins,"read",recording):
+                result=self.convert(hash_workers=workers)
+            outputs.append((self.f["out"],result))
+        self.assertEqual(calls[1],calls[4])
+        release=json.loads(self.f["release"].read_text())
+        for entry in release["teacher_demonstrations"]:
+            for frame in ("rgb_0000.png","rgb_0039.png"):
+                self.assertEqual(calls[4][str(Path(entry["branch"])/frame)],3)
+        first,second=outputs[0][0],outputs[1][0]
+        paths=sorted(str(p.relative_to(first)) for p in first.rglob("*") if p.is_file())
+        self.assertEqual(paths,sorted(str(p.relative_to(second)) for p in second.rglob("*") if p.is_file()))
+        for name in paths:
+            self.assertEqual((first/name).read_bytes(),(second/name).read_bytes(),name)
+        self.assertEqual(outputs[0][1]["admission_sha256"],outputs[1][1]["admission_sha256"])
+
+    def test_parallel_still_rejects_unmanifested_artifact(self):
+        release=json.loads(self.f["release"].read_text())
+        (Path(release["teacher_demonstrations"][0]["branch"])/"unknown.json").write_text("{}")
+        with self.assertRaisesRegex(ValueError,"unmanifested"):
+            self.convert(hash_workers=4)
+        self.assertFalse((self.f["out"]/"admission.json").exists())
+
+    def test_parallel_still_rejects_frame_sha_tamper(self):
+        release=json.loads(self.f["release"].read_text())
+        (Path(release["teacher_demonstrations"][0]["branch"])/"rgb_0000.png").write_bytes(b"tamper")
+        with self.assertRaisesRegex(ValueError,"SHA mismatch"):
+            self.convert(hash_workers=4)
+        self.assertFalse(self.f["out"].exists())
+
+
+
+class ParallelPinsTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
+        self.root=Path(self.tmp.name)
+        self.paths=[]
+        for i in range(12):
+            p=self.root/("f%02d"%i);p.write_bytes(("sample-%d"%i).encode());self.paths.append(p)
+        self.inventory={str(p):mod.file_sha(p) for p in reversed(self.paths)}
+
+    def inventory_read(self,pins,files=None):
+        with redirect_stdout(io.StringIO()):
+            pins.inventory(self.inventory if files is None else files)
+
+    def finish(self,pins):
+        with redirect_stdout(io.StringIO()):pins.finish()
+
+    def test_workers_default_and_strict_choices(self):
+        self.assertEqual(mod.Pins().hash_workers,1)
+        self.assertEqual(mod.Pins(4).hash_workers,4)
+        for value in (True,False,1.,4.,"4",0,2,3,5,8,None):
+            with self.subTest(value=value),self.assertRaisesRegex(ValueError,"hash_workers"):
+                mod.Pins(value)
+
+    def test_inventory_order_state_and_digest_equivalent(self):
+        one,four=mod.Pins(),mod.Pins(4)
+        self.inventory_read(one);self.inventory_read(four)
+        self.assertEqual(one.files,four.files);self.assertEqual(one.states,four.states)
+        self.assertEqual(list(four.files),list(self.inventory))
+        self.finish(one);self.finish(four)
+
+    def test_four_worker_cap_isolated_and_main_thread_merge(self):
+        pins=mod.Pins(4);original=mod.Pins.read
+        barrier=threading.Barrier(4,timeout=10);lock=threading.Lock()
+        active=0;peak=0;reader_instances=set();merge_threads=[]
+        main=threading.get_ident();merge=pins._merge_read
+        def reading(local,path,expected=None,*,retain=False):
+            nonlocal active,peak
+            with lock:
+                active+=1;peak=max(peak,active);reader_instances.add(local)
+            try:
+                barrier.wait()
+                return original(local,path,expected,retain=retain)
+            finally:
+                with lock:active-=1
+        def merging(result):
+            merge_threads.append(threading.get_ident());return merge(result)
+        with patch.object(mod.Pins,"read",reading),patch.object(pins,"_merge_read",merging):
+            self.inventory_read(pins)
+        self.assertEqual(peak,4);self.assertEqual(active,0)
+        self.assertEqual(set(merge_threads),{main})
+        self.assertNotIn(pins,reader_instances)
+        self.assertEqual(len(reader_instances),12)
+
+    def test_four_finish_worker_cap(self):
+        pins=mod.Pins(4);self.inventory_read(pins)
+        original=mod.Pins._finish_one;barrier=threading.Barrier(4,timeout=10)
+        lock=threading.Lock();active=0;peak=0
+        def checking(entry):
+            nonlocal active,peak
+            with lock:active+=1;peak=max(peak,active)
+            try:
+                barrier.wait();return original(entry)
+            finally:
+                with lock:active-=1
+        with patch.object(mod.Pins,"_finish_one",staticmethod(checking)):self.finish(pins)
+        self.assertEqual(peak,4);self.assertEqual(active,0)
+
+    def test_parallel_conflicting_prior_sha_rejected(self):
+        p=self.paths[0];pins=mod.Pins(4);pins.read(p)
+        p.write_bytes(b"changed")
+        with self.assertRaisesRegex(ValueError,"conflicting source SHA"):
+            self.inventory_read(pins,{str(p):mod.file_sha(p)})
+
+    def test_parallel_prior_state_change_same_bytes_rejected(self):
+        p=self.paths[0];pins=mod.Pins(4);pins.read(p)
+        stat=p.stat();os.utime(p,ns=(stat.st_atime_ns,stat.st_mtime_ns+10_000_000))
+        with self.assertRaisesRegex(ValueError,"changed during conversion"):
+            self.inventory_read(pins,{str(p):mod.file_sha(p)})
+
+    def test_read_body_still_rejects_change_during_hash(self):
+        original=Path.open;p=self.paths[0];expected=mod.file_sha(p)
+        for workers in (1,4):
+            class Hook:
+                def __init__(self,stream):self.stream=stream;self.changed=False
+                def __enter__(self):self.stream.__enter__();return self
+                def __exit__(self,*args):return self.stream.__exit__(*args)
+                def read(self,*args):
+                    data=self.stream.read(*args)
+                    if data and not self.changed:
+                        stat=p.stat();os.utime(p,ns=(stat.st_atime_ns,stat.st_mtime_ns+10_000_000))
+                        self.changed=True
+                    return data
+            def opening(path,*args,**kwargs):
+                stream=original(path,*args,**kwargs)
+                return Hook(stream) if path==p and args and args[0]=="rb" else stream
+            with self.subTest(workers=workers),patch.object(Path,"open",opening):
+                with self.assertRaisesRegex(ValueError,"changed while reading"):
+                    self.inventory_read(mod.Pins(workers),{str(p):expected})
+
+    def test_finish_changed_state_rejected_one_and_four(self):
+        for workers in (1,4):
+            pins=mod.Pins(workers);self.inventory_read(pins)
+            p=self.paths[0];stat=p.stat()
+            os.utime(p,ns=(stat.st_atime_ns,stat.st_mtime_ns+10_000_000))
+            with self.assertRaisesRegex(ValueError,"before finalization"):self.finish(pins)
+
+    def test_parallel_expected_sha_and_symlink_rejected(self):
+        p=self.paths[0]
+        with self.assertRaisesRegex(ValueError,"SHA mismatch"):
+            self.inventory_read(mod.Pins(4),{str(p):"0"*64})
+        p.unlink();p.symlink_to(self.paths[1])
+        with self.assertRaisesRegex(ValueError,"nonsymlink"):
+            self.inventory_read(mod.Pins(4),{str(p):mod.file_sha(self.paths[1])})
+
+    def test_finish_symlink_replacement_rejected(self):
+        pins=mod.Pins(4);self.inventory_read(pins)
+        p=self.paths[0];p.unlink();p.symlink_to(self.paths[1])
+        with self.assertRaisesRegex(ValueError,"nonsymlink"):self.finish(pins)
+
+    def test_worker_error_in_input_order_no_later_merge_and_threads_joined(self):
+        pins=mod.Pins(4);original=mod.Pins.read;paths=self.paths[:4]
+        files={str(p):mod.file_sha(p) for p in paths}
+        def reading(local,path,expected=None,*,retain=False):
+            if Path(path)==paths[1]:raise OSError("deliberate worker read error")
+            return original(local,path,expected,retain=retain)
+        with patch.object(mod.Pins,"read",reading):
+            with self.assertRaisesRegex(OSError,"deliberate"):
+                self.inventory_read(pins,files)
+        self.assertEqual(list(pins.files),[str(paths[0])])
+        self.assertFalse(any(t.name.startswith("failure-cache-hash") for t in threading.enumerate()))
+
+    def test_count_progress_explicit_not_release(self):
+        pins=mod.Pins(4);capture=io.StringIO()
+        with redirect_stdout(capture):
+            pins.inventory(self.inventory);pins.finish()
+        lines=[json.loads(x) for x in capture.getvalue().splitlines()]
+        self.assertEqual([(x["stage"],x["completed"]) for x in lines],
+            [("CACHE_SOURCE_INVENTORY",0),("CACHE_SOURCE_INVENTORY",12),
+             ("CACHE_SOURCE_FINAL_STAT",0),("CACHE_SOURCE_FINAL_STAT",12)])
+        self.assertTrue(all(x["hash_workers"]==4 and x["status"]=="CHECKING_NOT_RELEASED" for x in lines))
+
+    def test_cli_choice_default_and_explicit_four(self):
+        args=["convert"]
+        for name in ("release","release-sha","base-cache","base-complete-sha",
+                     "base-index","base-index-audit-sha","output"):
+            args.extend(["--"+name,"fixture"])
+        for extra,expected in (([],1),(["--hash-workers","4"],4)):
+            with patch.object(sys,"argv",args+extra),patch.object(mod,"convert",return_value={}) as call,redirect_stdout(io.StringIO()):
+                mod.main()
+            self.assertEqual(call.call_args.kwargs,dict(hash_workers=expected))
+        with patch.object(sys,"argv",args+["--hash-workers","2"]),patch.object(mod,"convert") as call:
+            with self.assertRaises(SystemExit):mod.main()
+            call.assert_not_called()
+
 
 
 if __name__=="__main__":
