@@ -1,5 +1,5 @@
 # WA-Mobile progress
-Updated: 2026-10-09 02:19:37 Beijing. GoalACTIVE. Job62256/73511 RUNNING;step36150/phase13443of38545(34.8761%),539complete finite records/fivefatalpatterns0. Finalcheckpoint/metrics/actualexposure/postcheck absent;no newSR. Same-taskverifiedwait,no repeat tests/newjobs. UWBpairedstudy stillgated;best61609 assets remainNAS-only/notH100validated.
+Updated: 2026-10-09 02:39:27 Beijing. GoalACTIVE. Job62256/73511 RUNNING;step39050/phase16343of38545(42.3998%),655complete finite records/fivefatalpatterns0. Finalcheckpoint/metrics/actualexposure/postcheck absent;no newSR. Same-taskverifiedwait,no repeat tests/newjobs. UWBpairedstudy stillgated;best61609 assets remainNAS-only/notH100validated.
 Full predecessor: archive/2026-10/PROGRESS_before_group_fit_permission_20261008_1656.md (139lines,including historic failures,waits and corrections). Older archive pointers remain there.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Exact active input/output/checkpoint pins are also in CURRENT_TASK.md.
 
