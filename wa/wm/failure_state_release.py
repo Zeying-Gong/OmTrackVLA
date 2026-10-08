@@ -9,7 +9,9 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from wa.wm.failure_state_protocol import canonical_sha
@@ -51,9 +53,44 @@ def strict_json(data):
 
 class Pins:
     """Stream inventory hashes; retain bytes only for requested small documents."""
-    def __init__(self):
+    def __init__(self, hash_workers=1):
+        require(type(hash_workers) is int and hash_workers in (1, 4),
+                "hash_workers must be exactly 1 or 4")
+        self.hash_workers = hash_workers
         self.files = {}
         self.stats = {}
+
+    @staticmethod
+    def _progress(phase, completed, total):
+        # Counts only: no raw data, paths, or changed artifact/report schema.
+        print(json.dumps(dict(phase=phase, completed=completed, total=total)),
+              file=sys.stderr, flush=True)
+
+    def _ordered(self, function, items):
+        """Bounded queue; merge on the caller thread in original inventory order."""
+        if self.hash_workers == 1:
+            yield from map(function, items)
+            return
+        with ThreadPoolExecutor(max_workers=self.hash_workers) as pool:
+            for start in range(0, len(items), 256):
+                yield from pool.map(function, items[start:start + 256])
+
+    @staticmethod
+    def _independent_read(item):
+        path, digest = item
+        worker = Pins()  # No shared files/stats mutation by worker threads.
+        actual = worker._read(path, digest)
+        name = str(Path(path))
+        return name, actual, worker.stats[name]
+
+    @staticmethod
+    def _check_state(item):
+        name, state = item
+        path = Path(name)
+        st = path.stat()
+        require(not path.is_symlink() and path.resolve() == path and
+                (st.st_size, st.st_mtime_ns, st.st_ino) == state,
+                "source changed before admission finished")
 
     def _read(self, path, expected=None, *, retain=False):
         path = Path(path)
@@ -88,21 +125,32 @@ class Pins:
 
     def verify_all(self, inventory):
         require(isinstance(inventory, dict) and inventory, "nonempty source inventory required")
+        pending = []
         for path, digest in inventory.items():
             require(type(digest) is str and re.fullmatch(r"[0-9a-f]{64}", digest),
                     "invalid source SHA")
             if path in self.files:
                 require(self.files[path] == digest, "conflicting source pin")
             else:
-                self._read(path, digest)
+                pending.append((path, digest))
+        total = len(pending)
+        self._progress("VERIFY_SOURCE_HASHES", 0, total)
+        for completed, (name, digest, state) in enumerate(
+                self._ordered(self._independent_read, pending), 1):
+            require(name not in self.files or self.files[name] == digest, "conflicting evidence SHA")
+            require(name not in self.stats or self.stats[name] == state,
+                    "evidence changed during admission")
+            self.files[name], self.stats[name] = digest, state
+            if completed % 1000 == 0 or completed == total:
+                self._progress("VERIFY_SOURCE_HASHES", completed, total)
 
     def finish(self):
-        for name, state in self.stats.items():
-            path = Path(name)
-            st = path.stat()
-            require(not path.is_symlink() and path.resolve() == path and
-                    (st.st_size, st.st_mtime_ns, st.st_ino) == state,
-                    "source changed before admission finished")
+        items = list(self.stats.items())
+        total = len(items)
+        self._progress("VERIFY_SOURCE_UNCHANGED", 0, total)
+        for completed, _ in enumerate(self._ordered(self._check_state, items), 1):
+            if completed % 1000 == 0 or completed == total:
+                self._progress("VERIFY_SOURCE_UNCHANGED", completed, total)
 
 
 def validate_protocol(row, *, new=False):
@@ -372,8 +420,8 @@ def choose_original(row, pins, base):
     return None
 
 
-def build_release(new_audit, new_audit_sha, new_numeric, new_numeric_sha):
-    pins = Pins()
+def build_release(new_audit, new_audit_sha, new_numeric, new_numeric_sha, *, hash_workers=1):
+    pins = Pins(hash_workers=hash_workers)
     pins._read(Path(__file__).resolve())
     plan = pins.doc(PLAN, PLAN_SHA)
     overlay = pins.doc(OVERLAY, OVERLAY_SHA)
@@ -450,6 +498,7 @@ def build_release(new_audit, new_audit_sha, new_numeric, new_numeric_sha):
             same(item["records_path"], str(path), "new source path")
             same(item["records_sha256"], pins.files[str(path)], "new records SHA")
     demonstrations, outcomes = [], Counter()
+    pins._progress("VALIDATE_SEARCHES_AND_NUMERIC", 0, len(plan["entries"]))
     for entry in plan["entries"]:
         item = bykey[entry["key"]]
         row, audit = item["row"], item["audit"]
@@ -491,6 +540,7 @@ def build_release(new_audit, new_audit_sha, new_numeric, new_numeric_sha):
                 **({"source_boundary_policy": CONTINUATION_POLICY} if entry["key"] not in frozen else {}),
                 **numeric_admission, hashes=hashes))
         outcomes[row["outcome"]] += 1
+        pins._progress("VALIDATE_SEARCHES_AND_NUMERIC", sum(outcomes.values()), len(plan["entries"]))
     require(set(numeric) == {d["key"] for d in demonstrations}, "extra/missing numeric candidates")
     pins.finish()
     return dict(schema=SCHEMA, collection_validated=True, expected=126, completed_searches=126,
@@ -515,11 +565,13 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     for name in ("new-audit", "new-audit-sha", "new-numeric", "new-numeric-sha", "output"):
         p.add_argument("--"+name, required=True)
+    p.add_argument("--hash-workers", type=int, choices=(1, 4), default=1)
     a = p.parse_args()
     output = Path(a.output)
     require(output.is_absolute() and output.is_relative_to(R/"artifacts")
             and not output.exists() and not output.is_symlink(), "new NAS artifact required")
-    report = build_release(a.new_audit, a.new_audit_sha, a.new_numeric, a.new_numeric_sha)
+    report = build_release(a.new_audit, a.new_audit_sha, a.new_numeric, a.new_numeric_sha,
+                           hash_workers=a.hash_workers)
     payload = json.dumps(report, sort_keys=True, allow_nan=False, separators=(",", ":")).encode()
     with output.open("xb") as stream:
         stream.write(payload)

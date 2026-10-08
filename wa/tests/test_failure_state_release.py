@@ -425,4 +425,223 @@ class MarkerTests(unittest.TestCase):
             marker,keys=self.marker();marker[field]=value
             with self.assertRaises(ValueError):validate_marker(marker,keys)
 
+class ParallelPinsTests(unittest.TestCase):
+    @staticmethod
+    def files(root, count=12):
+        import hashlib
+        inventory = {}
+        for i in range(count):
+            path = root/f"sample_{i:04d}.bin"
+            payload = (str(i) + "-payload").encode()
+            path.write_bytes(payload)
+            inventory[str(path)] = hashlib.sha256(payload).hexdigest()
+        return inventory
+
+    def test_only_one_or_four_workers(self):
+        from wa.wm.failure_state_release import Pins
+        self.assertEqual(Pins().hash_workers, 1)
+        self.assertEqual(Pins(4).hash_workers, 4)
+        for value in (0, 2, 3, 5, -1, True, False, 1.0, "4", None):
+            with self.subTest(value=value), self.assertRaises(ValueError): Pins(value)
+
+    def test_serial_parallel_full_inventory_and_order_identical(self):
+        import tempfile
+        from wa.wm.failure_state_release import Pins
+        with tempfile.TemporaryDirectory() as tmp:
+            inventory = self.files(Path(tmp).resolve(), 263)  # Cross queue boundary.
+            serial, parallel = Pins(), Pins(4)
+            for pins in (serial, parallel):
+                first = next(iter(inventory))
+                pins.blob(first, inventory[first])
+                pins.verify_all(inventory)
+                pins.verify_all(inventory)  # Existing pins remain exact.
+                pins.finish()
+            self.assertEqual(serial.files, parallel.files)
+            self.assertEqual(serial.stats, parallel.stats)
+            self.assertEqual(list(serial.files), list(parallel.files))
+            self.assertEqual(list(serial.stats), list(parallel.stats))
+            self.assertEqual(list(serial.files), list(inventory))
+
+    def test_conflict_validated_before_worker_reads(self):
+        import tempfile
+        from unittest.mock import patch
+        from wa.wm.failure_state_release import Pins
+        with tempfile.TemporaryDirectory() as tmp:
+            inventory = self.files(Path(tmp).resolve(), 2)
+            path = next(iter(inventory))
+            for workers in (1, 4):
+                pins = Pins(workers); pins.blob(path)
+                conflict = dict(inventory); conflict[path] = "f"*64
+                with patch.object(Pins, "_read", side_effect=AssertionError("worker started")):
+                    with self.assertRaisesRegex(ValueError, "conflicting source pin"):
+                        pins.verify_all(conflict)
+
+    def test_invalid_inventory_hash_does_not_start_workers(self):
+        from unittest.mock import patch
+        from wa.wm.failure_state_release import Pins
+        for workers in (1, 4):
+            with patch.object(Pins, "_read", side_effect=AssertionError("worker started")):
+                with self.assertRaisesRegex(ValueError, "invalid source SHA"):
+                    Pins(workers).verify_all({"/unread": "a"*64, "/bad": "invalid"})
+
+    def test_changed_file_rejected_by_parallel_finish(self):
+        import tempfile
+        from wa.wm.failure_state_release import Pins
+        for workers in (1, 4):
+            with tempfile.TemporaryDirectory() as tmp:
+                inventory = self.files(Path(tmp).resolve())
+                pins = Pins(workers); pins.verify_all(inventory)
+                Path(next(iter(inventory))).write_bytes(b"modified")
+                with self.assertRaisesRegex(ValueError, "source changed"):
+                    pins.finish()
+
+    def test_replacement_symlink_rejected_by_parallel_finish(self):
+        import tempfile
+        from wa.wm.failure_state_release import Pins
+        for workers in (1, 4):
+            with tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve(); inventory = self.files(root, 2)
+                pins = Pins(workers); pins.verify_all(inventory)
+                source, target = map(Path, inventory)
+                source.unlink(); source.symlink_to(target)
+                with self.assertRaisesRegex(ValueError, "source changed"):
+                    pins.finish()
+
+    def test_hash_mismatch_and_worker_exception_propagate(self):
+        import tempfile
+        from unittest.mock import patch
+        from wa.wm.failure_state_release import Pins
+        for workers in (1, 4):
+            with tempfile.TemporaryDirectory() as tmp:
+                inventory = self.files(Path(tmp).resolve())
+                bad = dict(inventory); bad[next(iter(bad))] = "f"*64
+                with self.assertRaisesRegex(ValueError, "evidence SHA mismatch"):
+                    Pins(workers).verify_all(bad)
+                original = Pins._read
+                failed = list(inventory)[3]
+                def read(worker, path, *args, **kwargs):
+                    if str(path) == failed: raise OSError("test read error")
+                    return original(worker, path, *args, **kwargs)
+                with patch.object(Pins, "_read", read):
+                    with self.assertRaisesRegex(OSError, "test read error"):
+                        Pins(workers).verify_all(inventory)
+
+    def test_finish_worker_exception_propagates(self):
+        import tempfile
+        from unittest.mock import patch
+        from wa.wm.failure_state_release import Pins
+        with tempfile.TemporaryDirectory() as tmp:
+            inventory = self.files(Path(tmp).resolve())
+            pins = Pins(4); pins.verify_all(inventory)
+            with patch.object(Pins, "_check_state", side_effect=OSError("test stat error")):
+                with self.assertRaisesRegex(OSError, "test stat error"): pins.finish()
+
+    def test_parallel_reads_are_independent_and_capped(self):
+        import tempfile, threading, time
+        from unittest.mock import patch
+        from wa.wm.failure_state_release import Pins
+        original = Pins._read
+        with tempfile.TemporaryDirectory() as tmp:
+            inventory = self.files(Path(tmp).resolve(), 17)
+            for workers in (1, 4):
+                state = dict(active=0, peak=0); lock = threading.Lock(); owner = Pins(workers)
+                def read(worker, path, *args, **kwargs):
+                    self.assertIsNot(worker, owner)
+                    self.assertEqual(worker.files, {})
+                    with lock:
+                        state["active"] += 1
+                        state["peak"] = max(state["peak"], state["active"])
+                    try:
+                        time.sleep(.01)
+                        return original(worker, path, *args, **kwargs)
+                    finally:
+                        with lock: state["active"] -= 1
+                with patch.object(Pins, "_read", read): owner.verify_all(inventory)
+                self.assertEqual(state["active"], 0)
+                self.assertLessEqual(state["peak"], workers)
+                self.assertEqual(state["peak"], 1) if workers == 1 else self.assertGreater(state["peak"], 1)
+                self.assertEqual(list(owner.files), list(inventory))
+
+    def test_read_time_change_is_rejected_in_both_modes(self):
+        import os, tempfile
+        from unittest.mock import patch
+        from wa.wm.failure_state_release import Pins
+        original_open = Path.open
+        for workers in (1, 4):
+            with tempfile.TemporaryDirectory() as tmp:
+                inventory = self.files(Path(tmp).resolve(), 1)
+                target = Path(next(iter(inventory)))
+                class ChangingStream:
+                    def __init__(self, stream): self.stream = stream; self.changed = False
+                    def __enter__(self): return self
+                    def __exit__(self, *args): self.stream.close()
+                    def read(self, size):
+                        data = self.stream.read(size)
+                        if not self.changed:
+                            st = target.stat()
+                            os.utime(target, ns=(st.st_atime_ns, st.st_mtime_ns + 1))
+                            self.changed = True
+                        return data
+                def opening(path, *args, **kwargs):
+                    stream = original_open(path, *args, **kwargs)
+                    return ChangingStream(stream) if path == target else stream
+                with patch.object(Path, "open", opening):
+                    with self.assertRaisesRegex(ValueError, "changed while reading"):
+                        Pins(workers).verify_all(inventory)
+
+    def test_build_release_default_and_explicit_constructor_are_compatible(self):
+        from unittest.mock import patch
+        from wa.wm.failure_state_release import build_release
+        class StopBeforeIO(Exception): pass
+        for options, expected in (({}, 1), ({"hash_workers": 4}, 4)):
+            with patch("wa.wm.failure_state_release.Pins", side_effect=StopBeforeIO) as ctor:
+                with self.assertRaises(StopBeforeIO): build_release("a", "b", "c", "d", **options)
+                ctor.assert_called_once_with(hash_workers=expected)
+
+    def test_cli_worker_default_and_explicit_choice(self):
+        import contextlib, io, tempfile
+        from unittest.mock import patch
+        from wa.wm import failure_state_release as gate
+        for choices, expected in (([], 1), (["--hash-workers", "4"], 4)):
+            with tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp).resolve(); (root/"artifacts").mkdir()
+                output = root/"artifacts/report.json"
+                args = ["release", "--new-audit", "a", "--new-audit-sha", "b",
+                        "--new-numeric", "c", "--new-numeric-sha", "d",
+                        "--output", str(output)] + choices
+                with patch.object(gate, "R", root), patch("sys.argv", args), \
+                        patch.object(gate, "build_release", return_value={"summary": {}}) as build, \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    gate.main()
+                build.assert_called_once_with("a", "b", "c", "d", hash_workers=expected)
+                self.assertTrue(output.is_file())
+        with patch("sys.argv", args + ["--hash-workers", "2"]), \
+                patch.object(gate, "build_release") as build, contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit): gate.main()
+            build.assert_not_called()
+
+    def test_progress_throttles_bulk_at_thousand_boundaries(self):
+        import contextlib, io, json, tempfile
+        from wa.wm.failure_state_release import Pins
+        with tempfile.TemporaryDirectory() as tmp:
+            inventory = self.files(Path(tmp).resolve(), 1001)
+            output = io.StringIO()
+            with contextlib.redirect_stderr(output): Pins(4).verify_all(inventory)
+            rows = [json.loads(s) for s in output.getvalue().splitlines()]
+            self.assertEqual([r["completed"] for r in rows], [0, 1000, 1001])
+            self.assertTrue(all(r["total"] == 1001 for r in rows))
+
+    def test_progress_is_count_only_stderr(self):
+        import contextlib, io, json, tempfile
+        from wa.wm.failure_state_release import Pins
+        with tempfile.TemporaryDirectory() as tmp:
+            inventory = self.files(Path(tmp).resolve(), 2)
+            output = io.StringIO()
+            with contextlib.redirect_stderr(output):
+                pins = Pins(4); pins.verify_all(inventory); pins.finish()
+            rows = [json.loads(s) for s in output.getvalue().splitlines()]
+            self.assertEqual(len(rows), 4)
+            self.assertTrue(all(set(r) == {"phase", "completed", "total"} for r in rows))
+            self.assertEqual([r["completed"] for r in rows], [0, 2, 0, 2])
+
 if __name__=="__main__":unittest.main()

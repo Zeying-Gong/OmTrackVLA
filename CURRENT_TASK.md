@@ -1,5 +1,5 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 13:51 Beijing. Existing Goal ACTIVE after user resume; heartbeat wa ACTIVE every20minutes.
+Updated: 2026-10-08 14:32 Beijing. Existing Goal ACTIVE after user resume; heartbeat wa ACTIVE every20minutes.
 Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261008.md.
 
 ## Acceptance and retained best
@@ -21,7 +21,7 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 - All24 owned role spawn/exit PIDs, wrapper launcher0/dependency0, frozen source clean,8ready c510/step59716 and checkpoint SHA verified by new terminal gate.
 - One recorded typed LN error VLzqgDo317F/123 k34 MissingRVQ[0,1];60obs59actions;null terminal/0windows/no fallback executed. Do not interpret typed errors as successful demonstrations or claim all logs warning-free.
 
-## Completed numerical evidence and pending raw gate
+## Completed raw and numerical evidence; full126 admission pending
 - Old61833 FAILED1 +61836 FAILED35 are retained. Old36 full raw audit PASS225branches/14985PNG/14984actions/18836files.
 - Old raw:artifacts/failure_state_completed_search_audit_61836_v1.json SHAcbdc709aa4f8df67fb5edf2e06faeb2476f77de365ec9954c8e5b323ed957299.
 - Old numeric:wa/results/FAILURE_STATE_36_NUMERIC_20261008.json SHA2965e8bd086169eb3c180dd92db72254c2d420d445d10f7586fc6e4be850340b;2039candidate ->1891valid/148excluded;21nonzeroepisodes.
@@ -29,11 +29,13 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 - New72winner episodes:LN20 with1531valid;Oracle52 with3442valid;3zero-valid Oracle episodes.376transition-filter exclusions +8current<4.
 - Combined numerical arithmetic:7396candidate ->6864valid/532excluded across90nonzeroepisodes. Repeat windows0;student future-action labels0;past student context allowed.
 - New90 all5357 individual-window rederivations PASS;old-runtime effective-mask differences0;endpoint differences0;SE2/yawdelta0;17CPUtests PASS. Numeric status is NOT training admission.
-- New90 full branch/PNG/search audit started after terminal gate; being accelerated to4CPU threads. It has NOT finished or produced a final PASS report. No GPU trajectory is rerun.
-- Full release verifier and failure-state converter are being implemented/tested separately. No126 release, cache, loader admission, new training or new student SR exists.
+- New90 full raw audit and readback PASS_NONRELEASE:637branches/64946PNG-observations/64945actions/75855files rehashed;52Oracle20LightNav,70mid2start;24ownedprocess exits matched;5fatal literals0 in checked24logs, warnings retained.
+- Raw artifacts/failure_state_completed_search_audit_61844_v1.json SHA7759d30c623c3f6a3b989c4ba0efa3554344daa17e84df662d52650efb334aa1;provenance SHA2a27d5198f35feb95a670b3cbcd8be629eb03e634d17ddf82939318572c97dd7. Missing-final-l2 category not observed in this90.
+- Main independently reran135CPUtests across raw/numeric/release/converter/loader/dedup. Real126 serial gate stopped only its own CPU PID3894656 to accelerate same hashes to4threads;no output/release existed, noGPU touched. Parallel-gate53tests then PASS0.742s;sole4CPU runtime PID3904735/session91363 active,37of126checked at14:40 snapshot;notrelease.
+- No126 release/cache/real-loader admission/newtraining/newstudentSR yet. At least182/6864valid windows exactly duplicate old demonstration inputs/labels;remaining6682 not yet fully deduplicated. Do not call6864 unique additions.
 
 ## Next gates and authorized experiment scope
-- Finish90 full raw evidence audit and paired provenance with source/input hashes;join frozen36 only after exact126 ownership and strict selected-original/repeat proof.
+- Execute full126 independent release using finished90+frozen36 proofs and exact ownership/selected-original/repeat checks;do not redo allPNG decode. After true release SHA, run cache conversion and full6864 same-key old-data equivalence audit.
 - Release rederives exact有效window sets for all96winners;old36 compact report remains unchanged. Exclude failed/repeat/typed-error labels;zero-valid episodes get0exposure.
 - Converter preserves episode0 template and original indices/all frames;teacher-owned interpolated0.1..0.7s SE2;policy sparse4 causal history;JEPA continuous4/action/proprio-1/actualt+1.
 - Preserve old now>=4/dt/displacement/yaw/badtransition masks and compare exact original-runtime mask. UWB current observation only.
@@ -57,6 +59,6 @@ Full previous task: archive/2026-10/CURRENT_TASK_before_failure90_terminal_20261
 ## Network, repository and reporting
 - This turn devpod-4090 restored;hostname devpod-zeying-gong-4090-7f59ffb47c-rpkjh;GPFS mt-tutz0R-pfs-haZOBP;no crossNAS copy.
 - Prior No-route and kex failures preserved;earlier BLOCKED Goal explicitly resumed by user and now ACTIVE. No automatic BLOCKED-to-ACTIVE claim.
-- StartingGit HEAD939a2c50df0b0ae4896e1e69da54837bc57804df clean;new audit/label/release code and numeric report are this turn's changes.
+- GitHubwa backup0d9fe65b7007617493c35da0d52038a54325bf80 verified;newloader/dedup/real-loader tool and parallel-gate changes remain this turn's work. Raw90 final NAS report is not uploaded as data.
 - Never apply old local startup31/RUNNING patch;61844 is terminal. No resubmit/restart/stop/migration of61844.
 - ExistingGitHub wa only;announce beforepush;no weights/data/videos. CURRENT<=80,PROGRESS<=150;archive before expanding beyond limits.
