@@ -155,3 +155,59 @@ This is evaluation-set adaptation. No model, loss, physics, controller, success 
 ### Queue diagnosis at0720 Beijing
 
 At07:20:39-41 all three Job/Task statuses remainedSUBMITTED, while their actual Pods werePending with `node=-`. The task `.md-ak/workload.log` files had grown to18508/18508/18083bytes forSTT/DT/AT, each latestmtime07:20:13. They record `FailedScheduling`:0/29nodes fit the request. Retained event summaries list11Insufficientcpu+17Insufficientnvidia.com/gpu+1untolerated dedicated-ci taint, and12cpu+16GPU+1taint. These are scheduling event reasons, not a measured queue rank or an allocation; do not sum them into a GPU capacity claim. A K8s Job object'sRunning phase does not mean itsPending Pod has started. The three model output roots are still absent. Log growth now proves scheduler retries, not episode progress. No request, job or other user's task was changed; keep the existing three jobs queued.
+
+### Queue confirmation at0731 Beijing
+
+At07:31:16 the same three jobs and tasks remainedSUBMITTED, with their PodsPending and no assigned node. Workload logs were33226/33226/32801bytes, all latestmtime07:31:12; the292-byte console logs were unchanged. The same CPU/GPU/ci-taint scheduling events continued and all three evaluation output roots were absent. No evaluation progress or newSR is claimed; no jobs or resource requests changed.
+
+## Pending terminal audit commands
+
+The existing clean result-audit worktree `R/source_student61715_result_audit_v1`, commit `32fa14084e71eacb6c9527e493580f089a5b7428`, supports the62256 checkpoint SHA andstep61252. Its four entrypoints and five associated contract files match the current checkout. These are prepared commands, not executed audits or created outputs. First verify the actual scheduler and worker terminal state, eight genuineGPU identities per task, logs,24shard COMPLETE records and three PARTITION_COMPLETE records. Do not run the merge on partial results or reuse prior student rows.
+
+The goal auditor intentionally pins61377 and the fixed1289/1173/1203 thresholds; do not replace its baseline with61609. The separate best-comparison tool covers61609's1279/1178/1207. A valid goal result may beNOT_MET.
+
+```bash
+set -euo pipefail
+WA_ROOT=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928
+WA_JOBS=/data/nas_ray/project/md-ak/users/zeying.gong
+WA_PY="$WA_ROOT/probe_env/bin/python"
+WA_MANIFEST=/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json
+WA_TEACHERS="$WA_ROOT/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl"
+WA_SHA=40915b366ee5a2ef5967e2ce49a94d2b0f45f149955dd5cccf85ac3d6ab178fc
+WA_MERGED="$WA_ROOT/artifacts/student62256_full_audit_20261009_v1"
+cd "$WA_ROOT/source_student61715_result_audit_v1"
+export PYTHONNOUSERSITE=1 PYTHONPATH=.
+for wa_output in "$WA_MERGED" "$WA_ROOT/artifacts/student62256_goal_20261009_v1" "$WA_ROOT/artifacts/student62256_vs61609_20261009_v1" "$WA_ROOT/artifacts/student62256_review_20261009_v1"; do
+  test ! -e "$wa_output"
+  test ! -L "$wa_output"
+done
+
+"$WA_PY" -B -m wa.tools.merge_student_partitions \
+  --stt "$WA_JOBS/job_62445/task_73719/wa_student62256_stt_4090_v1" \
+  --dt "$WA_JOBS/job_62446/task_73720/wa_student62256_dt_4090_v1" \
+  --at "$WA_JOBS/job_62447/task_73721/wa_student62256_at_4090_v1" \
+  --manifest "$WA_MANIFEST" --teacher-selections "$WA_TEACHERS" \
+  --checkpoint-sha "$WA_SHA" --checkpoint-step 61252 --mode mixed \
+  --output "$WA_MERGED"
+
+"$WA_PY" -B -m wa.tools.audit_student_goal \
+  --candidate "$WA_MERGED" --manifest "$WA_MANIFEST" --teacher-selections "$WA_TEACHERS" \
+  --checkpoint-sha "$WA_SHA" --checkpoint-step 61252 \
+  --baseline "$WA_ROOT/artifacts/student61377_full_audit_20261007_v1" \
+  --output "$WA_ROOT/artifacts/student62256_goal_20261009_v1"
+
+"$WA_PY" -B -m wa.tools.compare_student61609 \
+  --candidate "$WA_MERGED" --manifest "$WA_MANIFEST" --teacher-selections "$WA_TEACHERS" \
+  --checkpoint-sha "$WA_SHA" --checkpoint-step 61252 \
+  --baseline "$WA_ROOT/artifacts/student61609_full_audit_20261007_v1" \
+  --output "$WA_ROOT/artifacts/student62256_vs61609_20261009_v1"
+
+"$WA_PY" -B -m wa.tools.build_student_review \
+  --merged "$WA_MERGED" --manifest "$WA_MANIFEST" --teachers "$WA_TEACHERS" --mode mixed \
+  --ffprobe /data/nas_ray/home/zeying.gong/algorithm/envs/habitat/bin/ffprobe \
+  --output "$WA_ROOT/artifacts/student62256_review_20261009_v1"
+```
+
+The merge audits4215unique task/key rows,24shard identities/completion counts, unchanged mixed/zero and repair contracts, full-denominatorSR/TR/reference-step normalization/macroTR/CR/invalid, and teacher paired initial evidence. It does not inspect student videos. The review checks4215first-JPEG file hashes and nonempty videos withffprobe stream/duration metadata; it is not full-frame video decoding, nor recomputation of the original raw-RGBA sensor hash from JPEG. Keep these scopes separate. Scheduler state, actualGPUUUIDs and fatal/OOM logs require separate worker evidence; the already completed training checkpoint audit remains the weight provenance, not proof of evaluation completion.
+
+Read-only preparation for the later no-UWB study confirms that `Session(mode='image')` rejects an extraUWB request field, passes mode_id0, and `make_conditions` sets uwb_validfalse. The adapter zeros unusable polar features and masks the corresponding prompt token. This is a source-level contract check, not a real image-mode observer/closed-loop result. Keep the same accepted checkpoint, first-frame template, controller, semantic/BBox repairs and full denominators for the future pairing. Do not replace missingUWB with a validzero-range reading. The mixed-only goal and61609 comparison tools are not an image-ablation auditor; image-specific pairing must be checked when the three mixedSR thresholds are actually met.
