@@ -577,5 +577,131 @@ class FailureStateTrainingAuditTests(unittest.TestCase):
             self.assertEqual(set(recorded),
                 {str(root/name) for name in audit.TERMINAL if name!="checkpoint.pt"})
 
+
+    def a800_config_fixture(self):
+        fixture=list(self.config_fixture())
+        old=str(fixture[3])
+        fixture[3]=audit.JOBS/"job_99999/task_88888/wa_failure_state_train_a800_v1"
+        fixture[0]["output"]=str(fixture[3])
+        fixture[1]["cluster"]="baidu_a800"
+        fixture[1]["tasks"][0]["cmd"]=fixture[1]["tasks"][0]["cmd"].replace(old,str(fixture[3]))
+        return fixture
+
+    def a800_environment_fixture(self):
+        env,hashes,launch,commit=self.environment_fixture()
+        launch["hardware_profile"]="a800"
+        env["gpu_names"]=["NVIDIA A800-SXM4-80GB"]*8
+        for record in launch["cuda"]:
+            record.update(name="NVIDIA A800-SXM4-80GB",capability=[8,0])
+        for record in launch["uuid_model_memory_driver"]:
+            record[1]="NVIDIA A800-SXM4-80GB"
+            record[2]="81920"
+        return env,hashes,launch,commit
+
+    def test_explicit_a800_config_and_environment_are_accepted(self):
+        config=audit.validate_config(*self.a800_config_fixture(),hardware_profile="a800")
+        hardware=audit.validate_environment(*self.a800_environment_fixture(),hardware_profile="a800")
+        self.assertEqual(config["hardware_profile"],"a800")
+        self.assertEqual(hardware["hardware_profile"],"a800")
+        self.assertEqual(len(hardware["unique_gpu_uuids"]),8)
+        self.assertEqual(audit.hardware_contract("a800")["min_memory_mib"],80000)
+
+    def test_profiles_cannot_cross_accept_cluster_output_or_hardware(self):
+        for fixture,profile in ((self.config_fixture(),"a800"),(self.a800_config_fixture(),"rtx4090")):
+            with self.subTest(config_profile=profile),self.assertRaises(ValueError):
+                audit.validate_config(*fixture,hardware_profile=profile)
+        for fixture,profile in ((self.environment_fixture(),"a800"),(self.a800_environment_fixture(),"rtx4090")):
+            with self.subTest(hardware_profile=profile),self.assertRaises(ValueError):
+                audit.validate_environment(*fixture,hardware_profile=profile)
+        # A800 requires explicit selection; the old default remains RTX4090.
+        with self.assertRaises(ValueError):audit.validate_config(*self.a800_config_fixture())
+        with self.assertRaises(ValueError):audit.validate_environment(*self.a800_environment_fixture())
+
+    def test_a800_mixed_or_incorrect_gpu_evidence_is_rejected(self):
+        for change in ("env_mixed","cuda_mixed","physical_mixed","similar_model",
+                       "wrong_capability","insufficient_memory","duplicate_uuid","seven_cards"):
+            fixture=list(self.a800_environment_fixture());env,_,launch,_=fixture
+            if change=="env_mixed":env["gpu_names"][0]="NVIDIA GeForce RTX 4090"
+            elif change=="cuda_mixed":launch["cuda"][0]["name"]="NVIDIA GeForce RTX 4090"
+            elif change=="physical_mixed":launch["uuid_model_memory_driver"][0][1]="NVIDIA GeForce RTX 4090"
+            elif change=="similar_model":launch["uuid_model_memory_driver"][0][1]="NVIDIA A800 80GB PCIe"
+            elif change=="wrong_capability":launch["cuda"][0]["capability"]=[8,9]
+            elif change=="insufficient_memory":launch["uuid_model_memory_driver"][0][2]="79999"
+            elif change=="duplicate_uuid":launch["uuid_model_memory_driver"][1][0]=launch["uuid_model_memory_driver"][0][0]
+            else:launch["uuid_model_memory_driver"].pop()
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                audit.validate_environment(*fixture,hardware_profile="a800")
+
+    def test_a800_cluster_and_run_route_are_exact(self):
+        for change in ("wrong_cluster","rtx_output","generic_output","wrong_gpu_count"):
+            fixture=self.a800_config_fixture()
+            if change=="wrong_cluster":fixture[1]["cluster"]="baidu_4090"
+            elif change=="wrong_gpu_count":fixture[1]["num_gpus"]=7
+            else:
+                old=str(fixture[3])
+                suffix="wa_failure_state_train_4090_v1" if change=="rtx_output" else "wa_train"
+                fixture[3]=audit.JOBS/f"job_99999/task_88888/{suffix}"
+                fixture[0]["output"]=str(fixture[3])
+                fixture[1]["tasks"][0]["cmd"]=fixture[1]["tasks"][0]["cmd"].replace(old,str(fixture[3]))
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                audit.validate_config(*fixture,hardware_profile="a800")
+
+    def test_unknown_hardware_profiles_fail_closed(self):
+        for profile in ("A800","h100","auto","",None,False):
+            with self.subTest(profile=profile),self.assertRaises(ValueError):
+                audit.hardware_contract(profile)
+
+
+    def a800_developer_fixture(self):
+        launch=self.a800_environment_fixture()[2]
+        launch["input_sha256"].update(audit.A800_DEVELOPER_PINS)
+        launch["developer_training_evidence"]=dict(
+            schema="failure_state_developer_training_evidence_v1",
+            status="A800_FOUR_UPDATE_DIAGNOSTIC_PASS_NOT_EIGHT_RANK_PROOF",
+            hardware_profile="a800",run=str(audit.A800_DEVELOPER_RUN),
+            source_commit=audit.SOURCE_COMMIT,input_sha256=dict(audit.A800_DEVELOPER_PINS),
+            world_size=1,first_step=22708,final_step=22711,optimizer_updates=4,
+            consumed_positions=16,source_counts=dict(base=7,teacher=6,recovery=3),
+            heldout_windows_per_mode=2,training_recipe_verified_single_gpu=True,
+            eight_rank_gpu_execution_verified=False,closed_loop=False)
+        return launch
+
+    def test_a800_developer_evidence_is_fixed_single_gpu_only(self):
+        launch=self.a800_developer_fixture()
+        result=audit.validate_developer_training_evidence(launch)
+        self.assertEqual(len(result["input_sha256"]),7)
+        self.assertEqual(result["source_counts"],dict(base=7,teacher=6,recovery=3))
+        self.assertIs(result["eight_rank_gpu_execution_verified"],False)
+        pins=Mock()
+        audit.bind_developer_training(pins,launch,"a800")
+        self.assertEqual(pins.add.call_count,7)
+        self.assertEqual({call.args for call in pins.add.call_args_list},
+                         set(audit.A800_DEVELOPER_PINS.items()))
+
+    def test_a800_developer_evidence_wrong_claims_or_pins_rejected(self):
+        for key,value in (("schema","other"),("status","FORMAL_PASS"),("hardware_profile","rtx4090"),
+            ("source_commit","f"*40),("run","/other"),("world_size",8),("first_step",22707),
+            ("final_step",61252),("optimizer_updates",5),("consumed_positions",1233424),
+            ("source_counts",dict(base=8,teacher=5,recovery=3)),("heldout_windows_per_mode",73368),
+            ("training_recipe_verified_single_gpu",False),("eight_rank_gpu_execution_verified",True),
+            ("closed_loop",True),("closed_loop",0)):
+            launch=self.a800_developer_fixture()
+            launch["developer_training_evidence"][key]=value
+            with self.subTest(key=key),self.assertRaises(ValueError):
+                audit.validate_developer_training_evidence(launch)
+        for change in ("missing_evidence","missing_evidence_pin","changed_evidence_pin",
+                       "extra_evidence_pin","missing_launch_pin","changed_launch_pin","wrong_launch_profile"):
+            launch=self.a800_developer_fixture()
+            path=next(iter(audit.A800_DEVELOPER_PINS))
+            if change=="missing_evidence":del launch["developer_training_evidence"]
+            elif change=="missing_evidence_pin":del launch["developer_training_evidence"]["input_sha256"][path]
+            elif change=="changed_evidence_pin":launch["developer_training_evidence"]["input_sha256"][path]="f"*64
+            elif change=="extra_evidence_pin":launch["developer_training_evidence"]["input_sha256"]["/unknown"]="f"*64
+            elif change=="missing_launch_pin":del launch["input_sha256"][path]
+            elif change=="changed_launch_pin":launch["input_sha256"][path]="f"*64
+            else:launch["hardware_profile"]="rtx4090"
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                audit.validate_developer_training_evidence(launch)
+
 if __name__=="__main__":
     unittest.main()

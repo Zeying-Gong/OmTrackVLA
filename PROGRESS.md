@@ -1,9 +1,14 @@
 # WA-Mobile progress
-Updated: 2026-10-08 20:18 Beijing. Existing GoalACTIVE verified20:17;second resumed-goal turn sees same safe-developer-capacity blocker. Prior151CPU/auditor work remains complete,not rerun. No actual terminal training audit ornewJob/checkpoint/SR.
+Updated: 2026-10-08 20:38 Beijing. GoalACTIVE;safe alternative advances preparation:complete8A800 queue task using prior realA800 four-update gate. No formalJob/checkpoint/newSR yet;old4090 capacityblock history retained below.
 Full predecessor: archive/2026-10/PROGRESS_before_group_fit_permission_20261008_1656.md (139lines,including historic failures,waits and corrections). Older archive pointers remain there.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Exact active input/output/checkpoint pins are also in CURRENT_TASK.md.
 
 ## Latest authorized work — not training admission
+
+- Complete8A800 queue alternative confirmed20:22–26:md_ai_kit2.0 submit→scheduledAPI has nofree>=8hardgate;K8s≤8/Volcanoray-a800 Pending staysSUBMITTED;task86400 timeout starts worker shell,not queue. Externalqueuewait unknown. Query canonicalbaidu_bj_a800 orallclusters;oldaliasfilter can miss jobs. Latest20:29A8003free/bj409078free;onlyotherwork61846/61847RUNNING,noSCHEDULED/SUBMITTING/SUBMITTED duplicates.
+- New C/wa/jobs/failure_state_train_a800_v1.yaml SHA08553eb73e8d2db4ae2fd37ab1c322bc7fbf77ac4a3ba3a7c59ae2508a2f2e69/351lines:8exactA800-SXM4-80GB/CC8.0/>=80000MiB/uniqueUUID,24pins. Frozen199385cd and26trainingflags unchanged;original4090draft33838ac5 preserved. SameNAS/no migration;full oneepoch,not smoke.
+- Fresh18inputSHA8.80GB and241source/environment comparison PASS;7A800diagnostic files schema/NPZ/counts PASS. No repeatedGPUcheck/PNG/rawaudit;existing4updates not represented as8rank execution. MainactualA800YAML26flag parser PASS with syntheticconfig only.
+- Strict hardware_profile=a800 auditor extension:tool1bf234bfda69047059013413ff69e9a3223a2ab81cf72d61847b2b4a427aab72/test4e407009d42494889bb5770c1b11e32254e0a71e3e240fc06680c4b61e6ca8ae;41tool/158relatedCPU PASS4.516s(session31033). Default4090 retained;crosscluster/output/model/CC/memory/UUID rejected;24exactlaunchpins and7developerpins bound. No actualnewtraining audit.
 
 - Readonly20:15:46/20:16:10 checks:devpod4090 sameGPFS/repo,bea541a8 trackedclean/only2NAS-onlyJSON;A8003free/H1002free/bj409080free. DevGPU6free16252MiB/util70→86 busy,GPU7free7690MiB/util0 insufficient headroom,others<=2892MiBfree. No safeGPU/no job submitted. Existing4update CLI/config reconfirmed only;noGPU orcompleted-gate rerun. Same external-capacity blocker on second resumedturn;state refresh is not experiment success orlive-process wait. CSV unchanged because no new experiment.
 
@@ -23,7 +28,7 @@ Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260
 - CPU selection session43283 exit0/977.593s;R/artifacts/failure_state_group_fit_selection_20261008_v1.json SHA7e7db844c09f67d7b0e3b5de7376c0573c18fccc485dfa235b879ed4dab111a9/786143B.152=88old verbatim+64unique allSTT recovery,0intersection526dup;early32/late32 each32episodes,total40;LN17/Oracle47 new,ageearly.440-.488s/late1.016-2s;2865sourcepins. Independent compact JSON audit PASS,not refit orSR.
 - Historical18:25 startup:pretrain source-validation started18:23:50Beijing session52695/PID3969666 on4090GPU7:startup0%util/7690MiBfree,UUIDGPU-3c8e0886-91d1-d6dc-0f7b-1ef3f757f4fd,PyTorch allocator cap5368709120B/2400s timeout. OwnNAS.log prefixfailure_state_group_fit_pretrain_20261008_v1;final.json not accepted yet;no predicted-window progress orGPUfitPASS claimed. Full command/scope in C/wa/results/FAILURE_STATE_GROUP_FIT_20261008.md;no duplicate start.
 - CLI select pins immutablev2cache admissionc6909577…,loader audit a330f7d3…,dedup599d60ea…;fullSHA and paths in CURRENT. Do not reselect by outcome orreplace original references.
-- Next:unchanged target4090 recipe4update developer check when safe capacity exists,then refreshed formal8GPU preflight. Selection andfit are complete;do not repeat them orcompleted data gates. Policy prediction is not training admission orpermission to change batch/loss/recipe;no cluster smoke.
+- Next:after finalreview/backup/duplicate check submit exactly one complete8A800 training task;already-realA800 recipe gate applies. Do not also launch4090 task orrerun fixedfit/data gates. Preserve26flags/model/optimizer/loss/LR/epochbudget. Track actualqueue/worker/step,not scheduler label alone.
 - GitHubwa6bc034b28003e5e0471caa74ed16cac5c01b8883 pushed afterannouncement andls-remote verified:fitcode/tests/CPUCSV plus54/70line state compression andexact79/139line archives. No data/weight/video upload;two raw JSONs remain NAS-only. Selection/startup increment follows separately.
 
 ## Retained scientific result and fixed next experiment

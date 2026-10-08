@@ -60,6 +60,31 @@ TERMINAL = ('metrics.json', 'checkpoint.pt', 'config.json', 'environment.json',
     'failure_state_exposure.json', 'dual_teacher_exposure.json')
 
 
+A800_DEVELOPER_RUN = ROOT/'artifacts/failure_state_train_developer_20261008_v1'
+A800_DEVELOPER_PINS = {
+    str(A800_DEVELOPER_RUN/'config.json'): 'ae0fe12b2b629629905bf7f5b2bd45698ed80c870a6c569c4a2ca78b47ef2445',
+    str(A800_DEVELOPER_RUN/'environment.json'): '74f43531afb2a690e1162c361b54c4653472fceb894e6bc47044cedb7487ea81',
+    str(A800_DEVELOPER_RUN/'metrics.json'): '8f4ae5e4b3363d104ea22c7821ef08aedd3db76c5c82d3e527a5373cf677f444',
+    str(A800_DEVELOPER_RUN/'actual_exposure_epoch1.json'): 'cf871dd33c591af3675db93a7ced50d98a4c1b715ae4ef88a8ca3966566f13a5',
+    str(A800_DEVELOPER_RUN/'actual_exposure_epoch1.npz'): '236e39ebd3626bdb0cb625671b15e614688361fb15aae5a0720379f772793d13',
+    str(A800_DEVELOPER_RUN/'train.jsonl'): '5f426a53d0d3993a02681e53855cc645fe3ba17f011d3c9c6ba55754533c90a6',
+    str(A800_DEVELOPER_RUN)+'.log': '4d71332389fb8cece8b01295aeca181357428b34228aaa7aa45d09d9b7eccab0',
+}
+
+
+HARDWARE_PROFILES = {
+    'rtx4090': dict(cluster='baidu_4090', run_name='wa_failure_state_train_4090_v1',
+        gpu_name='NVIDIA GeForce RTX 4090', capability=[8, 9], min_memory_mib=24000),
+    'a800': dict(cluster='baidu_a800', run_name='wa_failure_state_train_a800_v1',
+        gpu_name='NVIDIA A800-SXM4-80GB', capability=[8, 0], min_memory_mib=80000),
+}
+
+
+def hardware_contract(profile):
+    require(type(profile) is str and profile in HARDWARE_PROFILES, 'unknown explicit hardware profile')
+    return HARDWARE_PROFILES[profile]
+
+
 class IncompleteTraining(ValueError):
     """A final checkpoint alone is not completion of heldout validation."""
 
@@ -232,7 +257,8 @@ def expected_recipe(run, plan_root):
         precision='fp32 training / bf16 frozen encoder')
 
 
-def validate_config(config, yaml_config, source, run, plan_root, source_commit):
+def validate_config(config, yaml_config, source, run, plan_root, source_commit, *, hardware_profile='rtx4090'):
+    hardware = hardware_contract(hardware_profile)
     exact(source_commit, SOURCE_COMMIT, 'unsupported frozen training source')
     recipe = expected_recipe(Path(run), Path(plan_root))
     for key, value in recipe.items():
@@ -241,7 +267,7 @@ def validate_config(config, yaml_config, source, run, plan_root, source_commit):
         require(config.get(key) is None, 'foreign data route: ' + key)
     require(type(config.get('base_lrs')) is list and len(config['base_lrs']) == 5
         and all(finite(x) and x > 0 for x in config['base_lrs']), 'five resumed LR groups required')
-    for key, value in dict(cluster='baidu_4090', num_gpus=8,
+    for key, value in dict(cluster=hardware['cluster'], num_gpus=8,
             image='x5-builder:cuda12.8-isaac5.0.0-v2.test1').items():
         exact(yaml_config.get(key), value, 'YAML: ' + key)
     tasks = yaml_config.get('tasks')
@@ -252,7 +278,7 @@ def validate_config(config, yaml_config, source, run, plan_root, source_commit):
     cmd = task['cmd']
     require('cd '+str(source) in cmd and source_commit in cmd and 'git status --porcelain' in cmd,
             'frozen source/clean guard absent')
-    match = re.fullmatch(re.escape(str(JOBS))+r'/job_([0-9]+)/task_([0-9]+)/wa_failure_state_train_4090_v1', str(run))
+    match = re.fullmatch(re.escape(str(JOBS))+r'/job_([0-9]+)/task_([0-9]+)/'+re.escape(hardware['run_name']), str(run))
     require(match is not None, 'exact scheduler Job/Task output route required')
     env = dict(MD_AK_JOB_ID=match.group(1), MD_AK_TASK_ID=match.group(2))
     for line in cmd.splitlines():
@@ -271,14 +297,16 @@ def validate_config(config, yaml_config, source, run, plan_root, source_commit):
     args = parse_training_command(cmd, env)
     expected = {'--'+flag: (True if flag == 'evaluation-set-adaptation' else str(recipe[flag.replace('-', '_')])) for flag in FLAGS}
     same(args, expected, 'YAML/runtime training flags differ')
-    return dict(arguments=args, environment=env)
+    return dict(arguments=args, environment=env, hardware_profile=hardware_profile)
 
 
-def validate_environment(env, source_hashes, launch, source_commit):
+def validate_environment(env, source_hashes, launch, source_commit, *, hardware_profile='rtx4090'):
+    hardware = hardware_contract(hardware_profile)
+    exact(launch.get('hardware_profile', 'rtx4090'), hardware_profile, 'launch hardware profile mismatch')
     for key, value in dict(commit=source_commit, dirty='', torch='2.8.0+cu128').items():
         exact(env.get(key), value, 'worker environment: ' + key)
     names = env.get('gpu_names')
-    require(type(names) is list and len(names) == 8 and all(type(x) is str and 'RTX 4090' in x for x in names), 'eight actual RTX4090 GPUs required')
+    require(type(names) is list and len(names) == 8 and all(type(x) is str and x == hardware['gpu_name'] for x in names), 'eight exact-profile GPUs required')
     require(bool(source_hashes) and env.get('source_sha256') == source_hashes, 'complete frozen Python inventory mismatch')
     wla = env.get('wla', {})
     require(wla.get('strict_loaded') == ['action_expert','metaquery','target_head']
@@ -293,14 +321,43 @@ def validate_environment(env, source_hashes, launch, source_commit):
     uuids = []
     for i, (logical, row) in enumerate(zip(cuda, physical)):
         exact(logical.get('index'), i, 'CUDA lane index')
-        same(logical.get('capability'), [8, 9], 'actual sm89 required')
+        same(logical.get('capability'), hardware['capability'], 'actual profile CUDA capability required')
         exact(logical.get('name'), names[i], 'environment/launch GPU name')
         require(type(row) is list and len(row) == 4 and all(type(x) is str for x in row), 'nvidia-smi GPU row')
-        require(re.fullmatch(r'GPU-[0-9a-fA-F-]+', row[0]) and 'RTX 4090' in row[1]
-                and row[2].isdigit() and int(row[2]) >= 24000 and bool(row[3]), 'GPU UUID/model/memory/driver evidence')
+        require(re.fullmatch(r'GPU-[0-9a-fA-F-]+', row[0]) and row[1] == hardware['gpu_name']
+                and row[2].isdigit() and int(row[2]) >= hardware['min_memory_mib'] and bool(row[3]), 'GPU UUID/model/memory/driver evidence')
         uuids.append(row[0])
     require(len(set(uuids)) == 8, 'eight distinct physical GPU UUIDs required')
-    return dict(gpu_names=names, unique_gpu_uuids=uuids, torch=env['torch'])
+    return dict(hardware_profile=hardware_profile, gpu_names=names,
+        unique_gpu_uuids=uuids, torch=env['torch'])
+
+
+def validate_developer_training_evidence(launch):
+    exact(launch.get('hardware_profile'), 'a800', 'A800 launch profile identity required')
+    expected = dict(schema='failure_state_developer_training_evidence_v1',
+        status='A800_FOUR_UPDATE_DIAGNOSTIC_PASS_NOT_EIGHT_RANK_PROOF',
+        hardware_profile='a800', run=str(A800_DEVELOPER_RUN), source_commit=SOURCE_COMMIT,
+        input_sha256=A800_DEVELOPER_PINS, world_size=1, first_step=22708, final_step=22711,
+        optimizer_updates=4, consumed_positions=16,
+        source_counts=dict(base=7, teacher=6, recovery=3), heldout_windows_per_mode=2,
+        training_recipe_verified_single_gpu=True,
+        eight_rank_gpu_execution_verified=False, closed_loop=False)
+    evidence = launch.get('developer_training_evidence')
+    same(evidence, expected, 'fixed A800 developer evidence changed')
+    input_sha256 = launch.get('input_sha256')
+    require(type(input_sha256) is dict and all(input_sha256.get(path) == sha
+        for path, sha in A800_DEVELOPER_PINS.items()), 'A800 launch/developer input pins missing or changed')
+    return evidence
+
+
+def bind_developer_training(pins, launch, hardware_profile):
+    hardware_contract(hardware_profile)
+    if hardware_profile == 'rtx4090':
+        return None
+    evidence = validate_developer_training_evidence(launch)
+    for path, sha in A800_DEVELOPER_PINS.items():
+        pins.add(path, sha)
+    return evidence
 
 
 def optimizer_steps(optimizer):
@@ -641,9 +698,11 @@ def bind_dependencies(pins, config, environment, launch):
 
 
 def audit_training(run, source, config_path, plan_root, *, source_commit,
-                   config_sha256, plan_admission_sha256, checkpoint_loader=None):
+                   config_sha256, plan_admission_sha256, checkpoint_loader=None,
+                   hardware_profile='rtx4090'):
     run, source, config_path, plan_root = map(Path, (run,source,config_path,plan_root))
     metrics = terminal_metrics(run)  # MUST precede checkpoint hash/load, even for diagnostic callers.
+    hardware_contract(hardware_profile)
     exact(source_commit, SOURCE_COMMIT, 'only the frozen admitted training source is supported')
     exact(plan_admission_sha256, PLAN_ADMISSION_SHA, 'fixed sampling admission pin required')
     require(plan_root == PLAN_ROOT and source == ROOT/'source_failure_state_train_v1', 'fixed source/plan paths required')
@@ -667,7 +726,8 @@ def audit_training(run, source, config_path, plan_root, *, source_commit,
     exact(launch.get('output'), str(run), 'launch output identity')
     config, environment = read_json(run/'config.json'), read_json(run/'environment.json')
     yaml_config = yaml.safe_load(config_path.read_text())
-    recipe = validate_config(config,yaml_config,source,run,plan_root,source_commit)
+    recipe = validate_config(config,yaml_config,source,run,plan_root,source_commit,
+        hardware_profile=hardware_profile)
     source_hashes = inventory(source)
     for relative, sha in source_hashes.items():
         pins.add(source/relative, sha)
@@ -677,13 +737,15 @@ def audit_training(run, source, config_path, plan_root, *, source_commit,
         module_path = Path(importlib.import_module(name).__file__).resolve()
         relative = name.replace('.', '/')+'.py'
         pins.add(module_path, source_hashes[relative])
-    hardware = validate_environment(environment,source_hashes,launch,source_commit)
+    hardware = validate_environment(environment,source_hashes,launch,source_commit,
+        hardware_profile=hardware_profile)
     plan, admission, old_arrays, simulation = load_plan(plan_root,pins)
     for name, sha in admission['provenance']['code_sha256'].items():
         relative = name.replace('.', '/')+'.py'
         exact(source_hashes.get(relative), sha, 'admitted runtime/frozen code binding: '+name)
     inputs = bind_inputs(pins,config,launch,admission)
     fit = bind_fit(pins,launch)
+    developer = bind_developer_training(pins,launch,hardware_profile)
     dependencies = bind_dependencies(pins,config,environment,launch)
     for path, sha in pins.files.items():
         if path in launch['input_sha256']:
@@ -734,9 +796,10 @@ def audit_training(run, source, config_path, plan_root, *, source_commit,
         final_step=FINAL,completed_epochs=2,parent_checkpoint=PARENT_PATH,parent_sha256=PARENT_SHA,
         metrics=metrics['metrics'],source_commit=source_commit,source_hashes=pins.files,
         config_path=str(config_path),config_sha256=config_sha256,recipe=recipe,hardware=hardware,
+        hardware_profile=hardware_profile,
         plan_admission_sha256=plan_admission_sha256,plan_sha256=PLAN_SHA,exposure=exposure,
         input_admission=inputs,fixed_group_fit=fit,dependencies=dependencies,optimizer_continuation=continuation,logs=logs,
-        worker_postcheck=auxiliary,closed_loop=False,
+        worker_postcheck=auxiliary,developer_training_evidence=developer,closed_loop=False,
         limits=['No closed-loop SR, untouched-test generalization, or product-success claim.',
             'Scheduler terminal success and full worker logs require separate operational verification.',
             'Rank assignments reconstructed; only merged actual counters were recorded by this trainer.',
@@ -748,6 +811,7 @@ def main():
     for name in ('run','source','config','plan-root','source-commit','config-sha256',
                  'plan-admission-sha256','output'):
         parser.add_argument('--'+name,required=True)
+    parser.add_argument('--hardware-profile', choices=tuple(HARDWARE_PROFILES), default='rtx4090')
     args = parser.parse_args()
     output = Path(args.output)
     protected = tuple(Path(x).resolve() for x in (args.run,args.source,args.plan_root))
@@ -757,7 +821,7 @@ def main():
         and output.parent.is_dir(), 'fresh independent NAS audit output required')
     report = audit_training(args.run,args.source,args.config,args.plan_root,
         source_commit=args.source_commit,config_sha256=args.config_sha256,
-        plan_admission_sha256=args.plan_admission_sha256)
+        plan_admission_sha256=args.plan_admission_sha256,hardware_profile=args.hardware_profile)
     with output.open('x') as stream:
         stream.write(json.dumps(report,indent=2,sort_keys=True,allow_nan=False)+'\n')
     print(json.dumps(dict(status=report['status'],output=str(output),sha256=digest(output),
