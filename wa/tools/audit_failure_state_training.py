@@ -661,7 +661,9 @@ def bind_fit(pins, launch):
         predictions=608, closed_loop=False, scope='Pinned pretraining label-fit evidence, not new model fit or SR')
 
 
-def bind_dependencies(pins, config, environment, launch):
+def bind_dependencies(pins, config, environment, launch, *, hardware_profile='rtx4090'):
+    hardware_contract(hardware_profile)
+    exact(launch.get('hardware_profile', 'rtx4090'), hardware_profile, 'dependency hardware profile binding')
     from wa.wm import loaders
     for name in ('dinov2','jepa-wms'):
         loaders.verify_source(ROOT/'upstream_audit'/name, name)
@@ -684,6 +686,13 @@ def bind_dependencies(pins, config, environment, launch):
         RECOVERY/'admission.json', RECOVERY/'complete.json', PLAN_ROOT/'admission.json', DEDUP, LOADER_AUDIT,
         SELECTION, FIT)}
     expected[PARENT_PATH] = PARENT_SHA  # Parent is hashed after all non-weight terminal gates.
+    if hardware_profile == 'a800':
+        # A800 adds six files plus the already-bound developer environment.
+        # Keep the exact whitelist; do not infer extra dependencies from launch.
+        validate_developer_training_evidence(launch)
+        for path, sha in A800_DEVELOPER_PINS.items():
+            pins.add(path, sha)
+        expected.update(A800_DEVELOPER_PINS)
     same(launch.get('input_sha256'), expected, 'exact complete worker launch input inventory')
     exact(wla.get('checkpoint_sha256'), fixed[Path(config['wla_checkpoint'])], 'WLA checkpoint identity')
     exact(wla.get('checkpoint_step'), 43203, 'WLA checkpoint step')
@@ -746,7 +755,8 @@ def audit_training(run, source, config_path, plan_root, *, source_commit,
     inputs = bind_inputs(pins,config,launch,admission)
     fit = bind_fit(pins,launch)
     developer = bind_developer_training(pins,launch,hardware_profile)
-    dependencies = bind_dependencies(pins,config,environment,launch)
+    dependencies = bind_dependencies(pins,config,environment,launch,
+        hardware_profile=hardware_profile)
     for path, sha in pins.files.items():
         if path in launch['input_sha256']:
             exact(launch['input_sha256'][path], sha, 'launch/input byte mismatch: '+path)

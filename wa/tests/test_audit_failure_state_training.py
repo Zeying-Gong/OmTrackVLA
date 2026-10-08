@@ -703,5 +703,96 @@ class FailureStateTrainingAuditTests(unittest.TestCase):
             with self.subTest(change=change),self.assertRaises(ValueError):
                 audit.validate_developer_training_evidence(launch)
 
+    def dependency_fixture(self, directory, profile):
+        from wa.wm import loaders
+        config=dict(encoder_weight='/synthetic/encoder.pth',
+            wla_checkpoint='/synthetic/wla.pt',wla_source=directory)
+        paths=(audit.A800_DEVELOPER_RUN/'environment.json',Path(config['encoder_weight']),
+            audit.ROOT/'models/jepa_wms/mz_jepa-wm.pth.tar',Path(config['wla_checkpoint']),
+            audit.BASE/'complete.json',audit.INDEX/'audit.json',audit.TEACHER/'complete.json',
+            audit.OLD_PLAN/'report.json',audit.OLD_PLAN/'plan.json',
+            audit.OLD_RUN/'actual_exposure_epoch1.npz',audit.RECOVERY/'admission.json',
+            audit.RECOVERY/'complete.json',audit.PLAN_ROOT/'admission.json',audit.DEDUP,
+            audit.LOADER_AUDIT,audit.SELECTION,audit.FIT)
+        hashes={str(path):'a'*64 for path in paths}
+        hashes.update({str(audit.A800_DEVELOPER_RUN/'environment.json'):
+            audit.A800_DEVELOPER_PINS[str(audit.A800_DEVELOPER_RUN/'environment.json')],
+            config['encoder_weight']:loaders.HASHES['encoder'],
+            str(audit.ROOT/'models/jepa_wms/mz_jepa-wm.pth.tar'):loaders.HASHES['jepa'],
+            config['wla_checkpoint']:'0b8f036fd282474d8c9efe9e34e1f4dc56b9282c44295bcda1f16edcf48460e1',
+            audit.PARENT_PATH:audit.PARENT_SHA})
+        launch=dict(hardware_profile=profile,input_sha256=dict(hashes),wla_source_files=0)
+        if profile=='a800':
+            launch.update(developer_training_evidence=self.a800_developer_fixture()['developer_training_evidence'])
+            hashes.update(audit.A800_DEVELOPER_PINS)
+            launch['input_sha256'].update(audit.A800_DEVELOPER_PINS)
+        def add(path, expected=None):
+            got=hashes[str(path)]
+            if expected is not None:audit.exact(got,expected,'synthetic fixture file SHA')
+            return got
+        pins=SimpleNamespace(files=hashes,add=Mock(side_effect=add))
+        env=dict(wla=dict(checkpoint_sha256=hashes[config['wla_checkpoint']],
+            checkpoint_step=43203,source_files={}))
+        return pins,config,env,launch
+
+    def call_dependency_fixture(self, fixture, profile):
+        from wa.wm import loaders
+        with patch.object(loaders,'verify_source'),patch.object(audit,'read_json',return_value=fixture[2]):
+            return audit.bind_dependencies(*fixture,hardware_profile=profile)
+
+    def test_dependency_binding_exact_18_and_24_inventories(self):
+        with TemporaryDirectory() as directory:
+            for profile,count in (('rtx4090',18),('a800',24)):
+                fixture=self.dependency_fixture(directory,profile)
+                self.assertEqual(len(fixture[3]['input_sha256']),count)
+                self.assertEqual(self.call_dependency_fixture(fixture,profile)['wla_source_files'],0)
+
+    def test_dependency_binding_missing_changed_or_extra_pin_rejected(self):
+        with TemporaryDirectory() as directory:
+            for profile in ('rtx4090','a800'):
+                paths=list(self.dependency_fixture(directory,profile)[3]['input_sha256'])
+                for path in paths:
+                    for change in ('missing','changed'):
+                        fixture=self.dependency_fixture(directory,profile)
+                        if change=='missing':del fixture[3]['input_sha256'][path]
+                        else:fixture[3]['input_sha256'][path]='f'*64
+                        with self.subTest(profile=profile,path=path,change=change),self.assertRaises(ValueError):
+                            self.call_dependency_fixture(fixture,profile)
+                fixture=self.dependency_fixture(directory,profile)
+                fixture[3]['input_sha256']['/unexpected']='f'*64
+                with self.assertRaises(ValueError):self.call_dependency_fixture(fixture,profile)
+
+    def test_dependency_profile_and_evidence_cannot_cross_accept(self):
+        with TemporaryDirectory() as directory:
+            for declared,selected in (('a800','rtx4090'),('rtx4090','a800'),('a800','auto')):
+                with self.subTest(declared=declared,selected=selected),self.assertRaises(ValueError):
+                    self.call_dependency_fixture(self.dependency_fixture(directory,declared),selected)
+            fixture=self.dependency_fixture(directory,'a800')
+            del fixture[3]['developer_training_evidence']
+            with self.assertRaises(ValueError):self.call_dependency_fixture(fixture,'a800')
+            fixture=self.dependency_fixture(directory,'a800')
+            fixture[3]['developer_training_evidence']['world_size']=8
+            with self.assertRaises(ValueError):self.call_dependency_fixture(fixture,'a800')
+            from wa.wm import loaders
+            fixture=self.dependency_fixture(directory,'rtx4090')
+            with patch.object(loaders,'verify_source'),patch.object(audit,'read_json',return_value=fixture[2]):
+                audit.bind_dependencies(*fixture)  # Default remains strict RTX4090.
+                del fixture[3]['hardware_profile']  # Original RTX4090 YAML omits the key.
+                audit.bind_dependencies(*fixture)
+            fixture=self.dependency_fixture(directory,'a800')
+            del fixture[3]['hardware_profile']
+            with self.assertRaises(ValueError):audit.bind_dependencies(*fixture)
+            with self.assertRaises(ValueError):self.call_dependency_fixture(fixture,'a800')
+
+    def test_terminal_caller_passes_explicit_dependency_profile(self):
+        import ast,inspect,textwrap
+        tree=ast.parse(textwrap.dedent(inspect.getsource(audit.audit_training)))
+        calls=[n for n in ast.walk(tree) if isinstance(n,ast.Call)
+            and isinstance(n.func,ast.Name) and n.func.id=='bind_dependencies']
+        self.assertEqual(len(calls),1)
+        values={k.arg:k.value for k in calls[0].keywords}
+        self.assertIsInstance(values.get('hardware_profile'),ast.Name)
+        self.assertEqual(values['hardware_profile'].id,'hardware_profile')
+
 if __name__=="__main__":
     unittest.main()
