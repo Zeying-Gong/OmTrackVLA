@@ -1,0 +1,817 @@
+{
+  "schema": "failure_state_v3_developer_audit_v1",
+  "status": "PASS_DEVELOPER_ONLY_NONRELEASE",
+  "root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_developer_20261008_v4",
+  "host": "devpod-zeying-gong-a800-76db9f7cd-7cchd",
+  "ssh_alias": "devpod-a800",
+  "physical_gpu": "3",
+  "key": "p53SfW6mjZe/25",
+  "started_utc": "2026-10-08T02:13:01.794187+00:00",
+  "ended_utc": "2026-10-08T02:13:08.510559+00:00",
+  "elapsed_s": 6.7163798045367,
+  "source": {
+    "commit": "726544449a5e7ad10c7d246b2bf302d783210c7e",
+    "git_clean": true,
+    "hashes_unchanged": true,
+    "key_file_sha256": {
+      "wa/tools/failure_state_launch_v3.py": "a1072754c8962d6357e08b41503846c9bf03b3415e3f75335e5bfe373c88ffb9",
+      "wa/wm/dual_teacher_collect.py": "704daa7cbf81b6efb60557652ecb8955618c0ba2062de347b6caacb39430e617",
+      "wa/wm/failure_state_boundary_policy.py": "a81c2787c5cab1d2d0a6bbf67abc93d3d75c6c9e2103a480afae29fdda687699",
+      "wa/wm/failure_state_collect.py": "522b59d4d2586813a48029dcd81f372f163d6c937df0508fd6a48516da531a4d",
+      "wa/wm/failure_state_collect_v3.py": "ccd10b49b84df1452a1a6ab2305f21acfb8caaf1baad553155a7218dfeaa8e30",
+      "wa/wm/failure_state_protocol.py": "fa86cf6aa5a605ac6bc6a46ce7f7d3f783de71fa7f89591dcb21c85100d3f901",
+      "wa/wm/failure_state_protocol_v2.py": "b442765d3b20db777dce3f76bc28bdf9a3664211da31b19f99b77b4f91da6f0b",
+      "wa/wm/failure_state_recorder.py": "f1b77f4d6e793c39d2b214277a81c6e0906061782bb1b158835a07c2a47fd8b9",
+      "wa/wm/failure_state_teacher_adapter.py": "18532768fcfc9da58f708bd073f6c3d7c5bebda6cbebe9b6a04e7988afb8c4e1",
+      "wa/wm/failure_state_teacher_error.py": "c7ccee9353e49d57f21ca4c760f076db5fdff8507386124ebaba4aed3d357737",
+      "wa/wm/recovery_replay.py": "5415ce31f94fe491a6eb113e16ed519160f2e8dc61295bf0edd5a52b89d77075"
+    },
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v3"
+  },
+  "pins": {
+    "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "checkpoint_step": 59716,
+    "continuation_sha256": "e5fe2986517c171fd93f507ebe0f6d9937c420d3c37efd3fe7ff391899444641",
+    "plan_sha256": "2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b",
+    "protocol_sha256": "f3f14b8aa935eaf6c3a7352703fe9f30bd9e28ba1825ff30e82b0cfd98800f31",
+    "teacher_boundary_policy": "missing_rvq_or_final_l2_v1"
+  },
+  "root_completion": {
+    "continuation_sha256": "e5fe2986517c171fd93f507ebe0f6d9937c420d3c37efd3fe7ff391899444641",
+    "entries": 1,
+    "experiment": "evaluation_adaptation_failure_state_v2",
+    "finished_utc": "2026-10-08T02:04:16.868255+00:00",
+    "formal": false,
+    "keys": [
+      "p53SfW6mjZe/25"
+    ],
+    "lanes": 1,
+    "no_success_rate": true,
+    "plan_sha256": "2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b",
+    "protocol_sha256": "f3f14b8aa935eaf6c3a7352703fe9f30bd9e28ba1825ff30e82b0cfd98800f31",
+    "status": "COLLECTION_PROCESSES_COMPLETE_NOT_TRAINING_RELEASE",
+    "teacher_boundary_policy": "missing_rvq_or_final_l2_v1",
+    "training_released": false
+  },
+  "model": {
+    "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+    "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "gpu": "NVIDIA A800-SXM4-80GB",
+    "mode": "mixed",
+    "noise_mode": "zero",
+    "sampling_steps": 4,
+    "seed": "7+step",
+    "step": 59716,
+    "text_used": false,
+    "url": "http://127.0.0.1:37963",
+    "world_predictor_inference": false
+  },
+  "branches": [
+    {
+      "actions": 24,
+      "complete": false,
+      "fallback_events": 0,
+      "frames": 24,
+      "initial_rgb_sha256": "f1bfe461996af5c9faf7de847c94e9e6b4dfc0a4d677c9c15929f81a6bc1e16a",
+      "name": "student",
+      "prefix_sha256": null,
+      "prefix_verified_frames": 0,
+      "takeover_state_sha256": null,
+      "teacher": "student",
+      "teacher_owned_actions": 0,
+      "terminal_result": null,
+      "training_released": false
+    },
+    {
+      "actions": 24,
+      "complete": false,
+      "fallback_events": 0,
+      "frames": 24,
+      "initial_rgb_sha256": "f1bfe461996af5c9faf7de847c94e9e6b4dfc0a4d677c9c15929f81a6bc1e16a",
+      "name": "lightnav_takeover0020",
+      "prefix_sha256": "a4c091ce7264b3471c586b96633f9665dc13ba0a1c9ee984dd1c21c83c564281",
+      "prefix_verified_frames": 21,
+      "takeover_state_sha256": "d1b3a8f5540c1c15f59a5c90a4e9432bd3133066b4151cbf400f0f0da0ff7914",
+      "teacher": "lightnav",
+      "teacher_owned_actions": 4,
+      "terminal_result": null,
+      "training_released": false
+    },
+    {
+      "actions": 24,
+      "complete": false,
+      "fallback_events": 0,
+      "frames": 24,
+      "initial_rgb_sha256": "f1bfe461996af5c9faf7de847c94e9e6b4dfc0a4d677c9c15929f81a6bc1e16a",
+      "name": "oracle_takeover0020",
+      "prefix_sha256": "a4c091ce7264b3471c586b96633f9665dc13ba0a1c9ee984dd1c21c83c564281",
+      "prefix_verified_frames": 21,
+      "takeover_state_sha256": "d1b3a8f5540c1c15f59a5c90a4e9432bd3133066b4151cbf400f0f0da0ff7914",
+      "teacher": "oracle",
+      "teacher_owned_actions": 4,
+      "terminal_result": null,
+      "training_released": false
+    }
+  ],
+  "pairing": {
+    "baseline_row_sha256": "3f55852c81258b008225ac2f2a3a5f572cd622efdf5623d7dc89fd1b33ec254b",
+    "decoded_png_prefix_bytes_equal": true,
+    "decoded_png_total": 72,
+    "hidden_rng_contact_state_proven": false,
+    "original61609_key_verified": true,
+    "original_initial_max_state_delta": 0,
+    "raw_alpha_not_saved": true,
+    "raw_sensor_digest_independently_recomputed": false,
+    "recorded_raw_sensor_digests_pair_equal": true,
+    "teacher_prefix_actions_per_branch": 20,
+    "teacher_prefix_frames_per_branch": 21,
+    "teacher_prefix_max_state_delta": 0
+  },
+  "processes": [
+    {
+      "exit_utc": "2026-10-08T02:03:55.484347+00:00",
+      "pid": 3362578,
+      "pid_absent": true,
+      "returncode": -15,
+      "role": "wa",
+      "spawn_utc": "2026-10-08T02:01:26.554491+00:00"
+    },
+    {
+      "exit_utc": "2026-10-08T02:03:55.247389+00:00",
+      "pid": 3362579,
+      "pid_absent": true,
+      "returncode": 0,
+      "role": "lightnav",
+      "spawn_utc": "2026-10-08T02:01:26.555833+00:00"
+    },
+    {
+      "exit_utc": "2026-10-08T02:03:52.654339+00:00",
+      "pid": 3363477,
+      "pid_absent": true,
+      "returncode": 0,
+      "role": "worker",
+      "spawn_utc": "2026-10-08T02:02:32.572811+00:00"
+    }
+  ],
+  "residual_owned_processes": [],
+  "error_markers": [],
+  "tests": {
+    "actual_observation_action_pairs": 72,
+    "actual_png_decode": 72,
+    "independent_teacher_actions": 8,
+    "rollout_rerun": false,
+    "teacher_executed_prefix_action_pairs": 40,
+    "teacher_raw_hash_state_prefix_pairs": 42,
+    "unit_tests_rerun": false
+  },
+  "logs": [
+    {
+      "bytes": 6957,
+      "fatal_patterns": {
+        "CUDA out of memory": 0,
+        "Fatal Python error": 0,
+        "REPLAY_DIVERGED": 0,
+        "Segmentation fault": 0,
+        "Traceback (most recent call last)": 0
+      },
+      "name": "worker.log",
+      "sha256": "56c1ff7172bb4f48ef2b3a44ce630e5c9849388df4675d1a15b7e091bcf1ac5f",
+      "warning_line_count": 51,
+      "warning_lines": [
+        {
+          "line": 11,
+          "text": "[02:03:08:117946]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00814-p53SfW6mjZe/p53SfW6mjZe.basis.scn` exists but failed to load."
+        },
+        {
+          "line": 14,
+          "text": "  0%|          | 0/1 [00:00<?, ?it/s]MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)"
+        },
+        {
+          "line": 15,
+          "text": "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        },
+        {
+          "line": 16,
+          "text": "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)"
+        },
+        {
+          "line": 17,
+          "text": "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        },
+        {
+          "line": 18,
+          "text": "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)"
+        },
+        {
+          "line": 19,
+          "text": "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        },
+        {
+          "line": 20,
+          "text": "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)"
+        }
+      ],
+      "warning_examples_truncated": true
+    },
+    {
+      "bytes": 850,
+      "fatal_patterns": {
+        "CUDA out of memory": 0,
+        "Fatal Python error": 0,
+        "REPLAY_DIVERGED": 0,
+        "Segmentation fault": 0,
+        "Traceback (most recent call last)": 0
+      },
+      "name": "wa.log",
+      "sha256": "186528aa06c2c40143a668900659f3dcacd9e8d31c975736006ab7248bbcc079",
+      "warning_line_count": 6,
+      "warning_lines": [
+        {
+          "line": 1,
+          "text": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)"
+        },
+        {
+          "line": 2,
+          "text": "  warnings.warn(\"xFormers is not available (SwiGLU)\")"
+        },
+        {
+          "line": 3,
+          "text": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)"
+        },
+        {
+          "line": 4,
+          "text": "  warnings.warn(\"xFormers is not available (Attention)\")"
+        },
+        {
+          "line": 5,
+          "text": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/upstream_audit/dinov2/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)"
+        },
+        {
+          "line": 6,
+          "text": "  warnings.warn(\"xFormers is not available (Block)\")"
+        }
+      ],
+      "warning_examples_truncated": false
+    },
+    {
+      "bytes": 15340,
+      "fatal_patterns": {
+        "CUDA out of memory": 0,
+        "Fatal Python error": 0,
+        "REPLAY_DIVERGED": 0,
+        "Segmentation fault": 0,
+        "Traceback (most recent call last)": 0
+      },
+      "name": "teacher.log",
+      "sha256": "a9b1ac50c2f7b709cd6a761ce6c48065962b22a7e9c5f015d60f70aa27182020",
+      "warning_line_count": 7,
+      "warning_lines": [
+        {
+          "line": 2,
+          "text": "[transformers] `Qwen2VLImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `Qwen2VLImageProcessor` instead."
+        },
+        {
+          "line": 9,
+          "text": "WARNING 10-08 02:01:48 [arg_utils.py:1390] The global random seed is set to 0. Since VLLM_ENABLE_V1_MULTIPROCESSING is set to False, this may affect the random state of the Python process that launched vLLM."
+        },
+        {
+          "line": 12,
+          "text": "WARNING 10-08 02:01:48 [arg_utils.py:2125] This model does not officially support disabling chunked prefill. Disabling this manually may cause the engine to crash or produce incorrect outputs."
+        },
+        {
+          "line": 14,
+          "text": "[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend=\"torchvision\"` instead of `use_fast=True`, or `backend=\"pil\"` instead of `use_fast=False`."
+        },
+        {
+          "line": 23,
+          "text": "<frozen importlib._bootstrap_external>:1241: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead."
+        },
+        {
+          "line": 24,
+          "text": "<frozen importlib._bootstrap_external>:1241: FutureWarning: The cuda.nvrtc module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.nvrtc module instead."
+        },
+        {
+          "line": 95,
+          "text": "[rank0]:[W1008 02:03:52.388498096 ProcessGroupNCCL.cpp:1553] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())"
+        }
+      ],
+      "warning_examples_truncated": false
+    },
+    {
+      "bytes": 0,
+      "fatal_patterns": {
+        "CUDA out of memory": 0,
+        "Fatal Python error": 0,
+        "REPLAY_DIVERGED": 0,
+        "Segmentation fault": 0,
+        "Traceback (most recent call last)": 0
+      },
+      "name": "xvfb.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "warning_line_count": 0,
+      "warning_lines": [],
+      "warning_examples_truncated": false
+    }
+  ],
+  "artifact_evidence": {
+    "common_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_developer_20261008_v4",
+    "files": [
+      {
+        "path": "DEVELOPMENT_CHECK.json",
+        "bytes": 651,
+        "sha256": "d0cd176c2e5c17a9c6781c5e117b6c7ec346f7827ecc27065e5b064f8a86d109"
+      },
+      {
+        "path": "coverage.json",
+        "bytes": 536,
+        "sha256": "0894402030214aa1832fc14eb4ec2dd64fa928d1ea782005c4926bda1844c4ef"
+      },
+      {
+        "path": "lane0/collection/DEVELOPMENT_CHECK.json",
+        "bytes": 646,
+        "sha256": "d9104eca03a7080a14977e31583e3024704b8eecae0a9464ca5bcff05e2ce01f"
+      },
+      {
+        "path": "lane0/collection/plan_identity.json",
+        "bytes": 825,
+        "sha256": "ca4953cdc380973ed0aceb4e660b3fb6c7eef486a178411107047f2930dbb7a5"
+      },
+      {
+        "path": "lane0/collection/records.jsonl",
+        "bytes": 1757399,
+        "sha256": "4bde6a840f93cd059001738e6a6e755c88eecd6c4c2b1751b37f992ad59f5fec"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/developer_check.json",
+        "bytes": 4847535,
+        "sha256": "fb6fddc8289d42e0add835e2b45910a050ae3a7931f57e6726c6ac0eb868c8f4"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/development.json",
+        "bytes": 1340998,
+        "sha256": "4cc6c2378921c0f8afd0c4041fc09dab1e82e05a8d8437fdfa43c0ad924c802b"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/initial_panoptic.npy",
+        "bytes": 589952,
+        "sha256": "c5c886412f4ba8286c766a1d4d0ffa7ece6b5c3091c7c0ee8772acba8e7a9a4e"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0000.png",
+        "bytes": 122836,
+        "sha256": "c3a53c33b8fb6f41d16bb0c7c6716e2ebb50658a7b1aa4603e9a95fcc16c10ae"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0001.png",
+        "bytes": 107884,
+        "sha256": "6797a35fdcc77317e01c68ff23f388176c4edd8cb3897540c77d1dc6e534fbbd"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0002.png",
+        "bytes": 108139,
+        "sha256": "aa0c28f5c0aab9e739d2c3ec0f600b5d052259211b698c38f4772090c6d4916d"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0003.png",
+        "bytes": 105892,
+        "sha256": "8fe469d019194cb488fe8694f8ab572c862bc828bcadde41759670f1203507c8"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0004.png",
+        "bytes": 101422,
+        "sha256": "5f9dc107df6cb3df8eae48c9d95bdcf5f0f7e0c1c68fb5aadf1d873db8198dd1"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0005.png",
+        "bytes": 98507,
+        "sha256": "34a6eec9e61c2814a8d4b1143ebc1322e3fe35f2cb9525b332533dd46446210f"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0006.png",
+        "bytes": 99297,
+        "sha256": "3d0307f6c4937e95932a98cfb70443152c663c60bfd246bd61a2dbc259fe310b"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0007.png",
+        "bytes": 96319,
+        "sha256": "b9fa5189fb53f043ea196cfc0a5b4372f614469ede10beb40879b72515cf6973"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0008.png",
+        "bytes": 93356,
+        "sha256": "9abb7af1db00f11d00175e20d16f8901e57ede3a70b502754ade4418ea5059ad"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0009.png",
+        "bytes": 93727,
+        "sha256": "c58711e1c023cc6368dcce91cedea6da2fe4ac0d5d2c09ae09c798fe87032e8b"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0010.png",
+        "bytes": 93908,
+        "sha256": "bf3de47cfc289b21e2bdcdb99e50c0ca8edf45e3b71b17a7be094a511f0bd8a2"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0011.png",
+        "bytes": 94776,
+        "sha256": "ca704db3f2ccbee0028191a2665cf38386cce605c997fed62b6e94d4b6bd7362"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0012.png",
+        "bytes": 96176,
+        "sha256": "ef3c86173312936a531a3373a5f25022d82ee3f30ccd282891f9e7fcb13b41d4"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0013.png",
+        "bytes": 96179,
+        "sha256": "54895653dcfe7a667780653ed787229816509da0f0931b90879b0be70b05d8fa"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0014.png",
+        "bytes": 98207,
+        "sha256": "cf4952e259ecf30bec7d1db9c647a5d62d6c35efe958836fc65ee742bfb21593"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0015.png",
+        "bytes": 100361,
+        "sha256": "578c43eefdfe393cfe4ddb7fbb8872c20fe2d99e266652a74e1a35ffdaa19ee3"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0016.png",
+        "bytes": 102399,
+        "sha256": "305872c1f7c334ab41cb72d54fc1e4597683c794e386734f0be918cf5f223637"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0017.png",
+        "bytes": 105716,
+        "sha256": "681e9b65e9ea3977fa578ff6f98ff715226dfa10cc4483cac091f978cfa28f01"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0018.png",
+        "bytes": 106743,
+        "sha256": "7206a9e46c3afa487561336cd0e2ee820733c6efef3367fa0ed2a1d84f8dafa1"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0019.png",
+        "bytes": 105387,
+        "sha256": "b0a3e2f1c57e078d186a6004eff860b880f0063c3cd903309abcb7c18d68f927"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0020.png",
+        "bytes": 104177,
+        "sha256": "63ec475aac4107b89664601cebc500e38fd487e651ba33a59bfd24a48e87b4db"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0021.png",
+        "bytes": 103139,
+        "sha256": "d3b1565e6f9ede8f26ea95c223a49bec82c2d426fe1b9f43b30a1f36d0d19d62"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0022.png",
+        "bytes": 102239,
+        "sha256": "c6408da66507fb338a9e2471266850a2beeb5cd1dcc518ea72e47efb0fcd9d05"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/lightnav_takeover0020/rgb_0023.png",
+        "bytes": 102103,
+        "sha256": "0472df823d229e2ab40d0ec4fa24cf2af28765a97b394d44c45e6b2a684eaa0d"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/development.json",
+        "bytes": 1335932,
+        "sha256": "22c92df477e6f1773f16835f4bac3ac761993daf69e53561cd98f5e5633d0a25"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/initial_panoptic.npy",
+        "bytes": 589952,
+        "sha256": "c5c886412f4ba8286c766a1d4d0ffa7ece6b5c3091c7c0ee8772acba8e7a9a4e"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0000.png",
+        "bytes": 122836,
+        "sha256": "c3a53c33b8fb6f41d16bb0c7c6716e2ebb50658a7b1aa4603e9a95fcc16c10ae"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0001.png",
+        "bytes": 107884,
+        "sha256": "6797a35fdcc77317e01c68ff23f388176c4edd8cb3897540c77d1dc6e534fbbd"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0002.png",
+        "bytes": 108139,
+        "sha256": "aa0c28f5c0aab9e739d2c3ec0f600b5d052259211b698c38f4772090c6d4916d"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0003.png",
+        "bytes": 105892,
+        "sha256": "8fe469d019194cb488fe8694f8ab572c862bc828bcadde41759670f1203507c8"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0004.png",
+        "bytes": 101422,
+        "sha256": "5f9dc107df6cb3df8eae48c9d95bdcf5f0f7e0c1c68fb5aadf1d873db8198dd1"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0005.png",
+        "bytes": 98507,
+        "sha256": "34a6eec9e61c2814a8d4b1143ebc1322e3fe35f2cb9525b332533dd46446210f"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0006.png",
+        "bytes": 99297,
+        "sha256": "3d0307f6c4937e95932a98cfb70443152c663c60bfd246bd61a2dbc259fe310b"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0007.png",
+        "bytes": 96319,
+        "sha256": "b9fa5189fb53f043ea196cfc0a5b4372f614469ede10beb40879b72515cf6973"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0008.png",
+        "bytes": 93356,
+        "sha256": "9abb7af1db00f11d00175e20d16f8901e57ede3a70b502754ade4418ea5059ad"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0009.png",
+        "bytes": 93727,
+        "sha256": "c58711e1c023cc6368dcce91cedea6da2fe4ac0d5d2c09ae09c798fe87032e8b"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0010.png",
+        "bytes": 93908,
+        "sha256": "bf3de47cfc289b21e2bdcdb99e50c0ca8edf45e3b71b17a7be094a511f0bd8a2"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0011.png",
+        "bytes": 94776,
+        "sha256": "ca704db3f2ccbee0028191a2665cf38386cce605c997fed62b6e94d4b6bd7362"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0012.png",
+        "bytes": 96176,
+        "sha256": "ef3c86173312936a531a3373a5f25022d82ee3f30ccd282891f9e7fcb13b41d4"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0013.png",
+        "bytes": 96179,
+        "sha256": "54895653dcfe7a667780653ed787229816509da0f0931b90879b0be70b05d8fa"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0014.png",
+        "bytes": 98207,
+        "sha256": "cf4952e259ecf30bec7d1db9c647a5d62d6c35efe958836fc65ee742bfb21593"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0015.png",
+        "bytes": 100361,
+        "sha256": "578c43eefdfe393cfe4ddb7fbb8872c20fe2d99e266652a74e1a35ffdaa19ee3"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0016.png",
+        "bytes": 102399,
+        "sha256": "305872c1f7c334ab41cb72d54fc1e4597683c794e386734f0be918cf5f223637"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0017.png",
+        "bytes": 105716,
+        "sha256": "681e9b65e9ea3977fa578ff6f98ff715226dfa10cc4483cac091f978cfa28f01"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0018.png",
+        "bytes": 106743,
+        "sha256": "7206a9e46c3afa487561336cd0e2ee820733c6efef3367fa0ed2a1d84f8dafa1"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0019.png",
+        "bytes": 105387,
+        "sha256": "b0a3e2f1c57e078d186a6004eff860b880f0063c3cd903309abcb7c18d68f927"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0020.png",
+        "bytes": 104177,
+        "sha256": "63ec475aac4107b89664601cebc500e38fd487e651ba33a59bfd24a48e87b4db"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0021.png",
+        "bytes": 104164,
+        "sha256": "7d51c229b51283e3f71fcf48d4226f578f5eae5a686f9eda912cf535e6184bf5"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0022.png",
+        "bytes": 104251,
+        "sha256": "2ee82ade02286a667a6f68520e407f6d211123909fb1eb9419272222f799a57e"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/oracle_takeover0020/rgb_0023.png",
+        "bytes": 103039,
+        "sha256": "8852bc8222ed255f1bfcd80c5cd767f3bda6bb1b68b53b430d1705967f840083"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/development.json",
+        "bytes": 1303459,
+        "sha256": "1931366b41a56c6162eb5f54a00359aaf31f0e235ce0c822dec73ae245faefd7"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/initial_panoptic.npy",
+        "bytes": 589952,
+        "sha256": "c5c886412f4ba8286c766a1d4d0ffa7ece6b5c3091c7c0ee8772acba8e7a9a4e"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0000.png",
+        "bytes": 122836,
+        "sha256": "c3a53c33b8fb6f41d16bb0c7c6716e2ebb50658a7b1aa4603e9a95fcc16c10ae"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0001.png",
+        "bytes": 107884,
+        "sha256": "6797a35fdcc77317e01c68ff23f388176c4edd8cb3897540c77d1dc6e534fbbd"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0002.png",
+        "bytes": 108139,
+        "sha256": "aa0c28f5c0aab9e739d2c3ec0f600b5d052259211b698c38f4772090c6d4916d"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0003.png",
+        "bytes": 105892,
+        "sha256": "8fe469d019194cb488fe8694f8ab572c862bc828bcadde41759670f1203507c8"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0004.png",
+        "bytes": 101422,
+        "sha256": "5f9dc107df6cb3df8eae48c9d95bdcf5f0f7e0c1c68fb5aadf1d873db8198dd1"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0005.png",
+        "bytes": 98507,
+        "sha256": "34a6eec9e61c2814a8d4b1143ebc1322e3fe35f2cb9525b332533dd46446210f"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0006.png",
+        "bytes": 99297,
+        "sha256": "3d0307f6c4937e95932a98cfb70443152c663c60bfd246bd61a2dbc259fe310b"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0007.png",
+        "bytes": 96319,
+        "sha256": "b9fa5189fb53f043ea196cfc0a5b4372f614469ede10beb40879b72515cf6973"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0008.png",
+        "bytes": 93356,
+        "sha256": "9abb7af1db00f11d00175e20d16f8901e57ede3a70b502754ade4418ea5059ad"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0009.png",
+        "bytes": 93727,
+        "sha256": "c58711e1c023cc6368dcce91cedea6da2fe4ac0d5d2c09ae09c798fe87032e8b"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0010.png",
+        "bytes": 93908,
+        "sha256": "bf3de47cfc289b21e2bdcdb99e50c0ca8edf45e3b71b17a7be094a511f0bd8a2"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0011.png",
+        "bytes": 94776,
+        "sha256": "ca704db3f2ccbee0028191a2665cf38386cce605c997fed62b6e94d4b6bd7362"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0012.png",
+        "bytes": 96176,
+        "sha256": "ef3c86173312936a531a3373a5f25022d82ee3f30ccd282891f9e7fcb13b41d4"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0013.png",
+        "bytes": 96179,
+        "sha256": "54895653dcfe7a667780653ed787229816509da0f0931b90879b0be70b05d8fa"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0014.png",
+        "bytes": 98207,
+        "sha256": "cf4952e259ecf30bec7d1db9c647a5d62d6c35efe958836fc65ee742bfb21593"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0015.png",
+        "bytes": 100361,
+        "sha256": "578c43eefdfe393cfe4ddb7fbb8872c20fe2d99e266652a74e1a35ffdaa19ee3"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0016.png",
+        "bytes": 102399,
+        "sha256": "305872c1f7c334ab41cb72d54fc1e4597683c794e386734f0be918cf5f223637"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0017.png",
+        "bytes": 105716,
+        "sha256": "681e9b65e9ea3977fa578ff6f98ff715226dfa10cc4483cac091f978cfa28f01"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0018.png",
+        "bytes": 106743,
+        "sha256": "7206a9e46c3afa487561336cd0e2ee820733c6efef3367fa0ed2a1d84f8dafa1"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0019.png",
+        "bytes": 105387,
+        "sha256": "b0a3e2f1c57e078d186a6004eff860b880f0063c3cd903309abcb7c18d68f927"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0020.png",
+        "bytes": 104177,
+        "sha256": "63ec475aac4107b89664601cebc500e38fd487e651ba33a59bfd24a48e87b4db"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0021.png",
+        "bytes": 103188,
+        "sha256": "cb4c68c8f6b1165e17329695604eaf27fa49bd8184ccec58c5621275d0faebd0"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0022.png",
+        "bytes": 102576,
+        "sha256": "e417c47f8e472a3971c570c0d4f58c72fef3e1be89458a04aeb65fc5884cfb61"
+      },
+      {
+        "path": "lane0/collection/stt/p53SfW6mjZe/25/student/rgb_0023.png",
+        "bytes": 100935,
+        "sha256": "9f1e13a8eaf667a6a006597fba9ae2580deb8cee07978aeff1ac0fb98b11aac6"
+      },
+      {
+        "path": "lane0/lane_outcome.json",
+        "bytes": 802,
+        "sha256": "3e4816a4771070562a0ec0fc381bb61bd245cc688c788048c9c683010fb44fd8"
+      },
+      {
+        "path": "lane0/launch.json",
+        "bytes": 10082,
+        "sha256": "0ae73692591c2081fd914b197d2846ac373640debe09b08bb47fd2f6ed38cf17"
+      },
+      {
+        "path": "lane0/processes.jsonl",
+        "bytes": 9297,
+        "sha256": "6a3b127a861c242d9ff93a9b06a2cee412c6b2285a3d6d785af10dcb848068be"
+      },
+      {
+        "path": "lane0/teacher.log",
+        "bytes": 15340,
+        "sha256": "a9b1ac50c2f7b709cd6a761ce6c48065962b22a7e9c5f015d60f70aa27182020"
+      },
+      {
+        "path": "lane0/wa.log",
+        "bytes": 850,
+        "sha256": "186528aa06c2c40143a668900659f3dcacd9e8d31c975736006ab7248bbcc079"
+      },
+      {
+        "path": "lane0/wa_ready.json",
+        "bytes": 451,
+        "sha256": "2579b557c23d6a0d5c1c0206ea6d3b72ef1c63233f829c2875591a37540178af"
+      },
+      {
+        "path": "lane0/worker.log",
+        "bytes": 6957,
+        "sha256": "56c1ff7172bb4f48ef2b3a44ce630e5c9849388df4675d1a15b7e091bcf1ac5f"
+      },
+      {
+        "path": "lane0/xvfb.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "launch.json",
+        "bytes": 1181,
+        "sha256": "6ddf01891c42d690d25bdf1df630978692e1811c936b56d8889994df3fc67863"
+      }
+    ]
+  },
+  "input_evidence": [
+    {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_continuation_61836_v1.json",
+      "bytes": 5667939,
+      "sha256": "e5fe2986517c171fd93f507ebe0f6d9937c420d3c37efd3fe7ff391899444641"
+    },
+    {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_plan_61609_v1.json",
+      "bytes": 183384,
+      "sha256": "2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b"
+    },
+    {
+      "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/student61609_full_audit_20261007_v1/combined_episodes.jsonl",
+      "bytes": 91129210,
+      "sha256": "0ab45e1b35bb0b8809fcc77fcaabca59b35bab0839507d716c371ce2d5a6f358"
+    },
+    {
+      "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+      "bytes": 4358277705,
+      "sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52"
+    }
+  ],
+  "limits": [
+    "One fixed developer key, 24 actions each; not a full search, success rate, training admission or formal job.",
+    "Runtime boundary policy identity was exercised on normal outputs; this short check does not reproduce the missing-final-l2 error at seq66.",
+    "Raw sensor alpha not persisted; independently decode/hash RGB PNG and pair recorded sensor digests, do not claim reconstructed rawRGBA.",
+    "24th action has no saved post-state; no endpoint or SE2 training windows invented.",
+    "WA server exit -15 is intentional owned-process cleanup, worker return0; warnings retained."
+  ],
+  "training_released": false,
+  "score_backfill_allowed": false
+}

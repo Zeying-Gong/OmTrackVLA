@@ -1,0 +1,88 @@
+{
+  "schema": "failure_state_v3_formal_release_v1",
+  "status": "READY_FOR_ONCE_ONLY_90_COLLECTION",
+  "training_released": false,
+  "new_model_sr": false,
+  "source": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v3",
+    "commit": "726544449a5e7ad10c7d246b2bf302d783210c7e",
+    "clean": true
+  },
+  "config": {
+    "path": "wa/jobs/failure_state_collect_a800_v3.yaml",
+    "sha256": "667ab19aa192802eb8029326730ec46a089a4094b17d12ff9d8d7f6e01ab4218",
+    "command": "config_version: 1\ncluster: baidu_a800\nimage: x5-builder:cuda12.8-isaac5.0.0-v2.test1\nnum_gpus: 8\nlog_folder: wa_failure_state_collect_a800_v3\ntasks:\n  - name: wa_failure_state_continue90_v3\n    type: shell\n    workload_backend: k8s\n    num_gpus: 8\n    timeout: 172800\n    cmd: |\n      set -euo pipefail\n      cd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v3\n      test \"$(git rev-parse HEAD)\" = 726544449a5e7ad10c7d246b2bf302d783210c7e\n      test -z \"$(git status --porcelain)\"\n      OUTPUT_ROOT=\"/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_failure_state_collect_a800_v3\"\n      bash wa/scripts/failure_state_collect_v3.sh \"$OUTPUT_ROOT\" \\\n        /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_continuation_61836_v1.json \\\n        e5fe2986517c171fd93f507ebe0f6d9937c420d3c37efd3fe7ff391899444641\n"
+  },
+  "target": {
+    "cluster": "baidu_a800",
+    "actual_route": "baidu_bj_a800",
+    "num_gpus": 8,
+    "reason": "A800 priority, currently21free; same verified NAS, no migration",
+    "expected_gpu": "A800-SXM4-80GB",
+    "actual_worker_verification": "pending scheduler allocation"
+  },
+  "continuation": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_continuation_61836_v1.json",
+    "sha256": "e5fe2986517c171fd93f507ebe0f6d9937c420d3c37efd3fe7ff391899444641",
+    "bytes": 5667939,
+    "new": 90,
+    "reused": 36,
+    "lanes": [
+      12,
+      13,
+      8,
+      13,
+      12,
+      9,
+      12,
+      11
+    ],
+    "source_files": 18875,
+    "load_roundtrip": true,
+    "training_released": false
+  },
+  "developer": {
+    "report": "wa/results/FAILURE_STATE_V3_DEVELOPER_20261008.json",
+    "sha256": "93347a3ddf1d61e9e4b5d9c5fe71a39379200f1bba04340536c88e4585860477",
+    "status": "PASS_DEVELOPER_ONLY_NONRELEASE",
+    "rollout_exit": 0,
+    "completed_utc": "2026-10-08T02:04:16.868255+00:00",
+    "gpu": "devpod-a800 physical3 A800-SXM4-80GB",
+    "actions": {
+      "student": 24,
+      "lightnav": 24,
+      "oracle": 24
+    },
+    "key": "p53SfW6mjZe/25",
+    "takeover_step": 20,
+    "png_decoded": 72,
+    "prefix_frame_pairs": 42,
+    "prefix_action_pairs": 40,
+    "teacher_suffix_actions": 8,
+    "state_maxdelta": 0,
+    "fallback": 0,
+    "owned_cleanup": "worker0 LightNav0 WA-15; 3 PID/PGID exit matches and no group/session residual",
+    "limitation": "24 actions did not trigger original seq66 malformed reply; integration CPU covers typed handling; raw RGBA cannot be reconstructed from saved RGB-only PNG"
+  },
+  "preparation": {
+    "report": "wa/results/FAILURE_STATE_V3_PREPARATION_20261008.json",
+    "tests": 313,
+    "dependency_files": 435,
+    "data": "actual1405 STT definitions,90 remaining with original8lane ownership"
+  },
+  "preserved": {
+    "old_job61833": "FAILED",
+    "old_job61836": "FAILED",
+    "completed_sources": 36,
+    "new_only": 90,
+    "coverage_target": 126,
+    "old_results_relabelled": false
+  },
+  "submission": {
+    "job": null,
+    "task": null,
+    "duplicate_check": "only61836/61833 failed; no prior90 job",
+    "output_template": "/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_failure_state_collect_a800_v3"
+  },
+  "next_gate": "8 worker actual GPU/readiness/actions/unique completion;126 raw audit, labels and loader before training"
+}
