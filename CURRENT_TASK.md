@@ -1,5 +1,5 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 21:46 Beijing. Job62256/Task73511 SUBMITTED at21:44:40;actualPod Pending/node=- at21:45:33,FailedScheduling CPU/GPU/placement limits;output absent21:45:52. No worker/optimizer progress. Do not resubmit/also launch4090. GoalACTIVE;best61609 unchanged.
+Updated: 2026-10-08 23:08 Beijing. Job62256/Task73511 stillSUBMITTED at23:01:23;actualPod Pending/node=-23:01:03 with CPU/GPU/placement limits. No worker/optimizer progress. Direct61609 load/state/Session equivalence PASS;no newSR orH100 result. Do not resubmit/also launch4090. GoalACTIVE;best61609 unchanged.
 Existing Goal was externally resumed: get_goal returned ACTIVE at19:29/19:33/19:58. Prior BLOCKED is historical. Heartbeat wa remains ACTIVE every20minutes;not complete or user-paused.
 Full predecessor: archive/2026-10/CURRENT_TASK_before_group_fit_permission_20261008_1656.md.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Resolve R/C/J prefixes literally below.
@@ -12,6 +12,7 @@ Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260
 - Preserve JEPA/MetaQuery/ActionExpert,original loss/LR/controller/physics/criteria. RGB+episode0 GTBBox template+current ideal polarUWB;no text,laterGTBBox,futureGTpaths orRL;JEPA auxiliary during training.
 
 ## Current operation and next gates
+- DirectWA61609 loader23:04:15CPU testsPASS;singleA800 bounded47.282s audit669state=494WA+175DINO/619modulesnonstate exact;old/new6Sessionrequests each exact;onlyWA+DINO loaded;world/robotcalls0. Report artifacts/standalone61609_equivalence_20261008_v1.json SHAd62f50513100dd64c17f8866ca249d8e40019e5efebc81bfaf3614a1f4b5dd2d;summary C/wa/results/STANDALONE61609_EQUIVALENCE_20261008.md. No oldWLA/JEPA init needed bynewfunction;RPC/full-launch integration andH100/assets stillpending;old192b/trainer/checkpoints unchanged.
 
 - Best61609 cross-machine handoff20261008: C/wa/repro/BEST61609_ASSET_HANDOFF.md records exact268WLA-head-state coverage by c510,3originalweights SHA verified,25,305evidence-file closure2,330,389,716B andrealenv/overlay22.36GB estimate. OldWLA/JEPA files are original-constructor dependencies,not additional online models;minimalentry outputequivalence stillpending. No weight export/upload/credential storage/environment mutation;62256unchanged.
 - Live wait diagnosis21:46:own J/job_62256/task_73511/.md-ak/workload.log lines571-575 show Pod ray-a800/job-62256-0-b9bdm Pending/node=- and FailedScheduling0/29:20-21Insufficientcpu,7InsufficientGPU,1-2affinity/selector or1ci-taint mismatch (counts overlap). K8s Job phaseRunning is not Pod/trainingRUNNING. No queue-rank/ETA/gang-policy inference;keep existingqueue/20min monitor.
