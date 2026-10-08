@@ -56,9 +56,14 @@ class FailureStateRecorder(TeacherRecorder):
     """
 
     def __init__(self, root, metadata, environment_provider, takeover_step=None,
-                 repair=None, expected_prefix=None, agent=None):
+                 repair=None, expected_prefix=None, agent=None, *, experiment=EXPERIMENT):
         metadata = copy.deepcopy(metadata)
-        if (metadata.get("experiment") != EXPERIMENT or
+        if experiment != EXPERIMENT:
+            from wa.wm.failure_state_protocol_v2 import EXPERIMENT as V2, PROTOCOL_SHA as V2_SHA
+            if experiment != V2 or metadata.get("protocol_sha256") != V2_SHA:
+                raise ValueError("explicit pinned v2 recorder identity required")
+        self.experiment = experiment
+        if (metadata.get("experiment") != self.experiment or
                 metadata.get("partition") != PARTITION):
             raise ValueError("wrong independent failure-state experiment/partition")
         if not callable(environment_provider):
@@ -86,7 +91,7 @@ class FailureStateRecorder(TeacherRecorder):
         if not isinstance(verification, bool):
             raise ValueError("verification_only must be boolean")
         metadata.update(takeover_step=takeover_step, verification_only=verification,
-                        training_eligible=False, schema=EXPERIMENT,
+                        training_eligible=False, schema=self.experiment,
                         target_positions_use="offline_label_only_never_policy_input",
                         action_recording="selected command before env.step; poststate not fabricated")
         super().__init__(root, metadata)
@@ -329,7 +334,7 @@ class FailureStateRecorder(TeacherRecorder):
         complete = complete and all("action" in row for row in self.replay) and not self.issues
         fallback = bool(self.fallback_events)
         summary = dict(
-            experiment=EXPERIMENT, partition=PARTITION, schema=EXPERIMENT,
+            experiment=self.experiment, partition=PARTITION, schema=self.experiment,
             task=self.metadata.get("task"), key=self.metadata.get("key"),
             teacher=self.metadata["teacher"], takeover_step=self.takeover_step,
             seed=self.metadata.get("seed"), protocol_sha256=self.metadata.get("protocol_sha256"),
@@ -387,13 +392,74 @@ class FailureStateRecorder(TeacherRecorder):
         self._write("admission.json", summary)
         complete = json.loads((self.root / "complete.json").read_text())
         complete.update(
-            schema=EXPERIMENT, status="FAILURE_STATE_RAW_COLLECTION_COMPLETE",
+            schema=self.experiment, status="FAILURE_STATE_RAW_COLLECTION_COMPLETE",
             complete=summary["complete"], windows=len(windows), raw_windows=len(raw),
             candidate_windows=len(windows), training_eligible=False,
             training_released=False, blocker=summary["pending"])
         self._write("complete.json", complete)
         self._finalized = True
         return summary
+
+    def finish_teacher_error(self, error):
+        """Persist actual partial RVQ-error evidence, never a terminal result/window."""
+        from wa.wm.failure_state_protocol_v2 import EXPERIMENT as V2
+        from wa.wm.failure_state_teacher_adapter import FailureStateTeacherBoundary
+        from wa.wm.failure_state_teacher_error import (
+            TeacherOutputInvalid, build_teacher_error, validate_teacher_error)
+        if (self._finalized or self.experiment != V2 or type(error) is not TeacherOutputInvalid
+                or self.metadata["teacher"] != "lightnav" or self.takeover_step is None
+                or type(self.agent) is not ReplayThenTeacher
+                or type(self.agent.teacher) is not FailureStateTeacherBoundary):
+            raise ValueError("only a genuine v2 LightNav boundary error can finalize this branch")
+        boundary = self.agent.teacher
+        raw = boundary.teacher.teacher
+        reply = getattr(raw, "reply_error", None)
+        if (boundary.teacher_name != "lightnav" or not isinstance(reply, dict)
+                or {k: reply.get(k) for k in ("rc", "seq", "msg")}
+                != dict(rc=error.evidence["rc"], seq=error.evidence["seq"],
+                        msg=error.evidence["message"])):
+            raise ValueError("typed error does not match the actual teacher response")
+        self._inspect_agent("teacher_error_before_reset", len(self.actions))
+        proof = self._agent_validation()
+        if (self.issues or not self.fallback_events or not proof["replay_wrapper"]
+                or not proof["prefix_hash_matches"] or not proof["environment_bound"]
+                or not proof["takeover_matches"]
+                or proof["agent_step_before_reset"] != len(self.actions)):
+            raise ValueError("missing or inconsistent real partial replay binding")
+        # Each error is observed before its action; this does not release a terminal result.
+        def persist(name, value):
+            with (self.root/name).open("x") as stream:
+                json.dump(_json_value(value), stream, indent=2, allow_nan=False)
+                stream.write("\n")
+        persist("partial_replay.json", self.replay)
+        persist("partial_actions.json", self.actions)
+        persist("partial_observations.json", self.frames)
+        pair = dict(
+            experiment=self.experiment, task=self.metadata["task"], key=self.metadata["key"],
+            takeover_step=self.takeover_step, seed=self.metadata["seed"],
+            protocol_sha256=self.metadata["protocol_sha256"],
+            initial_rgb_sha256=self.expected_prefix[0]["rgb_sha256"],
+            takeover_state_sha256=canonical_sha256(
+                self.expected_prefix[self.takeover_step]["dynamic_state"]),
+            prefix_sha256=self.prefix_sha256)
+        document = build_teacher_error(
+            error=error, teacher=self.metadata["teacher"], expected_pair=pair,
+            prefix=self.expected_prefix,
+            partial_replay_path=self.root/"partial_replay.json",
+            partial_actions_path=self.root/"partial_actions.json",
+            verification_only=self.metadata["verification_only"],
+            fallback_detected=True, fallback_executed=False)
+        validate_teacher_error(document, prefix=self.expected_prefix)
+        persist("teacher_error_context.json", dict(
+            metadata=self.metadata, first_start=self.first_start, takeover=self.takeover,
+            fallback_events=self.fallback_events, agent_validation=proof,
+            raw_reply=reply, raw_client_sequence=getattr(raw, "seq", None),
+            episode_fallback_count=getattr(raw, "episode_fallback_count", None),
+            no_terminal_result=True, training_eligible=False, training_released=False))
+        persist("teacher_error.json", document)
+        persist("branch.json", document)
+        self._finalized = True
+        return document
 
     def finish_development(self, reason):
         """Finalize genuine partial evidence, with NO terminal result or SR."""

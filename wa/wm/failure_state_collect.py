@@ -15,7 +15,9 @@ from pathlib import Path
 
 from wa.wm.failure_state_protocol import (
     EXPERIMENT, binary_flag, candidate_steps, load_plan, select_recovery_teacher,
+    PROTOCOL_SHA as V1_PROTOCOL_SHA,
 )
+from wa.wm.failure_state_teacher_error import TeacherOutputInvalid
 
 RGB_KEY = "agent_1_articulated_agent_jaw_rgb"
 PAIR_FIELDS = ("experiment", "task", "key", "takeover_step", "seed",
@@ -134,8 +136,31 @@ class LimitedRecorder:
         self.early_result = result
 
 
+def runtime_contract(plan, *, experiment=EXPERIMENT, protocol_sha=None):
+    """Keep the base plan v1; select a separate, explicitly pinned execution identity."""
+    if plan.get("experiment") != EXPERIMENT or plan.get("protocol_sha256") != V1_PROTOCOL_SHA:
+        raise ValueError("Runtime requires the unchanged v1 base plan")
+    if experiment == EXPERIMENT:
+        if protocol_sha not in (None, V1_PROTOCOL_SHA):
+            raise ValueError("wrong v1 runtime protocol")
+        return EXPERIMENT, V1_PROTOCOL_SHA
+    from wa.wm.failure_state_protocol_v2 import EXPERIMENT as V2, PROTOCOL_SHA as V2_SHA
+    if experiment != V2 or protocol_sha != V2_SHA:
+        raise ValueError("explicit pinned v2 runtime identity required")
+    return V2, V2_SHA
+
+
 class Runtime:
-    def __init__(self, plan, plan_sha, ready, output):
+    def __init__(self, plan, plan_sha, ready, output, *,
+                 experiment=EXPERIMENT, protocol_sha=None, continuation_sha=None):
+        self.experiment, self.protocol_sha = runtime_contract(
+            plan, experiment=experiment, protocol_sha=protocol_sha)
+        self.continuation_sha = continuation_sha
+        if self.experiment != EXPERIMENT:
+            from wa.wm.failure_state_protocol import _sha
+            _sha(continuation_sha, "v2 continuation identity")
+        elif continuation_sha is not None:
+            raise ValueError("v1 runtime must not receive a continuation identity")
         import habitat
         import evt_bench  # Register benchmark sensors/actions before Hydra composition.
         from evt_full_20260926.common import BENCH, SCENES, sha, scene
@@ -143,7 +168,6 @@ class Runtime:
         from wa.wm.full_mixed_contract import validate_ready
         self.plan, self.plan_sha, self.ready = plan, plan_sha, ready
         self.output, self.bench = Path(output), BENCH
-        self.protocol_sha = plan["protocol_sha256"]
         validate_ready(ready, checkpoint_sha=plan["checkpoint"]["sha256"],
                        step=plan["checkpoint"]["step"], mode="mixed")
         if ready.get("seed") != "7+step":
@@ -235,10 +259,13 @@ class Runtime:
                 raise ValueError("unknown teacher")
             teacher = (LightNav(str(base / (name + "_client")), teacher_url)
                        if teacher_name == "lightnav" else OracleTeacher())
-            agent = ReplayThenTeacher(BoundTeacher(teacher, allow_released_fallback=False),
-                                      prefix, takeover_step, RGB_KEY)
+            boundary = BoundTeacher(teacher, allow_released_fallback=False)
+            if self.experiment != EXPERIMENT:
+                from wa.wm.failure_state_teacher_adapter import FailureStateTeacherBoundary
+                boundary = FailureStateTeacherBoundary(boundary, teacher_name=teacher_name)
+            agent = ReplayThenTeacher(boundary, prefix, takeover_step, RGB_KEY)
             environment = lambda: agent.environment
-        meta = dict(experiment=EXPERIMENT, partition="evaluation_adaptation", task="stt",
+        meta = dict(experiment=self.experiment, partition="evaluation_adaptation", task="stt",
                     key=entry["key"], teacher=teacher_name or "student",
                     verification_only=verification_only, plan_sha256=self.plan_sha,
                     protocol_sha256=self.protocol_sha, seed=7,
@@ -248,10 +275,15 @@ class Runtime:
                     scene_id=ep.scene_id, episode_id=str(ep.episode_id),
                     camera_alignment_verified=True,
                     policy_inputs="WA RGB+firstGTBBox+idealpolarUWB no text; LN RGB+text; Oracle privileged teacher only")
+        if self.experiment != EXPERIMENT:
+            meta.update(base_plan_sha256=self.plan_sha,
+                        base_protocol_sha256=self.plan["protocol_sha256"],
+                        continuation_sha256=self.continuation_sha)
         if prefix is not None:
             meta["prefix_sha256"] = canonical_sha(prefix)
         rec = FailureStateRecorder(branch_root, meta, environment, takeover_step=takeover_step,
-                                   repair=repair, expected_prefix=prefix, agent=agent)
+                                   repair=repair, expected_prefix=prefix, agent=agent,
+                                   experiment=self.experiment)
         limited = LimitedRecorder(rec, development_actions) if development_actions is not None else None
         subset = copy.copy(self.dataset)
         subset.episodes = [prepare_episode(ep, self.bench)]
@@ -260,6 +292,14 @@ class Runtime:
             try:
                 trained_agent.evaluate_agent(copy.deepcopy(self.config), subset, str(base/(name+"_metrics")),
                                              agent_factory=lambda _: agent, recorder=limited or rec)
+            except TeacherOutputInvalid as exc:
+                if (self.experiment == EXPERIMENT or teacher_name != "lightnav"
+                        or type(exc) is not TeacherOutputInvalid):
+                    raise
+                invalid = rec.finish_teacher_error(exc)
+                if limited is not None:
+                    raise RuntimeError("developer teacher runtime-invalid; not a passed development check") from exc
+                return invalid
             except DevelopmentLimitReached:
                 if limited is None:
                     raise
@@ -288,7 +328,7 @@ class Runtime:
                             artifact_root=str(branch_root), initial_pair_verified=True)
             if admission["replay_verified"] is not True or admission["complete"] is not True:
                 raise ValueError("missing complete teacher prefix proof")
-            branch = dict(experiment=EXPERIMENT, teacher=teacher_name, complete=True,
+            branch = dict(experiment=self.experiment, teacher=teacher_name, complete=True,
                           replay_verified=True, transport_fallback=admission["transport_fallback"],
                           task="stt", key=entry["key"], takeover_step=takeover_step, seed=7,
                           protocol_sha256=self.protocol_sha, prefix_sha256=canonical_sha(prefix),
@@ -308,8 +348,10 @@ class Runtime:
             if not (branch_root/"ERROR.json").exists():
                 write_json(branch_root/"ERROR.json", dict(error_type=type(exc).__name__,
                            message=str(exc)[:2000], training_eligible=False))
-                write_json(branch_root/"partial_replay.json", rec.replay)
-                write_json(branch_root/"partial_actions.json", rec.actions)
+                for filename, value in (("partial_replay.json", rec.replay),
+                                        ("partial_actions.json", rec.actions)):
+                    if not (branch_root/filename).exists():
+                        write_json(branch_root/filename, value)
             raise
         finally:
             if teacher is not None:

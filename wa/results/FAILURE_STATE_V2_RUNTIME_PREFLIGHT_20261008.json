@@ -1,0 +1,162 @@
+{
+  "schema": "failure_state_v2_runtime_preflight_v1",
+  "date": "2026-10-08",
+  "base_git": "b7c0982c02ae8308d0f2f22b220d6c992cbb6c1b",
+  "status": "PASS_REAL_SHORT_AND_CPU_NO_FORMAL_JOB",
+  "formal_job": null,
+  "training_released": false,
+  "new_training": false,
+  "new_closed_loop_score": false,
+  "execution_protocol": {
+    "experiment": "evaluation_adaptation_failure_state_v2",
+    "sha256": "f3f14b8aa935eaf6c3a7352703fe9f30bd9e28ba1825ff30e82b0cfd98800f31",
+    "base_protocol_sha256": "734ef66947dd0c318bdee5cb990929b313647370003ff889ff29f77391ed2e4a",
+    "scope": "new records only; frozen source1 retains v1 identity"
+  },
+  "continuation": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_continuation_61833_v2.json",
+    "sha256": "06d098f30ec52d988dc707249e73b17d11642f44846a75015455315891182822",
+    "base_plan_sha256": "2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b",
+    "original": 126,
+    "reused": 1,
+    "new": 125,
+    "lanes": [
+      15,
+      16,
+      16,
+      16,
+      16,
+      16,
+      15,
+      15
+    ],
+    "rehash_rebuild": "PASS 180artifacts/26sourcepins/24exits; same original entries and assignment"
+  },
+  "cpu": {
+    "tests": 197,
+    "seconds": 2.91,
+    "result": "PASS",
+    "pythonpath": "checkout:OmTrackVLA-da3-polar-20260924",
+    "earlier_setup_failure": "first discover omitted benchmark PYTHONPATH and two imports failed; rerun correct path passed196; production completion-marker cross-test then197"
+  },
+  "dependencies": {
+    "manifests": [
+      "failure_state_dependencies.sha256",
+      "dual_teacher_dependencies.sha256",
+      "closed_loop_dependencies.sha256",
+      "full_eval_dependencies.sha256"
+    ],
+    "result": "all predeveloper SHA checks exit0 2026-10-08T00:12:18Z",
+    "weights_unchanged": true
+  },
+  "source": {
+    "wa/wm/failure_state_collect.py": "7492f14e7b6da28f7cf588b417ed4b29f4ab4ddaefd63a4595ed454fe50d088d",
+    "wa/wm/failure_state_recorder.py": "f1b77f4d6e793c39d2b214277a81c6e0906061782bb1b158835a07c2a47fd8b9",
+    "wa/wm/failure_state_collect_v2.py": "91d2210bdbf950bca72ff6778e25dc567e149ba206275f3455984bcd9449624a",
+    "wa/tools/failure_state_launch_v2.py": "b16d99315aeb602214d04ce9a0aed96bfcdd998f1b54afc4bc66c9d7e4b36f65",
+    "wa/scripts/failure_state_collect_v2.sh": "f17d2ebdc7d61bca3522c681d635006edffc9f00a820b3f1f6810a861d0ba284",
+    "wa/tests/test_failure_state_runtime_v2.py": "b37998de2c948ad2d9c756b278c976aba268152caeec6bd79bf83e92a0cb1755",
+    "wa/tests/test_failure_state_launch_v2.py": "a46c6fbfc6dac5b5540bfed6e2d4dfc812a44308cf4d28c2875cd96107489081",
+    "wa/tests/test_failure_state_wrapper_v2.py": "daeb47faa60f06489d220cc092017673696b8ce5c1c73dfab7a6743626139420"
+  },
+  "changes": [
+    "Runtime/Recorder keyword-only v2 contract; v1 defaults unchanged; separate base-plan/base-protocol/continuation pins",
+    "Only classified LN RVQ error persisted as invalid null-result branch before fallback execution; same-k Oracle can run independently",
+    "Exclusive partial evidence files, actual prefix/sequence/fallback/replay checks; no windows/result/complete fabricated for invalidteacher",
+    "125-only collector+launcher preserves original lane order and strict v2 marker identity",
+    "A800 wrapper guards actual8 distinct A800/CUDA devices, numeric scheduler identity, fresh NAS output, privateXvfb, pre/post dependency and frozen plan hashes"
+  ],
+  "review": {
+    "production_marker_mismatch": "detected extra base_protocol field; fixed launcher and added production factory cross-test beforeGPU; no formal job affected",
+    "unknown_exceptions": "fatal; no generic retry or catch",
+    "normal_teacher_semantics": "unchanged, no allow_released_fallback"
+  },
+  "best": {
+    "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+    "sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "step": 59716,
+    "stt": 1279,
+    "dt": 1178,
+    "at": 1207,
+    "goal": "NOT_MET",
+    "stt_gap": 10
+  },
+  "limitations": [
+    "Evaluation-set adaptation, not untouched-test generalization",
+    "24-action developer check at k20 exercises normal pipeline, not the actual seq32 RVQ fault",
+    "Typed error tested using real recorder/replay + CPU fixtures and separately revalidated preserved real61833 partial; do not claim new GPU error branch coverage",
+    "Collection completion is not cache/training admission or new SR"
+  ],
+  "next": [
+    "Independent new frozen source/config + current scheduler/resource/duplicate preflight; once submit full125 on8A800 after real developer gate",
+    "Audit new125+frozen1 exact coverage, actual teacher error records, successful winner and repeat, suffix timing/SE2/yaw/history and student inputs before any newcache/training"
+  ],
+  "next_release_gates": {
+    "tools_not_reused_unmodified": [
+      "build_recovery_cache.py fixed96/originalxy",
+      "build_dual_teacher_cache.py fixed4215 and takeover_step=0"
+    ],
+    "source_coverage": "1 frozenv1+125 newv2=original126; accepted original winner only; repeat verification only",
+    "eligibility": "same-k complete successful collision-free init-valid fallback-free winner + independently successful repeat; rederive teacher-owned suffix windows",
+    "labels": "real timestamp_s t+[.1.. .7], interpolated executed world position transformed current body; sin/cos interpolated unwrapped relative yaw; every bracket transition teacher-owned",
+    "history": "full replay retained for causal sparse4 visual history and separate consecutive4 JEPA context; first episode template unchanged; failed WA actions not imitation labels",
+    "input": "current ideal polarUWB only; future target/text/teacher waypoint not policy inputs; futureRGB only auxiliary supervision",
+    "retained_rules": "original transition_records dt/displacement/yaw gates and now>=4; no relaxing originalcache/heldout",
+    "artifacts": "independent release auditor + converter + exactschema data loader required before cache/training admission"
+  },
+  "checked_at": "2026-10-08T08:26:00+08:00",
+  "developer": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_developer_20261008_v3",
+    "exit_code": 0,
+    "finished_utc": "2026-10-08T00:24:11.236621+00:00",
+    "gpu": "RTX4090 physical6",
+    "key": "VLzqgDo317F/238",
+    "actions": {
+      "student": 24,
+      "lightnav": 24,
+      "oracle": 24
+    },
+    "takeover_step": 20,
+    "teacher_owned_actions_each": 4,
+    "prefix": {
+      "observations_each": 21,
+      "actions_each": 20,
+      "raw_rgb_hash_pair": "PASS",
+      "recorded_dynamic_state_pair": "PASS existing tolerance",
+      "original61609_initial_pair": "PASS runtime gate"
+    },
+    "png": 72,
+    "no_terminal_result": true,
+    "no_success_rate": true,
+    "training_eligible": false,
+    "training_released": false,
+    "fallback_events": 0,
+    "source_before_after": "all8 SHA identical to precheck00:11:34",
+    "owned_process_exits": {
+      "worker": 0,
+      "lightnav": -9,
+      "wa": -15
+    },
+    "process_cleanup_note": "worker completed0; launcher cleanup stopped only own model process groups. LN forced cleanup -9 and WA SIGTERM -15 after worker success are retained; no OOM inference.",
+    "warnings": "Gym maintenance, xFormers unavailable, mesh unsupported attributes retained",
+    "hashes": {
+      "launch.json": "0174438f71667a9793601ae8e02215e3ac65a967ceb27e9e509b089f984ba7d1",
+      "lane0/launch.json": "9f2b582c6ee595216e9e1e5da0b81bc863414d23c0acb1159ada41985842e8ac",
+      "lane0/wa_ready.json": "18efc04571680166b73bb98f74171a603a3ffd14373492b1cc3d2a7a2045306a",
+      "lane0/collection/DEVELOPMENT_CHECK.json": "264987a9432ec7b91bdd2db9e28e36f65a45c6cce44878ecec862f5c009e4329",
+      "lane0/collection/stt/VLzqgDo317F/238/developer_check.json": "6670aeb224c2f71e357ffb8f10a4cf13067dad3da2df4261b5b9657265153cf4",
+      "lane0/processes.jsonl": "5ca0684affc79d53d751559af956ca7f9772b0643a77af1ef74a57a18fbe9cd4"
+    },
+    "independent_audit": {
+      "status": "PASS",
+      "checked_utc": "2026-10-08T00:25:54Z",
+      "assertions": 364,
+      "png_decoded": 72,
+      "saved_rgb_prefix_pixel_pairs": 42,
+      "raw_replay_prefix_pairs": 42,
+      "live_owned_process_group_members": 0,
+      "fatal_scan": "4 complete logs x5 literal patterns zero; retainedwarnings",
+      "caveat": "PNG savesRGB[:,:,:3]; raw replay hash retains sensor shape/dtype/RGBA. Compare like-for-like; do not claim PNG stores full rawRGBA."
+    }
+  }
+}
