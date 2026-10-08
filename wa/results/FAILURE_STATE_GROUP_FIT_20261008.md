@@ -1,6 +1,30 @@
 # Fixed failure-state group fit — 2026-10-08
 
-## Status at 18:25 Beijing
+## Terminal status at 19:15 Beijing
+
+The bounded policy-fit diagnostic finished with session52695 exit0. This compares the existing parent59866 and best61609 checkpoints; it does not create a new trained model, optimizer update, checkpoint or closed-loop result. The fixed selection and fitting gates are complete and must not be repeated by default.
+
+- Result: /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_group_fit_pretrain_20261008_v1.json
+- Result SHA256: 6ecff4bda1c19d153e7e4be0742914d2b761698759a9157c17ec2920a6725cd9; 3,049,079 bytes; elapsed 1169.6806585s; file mtime 18:43:58 Beijing.
+- Log: same prefix with .log; SHA256 1de08bf57a9a35552e6fd69b406587f09355d7e23dd5aefd7b6fe62f5d6abc46; 2,425 bytes. Three xFormers warnings retained; five checked fatal-pattern counts are zero. No related process remains.
+- Peak PyTorch allocated/reserved memory: 1,590,791,680 / 1,608,515,584 bytes. This inference peak and the 5GiB allocator limit do not establish training memory safety or exclusive GPU ownership.
+- Independent persisted-array audit PASS: each checkpoint has 304 records (152 normal-history + 152 repeated-current-history), all finite 7x4 predicted/target trajectories; cross-model input hashes and labels are identical. Float64 recomputation maximum metric difference 3.017611525e-7; stored group summaries/deltas match exactly. The result records 3,166 source pins; this audit did not rescan the old full collection.
+
+### Normal-history ADE (meters)
+
+| Fixed group | Parent59866 | Best61609 | Reading |
+|---|---:|---:|---|
+| collision | 0.558798 | 0.467611 | lower |
+| other | 0.408546 | 0.383305 | lower |
+| successful | 0.278920 | 0.255145 | lower |
+| DT | 0.304162 | 0.310269 | worse |
+| AT | 0.449542 | 0.371023 | lower |
+| early recovery | 0.593261 | 0.517808 | lower |
+| late recovery | 0.471090 | 0.396540 | lower |
+
+These are offline label-fit comparisons on predefined groups, not a new training improvement, an SR estimate, or proof of JEPA loss/backward/optimizer/NCCL compatibility. DT worsens; no aggregate claim hides that result. Normal and repeated-history records are both retained in the JSON; this compact table shows normal-history values only.
+
+## Historical status at 18:25 Beijing
 
 The user explicitly approved the two previously blocked diagnostic files. The original Goal tool still reports BLOCKED; this is not a completion or a new permission blocker. Work is continuing under the user's new request. Existing heartbeat wa remains active.
 
@@ -16,7 +40,7 @@ CPU tests: initial 28/30 passed; two test fixtures assumed interleaved normal/re
 - Early: 0.440–0.488s after takeover; Oracle 23 / LightNav 9. Late: 1.016–2.000s; Oracle 24 / LightNav 8.
 - Selection uses fixed episode hash order and proximity to predefined times, not observed fit scores. The independent compact JSON check confirmed identities, fields and sets; it did not rerun images or independently recompute nearest-time eligibility.
 
-## Started diagnostic, not a result
+## Historical startup: no result was claimed at that time
 
 The pretrain-fit command below started at 18:23:50 Beijing, unified session52695, Python PID3969666. At 18:25 the startup guard was recorded and source validation was still running. No completed-prediction count, final result, new checkpoint or model SR is claimed.
 
@@ -28,7 +52,7 @@ This tests policy inference, not JEPA loss, backward, optimizer updates or multi
 
 ## Exact issued developer command
 
-Run on devpod-4090; the log and result are exclusive new NAS paths. Do not execute again while the existing process is active or over the existing output.
+Historical command run on devpod-4090; the existing log and result are now complete. Preserve this issued command for reproducibility; do not rerun it or overwrite either output.
 
 ```bash
 set -euo pipefail
@@ -58,6 +82,10 @@ tail -n 4 /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-2026
 
 ## Next
 
-Read the existing process/log/result rather than restarting. Audit final 152x2 records for each fixed model and recompute the summary metrics. Then finish the target4090 training compatibility check when a developer GPU has sufficient safe headroom; do not lower batch, alter the objective, stop another task, or submit a separate cluster smoke task.
+The draft `wa/jobs/failure_state_train_4090_v1.yaml` is now 276 lines, SHA256 `33838ac5dc95bf1a00133cdcb32d28a47224bc73f53bb6ed5fd863ccbf01d035`. Its 18 external pins retain the original16 and add the fixed selection and completed fit. CPU assertions passed for actual fit schema/status/false flags, 152 selected windows, seven groups, model SHA/step and each model's 304 paired records; launch evidence records these checks. `bash -n` and two Python AST checks passed; training argv and the original postcheck are byte-for-byte unchanged. It remains NOT_SUBMIT_READY until real target4090 four-update compatibility and refreshed full-task preflight pass. No formal job or data change results from binding this evidence.
+
+Final arrays and summaries have been audited. The remaining gate is a real unchanged-recipe four-update target4090 developer training check, including loss/backward/optimizer behavior, followed by formal submission preflight; this policy-fit run cannot substitute for it. Do not repeat the completed fit/data gates, lower batch, alter the objective, stop another task, or submit a separate cluster smoke task.
+
+At 19:09:33 and 19:10:16 Beijing, developer GPU7 had 7690MiB free/0% utilization, insufficient for the observed 7.309GiB training allocation peak plus CUDA-context safety headroom. GPU6 had 16252MiB free but 87→88% utilization and was not borrowed or stopped. A800 had 3 cluster GPUs free and bj4090 had 76; cluster availability is not developer allocation. Jobs61846/61847 belong to other work, not this task; there is no task-owned SUBMITTED/SUBMITTING job. Permission is resolved; safe target-runtime capacity is the current blocker. The Goal tool remains BLOCKED (no resume API), while the existing heartbeat and newly authorized work continue.
 
 Formal training remains an independent one-new-epoch continuation from59866 model AND optimizer, not a third epoch from61609. No formal job was submitted in this diagnostic stage. Best closed-loop counts remain1279/1178/1207 out of1405 each; the STT target is1289. Results are evaluation-set adaptation, not unseen-test generalization.

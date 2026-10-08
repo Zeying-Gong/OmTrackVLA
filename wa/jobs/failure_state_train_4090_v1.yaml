@@ -1,6 +1,6 @@
-# NOT_SUBMIT_READY: do not submit until fixed-group-fit and this recipe's
-# RTX4090 developer runtime gates are completed and independently reviewed.
-# This is preparation only; no fit result or 4090 training PASS is claimed.
+# NOT_SUBMIT_READY: fixed152 paired policy-fit completed and independently reviewed.
+# This recipe's RTX4090 developer training/backward gate still needs safe capacity.
+# Fit evidence below is not JEPA loss/backward, optimizer, NCCL or new SR proof.
 # A800 4-update diagnostic: failure_state_train_developer_20261008_v1.
 # Training: one NEW epoch from parent59866 MODEL AND OPTIMIZER, cumulative two.
 # Full budget: 1,233,424 positions / 8 ranks; planned 38,545 updates to 61,252.
@@ -78,11 +78,48 @@ tasks:
           str(root/'checkout/wa/results/FAILURE_STATE_DEDUP_20261008.json'): '599d60ea2d40ff4f9ae69f87df03e3a5a192b749ce030504bf19177999262859',
           str(root/'checkout/wa/results/FAILURE_STATE_CACHE_LOADER_20261008.json'): 'a330f7d39ecd89f7f1f67e33f0a2d6cdb67bf62f7dd57758ea270ec6a0644755',
       }
+      selection_path = root/'artifacts/failure_state_group_fit_selection_20261008_v1.json'
+      fit_path = root/'artifacts/failure_state_group_fit_pretrain_20261008_v1.json'
+      expected[str(selection_path)] = '7e7db844c09f67d7b0e3b5de7376c0573c18fccc485dfa235b879ed4dab111a9'
+      expected[str(fit_path)] = '6ecff4bda1c19d153e7e4be0742914d2b761698759a9157c17ec2920a6725cd9'
       for value, digest in expected.items():
           path = Path(value)
           assert path.is_file() and not path.is_symlink() and path.resolve() == path
           assert sha(path) == digest, value
           print(json.dumps(dict(stage='INPUT_SHA256_VERIFIED', path=value, sha256=digest)), flush=True)
+      selection, fit = json.loads(selection_path.read_text()), json.loads(fit_path.read_text())
+      assert selection['schema'] == 'failure_state_group_fit_selection_v1'
+      assert selection['status'] == 'FIXED152_INPUTS_ADMITTED_NO_MODEL_RESULT'
+      assert fit['schema'] == 'failure_state_group_fit_v1'
+      assert fit['status'] == 'FIXED152_TEACHER_STATE_LABEL_FIT_ONLY_NOT_SR'
+      assert all(x['closed_loop'] is False and x['training_released'] is False for x in (selection, fit))
+      assert fit['selection'] == str(selection_path)
+      assert fit['selection_sha256'] == expected[str(selection_path)]
+      assert fit['source_hashes'][str(selection_path)] == expected[str(selection_path)]
+      assert fit['selected'] == selection['selected'] and len(fit['selected']) == 152
+      from collections import Counter
+      assert Counter(x['group'] for x in fit['selected']) == {
+          'hard_stt_collision': 24, 'hard_stt_other': 16, 'successful_stt_control': 16,
+          'dt_teacher_control': 16, 'at_teacher_control': 16, 'recovery_early': 32, 'recovery_late': 32}
+      model_ids = {
+          'parent59866': dict(sha256=expected[os.environ['WA_PARENT_CHECKPOINT']], step=22707),
+          'best61609': dict(sha256='c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52', step=59716)}
+      assert set(fit['models']) == set(model_ids)
+      for name, identity in model_ids.items():
+          row = fit['models'][name]
+          assert row['sha256'] == identity['sha256'] and type(row['step']) is int and row['step'] == identity['step']
+          assert len(row['records']) == 304
+          assert all(type(r['selection_index']) is int and type(r['repeat_history']) is bool for r in row['records'])
+          assert {(r['selection_index'], r['repeat_history']) for r in row['records']} == {
+              (i, repeat) for i in range(152) for repeat in (False, True)}
+      fixed_group_fit_evidence = dict(
+          selection_path=str(selection_path), selection_sha256=expected[str(selection_path)],
+          fit_path=str(fit_path), fit_sha256=expected[str(fit_path)], schema=fit['schema'],
+          status=fit['status'], windows=152, window_predictions=608, models=model_ids,
+          policy_forward_only=True, full_training_recipe_4090_verified=False,
+          closed_loop=False, training_released=False)
+      print(json.dumps(dict(stage='FIXED_GROUP_FIT_EVIDENCE_VERIFIED',
+                            **fixed_group_fit_evidence)), flush=True)
       baseline = json.loads(evidence.read_text())
       assert baseline['wla']['checkpoint_sha256'] == expected[os.environ['WA_WLA_CHECKPOINT']]
       source = Path(os.environ['WA_WLA_SOURCE'])
@@ -97,6 +134,7 @@ tasks:
           json.dump(dict(status='WORKER_PREFLIGHT_PASSED_NOT_TRAINING_COMPLETE',
               source_commit='199385cd9c826c8f21308ad99b6a8375396d9c90',
               cuda=visible, uuid_model_memory_driver=inventory, input_sha256=expected,
+              fixed_group_fit_evidence=fixed_group_fit_evidence,
               wla_source_files=len(actual), output=str(output), torch=torch.__version__),
               f, indent=2)
       PY
