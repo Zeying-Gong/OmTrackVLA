@@ -1,0 +1,95 @@
+{
+  "schema": "failure_state_collect_v2_release_v1",
+  "checked_utc": "2026-10-08T00:30:51Z",
+  "status": "PREFLIGHT_PASS_NOT_SUBMITTED",
+  "experiment": "evaluation_adaptation_failure_state_v2",
+  "source": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v2",
+    "commit": "d676d9e760d066ef3c01c271bd9315ae2e296895",
+    "clean": true,
+    "runtime_files_byte_matched_to_checked_checkout": 217
+  },
+  "config": {
+    "path": "wa/jobs/failure_state_collect_a800_v2.yaml",
+    "sha256": "a92aa6eacc202a7470ed060f953fa040ade640872bb303a0d92c6e871e5d6ec9",
+    "cluster": "baidu_a800",
+    "resolved_expected": "baidu_bj_a800",
+    "image": "x5-builder:cuda12.8-isaac5.0.0-v2.test1",
+    "gpus": 8,
+    "timeout": 172800,
+    "cmd": "set -euo pipefail\ncd /data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v2\ntest \"$(git rev-parse HEAD)\" = d676d9e760d066ef3c01c271bd9315ae2e296895\ntest -z \"$(git status --porcelain)\"\nOUTPUT_ROOT=\"/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_failure_state_collect_a800_v2\"\nbash wa/scripts/failure_state_collect_v2.sh \"$OUTPUT_ROOT\"\n"
+  },
+  "access": {
+    "alias": "devpod-4090",
+    "hostname": "devpod-zeying-gong-4090-7f59ffb47c-rpkjh",
+    "nas": "mt-tutz0R-pfs-haZOBP",
+    "cross_nas": false,
+    "selection": "A800 default preference and23free; existing sameNAS 4090 development entry CLI submitsA800; old61833 proved exactworker path/image"
+  },
+  "preflight": {
+    "tool": "md_ai_kit2.0.0",
+    "login": true,
+    "a800_free": 23,
+    "cpu_tests": 197,
+    "dependency_manifest_checks": 4,
+    "config_shell_syntax": "PASS",
+    "workload_lanes": [
+      15,
+      16,
+      16,
+      16,
+      16,
+      16,
+      15,
+      15
+    ],
+    "workload_total": 125,
+    "workload_original": 126,
+    "old_reused": 1,
+    "old_job": "61833/73055 FAILED",
+    "duplicate_check": "recent5 include no v2; no resubmit oldtask"
+  },
+  "plan": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_plan_61609_v1.json",
+    "sha256": "2eff9e83e89008ce1ee73632def406a27131fece6e77b01f6d4ca8c02624292b",
+    "unchanged": true
+  },
+  "continuation": {
+    "path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_continuation_61833_v2.json",
+    "sha256": "06d098f30ec52d988dc707249e73b17d11642f44846a75015455315891182822",
+    "original_provenance": "v1",
+    "new_runtime_protocol_sha256": "f3f14b8aa935eaf6c3a7352703fe9f30bd9e28ba1825ff30e82b0cfd98800f31"
+  },
+  "checkpoint": {
+    "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+    "sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+    "step": 59716,
+    "stt": 1279,
+    "dt": 1178,
+    "at": 1207,
+    "goal": "NOT_MET",
+    "stt_gap": 10
+  },
+  "developer": {
+    "report": "wa/results/FAILURE_STATE_V2_RUNTIME_PREFLIGHT_20261008.json",
+    "artifact_root": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/artifacts/failure_state_developer_20261008_v3",
+    "normal_pipeline": true,
+    "known_rvq_fault_actual_gpu": false,
+    "independent_assertions": 364,
+    "raw_state_max_abs_delta": 0,
+    "hashes": {
+      "DEVELOPMENT_CHECK.json": "66c8ed4c885acd6ed9b3c4be7c94f0b2d14a9d90cfcacce914299ae0f92d28d8",
+      "coverage.json": "dd015c8e4c9b64c5f0df041a073ef7455fc916d91c405bdc68ebd6f965ee6844",
+      "lane0/collection/records.jsonl": "cf7bae84540baee506afd178bee03807a894eb313967965581ac47997bd3f4ec",
+      "student/development.json": "c2ee4b6d013e9c9885fb92d6b2f000f2159ed111565145c1294b0256cdc0cc24",
+      "lightnav_takeover0020/development.json": "e3f2e4586375a659b3588bc658d2fc52c149945af7c6b77867aadd760b7a0fa5",
+      "oracle_takeover0020/development.json": "15863ff8f755a8373565ac49b29ddd328aa93b38db865f3722e3945119500b06"
+    }
+  },
+  "output_template": "/data/nas_ray/project/md-ak/users/zeying.gong/job_${MD_AK_JOB_ID}/task_${MD_AK_TASK_ID}/wa_failure_state_collect_a800_v2",
+  "acceptance": "8 actualA800+ready;125 exact unique completedrecords and no overlap withfrozen1; recompute126coverage/sourcepins/teachererrors/fullsuccessfulwinner+repeat. No newscore and no trainingrelease until separate suffix SE2/yaw/time/history/input audit.",
+  "invariants": "No architecture/loss/LR/physics/controller/criteria change; same61609weight mixedzero seed7+step. KnownLN malformedRVQ becomes invalidbranch withnullresult, not fallback execution. Unknown/replay/hash errors fatal.",
+  "formal_job": null,
+  "training_released": false,
+  "goal": "ACTIVE_NOT_MET_STT_GAP10"
+}
