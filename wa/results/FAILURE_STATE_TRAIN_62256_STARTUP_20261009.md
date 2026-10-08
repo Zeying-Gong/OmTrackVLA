@@ -68,4 +68,12 @@ train.jsonl前缀166419字节，SHA256 `6924f37833895724baab0b5914854813214e1579
 
 完成后核验38545新增更新、最终step61252、三模式各73368完整heldout、8rank真实曝光、parent及checkpoint来源，再做固定152样本拟合和STT/DT/AT各1405闭环评测。最终目标仍STT>=1289、DT>=1173、AT>=1203，随后同权重无UWB配对；best61609及历史失败保留。
 
+## 02时19分持续训练快照
+
+2026-10-09 02:19:37北京时间，调度器Job62256/Task73511均RUNNING，8A800；NAS累计step36150，本轮13443/38545次更新（34.8761%）。较01:59:52台账快照增加2850次更新。539条完整JSONL记录递归数值检查均有限；末条loss0.13647407293319702、grad_norm0.818074643611908。此处不重新执行已完成的数据、开发GPU或启动契约审计。
+
+train.jsonl已读取前缀285060字节，SHA256 `5075b46bf49ca4b13d51845d8a40d3ffb50353ad7e463417467d397bb5f2f18c`；console.log前缀306801字节，SHA256 `9bdaca1c8fb7d1c67a9113a79946823b314755387c4874bf36cd9b5888067fa4`。Traceback、CUDA out of memory、ChildFailedError、Segmentation fault、NCCL error五个不区分大小写的模式命中均0；这不是“无任何警告”声明。哈希只绑定增长日志的读取前缀，不是终态全文件哈希。
+
+最终checkpoint.pt、metrics.json、actual_exposure_epoch1.json、actual_exposure_epoch1.npz和worker_postcheck.json仍不存在。未接受中途权重、未启动新任务或评测，暂无新SR；完整heldout、实际曝光、最终模型与优化器、固定拟合及三任务闭环验收顺序保持不变。
+
 本报告是运行中启动核验，不是终态训练审计、H100复现、ModelScope上传或新SR结论。
