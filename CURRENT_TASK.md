@@ -1,5 +1,5 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-09 01:41 Beijing. Job62256/Task73511 RUNNING;NAS step30550,phase7843/38545(20.3476%),315finite scheduled records including5LRgroups;fivefatalpatterns0. Fourperiodicweights statonly;finalmetrics/checkpoint/exposure/postcheck absent. GoalACTIVE/no newSR. UWBimage staticboundary documented;realinterface andpairedstudy awaitthreeSRgates.
+Updated: 2026-10-09 01:59:52 Beijing. Job62256/Task73511 RUNNING;NAS step33300,phase10593/38545(27.4822%),425finite complete records;fivefatalpatterns0. Finalcheckpoint/metrics/actualexposure/postcheck absent. GoalACTIVE/no newSR. Same-taskverifiedwait;no extraGPU/job orcheckpointacceptance. UWBimage realinterface andpairedstudy awaitthreeSRgates.
 Existing Goal was externally resumed: get_goal returned ACTIVE at19:29/19:33/19:58. Prior BLOCKED is historical. Heartbeat wa remains ACTIVE every20minutes;not complete or user-paused.
 Full predecessor: archive/2026-10/CURRENT_TASK_before_evt_handoff_20261009_0126.md (80lines copied/cmpverified);earlier CURRENT_before_62256_running_20261009_0050.md andCURRENT_before_group_fit_permission_20261008_1656.md remain in the same archive folder.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Resolve R/C/J prefixes literally below.
