@@ -1,5 +1,9 @@
 # WA-Mobile portable experiment workspace
 
+## Current best closed-loop reproduction
+
+For the audited best61609 model (STT/DT/AT 1279/1178/1207 out of1405 each), use [the dedicated reproduction guide](repro/BEST61609_REPRODUCTION.md). It pins evaluation source, configurations, weights, external assets and full4215 validation. The baseline/probe instructions below are historical and do not reproduce that result; Git alone does not include the required weights, simulator assets or private evidence.
+
 This directory is independent of the inherited OmTrackVLA training scripts.
 Status: CPU-verified baseline; see [RUNBOOK.md](RUNBOOK.md) for both training lanes.
 Python >=3.10; result tooling uses only the standard library.
