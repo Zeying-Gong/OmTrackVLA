@@ -1,0 +1,592 @@
+{
+  "schema": "wa_failure_state_runtime_milestone_v1",
+  "experiment": "evaluation_adaptation_failure_state_v2",
+  "job_id": 61836,
+  "task_id": 73058,
+  "output_root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2",
+  "snapshot_beijing": "2026-10-08T08:46:04+08:00",
+  "status": "RUNNING_PARTIAL_REAL_ERROR_ISOLATION_VERIFIED",
+  "source_commit": "d676d9e760d066ef3c01c271bd9315ae2e296895",
+  "config_sha256": "a92aa6eacc202a7470ed060f953fa040ade640872bb303a0d92c6e871e5d6ec9",
+  "continuation_sha256": "06d098f30ec52d988dc707249e73b17d11642f44846a75015455315891182822",
+  "runtime_protocol_sha256": "f3f14b8aa935eaf6c3a7352703fe9f30bd9e28ba1825ff30e82b0cfd98800f31",
+  "actual_startup": {
+    "gpu_count": 8,
+    "gpu_model": "A800-SXM4-80GB",
+    "distinct_gpu_uuids": 8,
+    "wa_ready": 8,
+    "lightnav_ready": 8,
+    "ready_contract_report": "wa/results/FAILURE_STATE_61836_STARTUP_20261008.json"
+  },
+  "progress_at_083938": {
+    "errors": [],
+    "lanes": [
+      {
+        "completed": 0,
+        "fatal": [],
+        "keys": [],
+        "lane": 0,
+        "outcomes": {},
+        "student_branches": [],
+        "worker_bytes": 4242,
+        "worker_tail": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ]
+      },
+      {
+        "completed": 0,
+        "fatal": [],
+        "keys": [],
+        "lane": 1,
+        "outcomes": {},
+        "student_branches": [],
+        "worker_bytes": 8048,
+        "worker_tail": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ]
+      },
+      {
+        "completed": 1,
+        "fatal": [],
+        "keys": [
+          "FnSn2KSrALj/1"
+        ],
+        "lane": 2,
+        "outcomes": {
+          "repeated_teacher_recovery_candidate": 1
+        },
+        "student_branches": [],
+        "worker_bytes": 11790,
+        "worker_tail": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ]
+      },
+      {
+        "completed": 0,
+        "fatal": [],
+        "keys": [],
+        "lane": 3,
+        "outcomes": {},
+        "student_branches": [],
+        "worker_bytes": 8794,
+        "worker_tail": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ]
+      },
+      {
+        "completed": 0,
+        "fatal": [],
+        "keys": [],
+        "lane": 4,
+        "outcomes": {},
+        "student_branches": [],
+        "worker_bytes": 6594,
+        "worker_tail": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ]
+      },
+      {
+        "completed": 1,
+        "fatal": [],
+        "keys": [
+          "nrA1tAA17Yp/10"
+        ],
+        "lane": 5,
+        "outcomes": {
+          "repeated_teacher_recovery_candidate": 1
+        },
+        "student_branches": [],
+        "worker_bytes": 12247,
+        "worker_tail": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ]
+      },
+      {
+        "completed": 0,
+        "fatal": [],
+        "keys": [],
+        "lane": 6,
+        "outcomes": {},
+        "student_branches": [],
+        "worker_bytes": 7928,
+        "worker_tail": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ]
+      },
+      {
+        "completed": 0,
+        "fatal": [],
+        "keys": [],
+        "lane": 7,
+        "outcomes": {},
+        "student_branches": [],
+        "worker_bytes": 6674,
+        "worker_tail": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ]
+      }
+    ],
+    "new_complete": 2,
+    "utc": "2026-10-08T00:39:38.475228+00:00"
+  },
+  "frozen_old_completed": 1,
+  "planned_new": 125,
+  "planned_total": 126,
+  "first_candidates": [
+    {
+      "lane": 2,
+      "key": "FnSn2KSrALj/1",
+      "teacher": "lightnav",
+      "takeover_step": 57,
+      "outcome": "repeated_teacher_recovery_candidate"
+    },
+    {
+      "lane": 5,
+      "key": "nrA1tAA17Yp/10",
+      "teacher": "oracle",
+      "takeover_step": 12,
+      "outcome": "repeated_teacher_recovery_candidate"
+    }
+  ],
+  "real_error_isolation": {
+    "lane": 1,
+    "key": "rJhMRvNn4DS/8",
+    "takeover_step": 25,
+    "error": {
+      "teacher": "lightnav",
+      "rc": 500,
+      "seq": 31,
+      "message_match": "Missing rvq act levels [0]",
+      "status": "teacher_output_invalid"
+    },
+    "observed": {
+      "observations": 32,
+      "recorded_actions": 31,
+      "failed_action_step": 31,
+      "failure_phase": "after_takeover",
+      "verified_prefix_frames": 26,
+      "required_prefix_frames": 26,
+      "maximum_prefix_state_difference": 0
+    },
+    "fallback_detected": true,
+    "fallback_executed": false,
+    "result": null,
+    "complete": false,
+    "replay_verified": false,
+    "candidate_windows": 0,
+    "training_windows": 0,
+    "training_eligible": false,
+    "same_k_oracle": {
+      "complete": true,
+      "replay_verified": true,
+      "success": 0,
+      "status": "Lost",
+      "collision": 0,
+      "following_step": 5,
+      "total_step": 40,
+      "owned_suffix_actions": 15,
+      "candidate_windows": 0
+    },
+    "continuation_observed": "Independent Oracle k25 completed (Lost), followed by both teachers at k10 and k0 (all Lost). Final search outcome no_valid_teacher_recovery, accepted=null; no training admission. Task and other lanes continued.",
+    "distinction_from_v1": "Old61833 failed at LightNav k35/prefix seq32. The real v2 error is k25/seq31 after takeover; this proves the typed error-isolation path, not an identical stochastic replay of the old failure.",
+    "evidence": [
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/lightnav_0025/teacher_error.json",
+        "sha256": "89e8d12016cf6504f7ecbf3f9a052773e2ddd459a97088d132ab189e2354c437"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/lightnav_0025/branch.json",
+        "sha256": "89e8d12016cf6504f7ecbf3f9a052773e2ddd459a97088d132ab189e2354c437"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/lightnav_0025/partial_replay.json",
+        "sha256": "5ad1b8b78738a192d0a51776764626c80a3c9faa587c961767c3f1990296dd84"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/lightnav_0025/partial_actions.json",
+        "sha256": "d819d5d867608b08ba05e0c61c4c9e35328de3c0e9f24fe0b03cf4b6ffa71b95"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/oracle_0025/branch.json",
+        "sha256": "bc73db42520db3750314ca9ccd25140f6b6e0c6f7082f373f0a20e32c2d7630b"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/oracle_0025/admission.json",
+        "sha256": "2bb82fc234e12a67793a4da10808597954e1c9874c6882ed961f28306dd13a2a"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/oracle_0025/result.json",
+        "sha256": "919a9d9d93ba5c21452749587147352f34312173fdf070974cf5a0edf32ba5e6"
+      },
+      {
+        "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/search.json",
+        "sha256": "bd1b58f01e177c39ee094720593f6d396ee39b4b853d1f42ee96ed22a9205421"
+      }
+    ],
+    "pair": {
+      "initial_rgb_sha256": "457817e87112f0b72eb60d886c288c80138cc81b9b170b62d86b99e59b5fab93",
+      "takeover_state_sha256": "aeea58fb4a864e612558f71034f8c4c0af5d64f3141d7b3eeff676db401e973c",
+      "prefix_sha256": "186729fd9278bc37a00b8ad7b387e92c05e08aa91e74910ee792ce58641e212b",
+      "proof_scope": "Observed RGB, recorded transforms/time/joints and executed prefix. Hidden RNG/contact state not proven; invalid teacher full-branch pairing remains partial."
+    },
+    "final_search": {
+      "accepted": null,
+      "attempts": [
+        {
+          "takeover_step": 35,
+          "teachers": {
+            "lightnav": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            },
+            "oracle": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            }
+          }
+        },
+        {
+          "takeover_step": 25,
+          "teachers": {
+            "lightnav": {
+              "candidate_windows": 0,
+              "complete": false,
+              "status": "teacher_output_invalid",
+              "success": null
+            },
+            "oracle": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            }
+          }
+        },
+        {
+          "takeover_step": 10,
+          "teachers": {
+            "lightnav": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            },
+            "oracle": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            }
+          }
+        },
+        {
+          "takeover_step": 0,
+          "teachers": {
+            "lightnav": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            },
+            "oracle": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            }
+          }
+        }
+      ],
+      "key": "rJhMRvNn4DS/8",
+      "outcome": "no_valid_teacher_recovery",
+      "training_released": false,
+      "path": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2/lane1/collection/stt/rJhMRvNn4DS/8/search.json",
+      "sha256": "bd1b58f01e177c39ee094720593f6d396ee39b4b853d1f42ee96ed22a9205421"
+    }
+  },
+  "training_released": false,
+  "new_student_success_rate": null,
+  "boundaries": [
+    "Partial collection counts are not student evaluation scores.",
+    "Original failed61833 evidence retained; old1 plus new125 must cover exact126 keys.",
+    "Original winner successful repeat is verification only, never duplicate demonstration windows.",
+    "No retraining, checkpoint/controller/physics/loss/criteria changes, or fallback action execution.",
+    "Unknown errors and replay/hash identity mismatch remain fatal."
+  ],
+  "next": [
+    "Finish125 new records without duplicating frozen1.",
+    "Independent exact126/artifact/successful teacher suffix audit, followed by timestamp-based SE2 conversion, strict causal loader and exposure checks before any training release."
+  ],
+  "goal": {
+    "status": "active",
+    "best_61609_successes": {
+      "stt": 1279,
+      "dt": 1178,
+      "at": 1207
+    },
+    "required_successes": {
+      "stt": 1289,
+      "dt": 1173,
+      "at": 1203
+    },
+    "then": "Paired with/without UWB study",
+    "protocol": "Explicit evaluation-set adaptation; not untouched-test generalization"
+  },
+  "progress_at_084604": {
+    "error_key_final": {
+      "accepted": null,
+      "attempts": [
+        {
+          "takeover_step": 35,
+          "teachers": {
+            "lightnav": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            },
+            "oracle": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            }
+          }
+        },
+        {
+          "takeover_step": 25,
+          "teachers": {
+            "lightnav": {
+              "candidate_windows": 0,
+              "complete": false,
+              "status": "teacher_output_invalid",
+              "success": null
+            },
+            "oracle": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            }
+          }
+        },
+        {
+          "takeover_step": 10,
+          "teachers": {
+            "lightnav": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            },
+            "oracle": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            }
+          }
+        },
+        {
+          "takeover_step": 0,
+          "teachers": {
+            "lightnav": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            },
+            "oracle": {
+              "candidate_windows": 0,
+              "complete": true,
+              "status": "Lost",
+              "success": 0
+            }
+          }
+        }
+      ],
+      "key": "rJhMRvNn4DS/8",
+      "outcome": "no_valid_teacher_recovery",
+      "training_released": false
+    },
+    "frozen_old_key_overlap": false,
+    "lanes": [
+      {
+        "completed": 1,
+        "keys": [
+          "a8BtkwhxdRV/0"
+        ],
+        "lane": 0,
+        "outcomes": {
+          "repeated_teacher_recovery_candidate": 1
+        },
+        "records_bytes": 30206,
+        "records_sha256": "261f9d619843e8cceb9e8afbc14f932fd47b58d5098cda513e8e04adeed57806"
+      },
+      {
+        "completed": 2,
+        "keys": [
+          "rJhMRvNn4DS/8",
+          "a8BtkwhxdRV/3"
+        ],
+        "lane": 1,
+        "outcomes": {
+          "no_valid_teacher_recovery": 1,
+          "repeated_teacher_recovery_candidate": 1
+        },
+        "records_bytes": 70696,
+        "records_sha256": "c48ed8efdbbeaa0e0acd2cc86e26b02f2feb0ce6a11d2ae92263fe9e62bf9491"
+      },
+      {
+        "completed": 4,
+        "keys": [
+          "FnSn2KSrALj/1",
+          "a8BtkwhxdRV/13",
+          "BHXhpBwSMLh/7",
+          "LNg5mXe1BDj/5"
+        ],
+        "lane": 2,
+        "outcomes": {
+          "no_valid_teacher_recovery": 2,
+          "repeated_teacher_recovery_candidate": 2
+        },
+        "records_bytes": 138602,
+        "records_sha256": "7bf1f96d82cfc17fcd9151e3f78fbeb7e93f279f1c8ab94d9047a9383d2e7ca1"
+      },
+      {
+        "completed": 1,
+        "keys": [
+          "tQ5s4ShP627/7"
+        ],
+        "lane": 3,
+        "outcomes": {
+          "no_valid_teacher_recovery": 1
+        },
+        "records_bytes": 43265,
+        "records_sha256": "7a0914a3fc31dbc5e81dcaa655127f7f80503d76bd4be2cffe2beac754954a41"
+      },
+      {
+        "completed": 3,
+        "keys": [
+          "nrA1tAA17Yp/4",
+          "u8ug2rtNARf/4",
+          "XNeHsjL6nBB/1"
+        ],
+        "lane": 4,
+        "outcomes": {
+          "no_valid_teacher_recovery": 1,
+          "repeated_teacher_recovery_candidate": 2
+        },
+        "records_bytes": 99611,
+        "records_sha256": "ce26243a434c542e0fe3c36337b923afd3da42ed85e51de6a7116f61a5c4a7f4"
+      },
+      {
+        "completed": 5,
+        "keys": [
+          "nrA1tAA17Yp/10",
+          "kJJyRFXVpx2/9",
+          "XNeHsjL6nBB/4",
+          "W7k2QWzBrFY/11",
+          "wcojb4TFT35/0"
+        ],
+        "lane": 5,
+        "outcomes": {
+          "repeated_teacher_recovery_candidate": 5
+        },
+        "records_bytes": 154901,
+        "records_sha256": "145aa3c9eee493d4319e0332c104c9d5decb910af5efe53f5b9f79f32d30cacd"
+      },
+      {
+        "completed": 2,
+        "keys": [
+          "nrA1tAA17Yp/11",
+          "qyAac8rV8Zk/3"
+        ],
+        "lane": 6,
+        "outcomes": {
+          "repeated_teacher_recovery_candidate": 2
+        },
+        "records_bytes": 69124,
+        "records_sha256": "2517040246b98036d4430126d158579877b999e3e72ab27cc065e11bb902e3b6"
+      },
+      {
+        "completed": 2,
+        "keys": [
+          "hyFzGGJCSYs/0",
+          "qyAac8rV8Zk/8"
+        ],
+        "lane": 7,
+        "outcomes": {
+          "no_valid_teacher_recovery": 1,
+          "repeated_teacher_recovery_candidate": 1
+        },
+        "records_bytes": 69520,
+        "records_sha256": "e2b626aa201965b3fef3bc4e085dd84fca8d0e688aec45db490f55a19e068eb1"
+      }
+    ],
+    "new_completed": 20,
+    "outcomes": {
+      "no_valid_teacher_recovery": 6,
+      "repeated_teacher_recovery_candidate": 14
+    },
+    "unique_keys": 20,
+    "utc": "2026-10-08T00:46:04.495526+00:00"
+  },
+  "independent_snapshot_at_084428": {
+    "job_status": "RUNNING",
+    "task_status": "RUNNING",
+    "new_completed": 17,
+    "per_lane": [
+      1,
+      2,
+      3,
+      1,
+      3,
+      4,
+      1,
+      2
+    ],
+    "outcomes": {
+      "repeated_teacher_recovery_candidate": 12,
+      "no_valid_teacher_recovery": 5
+    },
+    "unique_keys": 17,
+    "original_lane_order_checked": true,
+    "unknown_keys": 0,
+    "old_key_overlap": false,
+    "root_lane_cleanup_error_files": [],
+    "service_worker_logs_scanned": 24,
+    "five_literal_fatal_pattern_hits": 0,
+    "lane1_worker_growth_bytes_since_0839": 9612,
+    "lane1_teacher_growth_bytes_since_0839": 12234,
+    "terminal_lane_complete_markers": 0
+  }
+}
