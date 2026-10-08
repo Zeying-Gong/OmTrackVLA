@@ -274,4 +274,162 @@ class PredictionTests(unittest.TestCase):
         self.assertEqual(m.BEST_SHA,"c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52")
 
 
+
+class CandidateAuditIntegrationTests(unittest.TestCase):
+    """Synthetic small files only: consumer compatibility, not a real training audit."""
+    SOURCE_COMMIT = "199385cd9c826c8f21308ad99b6a8375396d9c90"
+
+    def fixture(self, root):
+        run = root / "synthetic_run"
+        run.mkdir()
+        checkpoint = run / "checkpoint.pt"
+        # candidate_inputs hashes bytes only; a genuine checkpoint is never loaded here.
+        checkpoint.write_bytes(b"CPU_TEST_ONLY_NOT_A_TRAINED_CHECKPOINT\n")
+        checkpoint_sha = m.sha(checkpoint)
+        values = {mode: dict(ADE_m=.1, FDE_m=.2, yaw_MAE_rad=.03,
+                            windows=73368, SR=None, collision_rate=None)
+                  for mode in ("image", "point", "mixed")}
+        docs = {
+            "metrics.json": dict(status="OFFLINE_ONLY", kind="jepa", steps=61252,
+                                 closed_loop=False, metrics=values),
+            "config.json": dict(kind="jepa", contract=m.CONTRACT, completed_epochs=1,
+                                epochs=1, diagnostic=False),
+            "environment.json": dict(commit=self.SOURCE_COMMIT, dirty=""),
+        }
+        audit = dict(schema="failure_state_training_audit_v1",
+            status="TRAINING_ARTIFACT_AUDIT_PASS_OFFLINE_ONLY", run=str(run),
+            checkpoint=str(checkpoint), checkpoint_sha256=checkpoint_sha,
+            final_step=61252, completed_epochs=2,
+            parent_checkpoint="/synthetic/parent59866/checkpoint.pt",
+            parent_sha256=m.PARENT_SHA, source_commit=self.SOURCE_COMMIT,
+            metrics=copy.deepcopy(values), source_hashes={str(checkpoint): checkpoint_sha},
+            hardware_profile="a800", closed_loop=False)
+        path = root / "synthetic_audit.json"
+        args = m.candidate_args(checkpoint, checkpoint_sha, 61252, path, "0"*64)
+        fixture = dict(run=run, checkpoint=checkpoint, path=path, audit=audit,
+                       docs=docs, args=args)
+        self.persist(fixture)
+        return fixture
+
+    def persist(self, f):
+        # Re-sign small fixtures so semantic mutations reach the production checks.
+        # audit['metrics'] intentionally remains separate from metrics.json.
+        for name, doc in f["docs"].items():
+            path = f["run"] / name
+            path.write_text(json.dumps(doc, allow_nan=False))
+            f["audit"]["source_hashes"][str(path)] = m.sha(path)
+        f["path"].write_text(json.dumps(f["audit"], allow_nan=False))
+        f["args"].training_audit_sha256 = m.sha(f["path"])
+
+    def test_three_source_audit_61252_consumer_positive_real_file_hashes(self):
+        with TemporaryDirectory() as temp:
+            f = self.fixture(Path(temp))
+            pins = {}
+            with patch.object(m.replay.torch, "load", side_effect=AssertionError("no weight load")), \
+                 patch.object(m, "JointRobotModel", side_effect=AssertionError("no model")), \
+                 patch.object(torch.cuda, "device_count", side_effect=AssertionError("no GPU")):
+                audit, config, env = m.replay.candidate_inputs(f["args"], pins)
+            self.assertEqual(audit, f["audit"])
+            self.assertEqual(config, f["docs"]["config.json"])
+            self.assertEqual(env, f["docs"]["environment.json"])
+            self.assertEqual(audit["metrics"], f["docs"]["metrics.json"]["metrics"])
+            self.assertEqual(audit["parent_sha256"], m.PARENT_SHA)
+            self.assertEqual(audit["final_step"], 61252)
+            self.assertEqual(sum(v["windows"] for v in audit["metrics"].values()), 220104)
+            self.assertEqual(set(pins), {str(f["path"]), str(f["checkpoint"])} |
+                             {str(f["run"]/name) for name in f["docs"]})
+            self.assertTrue(all(m.sha(path) == value for path, value in pins.items()))
+
+    def test_three_source_audit_rejects_identity_epoch_status_and_checkpoint_binding(self):
+        mutations = (
+            lambda f: f["audit"].update(status="DIAGNOSTIC_PASS"),
+            lambda f: f["audit"].update(final_step=61251),
+            lambda f: f["audit"].update(final_step=True),
+            lambda f: f["audit"].update(completed_epochs=3),
+            lambda f: f["audit"].update(completed_epochs=True),
+            lambda f: f["audit"].update(checkpoint=str(f["run"]/"foreign.pt")),
+            lambda f: f["audit"].update(run=str(f["run"].parent)),
+            lambda f: f["audit"].update(checkpoint_sha256="1"*64),
+            lambda f: f["audit"]["source_hashes"].update({str(f["checkpoint"]): "2"*64}),
+        )
+        for index, mutate in enumerate(mutations):
+            with self.subTest(mutation=index), TemporaryDirectory() as temp:
+                f = self.fixture(Path(temp)); mutate(f); self.persist(f)
+                with patch.object(m.replay.torch, "load", side_effect=AssertionError("no weight load")):
+                    with self.assertRaises(ValueError):
+                        m.replay.candidate_inputs(f["args"], {})
+
+    def test_three_source_audit_rejects_resigned_metrics_config_and_source_mismatch(self):
+        mutations = (
+            lambda f: f["docs"]["metrics.json"].update(status="DIAGNOSTIC_PASS"),
+            lambda f: f["docs"]["metrics.json"].update(steps=59716),
+            lambda f: f["docs"]["metrics.json"].update(closed_loop=True),
+            lambda f: f["docs"]["metrics.json"]["metrics"]["mixed"].update(windows=73367),
+            lambda f: f["docs"]["metrics.json"]["metrics"]["point"].update(ADE_m=.9),
+            lambda f: f["audit"].update(metrics=copy.deepcopy(f["docs"]["metrics.json"])),
+            lambda f: f["docs"]["config.json"].update(completed_epochs=2),
+            lambda f: f["docs"]["config.json"].update(diagnostic=True),
+            lambda f: f["docs"]["config.json"].update(contract="foreign"),
+            lambda f: f["docs"]["environment.json"].update(commit="f"*40),
+            lambda f: f["docs"]["environment.json"].update(dirty=" M wa/wm/training.py"),
+        )
+        for index, mutate in enumerate(mutations):
+            with self.subTest(mutation=index), TemporaryDirectory() as temp:
+                f = self.fixture(Path(temp)); mutate(f); self.persist(f)
+                with patch.object(m.replay.torch, "load", side_effect=AssertionError("no weight load")):
+                    with self.assertRaises(ValueError):
+                        m.replay.candidate_inputs(f["args"], {})
+
+    def test_three_source_audit_rejects_changed_files_and_external_audit_sha(self):
+        for name in ("synthetic_audit.json", "metrics.json", "config.json",
+                     "environment.json", "checkpoint.pt"):
+            with self.subTest(file=name), TemporaryDirectory() as temp:
+                f = self.fixture(Path(temp))
+                path = f["path"] if name == "synthetic_audit.json" else f["run"]/name
+                path.write_bytes(path.read_bytes() + b" ")
+                with self.assertRaisesRegex(ValueError, "changed file"):
+                    m.replay.candidate_inputs(f["args"], {})
+        with TemporaryDirectory() as temp:
+            f = self.fixture(Path(temp)); f["args"].training_audit_sha256 = "f"*64
+            with self.assertRaisesRegex(ValueError, "changed file"):
+                m.replay.candidate_inputs(f["args"], {})
+
+    def test_candidate_run_rejects_wrong_parent_before_baseline_gpu_and_model(self):
+        with TemporaryDirectory() as temp:
+            f = self.fixture(Path(temp))
+            f["audit"]["parent_sha256"] = "a"*64
+            self.persist(f)
+            args = SimpleNamespace(**vars(f["args"]), model="candidate", selection="/synthetic/selection",
+                selection_sha256="b"*64, baseline_fit="/synthetic/baseline", baseline_fit_sha256="c"*64)
+            selection = dict(context=dict(root="/synthetic/root", job_root="/synthetic/jobs"))
+            with patch.object(m, "read_selection", return_value=(selection, [], {})), \
+                 patch.object(m, "JointRobotModel", side_effect=AssertionError("no model")), \
+                 patch.object(torch.cuda, "device_count", side_effect=AssertionError("no GPU")):
+                with self.assertRaisesRegex(ValueError, "candidate not from audited parent59866"):
+                    m.run(args)
+
+    def test_loaded_candidate_61252_checks_parent_and_cumulative_epoch_without_real_weights(self):
+        with TemporaryDirectory() as temp:
+            f = self.fixture(Path(temp))
+            audit, _, _ = m.replay.candidate_inputs(f["args"], {})
+            checkpoint = dict(step=61252, kind="jepa", contract=m.CONTRACT, completed_epochs=2,
+                parent_checkpoint=audit["parent_checkpoint"], parent_sha256=m.PARENT_SHA,
+                model={"policy.weight": torch.ones(1)})
+            model = SimpleNamespace(load_state_dict=Mock(return_value=SimpleNamespace(
+                missing_keys=["encoder.weight"], unexpected_keys=[])))
+            loader = Mock(return_value=checkpoint)
+            m.replay.load_candidate(model, f["checkpoint"], 61252, audit, loader=loader)
+            loader.assert_called_once_with(f["checkpoint"], map_location="cpu",
+                                           weights_only=True, mmap=True)
+            model.load_state_dict.assert_called_once_with(checkpoint["model"], strict=False)
+            for field, value in (("step", 61251), ("completed_epochs", 3),
+                                 ("parent_sha256", "d"*64), ("parent_checkpoint", "/wrong")):
+                with self.subTest(field=field):
+                    bad = dict(checkpoint, **{field: value})
+                    with self.assertRaises(ValueError):
+                        m.replay.load_candidate(model, f["checkpoint"], 61252, audit,
+                                                loader=Mock(return_value=bad))
+
+
+
 if __name__=="__main__":unittest.main()

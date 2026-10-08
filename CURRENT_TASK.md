@@ -1,5 +1,5 @@
 # WA current task — STT target and UWB study
-Updated: 2026-10-08 21:14 Beijing. Job62256/Task73511 remain SUBMITTED at21:11:26;requested8A800,expected output absent21:14:26. No actual GPU/optimizer progress verified. Do not resubmit/also launch4090. GoalACTIVE;best61609 unchanged.
+Updated: 2026-10-08 21:39 Beijing. Job62256/Task73511 remain SUBMITTED at21:39:16;requested8A800,expected output absent in samecheck. CPU candidate-interface36tests PASS;no actual GPU/optimizer progress verified. Do not resubmit/also launch4090. GoalACTIVE;best61609 unchanged.
 Existing Goal was externally resumed: get_goal returned ACTIVE at19:29/19:33/19:58. Prior BLOCKED is historical. Heartbeat wa remains ACTIVE every20minutes;not complete or user-paused.
 Full predecessor: archive/2026-10/CURRENT_TASK_before_group_fit_permission_20261008_1656.md.
 Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928; C=R/checkout; J=/data/nas_ray/project/md-ak/users/zeying.gong. Resolve R/C/J prefixes literally below.
@@ -13,6 +13,7 @@ Paths: R=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260
 
 ## Current operation and next gates
 
+- CPU posttrain-interface review21:35:6new synthetic candidate-audit tests;36combined PASS(main1.672s),testSHAac497458fb91c889f5d9c4a5935ccaea20f1c4ba4949f0f5ac770535bdc96eb4. Frozen192b evaluation contract accepts planned61252 for3tasks;no realcheckpoint/GPU/rollout. Existingcandidate entry needsno productionchange. Current/historical status and pendingcommand in C/wa/results/FAILURE_STATE_GROUP_FIT_20261008.md;lastscheduler21:19:43SUBMITTED. Allfrozenpins unchanged.
 - SSH recovered this turn:devpod-a800 hostname and GPFS mt-tutz0R-pfs-haZOBP reverified. Preserve preceding kex-close failure;it is not a current permission/network blocker. Single detail21:11:26 stillSUBMITTED(updated20:56:45);expected output directory absent21:14:26. No worker health/step claim from queue status.
 - Best61609 reproduction guide and current-only environment inventory are now committed/pushed in GitHubwa0de1f2d32cdf0dcd152d0506a094b3f71b57b040;ls-remote equalslocalHEAD. GuideSHA9cab058914a80c04f34c272c644de9e3270cc2b4e8765084ad20a5fa7b6aca07,inventory35b49902ca4e8d29cf756cc3a30dc142b225380d2d1068aae257555ac99bf5c7. No external evaluation/asset migration. Two raw NAS-onlyJSONs remain excluded;CSV unchanged this poll.
 - 20:44:35firstsubmit rejectedHTTP429 accountactive10/10,exit1/noJobID;20:46readonly confirmednonecreated. User then explicitly cleared extrajobs/saidcontinue. Fresh20:54–55active2otherWLA,SUBMITTED/SUBMITTING/SCHEDULED0;single renewedsubmit20:56:43 succeeded62256/73511.8A800 requested,actualworkerGPU/step pending;nootherjob stopped bythis task.
