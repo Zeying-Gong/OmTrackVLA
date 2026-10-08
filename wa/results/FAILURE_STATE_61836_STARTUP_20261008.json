@@ -1,0 +1,350 @@
+{
+  "schema": "failure_state_61836_startup_v1",
+  "status": "RUNNING_8A800_16_SERVICES_READY_0_COMPLETED",
+  "goal": "ACTIVE_NOT_MET",
+  "submitted_beijing": "2026-10-08T08:33:30+08:00",
+  "job": 61836,
+  "task": 73058,
+  "cluster": "baidu_bj_a800",
+  "node": "172.20.0.24",
+  "scheduler_read_beijing": "2026-10-08T08:33:46+08:00",
+  "output": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2",
+  "source_commit": "d676d9e760d066ef3c01c271bd9315ae2e296895",
+  "source_path": "/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/source_failure_state_collect_v2",
+  "configuration": "wa/jobs/failure_state_collect_a800_v2.yaml",
+  "config_sha256": "a92aa6eacc202a7470ed060f953fa040ade640872bb303a0d92c6e871e5d6ec9",
+  "github_backup_verified": "8aa8640ecdc19eecfa4f18b6c2fcfef2dfe263dd",
+  "preflight_report": "wa/results/FAILURE_STATE_V2_RELEASE_20261008.json",
+  "runtime_report": "wa/results/FAILURE_STATE_V2_RUNTIME_PREFLIGHT_20261008.json",
+  "allocation_snapshot": {
+    "actual_gpu": {
+      "count": 8,
+      "cuda_names": [
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB",
+        "NVIDIA A800-SXM4-80GB"
+      ],
+      "gpu_uuids": [
+        "GPU-f7d806fd-9173-4b06-bdbc-4eecb039089c",
+        "GPU-6d4f33f7-5ec9-4e5c-0f16-117727af971a",
+        "GPU-adee8f58-3cd2-04d4-7322-1a7de6f759a0",
+        "GPU-2509d080-fa9f-ca1d-9749-dc9617fefb23",
+        "GPU-ce854d8a-9692-a714-3cb5-3f20754da255",
+        "GPU-c5bd7575-d085-6973-255d-8263ec011394",
+        "GPU-2c925f30-be4c-c7ca-b33f-4b285b106230",
+        "GPU-d2e1b773-ad49-44a9-fa75-ba46f5f19d21"
+      ]
+    },
+    "checked_console_fatal": [],
+    "console_bytes": 58708,
+    "console_sha256": "4b6bd8b836e762c955f793c4f08556a217557739f4e3f7a8d9ad4e7d596ff8b2",
+    "errors": [],
+    "job": 61836,
+    "lanes": [
+      {
+        "completed": 0,
+        "keys": [],
+        "lane": 0,
+        "teacher_ready": false,
+        "wa_ready": true,
+        "worker_log_bytes": 0
+      },
+      {
+        "completed": 0,
+        "keys": [],
+        "lane": 1,
+        "teacher_ready": false,
+        "wa_ready": true,
+        "worker_log_bytes": 0
+      },
+      {
+        "completed": 0,
+        "keys": [],
+        "lane": 2,
+        "teacher_ready": false,
+        "wa_ready": true,
+        "worker_log_bytes": 0
+      },
+      {
+        "completed": 0,
+        "keys": [],
+        "lane": 3,
+        "teacher_ready": false,
+        "wa_ready": true,
+        "worker_log_bytes": 0
+      },
+      {
+        "completed": 0,
+        "keys": [],
+        "lane": 4,
+        "teacher_ready": false,
+        "wa_ready": true,
+        "worker_log_bytes": 0
+      },
+      {
+        "completed": 0,
+        "keys": [],
+        "lane": 5,
+        "teacher_ready": false,
+        "wa_ready": true,
+        "worker_log_bytes": 0
+      },
+      {
+        "completed": 0,
+        "keys": [],
+        "lane": 6,
+        "teacher_ready": false,
+        "wa_ready": true,
+        "worker_log_bytes": 0
+      },
+      {
+        "completed": 0,
+        "keys": [],
+        "lane": 7,
+        "teacher_ready": false,
+        "wa_ready": true,
+        "worker_log_bytes": 0
+      }
+    ],
+    "new_complete": 0,
+    "old_preserved": 1,
+    "root": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61836/task_73058/wa_failure_state_collect_a800_v2",
+    "task": 73058,
+    "utc": "2026-10-08T00:36:22.779305+00:00"
+  },
+  "ready_snapshot": {
+    "errors": [],
+    "lanes": [
+      {
+        "completed": 0,
+        "lane": 0,
+        "lightnav_ready": true,
+        "records": [],
+        "wa_contract": {
+          "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+          "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+          "gpu": "NVIDIA A800-SXM4-80GB",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "sampling_steps": 4,
+          "seed": "7+step",
+          "step": 59716,
+          "text_used": false,
+          "url": "http://127.0.0.1:37707",
+          "world_predictor_inference": false
+        },
+        "wa_ready_sha256": "f183a84b8d70a89035678a729e3d4b0a2c4ef67985d70a23aacce415f890ce71",
+        "worker_last_lines": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ],
+        "worker_log_bytes": 3115
+      },
+      {
+        "completed": 0,
+        "lane": 1,
+        "lightnav_ready": true,
+        "records": [],
+        "wa_contract": {
+          "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+          "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+          "gpu": "NVIDIA A800-SXM4-80GB",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "sampling_steps": 4,
+          "seed": "7+step",
+          "step": 59716,
+          "text_used": false,
+          "url": "http://127.0.0.1:40345",
+          "world_predictor_inference": false
+        },
+        "wa_ready_sha256": "ce0fd821a9f97baa5740cf6121453804c4825beb655209752ed679e14cfebce5",
+        "worker_last_lines": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ],
+        "worker_log_bytes": 1886
+      },
+      {
+        "completed": 0,
+        "lane": 2,
+        "lightnav_ready": true,
+        "records": [],
+        "wa_contract": {
+          "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+          "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+          "gpu": "NVIDIA A800-SXM4-80GB",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "sampling_steps": 4,
+          "seed": "7+step",
+          "step": 59716,
+          "text_used": false,
+          "url": "http://127.0.0.1:44919",
+          "world_predictor_inference": false
+        },
+        "wa_ready_sha256": "6f2198a5c141b4cb62697167f0c8957e30cee62f3098fef1f74bb736bb10ba23",
+        "worker_last_lines": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ],
+        "worker_log_bytes": 1886
+      },
+      {
+        "completed": 0,
+        "lane": 3,
+        "lightnav_ready": true,
+        "records": [],
+        "wa_contract": {
+          "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+          "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+          "gpu": "NVIDIA A800-SXM4-80GB",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "sampling_steps": 4,
+          "seed": "7+step",
+          "step": 59716,
+          "text_used": false,
+          "url": "http://127.0.0.1:38741",
+          "world_predictor_inference": false
+        },
+        "wa_ready_sha256": "6a85b839b0ecb7d7dd52fa20c58dc869dcbf8da7344bb8398ca518360a915283",
+        "worker_last_lines": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ],
+        "worker_log_bytes": 1886
+      },
+      {
+        "completed": 0,
+        "lane": 4,
+        "lightnav_ready": true,
+        "records": [],
+        "wa_contract": {
+          "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+          "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+          "gpu": "NVIDIA A800-SXM4-80GB",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "sampling_steps": 4,
+          "seed": "7+step",
+          "step": 59716,
+          "text_used": false,
+          "url": "http://127.0.0.1:38293",
+          "world_predictor_inference": false
+        },
+        "wa_ready_sha256": "04a14b3c71e6ae676cf278fe6b9bc0a8076b0127155e27af74d64b394a02a5f1",
+        "worker_last_lines": [
+          "Logged in as evt_bench_d04d81f8_2523",
+          "2026-10-08 08:37:17,684 initializing sim RearrangeSim-v2",
+          "[08:37:17:732295]:[Error]:[Scene] SemanticScene.cpp(137)::loadSemanticSceneDescriptor : SSD Load Failure! File with SemanticAttributes-provided name `data/scene_datasets/hm3d/val/00822-nrA1tAA17Yp/nrA1tAA17Yp.basis.scn` exists but failed to load."
+        ],
+        "worker_log_bytes": 2451
+      },
+      {
+        "completed": 0,
+        "lane": 5,
+        "lightnav_ready": true,
+        "records": [],
+        "wa_contract": {
+          "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+          "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+          "gpu": "NVIDIA A800-SXM4-80GB",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "sampling_steps": 4,
+          "seed": "7+step",
+          "step": 59716,
+          "text_used": false,
+          "url": "http://127.0.0.1:40643",
+          "world_predictor_inference": false
+        },
+        "wa_ready_sha256": "ca9d94fd3143dec37710bf3c0abb27bf0359c3ab94ffbe8ce73cf012c42f216d",
+        "worker_last_lines": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ],
+        "worker_log_bytes": 3116
+      },
+      {
+        "completed": 0,
+        "lane": 6,
+        "lightnav_ready": true,
+        "records": [],
+        "wa_contract": {
+          "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+          "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+          "gpu": "NVIDIA A800-SXM4-80GB",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "sampling_steps": 4,
+          "seed": "7+step",
+          "step": 59716,
+          "text_used": false,
+          "url": "http://127.0.0.1:44661",
+          "world_predictor_inference": false
+        },
+        "wa_ready_sha256": "f52a15e71c5795bfdb285ada5940947727300a9e9240e80b1a7aa0ad6177bbd2",
+        "worker_last_lines": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ],
+        "worker_log_bytes": 1886
+      },
+      {
+        "completed": 0,
+        "lane": 7,
+        "lightnav_ready": true,
+        "records": [],
+        "wa_contract": {
+          "checkpoint": "/data/nas_ray/project/md-ak/users/zeying.gong/job_61609/task_72803/wa_hard_stt_train_a800_v1/checkpoint.pt",
+          "checkpoint_sha256": "c510c04d987d141423401a25323ea353314107a16f4dac5d2901370ab199fa52",
+          "gpu": "NVIDIA A800-SXM4-80GB",
+          "mode": "mixed",
+          "noise_mode": "zero",
+          "sampling_steps": 4,
+          "seed": "7+step",
+          "step": 59716,
+          "text_used": false,
+          "url": "http://127.0.0.1:44891",
+          "world_predictor_inference": false
+        },
+        "wa_ready_sha256": "4c6e4afaca255ec6585b46aa092b6d2e8d5b1da9cd2c7bb89850161a772e19fd",
+        "worker_last_lines": [
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(0)",
+          "MeshTools::compile(): ignoring unknown/unsupported attribute Trade::MeshAttribute::Custom(1)"
+        ],
+        "worker_log_bytes": 1886
+      }
+    ],
+    "new_complete": 0,
+    "utc": "2026-10-08T00:37:18.353292+00:00"
+  },
+  "protocol_sha256": "f3f14b8aa935eaf6c3a7352703fe9f30bd9e28ba1825ff30e82b0cfd98800f31",
+  "continuation_sha256": "06d098f30ec52d988dc707249e73b17d11642f44846a75015455315891182822",
+  "new_planned": 125,
+  "old_preserved": 1,
+  "new_complete": 0,
+  "training_released": false,
+  "new_score": false,
+  "known_warnings": "Existing Gym/xFormers/mesh/HM3D SSD warnings retained; root/lane ERROR absent at snapshots; not a claim all logs warning-free or full run success.",
+  "monitor": {
+    "id": "wa",
+    "status": "ACTIVE",
+    "interval_minutes": 20,
+    "updated_to_job": 61836
+  },
+  "next": "Verify8 actualworkers produce actions/completed entries; audit classified teacher errors and independent same-k Oracle. Do not repeat submission, overwrite source/results, or promote to cache/training/SR before separate audit."
+}
