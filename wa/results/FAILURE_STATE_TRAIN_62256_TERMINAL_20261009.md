@@ -132,4 +132,26 @@ At06:54:20-23, independent A800 read-only validation of the sameGPFS used the re
 
 At06:49 the normal A800 submission chain was authenticated as the owner with md_ai_kit2.0.0. Resources were A8007free/H1000free/bj409072free, not reserved allocations. Own RUNNING62262/61847/61846 and SUBMITTED62404 were individually identified as other work; no student62256duplicate existed. A separate new4090SSH session again hit kex-close and was not retried; the already-running main developer session completed normally. The healthy original A800 submission/NAS path is unchanged, not a workaround to execute through the failed4090SSH connection.
 
-GitHub `wa` terminal-report commit `56df1c03e444b3ab8aa07b4348cdf87cd4350eb1` was verified after the first push returned remote `fatal error in commit_refs`; one normal same-commit retry succeeded. The current preparation must be backed up before full submissions. CURRENT80/PROGRESS127 were copied and byte-compared to `archive/2026-10/*_before_62256_eval_preflight_20261009_0653.md`. No new modelSR or promotion is claimed.
+GitHub `wa` terminal-report commit `56df1c03e444b3ab8aa07b4348cdf87cd4350eb1` was verified after the first push returned remote `fatal error in commit_refs`; one normal same-commit retry succeeded. The subsequent preparation was backed up as `c35aa55ee5302e89ad4a7f247538d5748d57ab0f` and verified with ls-remote before the submissions below. CURRENT80/PROGRESS127 were copied and byte-compared to `archive/2026-10/*_before_62256_eval_preflight_20261009_0653.md`. The first preparation commit attempt stopped at missing Git author identity without a commit; verified existing Codex identity was then supplied command-locally, without changing global configuration. No new modelSR or promotion is claimed.
+
+## Formal evaluation submissions
+
+All times below are2026-10-09 Beijing. Final pre-submission checks07:02:55-07:03:11 showed md_ai_kit2.0.0/authenticated owner, A8007free, H1000free and missing separate-NAS project, bj409072free. These are capacity snapshots, not allocations. Existing other jobs were preserved and no student62256 duplicate was found. Each complete task below was submitted once after Git backup; no cluster smoke or shortened evaluation was submitted.
+
+| Task | Job / Task | Created | GPUs requested | Status at07:13 |
+| --- | --- | --- | ---: | --- |
+| STT | 62445 / 73719 | 07:04:04 | 8 | SUBMITTED |
+| DT | 62446 / 73720 | 07:04:53 | 8 | SUBMITTED |
+| AT | 62447 / 73721 | 07:05:29 | 8 | SUBMITTED |
+
+The scheduler identifies all three as `baidu_bj_4090`, K8s. Frozen source, config hashes, checkpoint40915/step61252 and full YAML commands above are unchanged. Expected new output roots are `J/job_62445/task_73719/wa_student62256_stt_4090_v1`, `J/job_62446/task_73720/wa_student62256_dt_4090_v1` and `J/job_62447/task_73721/wa_student62256_at_4090_v1`. Each task evaluates all1405 unique definitions; no previous student rows are reused.
+
+At07:05:58-07:06:11 and again07:13:11-12, Job and Task statuses were allSUBMITTED and all three output roots were absent. Each task's292-byte `console.log` stops at creating an eight-GPU K8s job in `ray-4090`, with last timestamps07:04:50/07:04:54/07:05:30. There is no observed worker launch, model ready record, GPU identity, completed episode or COMPLETE marker. No fatal/OOM pattern matched these small scheduler logs; that does not establish worker health. No explicit scheduling error or queue ETA was established.
+
+Next monitor these existing IDs. On startup verify eight real distinct RTX4090 GPUs and eight correct model-ready contracts per task, then count valid unique episode results and inspect log growth, initialization failures, video and fatal/OOM evidence. Final acceptance requires eight COMPLETE shards and1405 unique task/key rows per task, unchanged source/checkpoint/protocol, initial-RGB and teacher-state pairing, media and metric audits. Only audited complete results may be compared with61609 or promoted against1289/1173/1203. Queue state, policy fit and offline metrics are not closed-loop SR.
+
+This is evaluation-set adaptation. No model, loss, physics, controller, success criterion or prior result was changed; no further epoch or selective score repair is authorized by these submissions. Same-weight no-UWB pairing follows only after all three SR thresholds are met.
+
+### Queue diagnosis at0720 Beijing
+
+At07:20:39-41 all three Job/Task statuses remainedSUBMITTED, while their actual Pods werePending with `node=-`. The task `.md-ak/workload.log` files had grown to18508/18508/18083bytes forSTT/DT/AT, each latestmtime07:20:13. They record `FailedScheduling`:0/29nodes fit the request. Retained event summaries list11Insufficientcpu+17Insufficientnvidia.com/gpu+1untolerated dedicated-ci taint, and12cpu+16GPU+1taint. These are scheduling event reasons, not a measured queue rank or an allocation; do not sum them into a GPU capacity claim. A K8s Job object'sRunning phase does not mean itsPending Pod has started. The three model output roots are still absent. Log growth now proves scheduler retries, not episode progress. No request, job or other user's task was changed; keep the existing three jobs queued.
