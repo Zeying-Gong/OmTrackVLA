@@ -112,4 +112,32 @@ ModelScope适合单独的私有资产仓库，使用显式 `visibility="private"
 
 DINO/JEPA应从官方仓库取得完整真实checkout并固定提交，见[源码获取步骤](BEST61609_STANDALONE.md#架构源码获取与核验)。直接删除`.git`、只挑若干模型文件或不加检查地全量pip安装上游依赖，均不能代替当前评测的源码和环境准入。
 
-本次仅完成源码包，尚未上传ModelScope；Habitat/EVT外部评测源码、双环境、场景及H100完整运行仍待交接核验。既有`best61609_private_bundle_20261008_v1`保持不变。
+上述WLA结构包完成时，Habitat/EVT外部评测源码尚待交接；该部分随后生成下面的独立小包。双环境、场景及H100完整运行仍待核验。既有大权重/证据包和WLA结构包均保持不变、尚未上传。
+
+## 私有 Habitat 与 EVT 源码配置包
+
+2026-10-09 01:26:45北京时间，项目NAS的`artifacts/best61609_evt_source_bundle_20261009_v1`生成成功，耗时0.8137秒。包内373个文件、原始16,816,185字节：339份源码/配置加34个Xvfb `.deb`，保留3个合法空文件。不占GPU、不解包、不运行Xvfb安装器、不修改原源码；状态`PASS_PRIVATE_EVT_SOURCE_BUNDLE_NOT_UPLOADED`。
+
+| 内容 | 文件数 | 范围 |
+| --- | ---: | --- |
+| WLA评测桥接 | 8 | text_action_v2/v3控制及agent、full common与manifest |
+| BENCH桥接及辅助配置 | 11 | trained_agent、humanoid_infos、可选顶层import源码、run_evt_ten、两个Xvfb脚本 |
+| evt_bench | 6 | 仿真器、动作、传感器与指标注册源码 |
+| Habitat-Lab | 314 | 当前完整源码/配置树，排除bytecode缓存 |
+| Xvfb运行包 | 34 | 原`.deb`文件；未执行安装 |
+
+其中10个已有依赖逐文件SHA符合冻结192b的两份原清单；清单本身SHA也与192b一致。其余文件是本次当前源码快照，**不能声称373文件都已有61609历史逐文件等价证据**。原文件内容、版权头和现存元数据保留；快照缺少独立LICENSE文件，不推定整个包具有公开再分发许可。
+
+| 文件 | 字节 | SHA256 |
+| --- | ---: | --- |
+| best61609_evt_source.tar | 17479680 | 9a16415b0513a0a6d1bc893f0e10e63fe1b271667413738a0863543af298295f |
+| manifest.json | 188018 | e81ec4cf10db1f53cb6c016ab84a7dcaac2a303d8516fa08efe067b7db2e8c86 |
+| complete.json | 1342 | 258267c89a7fc94cd75b1f3dd2eea6bd4f755b1630faabd7a9eba1156e7d3637 |
+
+打包器`wa/tools/pack_best61609_evt_source.py` SHA `c5d0b8f2cd23a0474484f029704d54905f7be6368a7e988f9111137c1c387a49`，测试SHA `9bb9629295627089497c82f274e05782b68d3a677288e92ef66e3fcce1e7e4c1`。10项CPU测试PASS0.033秒，包括空文件、链接/特殊文件、固定哈希、重复/危险路径、源集合变化、失败无完成标记及已有输出不覆盖。逐文件内容在打包时重新验证，归档读回后再核对来源集合与全部SHA。日志为目录名加`.log`，SHA `fdad7e80ec2c89c350c77d78ee036f8e03197555af3434010c384768b3a283aa`。生成命令为在checkout运行`PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 R/probe_env/bin/python -B -u -m wa.tools.pack_best61609_evt_source`，R按本文原NAS路径展开；已有包不可重跑覆盖。
+
+01:29:49北京时间，独立审计仅用标准库tarfile读取新包的三个文件，0.117797秒、exit0：373成员的名单、大小和逐文件SHA全部匹配，三个归档产物的大小/SHA及读取期间稳定性通过。链接、特殊文件、重复/额外成员、危险路径和稀疏成员均为0；尾部9728字节全零。没有调用生产校验函数、解包、重读原始来源或上传。
+
+归档成员统一0600，接收方应先在新隔离暂存目录核验全部成员和哈希，再恢复到获准布局。启动器会直接执行`BENCH/scripts/runtime/run_xvfb.sh`，因此**仅该脚本**需在核验后的隔离目标执行`chmod u+x "$BENCH/scripts/runtime/run_xvfb.sh"`；manifest的`executable_restore_allowlist`记录了完整相对归档路径。不得对整个包递归开放执行权限或直接覆盖系统根。`install_xvfb_bundle.sh`由shell source调用，无需据此给其他文件执行权限。
+
+`humanoid_infos.json`按工作目录读取，评测worker仍须以BENCH为cwd。保留可选import源码不意味着要加载OmTrackVLA/DA3/VLM权重。这个包**不含Python二进制环境、WA/DINO权重、场景、人物URDF/动作PKL或机器人资产**；它们仍须分别核验和交接。配置中的`data/default.physics_config.json`在当前来源未找到，本轮没有虚构或补写该文件。包在NAS，不是已上传ModelScope，也不是H100兼容或完整闭环复现证明。
