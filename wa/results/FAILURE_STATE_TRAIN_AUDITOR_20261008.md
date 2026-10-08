@@ -62,3 +62,32 @@ Final toolSHA1bf234bfda69047059013413ff69e9a3223a2ab81cf72d61847b2b4a427aab72;te
 Code/configuration backed up to GitHub wa at602c6aa3efb354388de2871f6614c350ff18d27c before submission. The first20:44:35attempt was rejectedHTTP429 because the account had10/10activejobs;noJobID was returned and a read-only check found no newWAjob. After the user cleared other queued tasks and explicitly requested continuation, fresh checks found only two unrelated runningWLAjobs and no queued/submittingWAjob. One renewed submission at20:56:43 succeeded:Job62256/Task73511,baidu_bj_a800,8GPUs;firstdetailcreated20:56:44/updated20:56:45,statusSUBMITTED.
 
 Output:/data/nas_ray/project/md-ak/users/zeying.gong/job_62256/task_73511/wa_failure_state_train_a800_v1. NoworkerGPUallocation,optimizerstep,finalcheckpoint ornewSR is certified by this submission. Do notsubmit a4090duplicate. At completion use this auditor with explicit --hardware-profile a800 and the pinned A800YAML hash;the remaining heldout/actualexposure/checkpoint/groupfit/closed-loop gates are unchanged.
+
+## Pending terminal command for Job 62256
+
+This command has **not run**. At 2026-10-09 01:10 Beijing the job is training, with step26075 and no terminal metrics. The earlier unsubmitted/queued text describes historical stages, not the current job. See [live training evidence](FAILURE_STATE_TRAIN_62256_STARTUP_20261009.md).
+
+First verify the same Job62256/Task73511 has reached scheduler success and inspect its complete worker logs. Require final metrics for all three modes, each73368 windows; a periodic checkpoint or `checkpoint.pt` alone is insufficient. Scheduled train logs may end at61250; final checkpoint/metrics must establish61252, so do not mistake the logging interval for a missing final update. Only then run the existing CPU auditor. Preserve any exception and partial evidence as a failure; do not relax checks or retry under the default4090 profile.
+
+```bash
+set -euo pipefail
+WA_PROJECT=/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928
+cd "$WA_PROJECT/checkout"
+AUDIT_OUTPUT="$WA_PROJECT/artifacts/failure_state_training_audit_62256_v1.json"
+test ! -e "$AUDIT_OUTPUT"
+CUDA_VISIBLE_DEVICES='' OMP_NUM_THREADS=2 PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 \
+  "$WA_PROJECT/probe_env/bin/python" -B -m wa.tools.audit_failure_state_training \
+  --hardware-profile a800 \
+  --run /data/nas_ray/project/md-ak/users/zeying.gong/job_62256/task_73511/wa_failure_state_train_a800_v1 \
+  --source "$WA_PROJECT/source_failure_state_train_v1" \
+  --source-commit 199385cd9c826c8f21308ad99b6a8375396d9c90 \
+  --config "$WA_PROJECT/checkout/wa/jobs/failure_state_train_a800_v1.yaml" \
+  --config-sha256 08553eb73e8d2db4ae2fd37ab1c322bc7fbf77ac4a3ba3a7c59ae2508a2f2e69 \
+  --plan-root "$WA_PROJECT/artifacts/failure_state_sampling_candidate_20261008_v1" \
+  --plan-admission-sha256 230079f1e99836dc7b3bf20942859e127e0b42dfa0b64c76b2c6ab67dd373902 \
+  --output "$AUDIT_OUTPUT"
+```
+
+Recheck tool SHA `1bf234bfda69047059013413ff69e9a3223a2ab81cf72d61847b2b4a427aab72`, clean relevant source and fresh output before execution; a changed tool requires review, not blindly restoring or overwriting somebody else's edits. The tool validates terminal metrics before hashing/loading large weights. Its per-rank assignment is reconstructed, while actual exposure counters are merged: do not describe these as separately measured rank-local telemetry.
+
+A PASS is `TRAINING_ARTIFACT_AUDIT_PASS_OFFLINE_ONLY`, not SR. Read back and hash its fresh report; use its actual candidate checkpoint hash with the unchanged selection and baseline in [the candidate-fit command](FAILURE_STATE_GROUP_FIT_20261008.md). Then validate304 finite7x4 predictions and fixed input/label identities. After that, refresh platform readiness and submit fullSTT/DT/AT evaluations, each1405 on8GPUs, with real candidate SHA and fresh outputs. No synthetic SHA, mid-training checkpoint or old student rows may substitute for the final candidate.

@@ -44,6 +44,16 @@
 
 另一次独立只读核验于00:52:21通过：26项CLI、24个pin与worker及console相同；冻结源码241文件及WLA288文件SHA匹配。日志进一步增长到step23450、phase743（31条完整记录），loss/grad/LR均有限且组合符合flow+0.5geometry+0.1world。未重新读取大checkpoint，不把启动核验称为终态验收。
 
+## 01时10分持续训练快照
+
+2026-10-09 01:10:17北京时间，日志已到累计step26075、本轮3368/38545次更新（8.7378%）。读取136条完整记录、无半行；记录step序列符合首次22708及后续25倍数，phase_step均等于step减22707。所有已记录loss分量、梯度、LR、elapsed和显存峰值有限，loss与flow+0.5geometry+0.1world的最大浮点差为2.45883711724737e-8。末条loss0.1622880548、grad_norm1.0026556253、peak8.9229012GiB、elapsed1387.6603秒。调度器01:07只读查询仍为Job及Task RUNNING。
+
+train.jsonl读取前缀71783字节，SHA256 `247fc80211779a304461e39da605c8375fd4964dbbfe73dc0ea4a6f3bc84f8e6`；console前缀95112字节，SHA256 `6c87ff91b02276e7d27279bf9f461c350f64f83102081a5124bb48c64f92099d`。同样五个fatal模式命中0，xFormers警告文字48次。两项SHA仅绑定快照前缀，训练继续追加会改变整个文件SHA；有限日志不代替终态模型张量审计。
+
+中间文件`step-0024000.pt`与`step-0026000.pt`均已出现，各4358281329字节；本轮只读取文件元数据，未载入、哈希或验收它们。最终`checkpoint.pt`、`metrics.json`、`actual_exposure_epoch1.json`、`actual_exposure_epoch1.npz`和`worker_postcheck.json`仍不存在。保留现有训练，不用中间权重提前替代计划终态评测。
+
+已有终态审计器和固定152样本candidate入口不需重写或重测；[审计器报告](FAILURE_STATE_TRAIN_AUDITOR_20261008.md)补充了绑定62256的完整待执行CPU命令，[固定拟合报告](FAILURE_STATE_GROUP_FIT_20261008.md)已有后续candidate命令。另一只读agent的devpod-4090入口发生kex关闭（exit255），该入口已停止重试；主线程devpod-a800读取正常，不因此认定训练中断或网络全局不可用。
+
 ## 后续验收和资源边界
 
 维持现有62256，不重复提交、迁移或另开4090正式训练。4090开发GPU6于00:47:18/00:47:48满足短检查余量（24053MiB，利用率0%/5%），但未运行额外诊断；该快照不等于独占资源或4090训练兼容已验证。
