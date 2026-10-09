@@ -1,6 +1,8 @@
 # WA 同权重无 UWB 配对边界
 
-状态：STATIC_REVIEW_ONLY。2026-10-09在Git HEAD `8d2196bcba0c66c4a04ee6807d4b12c18e188234`读取当前实现；没有改生产代码、运行GPU预测、仿真轨迹或新训练。Job62256仍在训练，本研究须等同一candidate在1405条/任务达到STT≥1289、DT≥1173、AT≥1203后执行。
+当前状态：静态输入通路复核及离线比较器 CPU 测试已完成；真实 image 接口与全量配对待执行。Job62256 已完成训练和离线审计，其 mixed 三任务62445/62446/62447截至2026-10-09北京07:55仍在排队。只有同一candidate在每任务1405条达到STT≥1289、DT≥1173、AT≥1203后，才执行真实无UWB评测。
+
+下文静态数据通路最初在Git `8d2196bcba0c66c4a04ee6807d4b12c18e188234`核查。新增比较工具只读完整结果，不修改生产模型、控制器或冻结运行源码。
 
 ## 研究问题
 
@@ -42,7 +44,7 @@ WA覆盖了外部WLAAgent的act，旧父类发送instruction的act不执行；�
 
 结论限于当前evaluation-set adaptation权重对理想UWB输入的依赖；没有真实UWB噪声/多径泛化或无UWB重训结论。只有取得该配对证据后才能讨论是否需要另立无UWB重训实验，不能把直接移除输入的降幅等同纯视觉训练上限。
 
-## 本轮读取的身份
+## 静态检查源码身份
 
 下列SHA只绑定本次静态检查的实际文件。将来冻结评测源码时必须核对，不能仅凭本表宣称运行路径已验证。路径未写绝对前缀者均位于checkout；外部文件位于`/data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_text_action_v3/`。
 
@@ -62,4 +64,56 @@ WA覆盖了外部WLAAgent的act，旧父类发送instruction的act不执行；�
 | 外部 control.py | 90b8b7492371f95016f3516cb26e035e09b675bbc276bfa27ac3fb3f895c52d5 |
 | 外部 eval_agent.py | 41db78b9e56791df1d663eed5148b267fceb8037f300970b1d02c74613a7c397 |
 
-已有test_uwb_eval_mode使用CPU合成fixture，覆盖模式/身份/复用/分母等边界；本轮只读，没有重跑或把它当成模型/真实observer结果。另一个审阅者的SSH在kex被reset、exit255，未重试；主线程同期A800只读成功。该审阅者独立分析主线程读回的片段，未发现需先修复的静态UWB旁路；结论仅为STATIC_REVIEW_ONLY / REAL_INTERFACE_UNVERIFIED，不是独立远程取证或运行验证。没有以网络错误推断训练中断。
+最初静态检查时没有重跑已有test_uwb_eval_mode，也未运行模型/真实observer。该测试使用CPU合成fixture，覆盖模式/身份/复用/分母等边界，后来纳入下方76项回归。最初另一个审阅者的SSH在kex被reset、exit255，未重试；主线程同期A800只读成功。该审阅者分析主线程读回片段未发现静态UWB旁路，结论仅为STATIC_REVIEW_ONLY / REAL_INTERFACE_UNVERIFIED，不是独立远程取证或运行验证。没有以网络错误推断训练中断。
+
+
+## 同权重离线比较工具
+
+工具 `wa/tools/compare_uwb_modes.py` 将两种模式分别完成合并和教师初态审计的结果逐例对齐。它重新读取每种模式的24个shard和4215条记录，要求每任务1405、同一checkpoint SHA/step、无旧行复用及不同输出根；检查mixed/image、zero、sampling4、ready中的7+step、语义协议、七框修复和控制器身份。
+
+两种模式的原始首帧sensor SHA须完全相同，动态初态按绝对容差1e-6比较。保存的4215例教师初态证据必须完整且两种模式一致；教师选择文件按固定SHA读取并重算教师指标。后续轨迹和图像允许不同。结果给出各任务两种模式的SR、reference-step TR、macro_TR、CR、初始化失败及image减mixed差值，并保存共同成功、仅mixed成功、仅image成功、共同失败的完整keys和双方视频路径。
+
+此工具的成功状态是 `PASS_STORED_EVIDENCE_COMPARISON_ONLY`，始终 `ablation_release=false`，不判定Goal达标。它不加载checkpoint、不运行GPU、不重新读取教师PNG或解码视频；视频路径只是引用。保存证据的传递式比较不能替代真实RPC/observer检查、首框/物理/源码配置身份或两模式各自的完整媒体审计。它也不能证明“无UWB重训”的效果。
+
+所有输入、代码来源在读取后和写入前再次核SHA；已有输出、符号链及学生/教师原始证据目录均禁止作为输出位置。只创建新的报告目录，不覆盖结果。
+
+### CPU 验证
+
+- 初版17项测试PASS，42.414秒。
+- 独立审阅发现输出保护遗漏原始教师artifact_root；已补入写前保护，并加入负例。另补finite_tree模块源码hash和能命中ready seed专项校验的负例。首修正补丁因上下文格式check失败、没有写入；标准上下文补丁随后正常应用。
+- 最终新增18项加既有58项共76项PASS，76.726秒，session40381 exit0。二次静态复核无must-fix。
+- 新测试用合成4215×两模式、48个真实磁盘shard；核心loader、指标、教师选择和配对验证实际执行，仅固定manifest/teacher哈希替换为合成内容对应值。覆盖错误SHA/step/mode/key、重复/缺失、初态/NaN、协议修复、summary/教师证据篡改、来源改变及输出保护。这些均不是模型成绩或真实消融结果。
+- 工具SHA256：`3d1e4bc557403df5779d4e3138b9cd50cfac6e301d2d58816c975617276169de`；测试SHA256：`52c683aa3373260bdf25f11ef1272f380888c0e7daf47a36eb939896e799255b`。
+
+在checkout执行的测试命令：
+
+```bash
+PYTHONNOUSERSITE=1 CUDA_VISIBLE_DEVICES= \
+/data/nas_ray/home/zeying.gong/algorithm/repos/WA-Mobile-Tracking-20260928/probe_env/bin/python \
+-B -m unittest -v \
+wa.tests.test_compare_uwb_modes wa.tests.test_uwb_eval_mode \
+wa.tests.test_audit_student_goal wa.tests.test_compare_student61609
+```
+
+### 后续真实比较命令
+
+以下命令尚未对真实image结果执行。先分别使用mode-aware合并器完成两模式的全量合并和初态审计，再指定已通过三项SR门槛的同一权重；不可用占位结果或旧mixed行拼接。变量都应指向获准的持久NAS位置。
+
+```bash
+set -euo pipefail
+: "${WA_PROJECT:?set persistent project root}"
+: "${MIXED_MERGED:?set completed mixed merged root}"
+: "${IMAGE_MERGED:?set completed image merged root}"
+: "${ACCEPTED_SHA:?set accepted checkpoint SHA256}"
+: "${ACCEPTED_STEP:?set accepted checkpoint step}"
+: "${COMPARISON_OUTPUT:?set a new output directory}"
+cd "$WA_PROJECT/checkout"
+PYTHONNOUSERSITE=1 PYTHONPATH=. "$WA_PROJECT/probe_env/bin/python" -B -m wa.tools.compare_uwb_modes \
+  --mixed "$MIXED_MERGED" --image "$IMAGE_MERGED" \
+  --manifest /data/nas_ray/home/zeying.gong/algorithm/repos/WLA-EVT-20260925/evt_full_20260926/manifest.json \
+  --teacher-selections "$WA_PROJECT/artifacts/dual_teacher_complete_audit_20261006_v1/combined_selections.jsonl" \
+  --checkpoint-sha "$ACCEPTED_SHA" --checkpoint-step "$ACCEPTED_STEP" \
+  --output "$COMPARISON_OUTPUT"
+```
+
+报告写入新目录的`comparison.json`，同时打印该文件SHA。未来执行仍需记录实际代码commit和命令；本次未冻结或修改任何正在运行的评测源码，也未启动image任务。
