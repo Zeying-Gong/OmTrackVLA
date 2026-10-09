@@ -1,4 +1,5 @@
 # WA 61609 跨机器资产交接
+补充：[环境重建元数据包](BEST61609_ENVIRONMENT_METADATA_20261009.md) 已按另一固定 ModelScope revision 上传并读回验 SHA；[公开来源与原 NAS 827 文件哈希清单](BEST61609_PUBLIC_ASSETS_20261009.md) 可供协作者自行获取资源后核对。二者均不代表 H100 已具备完整运行环境。
 
 目标是让另一台 8×H100 机器评测同一份 WA 61609，而非重训。**2026-10-09 最新状态：四个预备归档和六个原始清单已上传到非公开 ModelScope 数据集，并按固定 revision 全部下载回 NAS 验 SHA**，见 [固定版本、十文件哈希及剩余缺口](BEST61609_MODELSCOPE_REVISION_20261009.md)。双环境、场景与人物/机器人资产尚未完成异机交接，也未验证 H100 闭环。原命令、完整路径和协议见 [复现指南](BEST61609_REPRODUCTION.md)。
 
