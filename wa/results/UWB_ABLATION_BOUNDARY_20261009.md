@@ -1,8 +1,10 @@
 # WA 同权重无 UWB 配对边界
 
-当前状态（2026-10-09 北京15:30）：静态输入通路复核及离线比较器 CPU 测试已完成；真实 image RPC/observer 与全量配对尚未执行。Job62256 训练和离线审计已完成；其 mixed STT/DT/AT 评测分别为分片齐但任务级收尾未完成、分区SUCCEEDED、运行中。用户现优先要求检查 UWB 影响，即使 STT 未超过 LightNav 也可；原先“三项SR达标才做无UWB”的前置门槛撤销。正式 image 仍须独立验证无测量泄漏、选定同一冻结权重及对应完整已审计 mixed 基线，并复核资源与配置；不将部分计数或离线误差当作闭环结论。
+当前状态（2026-10-09 北京16:21）：静态与 CPU 比较器、best61609 真实 image HTTP 及一例 Habitat 首帧/单步 observer 边界已通过；全量 image 配对尚未执行。Job62256 训练和离线审计已完成；其 mixed STT/DT/AT 评测分别为分片齐但任务级收尾未完成、分区SUCCEEDED、运行中。用户现优先要求检查 UWB 影响，即使 STT 未超过 LightNav 也可；原先“三项SR达标才做无UWB”的前置门槛撤销。正式 image 仍须选定同一冻结权重及对应完整已审计 mixed 基线，复核资源与配置，并完成全量配对审计；不将部分计数或离线误差当作闭环结论。
 
 真实接口补证（2026-10-09 北京15:41）：best61609 原冻结源码192b57f5、checkpoint c510c04d/step59716，在 A800 开发机 GPU3 上有界运行 image/zero HTTP 服务。两次 reset 与三次 predict 为200，均给有限7点预测；额外UWB和后续BBox各返回500并在推理前拒绝。运行时条件观察到 mode_id0、uwb_valid=false、polar/age全零、UWB prompt key被遮蔽，reset后同输入输出一致。NAS报告 R/artifacts/uwb_image_rpc_61609_20261009_v1/report.json SHA256 89a5aae05716f1af3b1988bf7d11d9e8399996131d6ee1edefda1f9de21895a7，状态 PASS_IMAGE_RPC_AND_OBSERVER_NOT_SR。两个预期拒绝的Traceback保留；服务仅终止自有进程。此证据不包含Habitat轨迹、真实observer开关前后动作对照或全量4215无UWB SR。
+
+真实 Habitat 单步补证（2026-10-09 北京16:19）：在 best61609 冻结源码和同一权重下，STT bzCsHPLDztK/1 的首帧原RGB SHA与已审 mixed 基线一致。相同 TrackEnv 状态将 observer 由0切至1，两次 image RPC 均只含首框/RGB/时间戳，动作逐数值完全一致；未构造或采样模拟 UWB。环境真实执行1步，时间0→0.048秒。报告 R/artifacts/uwb_image_habitat_61609_20261009_v1/report.json SHA256 b392573cefb7ad3add89d5bbb8507400e4b65f81a4a1066d561323755165496d，状态 PASS_REAL_HABITAT_ONE_STEP_IMAGE_OBSERVER_BOUNDARY_NOT_SR。此检查只覆盖一例首帧及单步，不代表全量闭环成功率。
 
 下文静态数据通路最初在Git `8d2196bcba0c66c4a04ee6807d4b12c18e188234`核查。新增比较工具只读完整结果，不修改生产模型、控制器或冻结运行源码。
 
