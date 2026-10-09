@@ -37,7 +37,7 @@ test -z "$(git -C "$WA_PROJECT/upstream_audit/jepa-wms" status --porcelain --unt
 
 WLA结构快照本来没有Git；新增[私有WLA源码包](BEST61609_ASSET_HANDOFF.md#私有-wla-结构源码包)含全部288个已pin Python文件及原61609环境来源记录，不含旧WLA权重。它们必须恢复到`WA_PROJECT/dependencies/wla_v1/src/md_wla`。除归档校验外，还应将整个`src/md_wla/**/*.py`文件集合及逐文件SHA与包内原`environment.json`的`wla.source_files`完全比较；不能只检查少数入口文件。新loader记录源码身份及加载期间稳定性，但不会替代这项与61609训练来源的外部比较。
 
-目前私有包仅在原NAS，未上传。WLA快照没有许可证文件，不得从WA仓库公开性推定其可公开再分发。上述源码就绪仍不等于Habitat双环境、场景或H100实机已通过。
+四个私有包和六个清单现已上传非公开 ModelScope 数据集，固定版本及哈希见[交接记录](BEST61609_MODELSCOPE_REVISION_20261009.md)。WLA快照没有许可证文件，不得从WA仓库公开性推定其可公开再分发。上述源码就绪仍不等于Habitat双环境、场景或H100实机已通过。
 
 ## 固定代码与开发接口
 
@@ -89,6 +89,6 @@ H100需本平台调度器和真实双环境兼容检查，不能使用含A800型
 | ready.json | 35040 | 7cd2660223738375b2303b0c639a9256f663533697316820052615a844bbe97b |
 | server.log | 1460 | 23225e90ba9c5cd49fe4bb757c6cc9a1694260bb250192ff5c274a0c713151d5 |
 
-这些检查未重新评测SR、未训练，也不验证H100、反向传播或8卡NCCL。[权重与固定证据包](BEST61609_ASSET_HANDOFF.md#已生成的-nas-私有交接包)已在NAS生成并验SHA，尚未上传ModelScope；不含外部架构源码、双环境或场景。安全认证、私有仓库核验及上传后下载验SHA完成，才能提供已验证下载入口；现有上传授权不等于已完成认证。
+这些检查未重新评测SR、未训练，也不验证H100、反向传播或8卡NCCL。[权重与固定证据包](BEST61609_ASSET_HANDOFF.md#已生成的-nas-私有交接包)已从[非公开 ModelScope 固定版本](BEST61609_MODELSCOPE_REVISION_20261009.md)下载回原 NAS 并验 SHA；不含双环境或场景。私有协作者访问仍须以其本人账号独立验证。
 
-2026-10-09另完成[私有Habitat/EVT源码配置与Xvfb包](BEST61609_ASSET_HANDOFF.md#私有-habitat-与-evt-源码配置包)，373文件、归档17,479,680字节，仅在NAS。它补充外部评测源码，不替代双环境、人物/机器人资产或场景；原10项依赖有历史SHA，其余仅为本次快照。恢复后须按清单仅给`run_xvfb.sh`恢复owner执行权限，保留BENCH工作目录。当前没有已验证的ModelScope下载链接或H100全量结果。
+2026-10-09另完成[私有Habitat/EVT源码配置与Xvfb包](BEST61609_ASSET_HANDOFF.md#私有-habitat-与-evt-源码配置包)，373文件、归档17,479,680字节，现已在[非公开 ModelScope 固定版本](BEST61609_MODELSCOPE_REVISION_20261009.md)读回验 SHA。它补充外部评测源码，不替代双环境、人物/机器人资产或场景；原10项依赖有历史SHA，其余仅为本次快照。恢复后须按清单仅给`run_xvfb.sh`恢复owner执行权限，保留BENCH工作目录。H100全量结果仍不存在。

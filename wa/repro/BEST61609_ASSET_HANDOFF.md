@@ -1,6 +1,6 @@
 # WA 61609 跨机器资产交接
 
-目标是让另一台 8×H100 机器评测同一份 WA 61609，而非重训。源码和配置已在 GitHub；大权重、运行环境和固定评测证据仍在原 NAS。尚未上传资产或验证 H100 运行。原命令、完整路径和协议见 [复现指南](BEST61609_REPRODUCTION.md)。
+目标是让另一台 8×H100 机器评测同一份 WA 61609，而非重训。**2026-10-09 最新状态：四个预备归档和六个原始清单已上传到非公开 ModelScope 数据集，并按固定 revision 全部下载回 NAS 验 SHA**，见 [固定版本、十文件哈希及剩余缺口](BEST61609_MODELSCOPE_REVISION_20261009.md)。双环境、场景与人物/机器人资产尚未完成异机交接，也未验证 H100 闭环。原命令、完整路径和协议见 [复现指南](BEST61609_REPRODUCTION.md)。
 
 ## WA 成品权重与旧初始化权重
 
@@ -65,7 +65,7 @@ JSON保留原字节与绝对路径，不能重写后跳过哈希校验。接收�
 
 现有 GitHub OmTrackVLA 仓库为public。源码、说明、元数据清单和哈希放 GitHub；不要把大权重塞进Git历史。GitHub普通仓库拒绝超过100MiB的文件，二进制发布需另用其支持渠道，见 [GitHub官方说明](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github)。
 
-ModelScope适合单独的私有资产仓库，使用显式 `visibility="private"` 并在上传前读回确认；不得依赖默认可见性。官方SDK支持私有仓库和文件/目录上传，见 [ModelScope Hub](https://github.com/modelscope/modelscope_hub)。用户提供的账号名尚需认证核实；本轮没有创建仓库、认证或上传。
+ModelScope现有备份仓库已核实为 private；本次使用它的新 `handoff/best61609_20261009_v1/` 前缀，上传账号和固定 revision 的十文件读回均已验证，详见[本次交接](BEST61609_MODELSCOPE_REVISION_20261009.md)。不得依赖默认可见性；不得把上传账号能下载等同于协作者已有权限。SDK能力见 [ModelScope Hub](https://github.com/modelscope/modelscope_hub)。
 
 原模型环境中发现user-site ModelScope1.39.1及hub0.4.0，但导入因缺cryptography失败。上传工具应安装到单独工具环境，不向正在使用的训练或仿真环境补包。凭据不进入命令行参数、源码、Git、压缩包或日志；通过隐藏输入或授权凭据机制登录。
 
@@ -90,7 +90,7 @@ ModelScope适合单独的私有资产仓库，使用显式 `visibility="private"
 
 2026-10-09 00:00:23北京时间，独立审计使用标准库tarfile而非生产校验函数，22.578秒内读完两包并逐一验证25,306成员与完整归档SHA，全部匹配；重复、链接、额外成员、危险路径和稀疏文件均为0，归档与清单读取期间未变。没有解压或重读原NAS媒体。
 
-当前交付状态：GitHub已有源码和说明；以上两个包仅在NAS，**尚未上传ModelScope**。本轮可控制的ModelScope页面显示未登录，已请求用户安全登录；未使用或保存聊天中提供的token。完成安全认证、私有仓库核验和上传后，还须按固定revision下载验SHA，才能发放已验证下载入口。不得把“本地包完成”写成“协作者已能下载”。
+该段原为两个包刚生成时的状态。**最新交付状态**见[固定 ModelScope revision 交接](BEST61609_MODELSCOPE_REVISION_20261009.md)：已上传并从固定提交读回验 SHA；私有协作者权限、运行环境和 H100 完整复现仍未验证。不得把“上传账号能下载”写成“协作者已能下载”。
 
 [独立RPC及启动器](BEST61609_STANDALONE.md)已通过A800有限等价检查。H100完整运行、外部架构源码与双环境的可移植交接、场景一致性检查仍未完成；这两个包不是完整环境镜像，也不构成新的闭环SR结果。
 
@@ -112,7 +112,7 @@ ModelScope适合单独的私有资产仓库，使用显式 `visibility="private"
 
 DINO/JEPA应从官方仓库取得完整真实checkout并固定提交，见[源码获取步骤](BEST61609_STANDALONE.md#架构源码获取与核验)。直接删除`.git`、只挑若干模型文件或不加检查地全量pip安装上游依赖，均不能代替当前评测的源码和环境准入。
 
-上述WLA结构包完成时，Habitat/EVT外部评测源码尚待交接；该部分随后生成下面的独立小包。双环境、场景及H100完整运行仍待核验。既有大权重/证据包和WLA结构包均保持不变、尚未上传。
+上述WLA结构包完成时，Habitat/EVT外部评测源码尚待交接；该部分随后生成下面的独立小包。双环境、场景及H100完整运行仍待核验。既有大权重/证据包和WLA结构包均保持不变；随后已上传，固定版本见[本次交接](BEST61609_MODELSCOPE_REVISION_20261009.md)。
 
 ## 私有 Habitat 与 EVT 源码配置包
 
@@ -140,4 +140,4 @@ DINO/JEPA应从官方仓库取得完整真实checkout并固定提交，见[源�
 
 归档成员统一0600，接收方应先在新隔离暂存目录核验全部成员和哈希，再恢复到获准布局。启动器会直接执行`BENCH/scripts/runtime/run_xvfb.sh`，因此**仅该脚本**需在核验后的隔离目标执行`chmod u+x "$BENCH/scripts/runtime/run_xvfb.sh"`；manifest的`executable_restore_allowlist`记录了完整相对归档路径。不得对整个包递归开放执行权限或直接覆盖系统根。`install_xvfb_bundle.sh`由shell source调用，无需据此给其他文件执行权限。
 
-`humanoid_infos.json`按工作目录读取，评测worker仍须以BENCH为cwd。保留可选import源码不意味着要加载OmTrackVLA/DA3/VLM权重。这个包**不含Python二进制环境、WA/DINO权重、场景、人物URDF/动作PKL或机器人资产**；它们仍须分别核验和交接。配置中的`data/default.physics_config.json`在当前来源未找到，本轮没有虚构或补写该文件。包在NAS，不是已上传ModelScope，也不是H100兼容或完整闭环复现证明。
+`humanoid_infos.json`按工作目录读取，评测worker仍须以BENCH为cwd。保留可选import源码不意味着要加载OmTrackVLA/DA3/VLM权重。这个包**不含Python二进制环境、WA/DINO权重、场景、人物URDF/动作PKL或机器人资产**；它们仍须分别核验和交接。配置中的`data/default.physics_config.json`在当前来源未找到，本轮没有虚构或补写该文件。包现已上传并固定读回验 SHA，但不是H100兼容或完整闭环复现证明。
