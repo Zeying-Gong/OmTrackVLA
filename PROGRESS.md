@@ -2,11 +2,11 @@
 Updated: 2026-10-09 13:12 Beijing. This file was compacted after reaching the 150-line limit; the complete predecessor is preserved byte-for-byte at archive/2026-10/PROGRESS_before_student62256_eval_20261009_1312.md (SHA256 cc901daa5c87e5fec0b914a029d792c8ba02a1c9f403de8e759c28d7cc90ee19).
 
 ## Current full closed-loop evaluation (student 62256)
-- STT Job62445/Task73719 RUNNING, Pod on 172.20.32.51; 1313/1405 unique parseable task/key episodes at 13:12:26, shards [166,169,166,164,157,166,161,164].
-- DT Job62446/Task73720 RUNNING, Pod on 172.20.32.142; 657/1405 unique episodes, shards [84,89,82,72,81,86,83,80].
-- AT Job62447/Task73721 SUBMITTED/Pending node=-; output absent, 0/1405. Latest scheduler event cites CPU/GPU insufficiency and affinity/taint constraints, not a worker failure. No resubmit/stop/migration.
-- STT/DT each have 8/8 server_ready for checkpoint SHA prefix40915b36, step61252, mixed/zero/sampling4/seed7+step. Both have 0 JSON parse/task/checkpoint mismatch and 0 initialization-invalid rows in the observed partial output. Worker/server logs grew to 13:13, MP4 present and fatal/OOM patterns0; nonfatal HM3D SemanticScene warning retained. Distinct physical GPU UUIDs are not directly evidenced. No shard COMPLETE marker yet.
-- These partial episode counts are progress, not full SR. Preserve full 1405 denominator per task and 8 COMPLETE shards before reporting SR/TR/CR/invalid. No existing job modified or duplicated.
+- STT Job62445/Task73719 scheduler RUNNING, Pod 172.20.32.51; at 13:41 1405/1405 unique parseable task/key rows, shard counts [176,176,176,176,176,175,175,175], 8/8 COMPLETE markers and 1405 nonempty videos. Raw success field is 1300/1405=92.53%, PROVISIONAL only: root PARTITION_COMPLETE and independent paired/media/metric audit pending; no final SR promotion.
+- DT Job62446/Task73720 RUNNING, Pod 172.20.32.142; 900/1405 unique rows at 13:41, shards [116,118,112,108,111,114,111,110], 0/8 COMPLETE; logs continue growing.
+- AT Job62447/Task73721 SUBMITTED/Pending node=-, output absent and 0/1405. Latest FailedScheduling cites CPU/GPU insufficiency plus affinity/taint constraints; no worker failure or ETA evidence. No resubmit/stop/migration.
+- STT/DT each have 8/8 server_ready matching checkpoint40915b36, step61252, RTX4090, mixed/zero/sampling4/seed7+step, no text or online predictor; observed JSON parse/duplicate/task/checkpoint mismatches0, initialization-invalid0. Checked worker/server logs fatal/OOM patterns0; HM3D SemanticScene warning retained. Eight distinct physical GPU UUIDs still require direct evidence.
+- STT shard counts are complete but parent job has not terminated and task-level partition marker is absent. Investigating read-only; do not run the three-task merge before all three terminal partitions. DT/AT incomplete; no combined 4215 result or UWB conclusion.
 - Fixed eval source R/source_student62256_eval24_v1 commit5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb; three job configs and exact output paths in CURRENT_TASK.md and EXPERIMENTS.csv. Checkpoint J/job_62256/task_73511/wa_failure_state_train_a800_v1/checkpoint.pt SHA40915b366ee5a2ef5967e2ce49a94d2b0f45f149955dd5cccf85ac3d6ab178fc.
 
 ## Scientific target and evidence boundary
