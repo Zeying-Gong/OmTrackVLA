@@ -10,6 +10,7 @@ from wa.data import audit,sha
 from wa.wm.robot_data import RobotWorldData,CONTRACT
 from wa.wm.training import JointRobotModel,optimizer_groups
 from wa.wm.failure_state_train_args import add_arguments as failure_arguments,validate_training_recipe as failure_recipe,source_pins_from_args
+from wa.wm.train_input_mode import validate_train_input_mode,select_training_modes,audit_image_mode_counts
 
 def arguments():
     p=argparse.ArgumentParser(description=__doc__)
@@ -31,6 +32,7 @@ def arguments():
     p.add_argument('--teacher-plan-report-sha256')
     p.add_argument('--dual-teacher-repeats',type=int)
     p.add_argument('--evaluation-set-adaptation',action='store_true')
+    p.add_argument('--train-input-mode',choices=['sampled','image'],default='sampled')
     failure_arguments(p)
     return p.parse_args()
 
@@ -56,6 +58,7 @@ def evaluate(model,data,batch_size,device,rank,world):
 def main():
     a=arguments()
     failure_enabled=failure_recipe(a)
+    validate_train_input_mode(a.train_input_mode,failure_enabled)
     if min(a.batch_size,a.accumulation,a.epochs)<1 or not math.isfinite(a.world_weight) or a.world_weight<=0:raise ValueError('invalid training configuration')
     if not math.isfinite(a.history_repeat_probability) or not 0<=a.history_repeat_probability<=1:raise ValueError('invalid history repeat probability')
     if a.diagnostic and os.environ.get('MD_AK_JOB_ID'):raise ValueError('developer diagnostic forbidden in formal cluster job')
@@ -212,6 +215,7 @@ def main():
     for epoch in range(a.epochs):
         sampler.set_epoch(epoch+a.completed_epochs);wrapped.train();optimizer.zero_grad(set_to_none=True)
         group_log=torch.zeros(4,device=device)
+        mode_counts=torch.zeros(3,dtype=torch.int64,device=device) if a.train_input_mode=='image' else None
         if failure_mix is not None:
             runtime_exposure=FailureRuntimeExposure(failure_mix)
         elif planned_mix is not None:
@@ -221,7 +225,9 @@ def main():
             exposure_ids=None
             if runtime_exposure is not None:
                 batch,exposure_ids=strip_exposure_tag(batch)  # CPU bookkeeping never enters moved/model.
-            batch=moved(batch,device);modes=torch.randint(0,3,(len(batch['pose']),),device=device)
+            batch=moved(batch,device)
+            modes=select_training_modes(len(batch['pose']),device,a.train_input_mode)
+            if mode_counts is not None:mode_counts+=torch.bincount(modes,minlength=3)
             batch=repeat_current_history(batch,a.history_repeat_probability,history_rng)
             group_start=i//a.accumulation*a.accumulation
             group_count=min(a.accumulation,len(loader)-group_start)
@@ -251,7 +257,10 @@ def main():
                     print(json.dumps(row),flush=True)
                 group_log.zero_()
                 if rank==0 and not a.diagnostic and step%2000==0:
-                    torch.save({'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT},output/f'step-{step:07d}.pt')
+                    payload={'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT}
+                    if mode_counts is not None:payload['train_input_mode']='image'
+                    torch.save(payload,output/f'step-{step:07d}.pt')
+        if mode_counts is not None and world>1:dist.all_reduce(mode_counts,op=dist.ReduceOp.SUM)
         if runtime_exposure is not None:
             state=runtime_exposure.state()
             if world>1:
@@ -269,6 +278,9 @@ def main():
                 if a.diagnostic:exposure['status']='DIAGNOSTIC_PARTIAL_EXPOSURE_ONLY'
                 exposure['optimizer_steps_completed']=step-resume_step
                 exposure['diagnostic']=a.diagnostic
+                if mode_counts is not None:
+                    exposure['train_input_mode']='image'
+                    exposure['mode_exposure']=audit_image_mode_counts(mode_counts.cpu(),exposure['actual_total'])
                 if failure_mix is not None:
                     base_counts,teacher_counts,recovery_counts=runtime_exposure.source_counts(state)
                     count_arrays=dict(base_counts=base_counts.numpy(),teacher_counts=teacher_counts.numpy(),
@@ -282,7 +294,9 @@ def main():
                     json.dump(exposure,f,indent=2)
             if world>1:dist.barrier()
     if rank==0 and not a.diagnostic:
-        torch.save({'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT,'completed_epochs':a.completed_epochs+a.epochs,'parent_checkpoint':a.resume,'parent_sha256':a.resume_sha256},output/'checkpoint.pt')
+        payload={'model':{k:v for k,v in model.state_dict().items() if not k.startswith('encoder.')},'optimizer':optimizer.state_dict(),'step':step,'kind':a.kind,'contract':CONTRACT,'completed_epochs':a.completed_epochs+a.epochs,'parent_checkpoint':a.resume,'parent_sha256':a.resume_sha256}
+        if a.train_input_mode=='image':payload['train_input_mode']='image'
+        torch.save(payload,output/'checkpoint.pt')
     if world>1:dist.barrier()
     metrics=evaluate(model,val,a.batch_size,device,rank,world)
     if rank==0:
