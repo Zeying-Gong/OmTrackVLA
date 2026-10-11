@@ -1,0 +1,357 @@
+"""Versioned stored-media/trace review for the 63395 image-only retrain.
+
+Run only after all three 63933/63934/63935 partitions and a fresh frozen
+4215-row merge are complete. No simulator, GPU, live output or frozen source
+is written. A new report directory contains corrected derived wording; the
+original frozen merge summary and its historical wording remain unchanged.
+"""
+import argparse
+import concurrent.futures
+import hashlib
+import html
+import inspect
+import json
+import math
+import re
+import subprocess
+from pathlib import Path
+from urllib.parse import quote
+
+from wa.tools.audit_image_retrain_results_v1 import (
+    NEW_AUDIT_SHA, NEW_CHECKPOINT, NEW_EVAL_CONFIGS, NEW_PARTITIONS, NEW_SHA,
+    OLD_AUDIT_SHA, PROJECT, STEP, corrected_new_summary, validate_training_audits,
+)
+from wa.tools.audit_student_goal import file_sha, merge_hashes
+from wa.tools.compare_uwb_modes import (
+    load_bundle, output_path, validate_bundle, video_reference,
+)
+from wa.wm.dual_teacher_metrics import summarize_teachers
+from wa.wm.full_mixed_contract import MANIFEST_SHA
+from wa.wm.student_eval_finalize import TEACHER_SHA, load_teachers
+
+SCHEMA = 'wa.image-retrain-media-trace-audit.v1'
+CAPTION = (
+    '这是 Job 63395 的图像输入重训权重：从同一 59866 父模型独立续训一轮。'
+    '闭环推理使用 RGB 与首帧 GT 框，无 UWB、文本或在线世界预测器。'
+    '与直接移除 UWB 输入的 62256 权重分开报告。'
+)
+OLD_TRAIN_AUDIT = PROJECT/'artifacts/failure_state_training_audit_62256_v2.json'
+NEW_TRAIN_AUDIT = PROJECT/'artifacts/failure_state_image_only_training_audit_63395_v1.json'
+EVAL_SOURCE = PROJECT/'source_student62256_eval24_v1'
+EVAL_COMMIT = '5a23a982c7ef01f7fdec58faf27f6ea623ed9eeb'
+METRIC_FIELDS = (
+    'status', 'success', 'collision', 'finish', 'following_rate',
+    'following_step', 'total_step', 'policy_init_valid',
+)
+POSITION_FIELDS = (
+    'robot_position_world', 'robot_rotation_world_from_body',
+    'target_position_world',
+)
+
+
+def _reject_constant(value):
+    raise ValueError('nonfinite JSON constant: '+value)
+
+
+def json_lines(path):
+    data = path.read_bytes()
+    if not data:
+        raise ValueError('empty JSONL: '+str(path))
+    rows = [json.loads(line, parse_constant=_reject_constant)
+            for line in data.splitlines()]
+    if not rows or any(not isinstance(row, dict) for row in rows):
+        raise ValueError('non-object JSONL row: '+str(path))
+    return rows, hashlib.sha256(data).hexdigest()
+
+
+def checked_file(root, path):
+    root = Path(root)
+    path = Path(path)
+    if root.resolve() != root or root not in path.resolve().parents:
+        raise ValueError('artifact escaped canonical shard root: '+str(path))
+    current = path
+    while current != root:
+        if current.is_symlink():
+            raise ValueError('symlink in persisted artifact path: '+str(current))
+        current = current.parent
+    if not path.is_file() or path.stat().st_size <= 0:
+        raise ValueError('missing or empty persisted artifact: '+str(path))
+    return path.stat()
+
+
+def probe_video(video, ffprobe):
+    result = subprocess.run(
+        [ffprobe, '-v', 'error', '-show_entries',
+         'format=duration:stream=codec_type,width,height', '-of', 'json', str(video)],
+        check=True, capture_output=True, text=True, timeout=60,
+    )
+    metadata = json.loads(result.stdout, parse_constant=_reject_constant)
+    duration = float(metadata['format']['duration'])
+    streams = [stream for stream in metadata['streams']
+               if stream.get('codec_type') == 'video'
+               and type(stream.get('width')) is int and stream['width'] > 0
+               and type(stream.get('height')) is int and stream['height'] > 0]
+    if not math.isfinite(duration) or duration <= 0 or not streams:
+        raise ValueError('invalid video metadata: '+str(video))
+    return duration, [streams[0]['width'], streams[0]['height']]
+
+
+def _valid_action(action):
+    return (isinstance(action, list) and len(action) == 3
+            and all(type(value) in (int, float) and math.isfinite(value)
+                    for value in action))
+
+
+def audit_episode(row, ffprobe, probe=None):
+    """Check one already validated merged row against its persisted artifacts."""
+    video_reference(row)  # Reject path traversal in task/key before joining paths.
+    if (row.get('mode'), row.get('checkpoint_sha256'), row.get('checkpoint_step')) != (
+            'image', NEW_SHA, STEP):
+        raise ValueError('foreign image episode identity')
+    root = Path(row['artifact_root'])
+    task, key = row['task'], row['key']
+    photo = root/task/'_live'/key/'step_0000.jpg'
+    review = root/task/'_review'/key
+    video = review/'review.mp4'
+    steps_file = review/'steps.jsonl'
+    complete_file = review/'complete.json'
+    trace_file = root/task/(key.replace('/', '_')+'.trace.jsonl')
+    files = (photo, video, steps_file, complete_file, trace_file)
+    before = {str(path): checked_file(root, path) for path in files}
+    photo_sha = file_sha(photo)
+    if photo_sha != row.get('initial_rgb_sha256'):
+        raise ValueError('first JPEG differs from episode SHA: '+str(photo))
+    complete_bytes = complete_file.read_bytes()
+    complete = json.loads(complete_bytes, parse_constant=_reject_constant)
+    traces, trace_sha = json_lines(trace_file)
+    steps, steps_sha = json_lines(steps_file)
+    total = row.get('total_step')
+    frames = complete.get('frames')
+    if (type(total) not in (int, float) or not math.isfinite(total)
+            or total <= 0 or int(total) != total
+            or type(frames) is not int or frames != total
+            or len(traces) != frames or len(steps) != frames):
+        raise ValueError('trace/review/episode step counts differ: '+str(trace_file))
+    if complete.get('policy_inputs_unchanged') is not True:
+        raise ValueError('review recorder lacks policy-input declaration')
+    if not str(complete.get('video_timebase', '')).startswith('20fps frame playback'):
+        raise ValueError('unexpected review video timebase')
+    recorded = complete.get('result')
+    if not isinstance(recorded, dict) or any(
+            recorded.get(name) != row.get(name) for name in METRIC_FIELDS):
+        raise ValueError('review completion differs from episode result')
+    predictions = 0
+    for index, (trace, step) in enumerate(zip(traces, steps)):
+        if (trace.get('step') != index+1 or step.get('step') != index
+                or trace.get('mode') != 'image'):
+            raise ValueError('trace/review step or mode mismatch: '+str(trace_file))
+        action = trace.get('action')
+        if not _valid_action(action) or action != step.get('action'):
+            raise ValueError('trace/review action mismatch: '+str(trace_file))
+        observer = trace.get('observer_state')
+        if (not isinstance(observer, dict)
+                or observer.get('usage') != 'offline_diagnosis_only_not_policy_input'
+                or observer.get('timing') != 'before_current_action_after_previous_action'
+                or step.get('usage') != 'observer_only_not_policy_input'
+                or any(observer.get(name) != step.get(name)
+                       for name in POSITION_FIELDS)):
+            raise ValueError('observer-only trace/review state mismatch: '+str(trace_file))
+        diagnostics = trace.get('diagnostics')
+        if not isinstance(diagnostics, dict):
+            raise ValueError('missing trace diagnostics')
+        if trace.get('failure') is None or diagnostics:
+            if (diagnostics.get('mode') != 'image'
+                    or diagnostics.get('noise_mode') != 'zero'
+                    or diagnostics.get('inputs') != 'RGB+first_frame_bbox'
+                    or diagnostics.get('uwb') is not None
+                    or diagnostics.get('world_predictor_inference') is not False):
+                raise ValueError('trace contradicts image/no-UWB runtime contract')
+            predictions += int(trace.get('failure') is None)
+    duration, dimensions = (probe or probe_video)(video, ffprobe)
+    if not math.isfinite(duration) or duration <= 0 or abs(duration-frames/20) > 0.1:
+        raise ValueError('video duration differs from recorded 20fps frames')
+    for path in files:
+        after = path.stat()
+        prior = before[str(path)]
+        if (after.st_size, after.st_mtime_ns) != (prior.st_size, prior.st_mtime_ns):
+            raise ValueError('media changed during audit: '+str(path))
+    return dict(task=task, key=key, artifact_root=str(root),
+                video_path=str(video), video_size=before[str(video)].st_size,
+                duration_s=duration, video_dimensions=dimensions,
+                first_jpeg_sha256=photo_sha, trace_sha256=trace_sha,
+                review_steps_sha256=steps_sha,
+                complete_sha256=hashlib.sha256(complete_bytes).hexdigest(),
+                steps=frames, prediction_steps=predictions)
+
+
+def check_eval_source():
+    head = subprocess.run(
+        ['git', '-C', str(EVAL_SOURCE), 'rev-parse', 'HEAD'],
+        check=True, capture_output=True, text=True, timeout=30,
+    ).stdout.strip()
+    dirty = subprocess.run(
+        ['git', '-C', str(EVAL_SOURCE), 'status', '--porcelain'],
+        check=True, capture_output=True, text=True, timeout=30,
+    ).stdout
+    if head != EVAL_COMMIT or dirty:
+        raise ValueError('frozen evaluation checkout commit/status differs')
+    return head
+
+
+def corrected_summary(saved):
+    result = corrected_new_summary(saved)
+    result['review_caption'] = CAPTION
+    result['derived_review_scope'] = (
+        'Original frozen merge summary is unchanged; this is a derived '
+        'image-only retrain interpretation backed by the separate training audit.'
+    )
+    return result
+
+
+def render_index(summary, records, roots):
+    labels = {root: 'source_'+str(index)
+              for index, root in enumerate(sorted(roots))}
+    table = []
+    for record in records:
+        video = Path(record['video_path'])
+        relative = labels[record['artifact_root']]+'/'+quote(
+            str(video.relative_to(record['artifact_root'])), safe='/')
+        table.append(
+            '<tr><td>'+html.escape(record['task'])+'</td><td>'
+            +html.escape(record['key'])+'</td><td><a href="'
+            +html.escape(relative, quote=True)+'">视频</a></td></tr>'
+        )
+    page = (
+        '<!doctype html><meta charset="utf-8"><title>WA image-only retrain '
+        'media/trace review</title><h1>WA 图像输入重训 · 4215 条闭环结果</h1><p>'
+        +html.escape(CAPTION)+'</p><p>存储证据审计：4215 个首帧 JPEG 哈希、'
+        '视频流元数据与时长、动作 trace 和 observer 回放记录。'
+        '视频只检查元数据与时长，没有逐帧解码；评测集含训练适配样本，'
+        '结果不代表未见测试集泛化。</p><p><a href="summary.json">修正解释与指标</a>'
+        ' · <a href="audit.json">审计范围</a> · <a href="episodes.json">逐例索引</a></p>'
+        '<pre>'+html.escape(json.dumps(summary['metrics_percent'], indent=2))
+        +'</pre><table><tr><th>任务</th><th>样本</th><th>回放</th></tr>'
+        +''.join(table)+'</table>'
+    )
+    return page, labels
+
+
+def diagnose(merged, manifest_path, teacher_path, ffprobe):
+    if Path(ffprobe) != Path('/usr/bin/ffprobe'):
+        raise ValueError('expected pinned /usr/bin/ffprobe')
+    merged = Path(merged)
+    if not merged.is_absolute() or merged.resolve() != merged or merged.is_symlink():
+        raise ValueError('merged root must be canonical and non-symlink')
+    if file_sha(manifest_path) != MANIFEST_SHA or file_sha(teacher_path) != TEACHER_SHA:
+        raise ValueError('frozen manifest or teacher selections changed')
+    if file_sha(OLD_TRAIN_AUDIT) != OLD_AUDIT_SHA or file_sha(NEW_TRAIN_AUDIT) != NEW_AUDIT_SHA:
+        raise ValueError('pinned terminal training audit changed')
+    if file_sha(NEW_CHECKPOINT) != NEW_SHA:
+        raise ValueError('image-only checkpoint bytes changed')
+    provenance = validate_training_audits(
+        json.loads(OLD_TRAIN_AUDIT.read_text()),
+        json.loads(NEW_TRAIN_AUDIT.read_text()),
+    )
+    eval_commit = check_eval_source()
+    config_hashes = {}
+    for task, expected in NEW_EVAL_CONFIGS.items():
+        path = PROJECT/'checkout/wa/jobs'/('student63395_'+task+'_image_4090_v1.yaml')
+        if file_sha(path) != expected:
+            raise ValueError('submitted evaluation YAML changed: '+str(path))
+        config_hashes[str(path)] = expected
+    summary = json.loads((merged/'summary.json').read_text())
+    expected_roots = {task: str(root) for task, root in NEW_PARTITIONS.items()}
+    if summary.get('partition_roots') != expected_roots:
+        raise ValueError('merged rows do not bind all three new Job/Task roots')
+    manifest = json.loads(Path(manifest_path).read_text())
+    teachers = load_teachers(teacher_path)
+    teacher_metrics = summarize_teachers(teachers, manifest)['metrics_percent']
+    bundle = load_bundle(merged, manifest, dict(checkpoint_sha=NEW_SHA, step=STEP), 'image')
+    validate_bundle(bundle, manifest, dict(checkpoint_sha=NEW_SHA, step=STEP),
+                    'image', teachers, teacher_metrics)
+    rows = bundle['rows']
+    if len(rows) != 4215:
+        raise ValueError('full 4215 rows required')
+    for row in rows:
+        task = row['task']
+        root = Path(row['artifact_root'])
+        if (task not in NEW_PARTITIONS or root.parent != NEW_PARTITIONS[task]
+                or root.name not in {'shard_'+str(i).zfill(2) for i in range(8)}):
+            raise ValueError('row media points outside pinned Job/Task shards')
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        media = list(pool.map(lambda row: audit_episode(row, ffprobe), rows))
+    source_hashes = merge_hashes(
+        bundle['hashes'], config_hashes,
+        {str(Path(manifest_path).resolve()): MANIFEST_SHA,
+         str(Path(teacher_path).resolve()): TEACHER_SHA,
+         str(OLD_TRAIN_AUDIT): OLD_AUDIT_SHA,
+         str(NEW_TRAIN_AUDIT): NEW_AUDIT_SHA,
+         str(NEW_CHECKPOINT): NEW_SHA,
+         str(Path(ffprobe).resolve()): file_sha(ffprobe)},
+        {str(Path(inspect.getfile(fn)).resolve()): file_sha(inspect.getfile(fn))
+         for fn in (diagnose, load_bundle, validate_bundle,
+                    validate_training_audits, corrected_new_summary, file_sha)},
+    )
+    for path, sha in source_hashes.items():
+        if file_sha(path) != sha:
+            raise ValueError('source changed during media/trace audit: '+path)
+    derived = corrected_summary(bundle['summary'])
+    report = dict(
+        schema=SCHEMA, status='PASS_STORED_MEDIA_TRACE_REVIEW',
+        episodes=4215, checkpoint_sha256=NEW_SHA, checkpoint_step=STEP,
+        eval_source_commit=eval_commit, merged_root=str(merged),
+        partition_roots=expected_roots, training_provenance=provenance,
+        first_jpeg_sha256_verified=4215, video_metadata_duration_verified=4215,
+        trace_review_step_action_verified=4215,
+        observer_only_state_alignment_verified=4215,
+        video_scope='ffprobe stream metadata and 20fps duration; no full-frame decode',
+        trace_scope='Persisted JSONL and recorder consistency; no simulator/RPC replay',
+        limits=[
+            'Stored files can agree without proving the actual GPU placement, simulator '
+            'physics, RPC payloads, camera frames after the first JPEG, or causal isolation.',
+            'The server-ready and trace declarations support image/no-UWB/no-text/no-online-WM '
+            'admission, but are not a replay or an independent runtime observation.',
+            'Evaluation-set adaptation; not unseen-test generalization. Failed episodes '
+            'remain in each 1405 denominator.',
+        ],
+        source_hashes=source_hashes,
+    )
+    return report, derived, media, teachers
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in ('merged', 'manifest', 'teacher-selections', 'ffprobe', 'output'):
+        parser.add_argument('--'+name, required=True)
+    args = parser.parse_args(argv)
+    protected = [args.merged, args.manifest, args.teacher_selections,
+                 OLD_TRAIN_AUDIT, NEW_TRAIN_AUDIT, NEW_CHECKPOINT,
+                 *NEW_PARTITIONS.values()]
+    destination = output_path(args.output, protected)
+    if (destination.parent != PROJECT/'artifacts' or
+            re.fullmatch(r'student63395_image_media_trace_review_[0-9]{8}_v[0-9]+',
+                         destination.name) is None):
+        raise ValueError('review output must be a new versioned original-NAS artifact')
+    report, summary, records, teachers = diagnose(
+        args.merged, args.manifest, args.teacher_selections, args.ffprobe)
+    protected += [row['branches'][branch]['artifact_root']
+                  for row in teachers for branch in ('lightnav', 'oracle')]
+    destination = output_path(destination, protected)
+    page, labels = render_index(summary, records,
+                                {item['artifact_root'] for item in records})
+    destination.mkdir(parents=True, exist_ok=False)
+    for root, label in labels.items():
+        (destination/label).symlink_to(root, target_is_directory=True)
+    (destination/'summary.json').write_text(json.dumps(summary, indent=2, allow_nan=False))
+    (destination/'episodes.json').write_text(json.dumps(records, allow_nan=False))
+    (destination/'index.html').write_text(page)
+    report['derived_summary_sha256'] = file_sha(destination/'summary.json')
+    report['episode_inventory_sha256'] = file_sha(destination/'episodes.json')
+    report['index_sha256'] = file_sha(destination/'index.html')
+    (destination/'audit.json').write_text(json.dumps(report, indent=2, allow_nan=False))
+    print(json.dumps(dict(status=report['status'], episodes=4215,
+        output=str(destination), audit_sha256=file_sha(destination/'audit.json'))))
+
+
+if __name__ == '__main__':
+    main()
